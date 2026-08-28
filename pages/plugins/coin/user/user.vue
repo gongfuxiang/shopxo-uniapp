@@ -6,7 +6,7 @@
                 <view class="coin-title flex-col padding-lg" :style="'background-image:url(' + wallet_static_url + 'user-head-bg.png)'">
                     <view class="margin-bottom-main flex-row jc-sb align-c">
                         <view>
-                            <view class="cr-base text-size-md">{{$t('user.user.67p34x')}}</view>
+                            <view class="cr-base text-size-md">{{$t('common.balance')}}</view>
                             <view class="text-size-40 fw-b">{{ is_price_show ? accounts_summary : '***' }}</view>
                         </view>
                         <view @tap="price_change">
@@ -18,7 +18,7 @@
                             <view class="coin-operate-list bg-white flex-row align-c jc-c margin-bottom-main">
                                 <iconfont name="icon-wallet-recharge" size="44rpx" color="#635BFF"></iconfont>
                             </view>
-                            <view>{{$t('recharge.recharge.otwkjn')}}</view>
+                            <view>{{$t('common.recharge')}}</view>
                         </view>
                         <view v-if="data_base.is_enable_convert == 1" class="tc text-size-xs" data-value="/pages/plugins/coin/convert/convert" @tap="url_event">
                             <view class="coin-operate-list bg-white flex-row align-c jc-c margin-bottom-main">
@@ -108,6 +108,7 @@
     import componentNoData from '@/components/no-data/no-data';
     import componentPopup from '@/components/popup/popup';
     import componentBottomLine from '@/components/bottom-line/bottom-line';
+    import pluginLocale from '../locale/index.js';
     var wallet_static_url = app.globalData.get_static_url('coin', true) + 'app/';
     // 状态栏高度
     var bar_height = parseInt(app.globalData.get_system_info('statusBarHeight', 0, true));
@@ -115,6 +116,7 @@
     bar_height = 0;
     // #endif
     export default {
+        mixins: [pluginLocale],
         data() {
             return {
                 theme_view: app.globalData.get_theme_value_view(),

@@ -15,7 +15,7 @@
                                             <iconfont name="icon-arrow-bottom" size="24rpx" color="#fff"></iconfont>
                                         </view>
                                     </view>
-                                    <view class="text-size-xs fw-b padding-left-main text">{{$t('cash.cash.zmhf3n')}}</view>
+                                    <view class="text-size-xs fw-b padding-left-main text">{{$t('cash.withdrawable_currency')}}</view>
                                 </view>
                                 <view class="flex-row align-e">
                                     <view class="text-size-40 fw-b">{{ accounts.normal_coin }}</view>
@@ -28,20 +28,20 @@
                     <view class="content padding-main">
                         <view class="padding-xxxl bg-white radius-md margin-bottom-main">
                             <view class="margin-bottom-xxxl">
-                                <view class="margin-bottom-main fw-b">{{$t('cash.cash.f6p4hm')}}</view>
+                                <view class="margin-bottom-main fw-b">{{$t('cash.withdrawal_quantity')}}</view>
                                 <view class="padding-vertical-main br-b-e flex-row align-c">
                                     <input type="digit" :value="coin_num" class="flex-1 flex-width" placeholder-class="text-size-md cr-grey-9" :placeholder="$t('common.please_input')" @input="coin_num_change" />
-                                    <view @tap.stop="all_cash_event">{{$t('cash.cash.6oc6e7')}}</view>
+                                    <view @tap.stop="all_cash_event">{{$t('cash.all_withdrawals')}}</view>
                                 </view>
                             </view>
                             <view class="margin-bottom-xxxl">
-                                <view class="margin-bottom-main">{{$t('cash.cash.ucg8e2')}}</view>
+                                <view class="margin-bottom-main">{{$t('cash.withdrawal_address')}}</view>
                                 <view class="recharge-content-input-bg padding-main border-radius-sm flex-row align-c">
-                                    <input type="text" name="coin_address" class="padding-right-sm flex-1 flex-width" :value="coin_address" placeholder-class="text-size-md cr-grey-9" :placeholder="$t('cash.cash.i1f373')" @input="coin_address_change" />
+                                    <input type="text" name="coin_address" class="padding-right-sm flex-1 flex-width" :value="coin_address" placeholder-class="text-size-md cr-grey-9" :placeholder="$t('cash.enter_withdrawal_address')" @input="coin_address_change" />
                                 </view>
                             </view>
                             <view>
-                                <view class="margin-bottom-main">{{$t('cash.cash.h9i16y')}}</view>
+                                <view class="margin-bottom-main">{{$t('cash.withdrawal_network')}}</view>
                                 <block v-if="network_list.length > 0">
                                     <picker class="content-input-bg padding-main margin-bottom-main border-radius-sm" @change="cash_event" :value="network_list_index" :range="network_list" range-key="name">
                                         <view class="picker arrow-bottom">
@@ -49,9 +49,9 @@
                                         </view>
                                     </picker>
                                 </block>
-                                <view v-else class="cr-grey margin-bottom">{{$t('cash.cash.1g49wo')}}</view>
+                                <view v-else class="cr-grey margin-bottom">{{$t('cash.network_data')}}</view>
                                 <view class="content-input-bg padding-main border-radius-sm">
-                                    <input type="text" name="user_note" :value="user_note" placeholder-class="text-size-md cr-grey-9" :placeholder="$t('cash.cash.g05p4g')" @input="user_note_change" />
+                                    <input type="text" name="user_note" :value="user_note" placeholder-class="text-size-md cr-grey-9" :placeholder="$t('cash.enter_withdrawal_note_info')" @input="user_note_change" />
                                 </view>
                             </view>
                         </view>
@@ -64,7 +64,7 @@
                             </view>
                         </view> -->
                         <view class="padding-xxxl">
-                            <button type="default" class="cash-btn cr-white round" @tap="apply_for_cash_event">{{$t('cash.cash.42b37m')}}</button>
+                            <button type="default" class="cash-btn cr-white round" @tap="apply_for_cash_event">{{$t('cash.apply_withdrawal')}}</button>
                         </view>
                     </view>
                 </scroll-view>
@@ -110,6 +110,7 @@
     import componentNavBack from '@/components/nav-back/nav-back';
     import componentNoData from '@/components/no-data/no-data';
     import componentPopup from '@/components/popup/popup';
+    import pluginLocale from '../locale/index.js';
     var wallet_static_url = app.globalData.get_static_url('coin', true) + 'app/';
     // 状态栏高度
     var bar_height = parseInt(app.globalData.get_system_info('statusBarHeight', 0, true));
@@ -117,6 +118,7 @@
     bar_height = 0;
     // #endif
     export default {
+        mixins: [pluginLocale],
         data() {
             return {
                 theme_view: app.globalData.get_theme_value_view(),
@@ -293,7 +295,7 @@
             // 申请提现
             apply_for_cash_event() {
                 if(this.network_list.length == 0) {
-                    app.globalData.showToast(this.$t('cash.cash.en6vsa'));
+                    app.globalData.showToast(this.$t('cash.network_data_empty_contact_customer_service'));
                     return false;
                 }
 
@@ -307,8 +309,8 @@
                 };
                 // 数据校验
                 var validation = [
-                    { fields: 'coin', msg: this.$t('cash.cash.w01qjc') },
-                    { fields: 'address', msg: this.$t('cash.cash.i1f373') },
+                    { fields: 'coin', msg: this.$t('cash.enter_withdrawal_quantity') },
+                    { fields: 'address', msg: this.$t('cash.enter_withdrawal_address') },
                 ];
                 // 验证提交表单
                 if (app.globalData.fields_check(new_data, validation)) {

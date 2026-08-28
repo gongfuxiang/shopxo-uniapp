@@ -1,88 +1,88 @@
 <template>
     <view class="border-radius-main bg-white oh">
         <view class="form-gorup">
-            <view class="form-gorup-title">{{ $t('invoice.invoice.j04kjc') }}<text class="form-group-tips-must">*</text></view>
+            <view class="form-gorup-title">{{ $t('invoice.invoice_type') }}<text class="form-group-tips-must">*</text></view>
             <picker name="invoice_type" @change="invoice_type_event" :value="form_invoice_type_index" :range="can_invoice_type_list" range-key="name">
                 <view :class="'picker ' + (can_invoice_type_list[form_invoice_type_index] == undefined ? 'cr-grey' : 'cr-base') + ' arrow-right'">
-                    {{ can_invoice_type_list[form_invoice_type_index] == undefined ? $t('invoice-saveinfo.invoice-saveinfo.t3i3e3') : can_invoice_type_list[form_invoice_type_index]['name'] }}
+                    {{ can_invoice_type_list[form_invoice_type_index] == undefined ? $t('invoice-saveinfo.select_invoice_type') : can_invoice_type_list[form_invoice_type_index]['name'] }}
                 </view>
             </picker>
         </view>
 
         <view class="form-gorup">
-            <view class="form-gorup-title">{{ $t('invoice.invoice.hoenw8') }}<text class="form-group-tips-must">*</text></view>
+            <view class="form-gorup-title">{{ $t('invoice.application_type') }}<text class="form-group-tips-must">*</text></view>
             <picker name="apply_type" @change="apply_type_event" :disabled="form_apply_type_disabled" :value="form_apply_type_index" :range="apply_type_list" range-key="name">
                 <view :class="'picker ' + (apply_type_list[form_apply_type_index] == undefined ? 'cr-grey' : 'cr-base') + ' arrow-right'">
-                    {{ apply_type_list[form_apply_type_index] == undefined ? $t('invoice-saveinfo.invoice-saveinfo.k31t2s') : apply_type_list[form_apply_type_index]['name'] }}
+                    {{ apply_type_list[form_apply_type_index] == undefined ? $t('invoice-saveinfo.select_application_type') : apply_type_list[form_apply_type_index]['name'] }}
                 </view>
             </picker>
         </view>
 
         <view v-if="invoice_content_list.length > 0" class="form-gorup">
-            <view class="form-gorup-title">{{ $t('invoice-detail.invoice-detail.p73963') }}<text class="form-group-tips-must">*</text></view>
+            <view class="form-gorup-title">{{ $t('invoice-detail.invoice_content') }}<text class="form-group-tips-must">*</text></view>
             <picker name="invoice_content" @change="invoice_content_event" :value="form_invoice_content_index" :range="invoice_content_list">
                 <view :class="'picker ' + (invoice_content_list[form_invoice_content_index] == undefined ? 'cr-grey' : 'cr-base') + ' arrow-right'">
-                    {{ invoice_content_list[form_invoice_content_index] == undefined ? $t('invoice-saveinfo.invoice-saveinfo.i73t3c') : invoice_content_list[form_invoice_content_index] }}
+                    {{ invoice_content_list[form_invoice_content_index] == undefined ? $t('invoice-saveinfo.select_invoice_content') : invoice_content_list[form_invoice_content_index] }}
                 </view>
             </picker>
         </view>
 
         <view class="form-gorup">
-            <view class="form-gorup-title">{{ $t('invoice.invoice.y724c7') }}<text class="form-group-tips-must">*</text></view>
-            <input type="text" name="invoice_title" placeholder-class="cr-grey" class="cr-base" :placeholder="$t('invoice-saveinfo.invoice-saveinfo.x461e0')" maxlength="200" :value="form_data.invoice_title || ''"  data-field="invoice_title" @input="input_event" />
+            <view class="form-gorup-title">{{ $t('invoice.invoice_header') }}<text class="form-group-tips-must">*</text></view>
+            <input type="text" name="invoice_title" placeholder-class="cr-grey" class="cr-base" :placeholder="$t('invoice-saveinfo.invoice_header_up_200_characters_long')" maxlength="200" :value="form_data.invoice_title || ''"  data-field="invoice_title" @input="input_event" />
         </view>
 
         <view v-if="company_container">
             <view class="form-gorup">
-                <view class="form-gorup-title">{{ $t('invoice-saveinfo.invoice-saveinfo.x8hhiv') }}<text class="form-group-tips-must">*</text></view>
-                <input type="text" name="invoice_code" placeholder-class="cr-grey" class="cr-base" :placeholder="$t('invoice-saveinfo.invoice-saveinfo.924cag')" maxlength="160" :value="form_data.invoice_code || ''"  data-field="invoice_code" @input="input_event" />
+                <view class="form-gorup-title">{{ $t('invoice-saveinfo.unified_social_credit_code_tax_identification') }}<text class="form-group-tips-must">*</text></view>
+                <input type="text" name="invoice_code" placeholder-class="cr-grey" class="cr-base" :placeholder="$t('invoice-saveinfo.unified_social_credit_code_tax_identification_2')" maxlength="160" :value="form_data.invoice_code || ''"  data-field="invoice_code" @input="input_event" />
             </view>
         </view>
 
         <view v-if="company_special_container">
             <view class="form-gorup">
-                <view class="form-gorup-title">{{ $t('invoice-detail.invoice-detail.41qbu6') }}<text class="form-group-tips-must">*</text></view>
-                <input type="text" name="invoice_bank" placeholder-class="cr-grey" class="cr-base" :placeholder="$t('invoice-saveinfo.invoice-saveinfo.ymvw6b')" maxlength="200" :value="form_data.invoice_bank || ''"  data-field="invoice_bank" @input="input_event" />
+                <view class="form-gorup-title">{{ $t('invoice-detail.name_bank_where_enterprise_opens_account') }}<text class="form-group-tips-must">*</text></view>
+                <input type="text" name="invoice_bank" placeholder-class="cr-grey" class="cr-base" :placeholder="$t('invoice-saveinfo.enterprise_account_opening_bank_name_up')" maxlength="200" :value="form_data.invoice_bank || ''"  data-field="invoice_bank" @input="input_event" />
             </view>
             <view class="form-gorup">
-                <view class="form-gorup-title">{{ $t('invoice-detail.invoice-detail.3a9459') }}<text class="form-group-tips-must">*</text></view>
-                <input type="text" name="invoice_account" placeholder-class="cr-grey" class="cr-base" :placeholder="$t('invoice-saveinfo.invoice-saveinfo.664qc7')" maxlength="160" :value="form_data.invoice_account || ''"  data-field="invoice_account" @input="input_event" />
+                <view class="form-gorup-title">{{ $t('invoice-detail.enterprise_account_opening') }}<text class="form-group-tips-must">*</text></view>
+                <input type="text" name="invoice_account" placeholder-class="cr-grey" class="cr-base" :placeholder="$t('invoice-saveinfo.enterprise_account_opening_maximum_160_character')" maxlength="160" :value="form_data.invoice_account || ''"  data-field="invoice_account" @input="input_event" />
             </view>
             <view class="form-gorup">
-                <view class="form-gorup-title">{{ $t('invoice-detail.invoice-detail.2g7t23') }}<text class="form-group-tips-must">*</text></view>
-                <input type="text" name="invoice_tel" placeholder-class="cr-grey" class="cr-base" :placeholder="$t('invoice-saveinfo.invoice-saveinfo.bbseo1')" maxlength="15" :value="form_data.invoice_tel || ''"  data-field="invoice_tel" @input="input_event" />
+                <view class="form-gorup-title">{{ $t('invoice-detail.enterprise_contact_phone_number') }}<text class="form-group-tips-must">*</text></view>
+                <input type="text" name="invoice_tel" placeholder-class="cr-grey" class="cr-base" :placeholder="$t('invoice-saveinfo.enterprise_contact_phone_number_15_characters')" maxlength="15" :value="form_data.invoice_tel || ''"  data-field="invoice_tel" @input="input_event" />
             </view>
             <view class="form-gorup">
-                <view class="form-gorup-title">{{ $t('invoice-detail.invoice-detail.6k6sov') }}<text class="form-group-tips-must">*</text></view>
-                <input type="text" name="invoice_address" placeholder-class="cr-grey" class="cr-base" :placeholder="$t('invoice-saveinfo.invoice-saveinfo.85735j')" maxlength="230" :value="form_data.invoice_address || ''"  data-field="invoice_address" @input="input_event" />
+                <view class="form-gorup-title">{{ $t('invoice-detail.registered_address_enterprise') }}<text class="form-group-tips-must">*</text></view>
+                <input type="text" name="invoice_address" placeholder-class="cr-grey" class="cr-base" :placeholder="$t('invoice-saveinfo.registered_address_enterprise_maximum_230_charac')" maxlength="230" :value="form_data.invoice_address || ''"  data-field="invoice_address" @input="input_event" />
             </view>
         </view>
 
         <view v-if="addressee_container">
             <view class="form-gorup">
-                <view class="form-gorup-title">{{ $t('invoice-detail.invoice-detail.7159m0') }}<text class="form-group-tips-must">*</text></view>
-                <input type="text" name="name" placeholder-class="cr-grey" class="cr-base" :placeholder="$t('invoice-saveinfo.invoice-saveinfo.gsc7dy')" maxlength="30" :value="form_data.name || ''"  data-field="name" @input="input_event" />
+                <view class="form-gorup-title">{{ $t('invoice-detail.recipient_name') }}<text class="form-group-tips-must">*</text></view>
+                <input type="text" name="name" placeholder-class="cr-grey" class="cr-base" :placeholder="$t('invoice-saveinfo.recipient_name_format_should_between_30')" maxlength="30" :value="form_data.name || ''"  data-field="name" @input="input_event" />
             </view>
             <view class="form-gorup">
-                <view class="form-gorup-title">{{ $t('invoice-detail.invoice-detail.f2222p') }}<text class="form-group-tips-must">*</text></view>
-                <input type="text" name="tel" placeholder-class="cr-grey" class="cr-base" :placeholder="$t('invoice-saveinfo.invoice-saveinfo.bp8822')" maxlength="15" :value="form_data.tel || ''"  data-field="tel" @input="input_event" />
+                <view class="form-gorup-title">{{ $t('invoice-detail.recipient_phone_number') }}<text class="form-group-tips-must">*</text></view>
+                <input type="text" name="tel" placeholder-class="cr-grey" class="cr-base" :placeholder="$t('invoice-saveinfo.recipient_phone_number_15_characters_long')" maxlength="15" :value="form_data.tel || ''"  data-field="tel" @input="input_event" />
             </view>
             <view class="form-gorup">
-                <view class="form-gorup-title">{{ $t('invoice-detail.invoice-detail.q8l3zj') }}<text class="form-group-tips-must">*</text></view>
-                <input type="text" name="address" placeholder-class="cr-grey" class="cr-base" :placeholder="$t('invoice-saveinfo.invoice-saveinfo.u7h724')" maxlength="230" :value="form_data.address || ''"  data-field="address" @input="input_event" />
+                <view class="form-gorup-title">{{ $t('invoice-detail.recipient_address') }}<text class="form-group-tips-must">*</text></view>
+                <input type="text" name="address" placeholder-class="cr-grey" class="cr-base" :placeholder="$t('invoice-saveinfo.recipient_address_up_230_characters')" maxlength="230" :value="form_data.address || ''"  data-field="address" @input="input_event" />
             </view>
         </view>
 
         <view v-if="email_container">
             <view class="form-gorup">
-                <view class="form-gorup-title">{{ $t('login.login.db1rf4') }}</view>
-                <input type="text" name="email" placeholder-class="cr-grey" class="cr-base" :placeholder="$t('invoice-saveinfo.invoice-saveinfo.d3qbe1')" maxlength="60" :value="form_data.email || ''"  data-field="email" @input="input_event" />
+                <view class="form-gorup-title">{{ $t('common.mail') }}</view>
+                <input type="text" name="email" placeholder-class="cr-grey" class="cr-base" :placeholder="$t('invoice-saveinfo.email_up_60_characters')" maxlength="60" :value="form_data.email || ''"  data-field="email" @input="input_event" />
             </view>
         </view>
 
         <view class="form-gorup">
             <view class="form-gorup-title">{{ $t('common.note') }}</view>
-            <input type="text" name="user_note" placeholder-class="cr-grey" class="cr-base" :placeholder="$t('invoice-saveinfo.invoice-saveinfo.vaw647')" maxlength="60" :value="form_data.user_note || ''"  data-field="user_note" @input="input_event" />
+            <input type="text" name="user_note" placeholder-class="cr-grey" class="cr-base" :placeholder="$t('common.remarks_up_230_characters_long')" maxlength="60" :value="form_data.user_note || ''"  data-field="user_note" @input="input_event" />
         </view>
     </view>
 </template>

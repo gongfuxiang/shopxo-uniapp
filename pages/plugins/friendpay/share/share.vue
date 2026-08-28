@@ -10,7 +10,7 @@
                     <view>{{ invite_text_plain || buyer_invite_fallback }}</view>
                 </view>
                 <view class="tc margin-top-sm">
-                    <text class="cr-grey">{{ $t('friendpay.friendpay.share_amount') }}</text>
+                    <text class="cr-grey">{{ $t('friendpay.share_amount') }}</text>
                     <text class="sales-price text-size-xl margin-left-sm">{{ currency_symbol }}{{ friendpay.total_price }}</text>
                 </view>
                 <component-friendpay-goods-list :propGoodsList="order_goods_list"></component-friendpay-goods-list>
@@ -19,9 +19,9 @@
             <block v-if="friendpay.status == 0">
                 <!-- 代付链接 + 邀请二维码 -->
                 <view class="bg-white border-radius-main padding-main spacing-mb">
-                    <view v-if="(friendpay.expire_time_text || null) != null" class="cr-grey text-size-xs tc">{{ $t('friendpay.friendpay.expire_tips') }}{{ friendpay.expire_time_text }}</view>
+                    <view v-if="(friendpay.expire_time_text || null) != null" class="cr-grey text-size-xs tc">{{ $t('friendpay.expire_tips') }}{{ friendpay.expire_time_text }}</view>
                     <view v-if="(friendpay.expire_time_text || null) != null" class="br-b margin-top-sm margin-bottom-main"></view>
-                    <view class="fw-b text-size-sm">{{ $t('friendpay.friendpay.share_link') }}</view>
+                    <view class="fw-b text-size-sm">{{ $t('friendpay.share_link') }}</view>
                     <view class="share-link-row flex-row align-stretch gap-10 margin-top-xs">
                         <view class="share-link-group br-main radius flex-1 flex-width flex-row align-stretch oh">
                             <input class="share-link-input flex-1 flex-width text-size-xs cr-base" :value="friendpay.share_url" disabled />
@@ -32,7 +32,7 @@
                         </view>
                     </view>
                     <block v-if="(qrcode_data || null) != null && (qrcode_data.qrcode || null) != null && qrcode_data.qrcode.length > 0">
-                        <view class="fw-b text-size-sm margin-top-main">{{ $t('friendpay.friendpay.invite_qrcode') }}</view>
+                        <view class="fw-b text-size-sm margin-top-main">{{ $t('friendpay.invite_qrcode') }}</view>
                         <view class="qrcode-content margin-top-sm">
                             <view class="qrcode-list flex-row flex-wrap">
                                 <view v-for="(item, index) in qrcode_data.qrcode" :key="index" class="qrcode-item">
@@ -49,7 +49,7 @@
             </block>
 
             <view class="footer-actions flex-row jc-c align-c gap-20 margin-top-main">
-                <button v-if="friendpay.status == 0 || friendpay.status == 3" class="margin-0 bg-white cr-base br-grey round" size="mini" hover-class="none" @tap="refresh_event">{{ $t('friendpay.friendpay.refresh_link') }}</button>
+                <button v-if="friendpay.status == 0 || friendpay.status == 3" class="margin-0 bg-white cr-base br-grey round" size="mini" hover-class="none" @tap="refresh_event">{{ $t('friendpay.refresh_link') }}</button>
                 <button v-if="(order_back_url || null) != null" class="margin-0 bg-white br-main cr-main round" size="mini" hover-class="none" @tap="url_open_event" :data-value="order_back_url">{{ order_back_name || $t('common.back') }}</button>
             </view>
         </view>
@@ -66,7 +66,9 @@
     import componentNoData from '@/components/no-data/no-data';
     import componentSharePopup from '@/components/share-popup/share-popup';
     import componentFriendpayGoodsList from '@/pages/plugins/friendpay/components/goods-list/goods-list';
+    import pluginLocale from '../locale/index.js';
     export default {
+        mixins: [pluginLocale],
         components: {
             componentCommon,
             componentNoData,
@@ -96,7 +98,7 @@
         computed: {
             // 页面标题
             pageTitle() {
-                return (this.page_text.share_page_title || this.$t('friendpay.friendpay.share_page_title'));
+                return (this.page_text.share_page_title || this.$t('friendpay.share_page_title'));
             },
             // 买家头像
             buyer_avatar() {
@@ -106,7 +108,7 @@
             // 邀请文案兜底
             buyer_invite_fallback() {
                 var name = (this.order_data || {}).buyer_name || '';
-                return this.$t('friendpay.friendpay.invite_fallback').replace('${name}', name);
+                return this.$t('friendpay.invite_fallback').replace('${name}', name);
             },
             // 是否展示下单人信息
             has_buyer_name() {
@@ -223,7 +225,7 @@
                 var order_data = data.order_data || {};
                 var page_text = data.page_text || {};
                 return {
-                    title: page_text.share_page_title || this.$t('friendpay.friendpay.share_page_title'),
+                    title: page_text.share_page_title || this.$t('friendpay.share_page_title'),
                     desc: data.invite_text_plain || '',
                     path: '/pages/plugins/friendpay/pay/index',
                     query: (friendpay.unique_key || '') != '' ? ('id=' + friendpay.unique_key) : '',
@@ -283,7 +285,7 @@
                 var self = this;
                 uni.showModal({
                     title: this.$t('common.warm_tips'),
-                    content: this.$t('friendpay.friendpay.refresh_confirm'),
+                    content: this.$t('friendpay.refresh_confirm'),
                     success(res) {
                         if (res.confirm) {
                             uni.showLoading({ title: self.$t('common.loading_in_text') });
@@ -295,7 +297,7 @@
                                 success: (r) => {
                                     uni.hideLoading();
                                     if (r.data.code == 0) {
-                                        app.globalData.showToast(self.$t('friendpay.friendpay.refresh_success'));
+                                        app.globalData.showToast(self.$t('friendpay.refresh_success'));
                                         self.get_data();
                                     } else {
                                         app.globalData.showToast(r.data.msg);

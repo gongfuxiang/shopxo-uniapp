@@ -28,12 +28,12 @@
                                     </view>
                                 </view>
                             </view>
-                            <view class="bargain-goods-btn bg-main cr-white text-size-sm radius" :data-value="item.url" @tap="url_event">{{ $t('bargain.bargain.go_bargain') }}</view>
+                            <view class="bargain-goods-btn bg-main cr-white text-size-sm radius" :data-value="item.url" @tap="url_event">{{ $t('bargain.go_bargain') }}</view>
                         </view>
                     </view>
                 </block>
                 <block v-else>
-                    <component-no-data propStatus="0" :propMsg="$t('detail.detail.5knxg6')"></component-no-data>
+                    <component-no-data propStatus="0" :propMsg="$t('common.related_products_available')"></component-no-data>
                 </block>
 
                 <component-bargain-play-rules v-if="data.length > 0" :propConfig="bargain_config" :propPlaySideNav="play_side_nav"></component-bargain-play-rules>
@@ -53,7 +53,9 @@
     import componentNoData from '@/components/no-data/no-data';
     import componentBottomLine from '@/components/bottom-line/bottom-line';
     import componentBargainPlayRules from '../components/bargain-play-rules/bargain-play-rules';
+    import pluginLocale from '../locale/index.js';
     export default {
+        mixins: [pluginLocale],
         data() {
             return {
                 theme_view: app.globalData.get_theme_value_view(),
@@ -130,7 +132,7 @@
                             var data_list = data.data || [];
                             var slider_list = data.slider_list || [];
                             var data_base = data.data_base || null;
-                            var nav_title = this.$t('bargain.bargain.bargain');
+                            var nav_title = this.$t('bargain.bargain');
                             var share_img = '';
                             if (data_base != null) {
                                 nav_title = data_base.application_name || nav_title;

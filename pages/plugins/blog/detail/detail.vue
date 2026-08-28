@@ -6,11 +6,11 @@
                     <view class="fw-b text-size-xl">{{ info.title }}</view>
                     <view class="cr-grey-9 margin-top-lg oh br-t padding-top-main text-size-xs">
                         <view class="fl">
-                            <text>{{ $t('article-detail.article-detail.728374') }}</text>
+                            <text>{{ $t('common.article_detail_time') }}</text>
                             <text>{{ info.add_time }}</text>
                         </view>
                         <view class="fr">
-                            <text class="margin-left-xxxl">{{ $t('article-detail.article-detail.j92ru0') }}</text>
+                            <text class="margin-left-xxxl">{{ $t('common.browsing') }}</text>
                             <text>{{ info.access_count }}</text>
                         </view>
                     </view>
@@ -29,18 +29,18 @@
                 <!-- 上一篇、下一篇 -->
                 <view v-if="(last_next || null) != null" class="last-next-data spacing-mt margin-bottom-xxxl cr-grey-9">
                     <view v-if="(last_next.last || null) != null" class="flex-row">
-                        <text>{{ $t('article-detail.article-detail.281s4a') }}</text>
+                        <text>{{ $t('common.previous_article') }}</text>
                         <text :data-value="last_next.last.url" @tap="url_event" class="dis-inline-block flex-row flex-width single-text cp item">{{ last_next.last.title }}</text>
                     </view>
                     <view v-if="(last_next.next || null) != null" class="margin-top flex-row cr-main">
-                        <text>{{ $t('article-detail.article-detail.uq5814') }}</text>
+                        <text>{{ $t('common.next_article') }}</text>
                         <text :data-value="last_next.next.url" @tap="url_event" class="dis-inline-block flex-row flex-width single-text cp item">{{ last_next.next.title }}</text>
                     </view>
                 </view>
                 <!-- 推荐博文 -->
                 <view v-if="right_list.length > 0" class="plugins-blog-list">
                     <view class="spacing-nav-title flex-row align-c jc-sb text-size-xs">
-                        <text class="text-wrapper title-left-border single-text flex-1 flex-width padding-right-main">{{ $t('detail.detail.455787') }}{{ blog_main_name }}</text>
+                        <text class="text-wrapper title-left-border single-text flex-1 flex-width padding-right-main">{{ $t('detail.recommendation') }}{{ blog_main_name }}</text>
                         <text data-value="/pages/plugins/blog/search/search" @tap="url_event" class="arrow-right padding-right cr-grey cp">{{ $t('common.more') }}</text>
                     </view>
                     <view v-for="(item, index) in right_list" :key="index">
@@ -58,7 +58,7 @@
                 <!-- 相关商品 -->
                 <view v-if="(info.goods_list || null) != null && info.goods_list.length > 0">
                     <view class="spacing-nav-title flex-row align-c jc-sb text-size-xs">
-                        <text class="text-wrapper title-left-border single-text flex-1 flex-width padding-right-main">{{ $t('detail.detail.1j6yxy') }}</text>
+                        <text class="text-wrapper title-left-border single-text flex-1 flex-width padding-right-main">{{ $t('detail.related_products') }}</text>
                         <text data-value="/pages/goods-search/goods-search" @tap="url_event" class="arrow-right padding-right cr-grey cp">{{ $t('common.more') }}</text>
                     </view>
                     <component-goods-list :propData="{ style_type: 1, goods_list: info.goods_list }" :propCurrencySymbol="currency_symbol"></component-goods-list>
@@ -77,7 +77,7 @@
             <view class="bottom-line-exclude">
                 <view class="item flex-row jc-sa align-c text-size fw-b br bg-white round padding-vertical">
                     <view data-value="/pages/plugins/blog/form/form" @tap="url_event" class="flex-1 tc flex-col jc-c align-c cp">
-                        <view class="divider-r-d wh-auto"> <iconfont name="icon-edit-below-line" size="30rpx" color="#333" propClass="margin-right-sm"></iconfont>{{$t('detail.detail.fn3w01')}}{{ blog_main_name }}</view>
+                        <view class="divider-r-d wh-auto"> <iconfont name="icon-edit-below-line" size="30rpx" color="#333" propClass="margin-right-sm"></iconfont>{{$t('detail.release')}}{{ blog_main_name }}</view>
                     </view>
                     <view data-value="/pages/plugins/blog/user-list/user-list" @tap="url_event" class="flex-1 tc flex-col jc-c align-c cp">
                         <view class="wh-auto"> <iconfont name="icon-list-dot" size="32rpx" color="#333" propClass="margin-right-sm pr top-xs"></iconfont>{{$t('common.my')}}{{ blog_main_name }}</view>
@@ -97,9 +97,11 @@
     import componentBottomLine from '@/components/bottom-line/bottom-line';
     import componentBlogComments from '../components/blog-comments/blog-comments';
     import componentGoodsList from '@/components/goods-list/goods-list';
+    import pluginLocale from '../locale/index.js';
 
     var common_static_url = app.globalData.get_static_url('common');
     export default {
+        mixins: [pluginLocale],
         data() {
             return {
                 theme_view: app.globalData.get_theme_value_view(),
@@ -116,7 +118,7 @@
                 right_list: [],
                 last_next: null,
                 emoji_list: [],
-                blog_main_name: this.$t('detail.detail.e439j9'),
+                blog_main_name: this.$t('detail.bowen'),
                 // 自定义分享信息
                 share_info: {},
             };
@@ -199,7 +201,7 @@
                                 right_list: data.right_list || [],
                                 last_next: data.last_next || null,
                                 emoji_list: data.emoji_list || [],
-                                blog_main_name: base == null ? this.$t('detail.detail.e439j9') : (base.blog_main_name || this.$t('detail.detail.e439j9')),
+                                blog_main_name: base == null ? this.$t('detail.bowen') : (base.blog_main_name || this.$t('detail.bowen')),
                             });
 
                             if (info != null) {

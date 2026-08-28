@@ -170,10 +170,10 @@
                     const wrap = new_form.theme == '3' ? '' : 'flex-wrap ';
                     // 默认数据
                     const shop_style_list = [
-                        { name: this.$t('diy.diy.single_column_display'), value: '0', width: 50, height: 50 },
-                        { name: this.$t('diy.diy.two_column_vertical'), value: '1', width:180, height: 180 },
-                        { name: this.$t('diy.diy.large_image_display'), value: '2', width:0, height: 180 },
-                        { name: this.$t('diy.diy.horizontal_slide_display'), value: '3', width:0, height: 0 },
+                        { name: this.$t('diy.single_column_display'), value: '0', width: 50, height: 50 },
+                        { name: this.$t('diy.two_column_vertical'), value: '1', width:180, height: 180 },
+                        { name: this.$t('diy.large_image_display'), value: '2', width:0, height: 180 },
+                        { name: this.$t('diy.horizontal_slide_display'), value: '3', width:0, height: 0 },
                     ];
                     const scale = sys_width / 390;
                     let img_style = ``;

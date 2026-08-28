@@ -22,16 +22,16 @@
                 </view>
                 <!-- 核验成功订单信息 -->
                 <view v-if="(success_order_data || null) != null" class="margin-top-xl border-radius-main bg-white padding-main spacing-mb">
-                    <view class="fw-b text-size margin-bottom-main">{{$t('user-order-detail.user-order-detail.0f26j2')}}</view>
+                    <view class="fw-b text-size margin-bottom-main">{{$t('common.order_information')}}</view>
                     <view class="cr-base text-size-sm">
                         <view class="padding-vertical-xs">{{$t('common.order_id_label')}}{{success_order_data.id}}</view>
-                        <view class="padding-vertical-xs">{{$t('user-order-detail.user-order-detail.n18sd2')}}：{{success_order_data.order_no}}</view>
-                        <view class="padding-vertical-xs">{{$t('order-detail.order-detail.9153qn')}}：{{success_order_data.add_time}}</view>
-                        <view class="padding-vertical-xs">{{$t('user-order-detail.user-order-detail.2y7l13')}}：{{currency_symbol}}{{success_order_data.total_price}}</view>
-                        <view class="padding-vertical-xs">{{$t('user-order-detail.user-order-detail.516tlr')}}：<text class="cr-price fw-b">{{currency_symbol}}{{success_order_data.pay_price}}</text></view>
+                        <view class="padding-vertical-xs">{{$t('common.user_order_detail_order_number')}}：{{success_order_data.order_no}}</view>
+                        <view class="padding-vertical-xs">{{$t('common.order_time')}}：{{success_order_data.add_time}}</view>
+                        <view class="padding-vertical-xs">{{$t('common.total_order_price')}}：{{currency_symbol}}{{success_order_data.total_price}}</view>
+                        <view class="padding-vertical-xs">{{$t('common.payment_amount')}}：<text class="cr-price fw-b">{{currency_symbol}}{{success_order_data.pay_price}}</text></view>
                     </view>
                     <view v-if="(success_order_data.items || null) != null && success_order_data.items.length > 0" class="margin-top-main">
-                        <view class="fw-b text-size margin-bottom-main">{{$t('user-order-detail.user-order-detail.yghjkf')}}</view>
+                        <view class="fw-b text-size margin-bottom-main">{{$t('common.order_goods')}}</view>
                         <view v-for="(item, index) in success_order_data.items" :key="index" class="oh margin-top flex-row gap-10">
                             <image :src="item.images" mode="aspectFill" class="br-f5 radius goods-cover"></image>
                             <view class="goods-base flex-1 flex-width">
@@ -54,7 +54,9 @@
 <script>
     const app = getApp();
     import componentCommon from '@/components/common/common';
+    import pluginLocale from '../locale/index.js';
     export default {
+        mixins: [pluginLocale],
         data() {
             return {
                 theme_view: app.globalData.get_theme_value_view(),

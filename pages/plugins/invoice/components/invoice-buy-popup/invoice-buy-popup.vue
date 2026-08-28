@@ -2,7 +2,7 @@
     <component-popup :propShow="propShow" propPosition="bottom" @onclose="close_event">
         <view class="plugins-invoice-buy-popup bg-base">
             <view class="popup-header flex-row jc-sb align-c padding-horizontal-main padding-top-main padding-bottom-sm">
-                <view class="text-size fw-b">{{ $t('buy.buy.k8inv1') }}</view>
+                <view class="text-size fw-b">{{ $t('common.text_2') }}</view>
                 <view class="cp" @tap.stop="close_event">
                     <iconfont name="icon-close-line" size="28rpx" color="#999"></iconfont>
                 </view>
@@ -13,20 +13,20 @@
                 </view>
 
                 <view class="padding-main border-radius-main bg-white spacing-mb">
-                    <text class="cr-base margin-right-sm">{{ $t('invoice.invoice.fvuc4p') }}</text>
+                    <text class="cr-base margin-right-sm">{{ $t('invoice.invoice_amount') }}</text>
                     <text class="cr-main text-size fw-b">{{ currency_symbol }}{{ config.total_price }}</text>
                 </view>
 
                 <form @submit="form_submit" class="form-container">
                     <view class="border-radius-main bg-white oh spacing-mb">
                         <view class="form-gorup invoice-choice-group">
-                            <view class="form-gorup-title">{{ $t('buy.buy.k8inv7') }}</view>
+                            <view class="form-gorup-title">{{ $t('buy.text_5') }}</view>
                             <radio-group class="invoice-radio-group" name="is_buy_invoice" @change="buy_invoice_choice_event">
                                 <label class="invoice-radio-item margin-right-lg">
-                                    <radio class="invoice-radio" value="0" :checked="is_buy_invoice == 0" color="#E22C08" style="transform: scale(0.7)" />{{ $t('buy.buy.k8inv2') }}
+                                    <radio class="invoice-radio" value="0" :checked="is_buy_invoice == 0" color="#E22C08" style="transform: scale(0.7)" />{{ $t('common.no_invoice') }}
                                 </label>
                                 <label class="invoice-radio-item">
-                                    <radio class="invoice-radio" value="1" :checked="is_buy_invoice == 1" color="#E22C08" style="transform: scale(0.7)" />{{ $t('buy.buy.k8inv8') }}
+                                    <radio class="invoice-radio" value="1" :checked="is_buy_invoice == 1" color="#E22C08" style="transform: scale(0.7)" />{{ $t('common.text_6') }}
                                 </label>
                             </radio-group>
                         </view>

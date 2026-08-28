@@ -15,21 +15,21 @@
 
                         <view v-if="(data_base.is_qrcode_must_userinfo || 0) == 1">
                             <view class="form-gorup">
-                                <view class="form-gorup-title">{{$t('user-qrcode-detail.user-qrcode-detail.do23j6')}}<text class="form-group-tips-must">*</text></view>
-                                <input type="text" name="name" placeholder-class="cr-grey" class="cr-base" :placeholder="$t('user-qrcode-saveinfo.user-qrcode-saveinfo.xa2k42')" maxlength="30" :value="data.name || ''" />
+                                <view class="form-gorup-title">{{$t('user-qrcode-detail.contact_name')}}<text class="form-group-tips-must">*</text></view>
+                                <input type="text" name="name" placeholder-class="cr-grey" class="cr-base" :placeholder="$t('user-qrcode-saveinfo.contact_name_format_between_30_characters')" maxlength="30" :value="data.name || ''" />
                             </view>
                             <view class="form-gorup">
-                                <view class="form-gorup-title">{{$t('user-qrcode-detail.user-qrcode-detail.5k2ibd')}}<text class="form-group-tips-must">*</text></view>
-                                <input type="text" name="tel" placeholder-class="cr-grey" class="cr-base" :placeholder="$t('user-qrcode-saveinfo.user-qrcode-saveinfo.e9ko33')" maxlength="15" :value="data.tel || ''" />
+                                <view class="form-gorup-title">{{$t('user-qrcode-detail.contact_phone_number')}}<text class="form-group-tips-must">*</text></view>
+                                <input type="text" name="tel" placeholder-class="cr-grey" class="cr-base" :placeholder="$t('user-qrcode-saveinfo.contact_phone_number_15_characters')" maxlength="15" :value="data.tel || ''" />
                             </view>
                             <view class="form-gorup">
-                                <view class="form-gorup-title">{{$t('user-qrcode-detail.user-qrcode-detail.911a61')}}<text class="form-group-tips-must">*</text></view>
-                                <input type="text" name="address" placeholder-class="cr-grey" class="cr-base" :placeholder="$t('user-qrcode-saveinfo.user-qrcode-saveinfo.bbxaw6')" maxlength="230" :value="data.address || ''" />
+                                <view class="form-gorup-title">{{$t('user-qrcode-detail.contact_address')}}<text class="form-group-tips-must">*</text></view>
+                                <input type="text" name="address" placeholder-class="cr-grey" class="cr-base" :placeholder="$t('user-qrcode-saveinfo.contact_address_up_230_characters')" maxlength="230" :value="data.address || ''" />
                             </view>
                         </view>
                         <view class="form-gorup">
                             <view class="form-gorup-title">{{$t('common.note')}}</view>
-                            <input type="text" name="note" placeholder-class="cr-grey" class="cr-base" :placeholder="$t('invoice-saveinfo.invoice-saveinfo.vaw647')" maxlength="60" :value="data.note || ''" />
+                            <input type="text" name="note" placeholder-class="cr-grey" class="cr-base" :placeholder="$t('common.remarks_up_230_characters_long')" maxlength="60" :value="data.note || ''" />
                         </view>
                         <view class="bottom-fixed" :style="bottom_fixed_style">
                             <view class="bottom-line-exclude">
@@ -53,8 +53,10 @@
     const app = getApp();
     import componentCommon from '@/components/common/common';
     import componentNoData from '@/components/no-data/no-data';
+    import pluginLocale from '../locale/index.js';
 
     export default {
+        mixins: [pluginLocale],
         data() {
             return {
                 theme_view: app.globalData.get_theme_value_view(),
@@ -88,7 +90,7 @@
 
             // 设置标题
             uni.setNavigationBarTitle({
-                title: this.$t('user-qrcode-saveinfo.user-qrcode-saveinfo.jw2h8l') + ((this.params.id || null) == null ? this.$t('invoice-saveinfo.invoice-saveinfo.004t56') : this.$t('common.edit')),
+                title: this.$t('user-qrcode-saveinfo.sign_code') + ((this.params.id || null) == null ? this.$t('common.invoice_saveinfo_add') : this.$t('common.edit')),
             });
 
             // 加载数据
@@ -171,9 +173,9 @@
                 // 数据验证
                 var validation = [];
                 if ((this.data_base || null) != null && (this.data_base.is_qrcode_must_userinfo || 0) == 1) {
-                    validation.push({ fields: 'name', msg: this.$t('user-qrcode-saveinfo.user-qrcode-saveinfo.84g5t6') });
-                    validation.push({ fields: 'tel', msg: this.$t('user-qrcode-saveinfo.user-qrcode-saveinfo.1tilke') });
-                    validation.push({ fields: 'address', msg: this.$t('user-qrcode-saveinfo.user-qrcode-saveinfo.5m2752') });
+                    validation.push({ fields: 'name', msg: this.$t('user-qrcode-saveinfo.fill_contact_name_format_between_30') });
+                    validation.push({ fields: 'tel', msg: this.$t('user-qrcode-saveinfo.fill_contact_phone_number_which_should') });
+                    validation.push({ fields: 'address', msg: this.$t('user-qrcode-saveinfo.fill_contact_address_maximum_230_characters') });
                 }
                 if (app.globalData.fields_check(data, validation)) {
                     uni.showLoading({

@@ -7,20 +7,20 @@
                     <form @submit="form_bind_pwd">
                         <view class="margin-top-xxxl">
                             <view v-if="(user.is_setup_pwd || 0) == 1" class="pr">
-                                <input type="text" :placeholder="$t('password.password.4e24j1')" minlength="6" maxlength="18" name="my_pwd" :password="!eyes1" class="form-item margin-bottom-main" />
+                                <input type="text" :placeholder="$t('password.enter_current_password')" minlength="6" maxlength="18" name="my_pwd" :password="!eyes1" class="form-item margin-bottom-main" />
                                 <view class="eyes pa" data-index="1" @tap="eyes_event"><iconfont :name="eyes1 ? 'icon-eye-close' : 'icon-eye-half'" color="#666" size="32rpx"></iconfont></view>
                             </view>
                             <view class="pr">
-                                <input type="text" :placeholder="$t('password.password.1lwiaz')" minlength="6" maxlength="18" name="new_pwd" :password="!eyes2" class="form-item margin-bottom-main" />
+                                <input type="text" :placeholder="$t('password.enter_new_password')" minlength="6" maxlength="18" name="new_pwd" :password="!eyes2" class="form-item margin-bottom-main" />
                                 <view class="eyes pa" data-index="2" @tap="eyes_event"><iconfont :name="eyes2 ? 'icon-eye-close' : 'icon-eye-half'" color="#666" size="32rpx"></iconfont></view>
                             </view>
                             <view class="pr">
-                                <input type="text" :placeholder="$t('password.password.338433')" minlength="6" maxlength="18" name="confirm_new_pwd" :password="!eyes3" class="form-item margin-bottom-main" />
+                                <input type="text" :placeholder="$t('password.confirm_new_password')" minlength="6" maxlength="18" name="confirm_new_pwd" :password="!eyes3" class="form-item margin-bottom-main" />
                                 <view class="eyes pa" data-index="3" @tap="eyes_event"><iconfont :name="eyes3 ? 'icon-eye-close' : 'icon-eye-half'" color="#666" size="32rpx"></iconfont></view>
                             </view>
                         </view>
                         <view class="margin-top-xxxxl tc">
-                            <button class="bg-main br-main cr-white round text-size" form-type="submit" type="default" hover-class="none" :loading="form_submit_loading" :disabled="form_submit_loading">{{$t('password.password.xyekjf')}}</button>
+                            <button class="bg-main br-main cr-white round text-size" form-type="submit" type="default" hover-class="none" :loading="form_submit_loading" :disabled="form_submit_loading">{{$t('password.confirm_modifications')}}</button>
                         </view>
                     </form>
                 </view>
@@ -39,7 +39,9 @@
     const app = getApp();
     import componentCommon from '@/components/common/common';
     import componentNoData from '@/components/no-data/no-data';
+    import pluginLocale from './locale/index.js';
     export default {
+        mixins: [pluginLocale],
         data() {
             return {
                 theme_view: app.globalData.get_theme_value_view(),
@@ -88,7 +90,7 @@
                 } else {
                     this.setData({
                         data_list_loding_status: 0,
-                        data_list_loding_msg: this.$t('setup.setup.nwt4o1'),
+                        data_list_loding_msg: this.$t('common.please_login_first'),
                     });
                 }
             },
@@ -113,10 +115,10 @@
                 // 数据验证
                 var validation = [];
                 if((this.user.is_setup_pwd || 0) == 1) {
-                    validation.push({ fields: 'my_pwd', msg: this.$t('login.login.277w03') });
+                    validation.push({ fields: 'my_pwd', msg: this.$t('common.enter_password') });
                 }
-                validation.push({ fields: 'new_pwd', msg: this.$t('password.password.1lwiaz') });
-                validation.push({ fields: 'confirm_new_pwd', msg: this.$t('password.password.3pp6t7') });
+                validation.push({ fields: 'new_pwd', msg: this.$t('password.enter_new_password') });
+                validation.push({ fields: 'confirm_new_pwd', msg: this.$t('password.confirm_new_password_2') });
                 if (app.globalData.fields_check(e.detail.value, validation)) {
                     uni.showLoading({
                         title: this.$t('common.processing_in_text'),

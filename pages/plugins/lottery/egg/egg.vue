@@ -51,7 +51,7 @@
                                     class="lottery-marquee-item"
                                 >
                                     <text v-if="(mv.user_mask || '').toString().trim()">{{ mv.user_mask }}，</text>
-                                    <text>{{ $t('lottery.lottery.won_prefix') }}{{ mv.reward_name || '-' }} </text>
+                                    <text>{{ $t('lottery.won_prefix') }}{{ mv.reward_name || '-' }} </text>
                                     <text class="lottery-marquee-em">{{ $t('common.just_now') }}</text>
                                 </text>
                             </block>
@@ -64,7 +64,7 @@
 
             <view v-if="rulesPopupVisible" class="lottery-rules-mask" @tap="rulesPopupVisible = false">
                 <view class="lottery-rules-dialog" @tap.stop>
-                    <view class="lottery-rules-title">{{ $t('lottery.lottery.rules_title') }}</view>
+                    <view class="lottery-rules-title">{{ $t('lottery.rules_title') }}</view>
                     <scroll-view :scroll-y="true" class="lottery-rules-scroll">
                         <text class="lottery-rules-text">{{ rulesDisplayText }}</text>
                     </scroll-view>
@@ -129,8 +129,10 @@
     import componentCommon from '@/components/common/common';
     import componentNoData from '@/components/no-data/no-data';
     import componentLotteryEgg from '@/pages/plugins/lottery/components/lottery-egg/lottery-egg';
+    import pluginLocale from '../locale/index.js';
 
     export default {
+        mixins: [pluginLocale],
         components: {
             componentCommon,
             componentNoData,
@@ -156,9 +158,9 @@
                 lastDrawResult: null,
                 resultSuccessImage: '',
                 resultFailImage: '',
-                resultFailTitle: this.$t('lottery.lottery.thanks_join'),
-                resultFailDesc: this.$t('lottery.lottery.try_again_tips'),
-                resultSuccessTitle: this.$t('lottery.lottery.congrats_get'),
+                resultFailTitle: this.$t('lottery.thanks_join'),
+                resultFailDesc: this.$t('lottery.try_again_tips'),
+                resultSuccessTitle: this.$t('lottery.congrats_get'),
                 resultModalVisible: false,
                 resultModalTitle: '',
                 resultModalDesc: '',
@@ -179,7 +181,7 @@
                  */
                 pendingEggChancePatch: null,
                 /** 底部跳转中奖记录文案（接口 lottery_user_center_record_menu_name） */
-                recordEntryMenuName: this.$t('lottery.lottery.my_prize'),
+                recordEntryMenuName: this.$t('lottery.my_prize'),
             };
         },
         computed: {
@@ -198,7 +200,7 @@
                 if (s) {
                     return s;
                 }
-                return this.$t('lottery.lottery.balance_label') + (e.user_wallet_money || '0.00') + this.$t('lottery.lottery.integral_label') + (e.user_integral || '0');
+                return this.$t('lottery.balance_label') + (e.user_wallet_money || '0.00') + this.$t('lottery.integral_label') + (e.user_integral || '0');
             },
             /** 弹窗「确认」等多语言文案 */
             confirmBtnText() {
@@ -344,13 +346,13 @@
                 const d = this.lastDrawResult || {};
                 const isNone = d.reward_type === 'none';
                 if (isNone) {
-                    this.resultModalTitle = this.resultFailTitle || this.$t('lottery.lottery.thanks_join');
+                    this.resultModalTitle = this.resultFailTitle || this.$t('lottery.thanks_join');
                     this.resultModalShowPrizeIcon = false;
                     this.resultModalPrizeIcon = '';
                     this.resultModalPrizeName = '';
-                    this.resultModalDesc = this.resultFailDesc || this.$t('lottery.lottery.try_again_tips');
+                    this.resultModalDesc = this.resultFailDesc || this.$t('lottery.try_again_tips');
                 } else {
-                    this.resultModalTitle = this.resultSuccessTitle || this.$t('lottery.lottery.congrats_get');
+                    this.resultModalTitle = this.resultSuccessTitle || this.$t('lottery.congrats_get');
                     const icon = d.icon || '';
                     this.resultModalShowPrizeIcon = !!icon;
                     this.resultModalPrizeIcon = icon;
@@ -439,7 +441,7 @@
                         } else {
                             this.isDrawing = false;
                             this.pendingEggIndex = -1;
-                            app.globalData.showToast(res.data.msg || this.$t('lottery.lottery.draw_fail'));
+                            app.globalData.showToast(res.data.msg || this.$t('lottery.draw_fail'));
                         }
                     },
                     fail: () => {
@@ -462,10 +464,10 @@
                             const egg = data.lottery_egg || {};
                             this.marqueeList = Array.isArray(data.marquee_list) ? data.marquee_list : [];
                             this.recordEntryMenuName =
-                                String(data.lottery_user_center_record_menu_name || '').trim() || this.$t('lottery.lottery.my_prize');
+                                String(data.lottery_user_center_record_menu_name || '').trim() || this.$t('lottery.my_prize');
                             this.lotteryEgg = egg;
                             if (egg.enable === false) {
-                                const tip = String(egg.error_tips || '').trim() || this.$t('lottery.lottery.activity_unavailable');
+                                const tip = String(egg.error_tips || '').trim() || this.$t('lottery.activity_unavailable');
                                 this.data_list_loding_status = 0;
                                 this.data_list_loding_msg = tip;
                             } else {
@@ -474,9 +476,9 @@
                             }
                             this.resultSuccessImage = egg.result_success_image || '';
                             this.resultFailImage = egg.result_fail_image || '';
-                            this.resultFailTitle = egg.result_fail_title || this.$t('lottery.lottery.thanks_join');
-                            this.resultFailDesc = egg.result_fail_desc || this.$t('lottery.lottery.try_again_tips');
-                            this.resultSuccessTitle = egg.result_success_title || this.$t('lottery.lottery.congrats_get');
+                            this.resultFailTitle = egg.result_fail_title || this.$t('lottery.thanks_join');
+                            this.resultFailDesc = egg.result_fail_desc || this.$t('lottery.try_again_tips');
+                            this.resultSuccessTitle = egg.result_success_title || this.$t('lottery.congrats_get');
                             this.nImg = egg.index_bg_app || '';
                             const defaultTitle = this.$t ? this.$t('pages.plugins-lottery-egg') : '砸金蛋';
                             const shareTitle = String(egg.banner_title || '').trim() || defaultTitle;

@@ -48,8 +48,10 @@
     import componentNoData from "@/components/no-data/no-data";
     import componentBottomLine from "@/components/bottom-line/bottom-line";
     import componentSharePopup from "@/components/share-popup/share-popup";
+    import pluginLocale from '../locale/index.js';
 
     export default {
+        mixins: [pluginLocale],
         data() {
             return {
                 theme_view: app.globalData.get_theme_value_view(),
@@ -62,8 +64,8 @@
                 data_is_loading: 0,
                 params: null,
                 content_list: [
-                    { name: this.$t('user-detail.user-detail.uy6lrz'), field: "title" },
-                    { name: this.$t('form.form.xy87t8'), field: "describe" },
+                    { name: this.$t('common.title'), field: "title" },
+                    { name: this.$t('common.describe'), field: "describe" },
                     { name: this.$t('common.goods'), field: "goods_count" },
                     { name: this.$t('common.access'), field: "access_count" },
                 ],
@@ -230,7 +232,7 @@
                 var index = e.currentTarget.dataset.index || 0;
                 var data = this.data_list[index] || null;
                 if (data == null) {
-                    app.globalData.showToast(this.$t('extraction-switch.extraction-switch.613b58'));
+                    app.globalData.showToast(this.$t('common.extraction_switch_data_error'));
                     return false;
                 }
                 this.setData({
@@ -260,7 +262,7 @@
                 var temp_data = this.data_list;
                 var data = temp_data[index] || null;
                 if (data == null) {
-                    app.globalData.showToast(this.$t('extraction-switch.extraction-switch.613b58'));
+                    app.globalData.showToast(this.$t('common.extraction_switch_data_error'));
                     return false;
                 }
                 uni.showModal({

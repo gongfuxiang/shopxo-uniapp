@@ -25,23 +25,23 @@
                             </view>
                             <view class="convert-group-row">
                                 <view class="margin-bottom-sm flex-row">
-                                    <text class="cr-grey-9 title">{{$t('cash-list.cash-list.e6pffe')}}</text>
+                                    <text class="cr-grey-9 title">{{$t('cash-list.withdrawal_number')}}</text>
                                     <text class="fw-b warp">{{ item.cash_no }}</text>
                                 </view>
                                 <view class="margin-bottom-sm flex-row">
-                                    <text class="cr-grey-9 title title">{{$t('cash-list.cash-list.2w20g2')}}</text>
+                                    <text class="cr-grey-9 title title">{{$t('cash-list.platform')}}</text>
                                     <text class="fw-b warp">{{ item.platform_name }}</text>
                                 </view>
                                 <view class="margin-bottom-sm flex-row">
-                                    <text class="cr-grey-9 title title">{{$t('cash-list.cash-list.23ii8s')}}</text>
+                                    <text class="cr-grey-9 title title">{{$t('cash-list.recharge_network')}}</text>
                                     <text class="fw-b warp">{{ item.network_name }}</text>
                                 </view>
                                 <view class="margin-bottom-sm flex-row">
-                                    <text class="cr-grey-9 title title">{{$t('cash-list.cash-list.714g2h')}}</text>
+                                    <text class="cr-grey-9 title title">{{$t('cash-list.recharge_address')}}</text>
                                     <text class="fw-b warp">{{ item.address }}</text>
                                 </view>
                                 <view class="flex-row">
-                                    <text class="cr-grey-9 title">{{$t('cash-list.cash-list.1o8838')}}</text>
+                                    <text class="cr-grey-9 title">{{$t('cash-list.withdrawal_currency')}}</text>
                                     <text class="fw-b warp">{{ item.coin }}</text>
                                 </view>
                             </view>
@@ -61,7 +61,7 @@
             <!-- 账户 -->
             <component-popup :propShow="popup_accounts_status" propPosition="top" :propTop="popup_top_height + 'px'" @onclose="popup_accounts_close_event">
                 <view class="padding-vertical-lg">
-                    <view class="padding-horizontal-main text-size-xs">{{$t('cash-list.cash-list.s7l616')}}</view>
+                    <view class="padding-horizontal-main text-size-xs">{{$t('cash-list.account_type')}}</view>
                     <view class="popup_accounts_container padding-sm flex-row flex-wrap align-c tc text-size-md">
                         <view class="flex-width-half-half">
                             <view class="item margin-sm padding-vertical-sm" :class="accounts_list_index == null ? 'cr-main bg-main-light' : ''" :data-name="$t('common.all')" :data-value="null" :data-index="null" @tap="accounts_list_event">{{$t('common.all')}}</view>
@@ -71,7 +71,7 @@
                         </view>
                     </view>
                     <view class="tc padding-top-lg br-t" @tap="popup_accounts_close_event">
-                        <text class="padding-right-sm">{{ $t('nav-more.nav-more.h9g4b1') }}</text>
+                        <text class="padding-right-sm">{{ $t('common.click_collapse') }}</text>
                         <iconfont name="icon-arrow-top" color="#ccc"></iconfont>
                     </view>
                 </view>
@@ -79,7 +79,7 @@
             <!-- 类型 -->
             <component-popup :propShow="popup_recharge_status_status" propPosition="top" :propTop="popup_top_height + 'px'" @onclose="popup_recharge_status_close_event">
                 <view class="padding-vertical-lg">
-                    <view class="padding-horizontal-main text-size-xs">{{$t('cash-list.cash-list.t66tu3')}}</view>
+                    <view class="padding-horizontal-main text-size-xs">{{$t('cash-list.withdrawal_type')}}</view>
                     <view class="popup_accounts_container padding-sm flex-row flex-wrap align-c tc text-size-md">
                         <view class="flex-width-half-half">
                             <view class="item margin-sm padding-vertical-sm" :class="recharge_status_list_index == null ? 'cr-main bg-main-light' : ''" :data-name="$t('common.all')" :data-value="null" :data-index="null" @tap="recharge_status_list_event">{{$t('common.all')}}</view>
@@ -89,7 +89,7 @@
                         </view>
                     </view>
                     <view class="tc padding-top-lg br-t" @tap="popup_recharge_status_close_event">
-                        <text class="padding-right-sm">{{ $t('nav-more.nav-more.h9g4b1') }}</text>
+                        <text class="padding-right-sm">{{ $t('common.click_collapse') }}</text>
                         <iconfont name="icon-arrow-top" color="#ccc"></iconfont>
                     </view>
                 </view>
@@ -97,7 +97,7 @@
             <!-- 网络 -->
             <component-popup :propShow="popup_network_status" propPosition="top" :propTop="popup_top_height + 'px'" @onclose="popup_network_close_event">
                 <view class="padding-vertical-lg">
-                    <view class="padding-horizontal-main text-size-xs">{{$t('cash-list.cash-list.311tt2')}}</view>
+                    <view class="padding-horizontal-main text-size-xs">{{$t('cash-list.network_type')}}</view>
                     <view class="popup_accounts_container padding-sm flex-row flex-wrap align-c tc text-size-md">
                         <view class="flex-width-half-half">
                             <view class="item margin-sm padding-vertical-sm" :class="network_list_index == null ? 'cr-main bg-main-light' : ''" :data-name="$t('common.all')" :data-value="null" :data-index="null" @tap="network_list_event">{{$t('common.all')}}</view>
@@ -107,7 +107,7 @@
                         </view>
                     </view>
                     <view class="tc padding-top-lg br-t" @tap="popup_network_close_event">
-                        <text class="padding-right-sm">{{ $t('nav-more.nav-more.h9g4b1') }}</text>
+                        <text class="padding-right-sm">{{ $t('common.click_collapse') }}</text>
                         <iconfont name="icon-arrow-top" color="#ccc"></iconfont>
                     </view>
                 </view>
@@ -124,6 +124,7 @@
     import componentNoData from '@/components/no-data/no-data';
     import componentPopup from '@/components/popup/popup';
     import componentBottomLine from '@/components/bottom-line/bottom-line';
+    import pluginLocale from '../locale/index.js';
     var wallet_static_url = app.globalData.get_static_url('coin', true) + 'app/';
     // 状态栏高度
     var bar_height = parseInt(app.globalData.get_system_info('statusBarHeight', 0, true));
@@ -131,6 +132,7 @@
     bar_height = 0;
     // #endif
     export default {
+        mixins: [pluginLocale],
         data() {
             return {
                 theme_view: app.globalData.get_theme_value_view(),
@@ -451,7 +453,7 @@
                 // 是否再次确认
                 if (e.alert_status != 0 && e.alert_status != 1) {
                     app.globalData.alert({
-                        msg: this.$t('cash-list.cash-list.8hrc73'),
+                        msg: this.$t('cash-list.sure_delete_withdrawal_order'),
                         is_show_cancel: 1,
                         object: this,
                         params: { id: e.currentTarget.dataset.id },

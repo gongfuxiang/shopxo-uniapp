@@ -16,7 +16,7 @@
                             </view>
                         </view>
                         <view class="margin-top-main br-t">
-                            <textarea @input="form_content_event" :data-index="index" placeholder-class="cr-grey" class="cr-base" :placeholder="$t('user-order-comments.user-order-comments.r9r3h0')" maxlength="230"></textarea>
+                            <textarea @input="form_content_event" :data-index="index" placeholder-class="cr-grey" class="cr-base" :placeholder="$t('user-order-comments.does_baby_meet_expectations_let_talk')" maxlength="230"></textarea>
                             <view class="margin-top-sm">
                                 <component-upload :propData="form_images_list[index]" :propCallData="index" :propMaxNum="3" :propPathType="editor_path_type" @call-back="upload_image_event"></component-upload>
                             </view>
@@ -25,7 +25,7 @@
 
                     <view class="form-gorup border-radius-main spacing-mb">
                         <switch class="va-m" name="is_anonymous" @change="anonymous_event"></switch>
-                        <text class="cr-base va-m">{{$t('user-order-comments.user-order-comments.uboc44')}}</text>
+                        <text class="cr-base va-m">{{$t('user-order-comments.anonymous')}}</text>
                         <text class="fr cr-grey margin-top-sm">{{ anonymous_msg_list[anonymous_value] }}</text>
                     </view>
 
@@ -50,9 +50,11 @@
     import componentNoData from "@/components/no-data/no-data";
     import componentBottomLine from "@/components/bottom-line/bottom-line";
     import componentUpload from '@/components/upload/upload';
+    import pluginLocale from './locale/index.js';
 
     var common_static_url = app.globalData.get_static_url("common");
     export default {
+        mixins: [pluginLocale],
         data() {
             return {
                 theme_view: app.globalData.get_theme_value_view(),
@@ -62,9 +64,9 @@
                 params: null,
                 detail: null,
                 editor_path_type: "",
-                rating_msg: [this.$t('user-order-comments.user-order-comments.si255j'), this.$t('user-order-comments.user-order-comments.42b0x1'), this.$t('user-order-comments.user-order-comments.72mov3'), this.$t('user-order-comments.user-order-comments.16cmv6'), this.$t('user-order-comments.user-order-comments.e4i88f')],
+                rating_msg: [this.$t('user-order-comments.very_poor'), this.$t('user-order-comments.difference'), this.$t('user-order-comments.commonly'), this.$t('user-order-comments.good'), this.$t('user-order-comments.very_good')],
                 anonymous_value: 0,
-                anonymous_msg_list: [this.$t('user-order-comments.user-order-comments.021i2d'), this.$t('user-order-comments.user-order-comments.h2ci83')],
+                anonymous_msg_list: [this.$t('user-order-comments.comment_presented_anonymously'), this.$t('user-order-comments.comment_presented_form_nickname')],
                 form_rating_list: [],
                 form_images_list: [],
                 form_content_list: [],
@@ -221,28 +223,28 @@
                 // 评分校验
                 var count = this.form_rating_list.length;
                 if (count < length) {
-                    app.globalData.showToast(this.$t('user-order-comments.user-order-comments.34ne4c'));
+                    app.globalData.showToast(this.$t('user-order-comments.rate_first'));
                     return false;
                 }
                 var max = Math.max.apply(null, this.form_rating_list);
                 var min = Math.min.apply(null, this.form_rating_list);
 
                 if (min < 1 || max > 5) {
-                    app.globalData.showToast(this.$t('user-order-comments.user-order-comments.x6fwbf'));
+                    app.globalData.showToast(this.$t('user-order-comments.there_still_ratings_left'));
                     return false;
                 }
 
                 // 内容校验
                 var count = this.form_content_list.length;
                 if (count < length) {
-                    app.globalData.showToast(this.$t('user-order-comments.user-order-comments.8f303u'));
+                    app.globalData.showToast(this.$t('common.fill_comment_content'));
                     return false;
                 }
 
                 for (var i in this.form_content_list) {
                     var count = this.form_content_list[i].length;
                     if (count < 6 || count > 230) {
-                        app.globalData.showToast(this.$t('user-order-comments.user-order-comments.39y6ym'));
+                        app.globalData.showToast(this.$t('user-order-comments.comment_content_should_between_230_characters'));
                         return false;
                     }
                 }
@@ -251,7 +253,7 @@
                 if (this.form_images_list.length > 0) {
                     for (var i in this.form_images_list) {
                         if (this.form_images_list[i].length > 3) {
-                            app.globalData.showToast(this.$t('user-order-comments.user-order-comments.488j15'));
+                            app.globalData.showToast(this.$t('user-order-comments.each_comment_image_cannot_exceed_images'));
                             return false;
                         }
                     }

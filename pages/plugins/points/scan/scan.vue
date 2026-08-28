@@ -41,7 +41,7 @@
             <!-- 未登录 -->
             <view v-if="user == null" class="pf left-0 bottom-xxxxl wh-auto tc padding-horizontal-main bs-bb">
                 <view class="bottom-line-exclude">
-                    <button type="default" class="bg-main br-main cr-white text-size-sm round" @tap="login_event">{{$t('pages.login')}}</button>
+                    <button type="default" class="bg-main br-main cr-white text-size-sm round" @tap="login_event">{{$t('common.login')}}</button>
                 </view>
             </view>
         </view>
@@ -59,8 +59,10 @@
     import componentCommon from '@/components/common/common';
     import componentNoData from '@/components/no-data/no-data';
     import componentBottomLine from '@/components/bottom-line/bottom-line';
+    import pluginLocale from '../locale/index.js';
 
     export default {
+        mixins: [pluginLocale],
         data() {
             return {
                 theme_view: app.globalData.get_theme_value_view(),

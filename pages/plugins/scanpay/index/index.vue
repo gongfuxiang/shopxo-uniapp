@@ -13,7 +13,7 @@
                 </block>
                 <view class="bg-white border-radius-main padding-main spacing-mb">
                     <view class="flex-row jc-sb align-c">
-                        <view class="text-size cr-grey-9 title-padding">{{$t('promotion-user.promotion-user.32bf15')}}</view>
+                        <view class="text-size cr-grey-9 title-padding">{{$t('common.consumption_amount')}}</view>
                         <view class="flex-1 flex-width tr">
                             <view class="pay-price" :class="form.price ? '' : 'cr-grey-9'">
                                 <text class="unit">{{ currency_symbol }}</text>
@@ -23,7 +23,7 @@
                     </view>
                 </view>
                 <view class="bg-white border-radius-main padding-main spacing-mb">
-                    <view class="text-size fw-b spacing-mb">{{$t('user-order-detail.user-order-detail.0e1sfs')}}</view>
+                    <view class="text-size fw-b spacing-mb">{{$t('common.payment_method')}}</view>
                     <view class="flex-col" :class="is_more ? 'pay-scroll' : ''">
                         <view v-for="(item, index) in is_more ? data.payment_list : data.payment_list.slice(0, 2)" :key="index" class="flex-row jc-sb align-c padding-vertical-sm" @tap="change_event(index, item.id)">
                             <div class="flex-1 flex-width flex-row align-c">
@@ -43,12 +43,12 @@
             <view class="bottom-fixed sub-key" :style="bottom_fixed_style">
                 <view class="tc text-size-xs spacing-mb">
                     <block v-if="!form.note">
-                        <view class="cr-blue" @tap="add_desc_event">{{$t('index.index.1e582h')}}</view>
+                        <view class="cr-blue" @tap="add_desc_event">{{$t('index.add_notes')}}</view>
                     </block>
                     <block v-else>
                         <view class="flex-row align-c jc-c padding-horizontal-main">
                             <text class="cr-grey-9 single-text tc">{{ form.note }}</text>
-                            <view class="cr-blue margin-left-sm edit-width" @tap="add_desc_event">{{$t('user.user.567lwz')}}</view>
+                            <view class="cr-blue margin-left-sm edit-width" @tap="add_desc_event">{{$t('common.modify')}}</view>
                         </view>
                     </block>
                     <!-- 输入框示例 -->
@@ -133,7 +133,9 @@
     import componentCommon from '@/components/common/common';
     import componentNoData from '@/components/no-data/no-data';
     import componentPayment from '@/components/payment/payment';
+    import pluginLocale from '../locale/index.js';
     export default {
+        mixins: [pluginLocale],
         data() {
             return {
                 theme_view: app.globalData.get_theme_value_view(),
@@ -362,7 +364,7 @@
                     ...this.params,
                     ...this.form,
                 };
-                var validation = [{ fields: 'price', msg: this.$t('index.index.t1o84g') }];
+                var validation = [{ fields: 'price', msg: this.$t('index.enter_consumption_amount') }];
                 if (app.globalData.fields_check(new_data, validation)) {
                     // 加载loding
                     uni.showLoading({

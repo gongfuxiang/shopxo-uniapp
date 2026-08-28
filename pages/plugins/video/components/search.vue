@@ -10,10 +10,10 @@
                 <!-- #endif -->
             </view>
             <!-- #ifndef APP-NVUE-->
-            <input class="flex-1" type="text" v-model="search_keywords" :adjust-position="false" placeholder-style="font-size:28rpx" :placeholder="$t('search.search.ic9b89')" @input="handle_search" @confirm="perform_search" />
+            <input class="flex-1" type="text" v-model="search_keywords" :adjust-position="false" placeholder-style="font-size:28rpx" :placeholder="$t('common.enter_search_keywords')" @input="handle_search" @confirm="perform_search" />
             <!-- #endif-->
             <!-- #ifdef APP-NVUE-->
-            <input class="flex-1" type="text" v-model="search_keywords" :adjust-position="false" placeholder-style="font-size:14px" :placeholder="$t('search.search.ic9b89')" @input="handle_search" @confirm="perform_search" />
+            <input class="flex-1" type="text" v-model="search_keywords" :adjust-position="false" placeholder-style="font-size:14px" :placeholder="$t('common.enter_search_keywords')" @input="handle_search" @confirm="perform_search" />
             <!-- #endif-->
             <view class="search-line"></view>
             <text class="search-button" @tap="perform_search">{{$t('common.search')}}</text>

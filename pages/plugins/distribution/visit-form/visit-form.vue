@@ -8,7 +8,7 @@
                             @onsearch="search_submit_event"
                             :propIsOnEvent="true"
                             :propIsRequired="false"
-                            :propPlaceholder="$t('user.user.nk3cpq')"
+                            :propPlaceholder="$t('user.enter_user_id_first_name_nickname')"
                             propSize="md"
                             :propIsBtn="true"
                             :propDefaultValue="search_input_keywords_value"
@@ -25,17 +25,17 @@
                                 <text class="va-m margin-left-sm">{{custom_data.data.user_name_view}}</text>
                                 <text class="cr-grey fr">{{custom_data.data.add_time_text || ''}}</text>
                             </block>
-                            <view v-else class="cr-red">{{custom_data.error_msg || $t('user.user.iynkpl')}}</view>
+                            <view v-else class="cr-red">{{custom_data.error_msg || $t('user.enter_user_info_search_first')}}</view>
                         </view>
                     </view>
 
                     <view class="form-gorup bg-white border-radius-main margin-top-main">
-                        <view class="form-gorup-title">{{$t('visit-form.visit-form.0su017')}}<text class="form-group-tips-must">*</text></view>
-                        <textarea class="cr-base" name="content" maxlength="230" placeholder-class="cr-grey-9" :placeholder="$t('visit-form.visit-form.e9r65a')" :value="data.content || ''"></textarea>
+                        <view class="form-gorup-title">{{$t('visit-form.visit_content')}}<text class="form-group-tips-must">*</text></view>
+                        <textarea class="cr-base" name="content" maxlength="230" placeholder-class="cr-grey-9" :placeholder="$t('visit-form.visit_content_up_230_characters_long')" :value="data.content || ''"></textarea>
                     </view>
 
                     <view class="form-gorup form-container-upload oh border-radius-main margin-top-main">
-                        <view class="form-gorup-title">{{$t('visit-form.visit-form.6l81lz')}}<text class="form-group-tips-must">*</text><text class="form-group-tips">{{$t('order.order.o11d44')}}{{form_images_max_count}}{{$t('buy.buy.5iuqow')}}</text></view>
+                        <view class="form-gorup-title">{{$t('visit-form.visiting_photos')}}<text class="form-group-tips-must">*</text><text class="form-group-tips">{{$t('common.up_upload')}}{{form_images_max_count}}{{$t('common.text')}}</text></view>
                         <view class="margin-top-sm">
                             <component-upload :propData="form_images_list" :propMaxNum="form_images_max_count" :propPathType="editor_path_type" @call-back="upload_image_event"></component-upload>
                         </view>
@@ -64,9 +64,11 @@
     import componentNoData from "@/components/no-data/no-data";
     import componentSearch from '@/components/search/search';
     import componentUpload from '@/components/upload/upload';
+    import pluginLocale from '../locale/index.js';
 
     var common_static_url = app.globalData.get_static_url("common");
     export default {
+        mixins: [pluginLocale],
         data() {
             return {
                 theme_view: app.globalData.get_theme_value_view(),
@@ -193,9 +195,9 @@
 
                 // 数据校验
                 var validation = [
-                    { fields: 'custom_user_id', msg: this.$t('visit-form.visit-form.6f63it') },
-                    { fields: 'content', msg: this.$t('visit-form.visit-form.5k455y') },
-                    { fields: 'images', msg: this.$t('visit-form.visit-form.56vk4m') },
+                    { fields: 'custom_user_id', msg: this.$t('visit-form.select_customer') },
+                    { fields: 'content', msg: this.$t('visit-form.fill_visit_details') },
+                    { fields: 'images', msg: this.$t('visit-form.upload_visit_photos') },
                 ];
 
                 // 验证提交表单
@@ -235,7 +237,7 @@
                             this.setData({
                                 form_submit_disabled_status: false,
                             });
-                            app.globalData.showToast(this.$t('extraction-apply.extraction-apply.h8f437'));
+                            app.globalData.showToast(this.$t('extraction-apply.data_acquisition_failed'));
                         },
                     });
                 }
@@ -272,7 +274,7 @@
             // 搜索用户
             search_user() {
                 uni.showLoading({
-                    title: this.$t('recommend-form.recommend-form.e5k407'),
+                    title: this.$t('recommend-form.searching'),
                     mask: true
                 });
                 uni.request({

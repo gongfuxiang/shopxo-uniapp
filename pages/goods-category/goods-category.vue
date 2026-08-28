@@ -13,10 +13,10 @@
                                 <image :src="theme_static_url + 'top-bg.png'" mode="widthFix" class="wh-auto"></image>
                             </view>
                             <block v-if="goods_category_is_search_alone == 1">
-                                <component-search :propPlaceholder="$t('customview.customview.726k7y')"></component-search>
+                                <component-search :propPlaceholder="$t('common.enter_product_name_search')"></component-search>
                             </block>
                             <block v-else>
-                                <component-search @oninput="search_input_event" :propIsOnInputEvent="true" @onsearch="search_button_event" :propIsOnEvent="true" :propIsRequired="false" :propPlaceholder="$t('customview.customview.726k7y')"></component-search>
+                                <component-search @oninput="search_input_event" :propIsOnInputEvent="true" @onsearch="search_button_event" :propIsOnEvent="true" :propIsRequired="false" :propPlaceholder="$t('common.enter_product_name_search')"></component-search>
                             </block>
                         </view>
                     </block>
@@ -250,13 +250,13 @@
                                                     </block>
                                                     <block v-else>
                                                         <!-- 提示信息 -->
-                                                        <component-no-data propStatus="0" :propMsg="$t('goods-category.goods-category.7e4m68')"></component-no-data>
+                                                        <component-no-data propStatus="0" :propMsg="$t('goods-category.subcategory_data')"></component-no-data>
                                                     </block>
                                                 </view>
                                             </view>
                                             <view v-else>
                                                 <!-- 提示信息 -->
-                                                <component-no-data propStatus="0" :propMsg="$t('goods-category.goods-category.7e4m68')"></component-no-data>
+                                                <component-no-data propStatus="0" :propMsg="$t('goods-category.subcategory_data')"></component-no-data>
                                             </view>
                                         </scroll-view>
                                     </view>
@@ -277,7 +277,7 @@
                                 <view class="cart-content bg-white border-radius-main pa oh" :style="cart_content_style">
                                     <block v-if="(cart || null) != null && (cart.data || null) != null && cart.data.length > 0">
                                         <view class="oh br-b padding-vertical-main padding-horizontal-main">
-                                            <text class="va-m text-size-xs cr-base">{{ $t('goods-category.goods-category.ico62g') }}</text>
+                                            <text class="va-m text-size-xs cr-base">{{ $t('common.selected_product') }}</text>
                                             <view class="fr cp" @tap="cart_all_delete_event">
                                                 <view class="dis-inline-block va-m pr top-xs">
                                                     <uni-icons type="trash" size="16" color="#f00"></uni-icons>
@@ -324,7 +324,7 @@
                                         </scroll-view>
                                     </block>
                                     <block v-else>
-                                        <component-no-data propStatus="0" :propMsg="$t('goods-category.goods-category.5pj8ip')"></component-no-data>
+                                        <component-no-data propStatus="0" :propMsg="$t('goods-category.select_product_first')"></component-no-data>
                                     </block>
                                 </view>
                             </block>
@@ -548,31 +548,31 @@
             set_resources_data() {
                 var search_nav_sort_list = [
                     {
-                        name: this.$t('goods-category.goods-category.x69aow'),
+                        name: this.$t('common.goods_category_all'),
                         field: 'default',
                         sort: 'asc',
                         icon: null,
                     },
                     {
-                        name: this.$t('goods-category.goods-category.at5p35'),
+                        name: this.$t('common.sales_volume'),
                         field: 'sales_count',
                         sort: 'asc',
                         icon: 'default',
                     },
                     {
-                        name: this.$t('goods-category.goods-category.283ot0'),
+                        name: this.$t('common.heat'),
                         field: 'access_count',
                         sort: 'asc',
                         icon: 'default',
                     },
                     {
-                        name: this.$t('goods-category.goods-category.g2u3lf'),
+                        name: this.$t('common.price'),
                         field: 'min_price',
                         sort: 'asc',
                         icon: 'default',
                     },
                     {
-                        name: this.$t('goods-category.goods-category.5p4ksj'),
+                        name: this.$t('common.latest'),
                         field: 'id',
                         sort: 'asc',
                         icon: 'default',
@@ -995,7 +995,7 @@
                             this.setData({
                                 cart_status: true,
                             });
-                            app.globalData.showToast(this.$t('goods-category.goods-category.gy7y0w'));
+                            app.globalData.showToast(this.$t('common.products_different_specifications_need_reduced_s'));
                         } else {
                             if ((this.$refs.goods_buy || null) != null) {
                                 this.$refs.goods_buy.init(temp_goods, {
@@ -1052,7 +1052,7 @@
                 // 操作类型
                 if (res == 0) {
                     if (cart_item == null) {
-                        app.globalData.showToast(this.$t('goods-category.goods-category.x46kbv'));
+                        app.globalData.showToast(this.$t('common.cart_id_incorrect'));
                         return false;
                     }
                     this.cart_delete(cart_item.id);
@@ -1156,13 +1156,13 @@
                 var max = spec_buy_max_number > 0 ? spec_buy_max_number : buy_max_number;
                 if (max > 0 && buy_number > max) {
                     buy_number = max;
-                    app.globalData.showToast(this.$t('goods-category.goods-category.z1eh3v') + max + inventory_unit);
+                    app.globalData.showToast(this.$t('common.purchase_limit') + max + inventory_unit);
                     return false;
                 }
 
                 // 数量是否改变
                 if (goods[buy_number_field] == buy_number) {
-                    app.globalData.showToast(this.$t('goods-category.goods-category.1ox23z'));
+                    app.globalData.showToast(this.$t('common.quantity_unchanged'));
                     return false;
                 }
 
@@ -1317,7 +1317,7 @@
             cart_all_delete_event(e) {
                 uni.showModal({
                     title: this.$t('common.warm_tips'),
-                    content: this.$t('goods-category.goods-category.o6i1w2'),
+                    content: this.$t('common.after_picking_so_long_really_want'),
                     confirmText: this.$t('common.confirm'),
                     cancelText: this.$t('common.not_yet'),
                     success: (result) => {
@@ -1367,7 +1367,7 @@
                 // 结算参数
                 var buy_data = this.buy_cart_data_params();
                 if (buy_data === false) {
-                    app.globalData.showToast(this.$t('goods-category.goods-category.5pj8ip'));
+                    app.globalData.showToast(this.$t('goods-category.select_product_first'));
                     return false;
                 }
 

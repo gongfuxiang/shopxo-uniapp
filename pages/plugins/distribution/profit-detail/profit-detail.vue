@@ -29,8 +29,10 @@
     import componentCommon from '@/components/common/common';
     import componentNoData from "@/components/no-data/no-data";
     import componentBottomLine from "@/components/bottom-line/bottom-line";
+    import pluginLocale from '../locale/index.js';
 
     export default {
+        mixins: [pluginLocale],
         data() {
             return {
                 theme_view: app.globalData.get_theme_value_view(),
@@ -101,14 +103,14 @@
                             this.setData({
                                 detail: detail,
                                 detail_list: [
-                                    { name: this.$t('order-detail.order-detail.x3ge6c'), value: detail.total_price || "" },
-                                    { name: this.$t('order-detail.order-detail.v52n5r'), value: detail.refund_price || "" },
-                                    { name: this.$t('profit.profit.utg512'), value: detail.profit_price || "" },
-                                    { name: this.$t('profit.profit.6a7t71'), value: detail.level_name || "" },
-                                    { name: this.$t('profit-detail.profit-detail.kn8yye'), value: detail.status_name || "" },
-                                    { name: this.$t('user-order-detail.user-order-detail.yxwu8n'), value: detail.order_status_name || "" },
-                                    { name: this.$t('profit-detail.profit-detail.x28rw5'), value: detail.order_pay_status_name || "" },
-                                    { name: this.$t('order.order.330m76'), value: detail.order_client_type_name || "" },
+                                    { name: this.$t('common.order_amount'), value: detail.total_price || "" },
+                                    { name: this.$t('common.refund_amount'), value: detail.refund_price || "" },
+                                    { name: this.$t('profit.revenue_amount'), value: detail.profit_price || "" },
+                                    { name: this.$t('common.current_level'), value: detail.level_name || "" },
+                                    { name: this.$t('common.settlement_status'), value: detail.status_name || "" },
+                                    { name: this.$t('common.order_status'), value: detail.order_status_name || "" },
+                                    { name: this.$t('common.order_payment_status'), value: detail.order_pay_status_name || "" },
+                                    { name: this.$t('common.source_terminal'), value: detail.order_client_type_name || "" },
                                     { name: this.$t('common.add_time'), value: detail.add_time || "" },
                                     { name: this.$t('common.upd_time'), value: detail.upd_time || "" },
                                 ],

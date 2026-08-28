@@ -30,7 +30,9 @@
     import componentCommon from '@/components/common/common';
     import componentNoData from "@/components/no-data/no-data";
     import componentBottomLine from "@/components/bottom-line/bottom-line";
+    import pluginLocale from '../locale/index.js';
     export default {
+        mixins: [pluginLocale],
         data() {
             return {
                 theme_view: app.globalData.get_theme_value_view(),
@@ -139,7 +141,7 @@
                 var temp_list = this.data_list;
                 var data = temp_list[index] || null;
                 if (data == null) {
-                    app.globalData.showToast(this.$t('extraction-switch.extraction-switch.613b58'));
+                    app.globalData.showToast(this.$t('common.extraction_switch_data_error'));
                     return false;
                 }
                 

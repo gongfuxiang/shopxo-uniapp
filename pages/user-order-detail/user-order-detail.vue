@@ -55,7 +55,7 @@
 
                 <!-- 取货信息 -->
                 <view v-if="(detail.extraction_data || null) != null" class="extraction-take padding-main border-radius-main bg-white spacing-mb">
-                    <view class="br-b padding-bottom-main fw-b text-size">{{$t('user-order-detail.user-order-detail.take_info_title')}}</view>
+                    <view class="br-b padding-bottom-main fw-b text-size">{{$t('common.take_info_title')}}</view>
                     <view class="padding-top-main">
                         <view v-if="(detail.extraction_data.items || null) != null && detail.extraction_data.items.length > 0" class="extraction-take-switch">
                             <view v-if="detail.extraction_data.items.length > 1" class="extraction-take-arrow extraction-take-prev" @tap="extraction_take_prev_event">
@@ -73,10 +73,10 @@
                                 <view class="extraction-take-code tc">
                                     <image v-if="(detail.extraction_data.items[extraction_take_index].images || null) != null" class="qrcode br radius" :src="detail.extraction_data.items[extraction_take_index].images" mode="aspectFill"></image>
                                     <view class="extraction-take-meta margin-top-sm">
-                                        <text class="extraction-take-meta-label cr-grey">{{$t('user-order-detail.user-order-detail.take_code_label')}}</text>
+                                        <text class="extraction-take-meta-label cr-grey">{{$t('common.take_code_label')}}</text>
                                         <view class="extraction-take-meta-value">
                                             <block v-if="(detail.extraction_data.items[extraction_take_index].code || null) == null || detail.extraction_data.items[extraction_take_index].code == ''">
-                                                <text class="cr-red">{{$t('user-order-detail.user-order-detail.hpq62x')}}</text>
+                                                <text class="cr-red">{{$t('common.pickup_code_does_exist_contact_administrator')}}</text>
                                             </block>
                                             <block v-else>
                                                 <view class="dis-inline-block" :data-value="detail.extraction_data.items[extraction_take_index].code" @tap="text_copy_event">
@@ -87,7 +87,7 @@
                                         </view>
                                     </view>
                                     <view class="extraction-take-meta margin-top-xs">
-                                        <text class="extraction-take-meta-label cr-grey">{{$t('user-order-detail.user-order-detail.take_verify_label')}}</text>
+                                        <text class="extraction-take-meta-label cr-grey">{{$t('common.take_verify_label')}}</text>
                                         <view class="extraction-take-meta-value">
                                             <text class="cr-green">{{ detail.extraction_data.items[extraction_take_index].verify_number || 0 }}</text>
                                             <text class="cr-grey">/</text>
@@ -103,7 +103,7 @@
                         <view v-else class="extraction-take-code tc">
                             <image v-if="(detail.extraction_data.images || null) != null" class="qrcode br radius" :src="detail.extraction_data.images" mode="aspectFill"></image>
                             <view class="margin-top-sm" :data-value="detail.extraction_data.code" @tap="text_copy_event">
-                                <text class="fw-b cr-blue text-size-xl va-m">{{ detail.extraction_data.code || $t('user-order-detail.user-order-detail.hpq62x') }}</text>
+                                <text class="fw-b cr-blue text-size-xl va-m">{{ detail.extraction_data.code || $t('common.pickup_code_does_exist_contact_administrator') }}</text>
                                 <text v-if="(detail.extraction_data.code || null) != null" class="bg-white br-green cr-green round padding-horizontal-sm text-size-xs va-m margin-left">{{$t('common.copy')}}</text>
                             </view>
                         </view>
@@ -121,7 +121,7 @@
                         <image class="icon fl" :src="common_static_url + 'map-icon.png'" mode="widthFix"></image>
                         <view class="text fr">
                             <text>{{ detail.address_data.province_name }}{{ detail.address_data.city_name }}{{ detail.address_data.county_name }}{{ detail.address_data.address }}</text>
-                            <text v-if="(detail.address_data.lng || 0) != 0 && (detail.address_data.lat || 0) != 0" class="address-map-submit cr-base br round bg-white margin-left-sm text-size-xs" @tap="address_map_event">{{$t('user-order-detail.user-order-detail.7lp6gw')}}</text>
+                            <text v-if="(detail.address_data.lng || 0) != 0 && (detail.address_data.lat || 0) != 0" class="address-map-submit cr-base br round bg-white margin-left-sm text-size-xs" @tap="address_map_event">{{$t('common.view_location')}}</text>
                         </view>
                     </view>
                     <view v-if="(detail.address_data.extraction_contact_name || null) != null || (detail.address_data.extraction_contact_tel || null) != null || (detail.address_data.appoint_time || null) != null" class="padding-vertical-main br-t-dashed">
@@ -136,7 +136,7 @@
 
                 <!-- 商品列表 -->
                 <view v-if="(detail.items || null) != null && detail.items.length > 0" class="goods bg-white padding-main border-radius-main spacing-mb">
-                    <view class="br-b padding-bottom-main fw-b text-size">{{$t('user-order-detail.user-order-detail.7f8p26')}}</view>
+                    <view class="br-b padding-bottom-main fw-b text-size">{{$t('common.product_information')}}</view>
                     <view v-for="(item, index) in detail.items" :key="index" class="goods-item br-b-dashed oh padding-vertical-main">
                         <view :data-value="item.goods_url" @tap="url_event" class="cp">
                             <image class="goods-image fl radius" :src="item.images" mode="aspectFill"></image>
@@ -155,7 +155,7 @@
                                 <view class="pa right-0 bottom-0 z-i">
                                     <text v-if="detail.is_can_launch_aftersale == 1 && (item.orderaftersale_btn_text || null) != null" class="cr-blue bg-white" @tap.stop="orderaftersale_event" :data-oid="detail.id" :data-did="item.id">{{ item.orderaftersale_btn_text }}</text>
                                     <view v-if="common_is_order_show_goods_snapshot == 1" class="dis-inline-block margin-left" @tap.stop="popup_order_item_goods_info_event" :data-index="index">
-                                        <text class="margin-right-xs">{{$t('user-order-detail.user-order-detail.7f8p26')}}</text>
+                                        <text class="margin-right-xs">{{$t('common.product_information')}}</text>
                                         <iconfont name="icon-arrow-down" color="#999" propClass="va-m"></iconfont>
                                     </view>
                                 </view>
@@ -163,7 +163,7 @@
                         </view>
                     </view>
                     <view class="padding-top-main tr cr-base text-size">
-                        <text>{{$t('common.total')}}<text class="fw-b">{{ detail.buy_number_count }}</text>{{$t('user-order-detail.user-order-detail.41ty94')}}<text class="sales-price margin-right-xs">{{ detail.currency_data.currency_symbol }}{{ detail.total_price }}</text></text>
+                        <text>{{$t('common.total')}}<text class="fw-b">{{ detail.buy_number_count }}</text>{{$t('common.total_pieces')}}<text class="sales-price margin-right-xs">{{ detail.currency_data.currency_symbol }}{{ detail.total_price }}</text></text>
                     </view>
                 </view>
 
@@ -195,13 +195,13 @@
 
                 <!-- 服务信息 -->
                 <view v-if="(detail.service_data || null) != null" class="express-data panel-item padding-main border-radius-main bg-white spacing-mb">
-                    <view class="br-b padding-bottom-main fw-b text-size">{{$t('user-order-detail.user-order-detail.567ygf')}}</view>
+                    <view class="br-b padding-bottom-main fw-b text-size">{{$t('user-order-detail.service_information')}}</view>
                     <view class="panel-content oh">
                         <uni-table :emptyText="$t('common.no_data')">
                             <uni-tr>
-                                <uni-th width="100">{{$t('user-order-detail.user-order-detail.gsfw4d')}}</uni-th>
-                                <uni-th width="180">{{$t('user-order-detail.user-order-detail.6ygfew')}}</uni-th>
-                                <uni-th width="120">{{$t('user-order-detail.user-order-detail.67ujfr')}}</uni-th>
+                                <uni-th width="100">{{$t('user-order-detail.service_name')}}</uni-th>
+                                <uni-th width="180">{{$t('user-order-detail.service_mobile')}}</uni-th>
+                                <uni-th width="120">{{$t('user-order-detail.service_duration')}}</uni-th>
                                 <uni-th width="350">{{$t('common.service_time')}}</uni-th>
                             </uni-tr>
                             <block v-for="(item, index) in detail.service_data" :key="index">
@@ -229,7 +229,7 @@
 
                 <!-- 虚拟销售数据 -->
                 <view v-if="(site_fictitious || null) != null" class="site-fictitious panel-item padding-horizontal-main padding-top-main border-radius-main bg-white spacing-mb">
-                    <view class="br-b padding-bottom-main fw-b text-size">{{ site_fictitious.title || $t('user-order-detail.user-order-detail.y9woor') }}</view>
+                    <view class="br-b padding-bottom-main fw-b text-size">{{ site_fictitious.title || $t('user-order-detail.key_information') }}</view>
                     <view class="panel-content oh padding-top-main">
                         <view v-if="(site_fictitious.tips || null) != null" class="tips-value radius padding-main margin-bottom-main">
                             <mp-html :content="site_fictitious.tips" />
@@ -239,7 +239,7 @@
                             <view class="right-value fr">
                                 <view v-if="(item.spec_text || null) != null" class="text-base fw-b margin-bottom-sm text-size-xs">{{item.spec_text}}</view>
                                 <mp-html v-if="(item.fictitious_goods_value || null) != null" :content="item.fictitious_goods_value" />
-                                <text v-else class="cr-grey text-size-xs">{{$t('user-order-detail.user-order-detail.7xtnjt')}}</text>
+                                <text v-else class="cr-grey text-size-xs">{{$t('common.unconfigured_data')}}</text>
                             </view>
                         </view>
                     </view>
@@ -247,7 +247,7 @@
 
                 <!-- 订单基础数据 -->
                 <view v-if="detail_list.length > 0" class="panel-item padding-main border-radius-main bg-white spacing-mb">
-                    <view class="br-b padding-bottom-main fw-b text-size">{{$t('user-order-detail.user-order-detail.0f26j2')}}</view>
+                    <view class="br-b padding-bottom-main fw-b text-size">{{$t('common.order_information')}}</view>
                     <view class="panel-content oh">
                         <uni-table :emptyText="$t('common.no_data')">
                             <block v-for="(item, index) in detail_list" :key="index">
@@ -268,12 +268,12 @@
 
                 <!-- 快递信息 -->
                 <view v-if="(detail.express_data || null) != null && detail.express_data.length > 0" class="express-data panel-item padding-main border-radius-main bg-white spacing-mb">
-                    <view class="br-b padding-bottom-main fw-b text-size">{{$t('user-order-detail.user-order-detail.0876xf')}}</view>
+                    <view class="br-b padding-bottom-main fw-b text-size">{{$t('common.express_delivery_info')}}</view>
                     <view class="panel-content oh">
                         <uni-table :emptyText="$t('common.no_data')">
                             <uni-tr>
-                                <uni-th width="110">{{$t('user-order-detail.user-order-detail.12d445')}}</uni-th>
-                                <uni-th width="260">{{$t('user-order-detail.user-order-detail.2byl8l')}}</uni-th>
+                                <uni-th width="110">{{$t('common.express_delivery_company')}}</uni-th>
+                                <uni-th width="260">{{$t('common.express_tracking_number')}}</uni-th>
                                 <uni-th width="300">{{$t('common.note')}}</uni-th>
                             </uni-tr>
                             <block v-for="(item, index) in detail.express_data" :key="index">
@@ -298,7 +298,7 @@
                 
                 <!-- 溯源数据 -->
                 <view v-if="(detail.trace_source_data || null) != null && (detail.items || null) != null && detail.items.length > 0" class="express-data panel-item padding-main border-radius-main bg-white spacing-mb">
-                    <view class="br-b padding-bottom-main fw-b text-size">{{$t('user-order-detail.user-order-detail.yhjffg')}}</view>
+                    <view class="br-b padding-bottom-main fw-b text-size">{{$t('user-order-detail.traceability_info')}}</view>
                     <view class="panel-content oh">
                         <block v-for="(item, index) in detail.items" :key="index">
                             <view :class="index > 0 ? 'margin-top-xxxxl' : 'margin-top-sm'" :data-value="item.goods_url" @tap="url_event">
@@ -314,9 +314,9 @@
                             <uni-table :emptyText="$t('common.no_data')">
                                 <uni-tr>
                                     <uni-th width="60">{{$t('common.num')}}</uni-th>
-                                    <uni-th width="200">{{$t('user-order-detail.user-order-detail.3erwer')}}</uni-th>
-                                    <uni-th width="200">{{$t('user-order-detail.user-order-detail.dyt44f')}}</uni-th>
-                                    <uni-th width="120">{{$t('user-order-detail.user-order-detail.sdf432')}}</uni-th>
+                                    <uni-th width="200">{{$t('user-order-detail.traceability_code')}}</uni-th>
+                                    <uni-th width="200">{{$t('user-order-detail.batch_number')}}</uni-th>
+                                    <uni-th width="120">{{$t('user-order-detail.batch_expiry_date')}}</uni-th>
                                 </uni-tr>
                                 <block v-for="(item2, index2) in item.buy_number" :key="index2">
                                     <uni-tr v-if="(detail.trace_source_data[item['id']] || null) != null && (detail.trace_source_data[item['id']][index2+1] || null) != null">
@@ -346,7 +346,7 @@
 
                 <!-- 扩展数据 -->
                 <view v-if="extension_data.length > 0" class="panel-item padding-main border-radius-main bg-white spacing-mb">
-                    <view class="br-b padding-bottom-main fw-b text-size">{{$t('user-order-detail.user-order-detail.ct34n5')}}</view>
+                    <view class="br-b padding-bottom-main fw-b text-size">{{$t('user-order-detail.extended_data')}}</view>
                     <view class="panel-content oh extension-list">
                         <uni-table :emptyText="$t('common.no_data')">
                             <block v-for="(item, index) in extension_data" :key="index">
@@ -509,8 +509,10 @@
     import componentHospitalOrderDetail from '@/pages/plugins/hospital/components/order-detail/order-detail';
     import componentOrderOperateMore from '@/pages/user-order/components/order-operate-more/order-operate-more';
     import componentFriendpayOrderPayPopup from '@/pages/plugins/friendpay/components/order-pay-popup/order-pay-popup';
+    import pluginLocale from './locale/index.js';
     var common_static_url = app.globalData.get_static_url('common');
     export default {
+        mixins: [pluginLocale],
         data() {
             return {
                 theme_view: app.globalData.get_theme_value_view(),
@@ -636,25 +638,25 @@
                                 detail: data.data,
                                 extraction_take_index: 0,
                                 detail_list: [
-                                    { name: this.$t('user-order-detail.user-order-detail.n18sd2'), value: data.data.order_no || '', is_copy: 1 },
-                                    { name: this.$t('user-order-detail.user-order-detail.346376'), value: data.data.warehouse_name || '' },
-                                    { name: this.$t('user-order-detail.user-order-detail.io6p5k'), value: data.data.order_model_name || '' },
-                                    { name: this.$t('user-order-detail.user-order-detail.yxwu8n'), value: data.data.status_name || '' },
-                                    { name: this.$t('user-order-detail.user-order-detail.23qj7m'), value: data.data.pay_status_name || '' },
-                                    { name: this.$t('user-order-detail.user-order-detail.vg4jb1'), value: data.data.price || '' },
-                                    { name: this.$t('user-order-detail.user-order-detail.2y7l13'), value: data.data.total_price || '' },
-                                    { name: this.$t('user-order-detail.user-order-detail.6ub2j0'), value: data.data.preferential_price || '' },
-                                    { name: this.$t('user-order-detail.user-order-detail.8b18q8'), value: data.data.increase_price || '' },
-                                    { name: this.$t('user-order-detail.user-order-detail.516tlr'), value: data.data.pay_price || '' },
-                                    { name: this.$t('user-order-detail.user-order-detail.0e1sfs'), value: (data.data.payment_name || '') + ((data.data.is_under_line_text || null) == null || (data.data.payment_name || null) == null ? '' : '（' + data.data.is_under_line_text + '）') },
-                                    { name: this.$t('user-order-detail.user-order-detail.2b5fc8'), value: data.data.user_note || '' },
-                                    { name: this.$t('user-order-detail.user-order-detail.h2c78h'), value: data.data.add_time || '' },
-                                    { name: this.$t('user-order-detail.user-order-detail.9vivhl'), value: data.data.confirm_time || '' },
-                                    { name: this.$t('user-order-detail.user-order-detail.wn83rn'), value: data.data.pay_time || '' },
-                                    { name: this.$t('user-order-detail.user-order-detail.1674dc'), value: data.data.delivery_time || '' },
-                                    { name: this.$t('user-order-detail.user-order-detail.0i938r'), value: data.data.collect_time || '' },
-                                    { name: this.$t('user-order-detail.user-order-detail.1jpv4n'), value: data.data.cancel_time || '' },
-                                    { name: this.$t('user-order-detail.user-order-detail.8o2of3'), value: data.data.close_time || '' },
+                                    { name: this.$t('common.user_order_detail_order_number'), value: data.data.order_no || '', is_copy: 1 },
+                                    { name: this.$t('user-order-detail.shipping_services'), value: data.data.warehouse_name || '' },
+                                    { name: this.$t('user-order-detail.order_mode'), value: data.data.order_model_name || '' },
+                                    { name: this.$t('common.order_status'), value: data.data.status_name || '' },
+                                    { name: this.$t('common.payment_status'), value: data.data.pay_status_name || '' },
+                                    { name: this.$t('user-order-detail.order_unit_price'), value: data.data.price || '' },
+                                    { name: this.$t('common.total_order_price'), value: data.data.total_price || '' },
+                                    { name: this.$t('user-order-detail.discount_amount'), value: data.data.preferential_price || '' },
+                                    { name: this.$t('user-order-detail.increase_amount'), value: data.data.increase_price || '' },
+                                    { name: this.$t('common.payment_amount'), value: data.data.pay_price || '' },
+                                    { name: this.$t('common.payment_method'), value: (data.data.payment_name || '') + ((data.data.is_under_line_text || null) == null || (data.data.payment_name || null) == null ? '' : '（' + data.data.is_under_line_text + '）') },
+                                    { name: this.$t('user-order-detail.guest_book'), value: data.data.user_note || '' },
+                                    { name: this.$t('common.creation_time'), value: data.data.add_time || '' },
+                                    { name: this.$t('common.confirmation_time'), value: data.data.confirm_time || '' },
+                                    { name: this.$t('common.payment_time'), value: data.data.pay_time || '' },
+                                    { name: this.$t('user-order-detail.delivery_time'), value: data.data.delivery_time || '' },
+                                    { name: this.$t('user-order-detail.receiving_time'), value: data.data.collect_time || '' },
+                                    { name: this.$t('common.cancel_time'), value: data.data.cancel_time || '' },
+                                    { name: this.$t('user-order-detail.closing_time'), value: data.data.close_time || '' },
                                 ],
                                 extension_data: data.data.extension_data || [],
                                 site_fictitious: data.site_fictitious || null,
@@ -702,7 +704,7 @@
                 var oid = e.currentTarget.dataset.oid || 0;
                 var did = e.currentTarget.dataset.did || 0;
                 if (oid == 0 || did == 0) {
-                    app.globalData.showToast(this.$t('user-order-detail.user-order-detail.5k6k56'));
+                    app.globalData.showToast(this.$t('common.parameter_error'));
                     return false;
                 }
 
@@ -713,7 +715,7 @@
             // 地图查看
             address_map_event(e) {
                 if ((this.detail.address_data || null) == null) {
-                    app.globalData.showToast(this.$t('user-order-detail.user-order-detail.i876o3'));
+                    app.globalData.showToast(this.$t('common.incorrect_address'));
                     return false;
                 }
 
@@ -876,7 +878,7 @@
             collect_hand_handle(e) {
                 uni.showModal({
                     title: this.$t('common.warm_tips'),
-                    content: this.$t('orderallot-list.orderallot-list.o3ouqv'),
+                    content: this.$t('common.confirm_goods_been_received_completed_cannot'),
                     confirmText: this.$t('common.confirm'),
                     cancelText: this.$t('common.no'),
                     success: (result) => {

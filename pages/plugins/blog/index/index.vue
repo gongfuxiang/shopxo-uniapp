@@ -79,14 +79,14 @@
             <!-- 推荐博文 -->
             <view v-if="right_list.length > 0" class="padding-horizontal-main spacing-mb">
                 <view class="spacing-nav-title flex-row align-c jc-sb text-size-xs">
-                    <text class="text-wrapper title-left-border single-text flex-1 flex-width padding-right-main">{{ $t('detail.detail.455787') }}{{ blog_main_name }}</text>
+                    <text class="text-wrapper title-left-border single-text flex-1 flex-width padding-right-main">{{ $t('detail.recommendation') }}{{ blog_main_name }}</text>
                     <text data-value="/pages/plugins/blog/search/search" @tap="url_event" class="arrow-right padding-right cr-grey cp">{{ $t('common.more') }}</text>
                 </view>
                 <view class="right-list padding-horizontal-main border-radius-main bg-white">
                     <block v-for="(item, index) in right_list" :key="index">
                         <view :data-value="item.url" @tap="url_event" :class="'item padding-vertical-main oh cp ' + (index > 0 ? 'br-t' : '')">
                             <view class="blog-title single-text fl">{{ item.title }}</view>
-                            <text class="cr-grey fr">{{ $t('detail.detail.e6ga1y') }}{{ item.access_count }}{{ $t('buy.buy.0pgsrm') }}</text>
+                            <text class="cr-grey fr">{{ $t('common.total_views_suffix') }}{{ item.access_count }}{{ $t('common.buy_second') }}</text>
                         </view>
                     </block>
                 </view>
@@ -95,7 +95,7 @@
             <!-- 推荐商品 -->
             <view v-if="goods_list.length > 0" class="goods-list oh padding-horizontal-main">
                 <view class="spacing-nav-title flex-row align-c jc-sb text-size-xs">
-                    <text class="text-wrapper title-left-border single-text flex-1 flex-width padding-right-main">{{ $t('index.index.8t4j95') }}</text>
+                    <text class="text-wrapper title-left-border single-text flex-1 flex-width padding-right-main">{{ $t('common.recommended_products') }}</text>
                     <text data-value="/pages/goods-search/goods-search" @tap="url_event" class="arrow-right padding-right cr-grey cp">{{ $t('common.more') }}</text>
                 </view>
                 <component-goods-list :propData="{ style_type: 1, goods_list: goods_list }" :propCurrencySymbol="currency_symbol"></component-goods-list>
@@ -106,7 +106,7 @@
                 <view class="bottom-line-exclude">
                     <view class="item flex-row jc-sa align-c text-size fw-b br bg-white round padding-vertical">
                         <view data-value="/pages/plugins/blog/form/form" @tap="url_event" class="flex-1 tc flex-col jc-c align-c cp">
-                            <view class="divider-r-d wh-auto"> <iconfont name="icon-edit-below-line" size="30rpx" color="#333" propClass="margin-right-sm"></iconfont>{{$t('detail.detail.fn3w01')}}{{ blog_main_name }}</view>
+                            <view class="divider-r-d wh-auto"> <iconfont name="icon-edit-below-line" size="30rpx" color="#333" propClass="margin-right-sm"></iconfont>{{$t('detail.release')}}{{ blog_main_name }}</view>
                         </view>
                         <view data-value="/pages/plugins/blog/user-list/user-list" @tap="url_event" class="flex-1 tc flex-col jc-c align-c cp">
                             <view class="wh-auto"> <iconfont name="icon-list-dot" size="32rpx" color="#333" propClass="margin-right-sm pr top-xs"></iconfont>{{$t('common.my')}}{{ blog_main_name }}</view>
@@ -136,8 +136,10 @@
     import componentNoData from '@/components/no-data/no-data';
     import componentBottomLine from '@/components/bottom-line/bottom-line';
     import componentGoodsList from '@/components/goods-list/goods-list';
+    import pluginLocale from '../locale/index.js';
 
     export default {
+        mixins: [pluginLocale],
         data() {
             return {
                 theme_view: app.globalData.get_theme_value_view(),
@@ -153,7 +155,7 @@
                 goods_list: [],
                 hot_list: [],
                 right_list: [],
-                blog_main_name: this.$t('detail.detail.e439j9'),
+                blog_main_name: this.$t('detail.bowen'),
                 // 自定义分享信息
                 share_info: {},
             };
@@ -229,7 +231,7 @@
                                 goods_list: data.goods_list || [],
                                 hot_list: data.hot_list || [],
                                 right_list: data.right_list || [],
-                                blog_main_name: (data.base || null) == null ? this.$t('detail.detail.e439j9') : data.base.blog_main_name || this.$t('detail.detail.e439j9'),
+                                blog_main_name: (data.base || null) == null ? this.$t('detail.bowen') : data.base.blog_main_name || this.$t('detail.bowen'),
                                 data_list_loding_msg: '',
                                 data_list_loding_status: 0,
                                 data_bottom_line_status: true,

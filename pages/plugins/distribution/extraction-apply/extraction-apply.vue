@@ -5,29 +5,29 @@
                 <view class="padding-main">
                     <view class="bg-white oh border-radius-main">
                         <view class="form-gorup">
-                            <view class="form-gorup-title">{{$t('extraction-apply.extraction-apply.u439pg')}}<text class="form-group-tips">{{$t('extraction-apply.extraction-apply.bflosr')}}</text></view>
+                            <view class="form-gorup-title">{{$t('extraction-apply.logo_image')}}<text class="form-group-tips">{{$t('extraction-apply.suggest_300_300px')}}</text></view>
                             <view class="margin-top-sm">
                                 <component-upload :propData="(extraction_data.logo || null) != null ? [extraction_data.logo] : []" :propMaxNum="1" :propPathType="editor_path_type" @call-back="upload_image_event"></component-upload>
                             </view>
                         </view>
 
                         <view class="form-gorup">
-                            <view class="form-gorup-title">{{$t('extraction-apply.extraction-apply.9t81k8')}}</view>
-                            <input type="text" name="alias" :value="extraction_data.alias || ''" placeholder-class="cr-grey" class="cr-base" :placeholder="$t('extraction-apply.extraction-apply.wt1w0m')" />
+                            <view class="form-gorup-title">{{$t('extraction-apply.alias')}}</view>
+                            <input type="text" name="alias" :value="extraction_data.alias || ''" placeholder-class="cr-grey" class="cr-base" :placeholder="$t('extraction-apply.alias_format_up_16_characters_long')" />
                         </view>
 
                         <view class="form-gorup">
-                            <view class="form-gorup-title">{{$t('user-detail.user-detail.k5867n')}}<text class="form-group-tips-must">*</text></view>
-                            <input type="text" name="name" :value="extraction_data.name || ''" placeholder-class="cr-grey" class="cr-base" :placeholder="$t('extraction-apply.extraction-apply.73efnt')" />
+                            <view class="form-gorup-title">{{$t('user-detail.contacts')}}<text class="form-group-tips-must">*</text></view>
+                            <input type="text" name="name" :value="extraction_data.name || ''" placeholder-class="cr-grey" class="cr-base" :placeholder="$t('extraction-apply.contact_format_between_16_characters')" />
                         </view>
 
                         <view class="form-gorup">
-                            <view class="form-gorup-title">{{$t('user-detail.user-detail.gfe703')}}<text class="form-group-tips-must">*</text></view>
-                            <input type="text" name="tel" :value="extraction_data.tel || ''" placeholder-class="cr-grey" class="cr-base" :placeholder="$t('extraction-apply.extraction-apply.qixk24')" />
+                            <view class="form-gorup-title">{{$t('user-detail.contact_phone_number')}}<text class="form-group-tips-must">*</text></view>
+                            <input type="text" name="tel" :value="extraction_data.tel || ''" placeholder-class="cr-grey" class="cr-base" :placeholder="$t('extraction-apply.landline_mobile_phone')" />
                         </view>
 
                         <view class="form-gorup">
-                            <view class="form-gorup-title">{{$t('extraction-apply.extraction-apply.cy87k6')}}<text class="form-group-tips-must">*</text></view>
+                            <view class="form-gorup-title">{{$t('common.provinces_cities_districts')}}<text class="form-group-tips-must">*</text></view>
                             <view class="select-address oh">
                                 <view class="section fl">
                                     <picker name="province" @change="select_province_event" :value="province_value" :range="province_list" range-key="name">
@@ -38,31 +38,31 @@
                                     <picker v-if="(province_id || null) != null" name="city" @change="select_city_event" :value="city_value" :range="city_list" range-key="name">
                                         <view :class="'name ' + (city_value == null ? 'cr-grey' : 'cr-base')">{{ (city_list[city_value] || null) == null ? default_city : city_list[city_value]['name'] }}</view>
                                     </picker>
-                                    <text v-else class="cr-grey" @tap="region_select_error_event" :data-value="$t('extraction-apply.extraction-apply.liqbru')">{{$t('extraction-apply.extraction-apply.liqbru')}}</text>
+                                    <text v-else class="cr-grey" @tap="region_select_error_event" :data-value="$t('extraction-apply.select_province_first')">{{$t('extraction-apply.select_province_first')}}</text>
                                 </view>
                                 <view class="section fl">
                                     <picker v-if="(city_id || null) != null" name="county" @change="select_county_event" :value="county_value" :range="county_list" range-key="name">
                                         <view :class="'name ' + (county_value == null ? 'cr-grey' : 'cr-base')">{{ (county_list[county_value] || null) == null ? default_county : county_list[county_value]['name'] }}</view>
                                     </picker>
-                                    <text v-else class="cr-grey" @tap="region_select_error_event" :data-value="$t('extraction-apply.extraction-apply.r4q86m')">{{$t('extraction-apply.extraction-apply.r4q86m')}}</text>
+                                    <text v-else class="cr-grey" @tap="region_select_error_event" :data-value="$t('extraction-apply.select_city_first')">{{$t('extraction-apply.select_city_first')}}</text>
                                 </view>
                             </view>
                         </view>
 
                         <view class="form-gorup bg-white">
-                            <view class="form-gorup-title">{{$t('personal.personal.6m33c4')}}<text class="form-group-tips-must">*</text></view>
-                            <input type="text" name="address" :value="extraction_data.address || ''" placeholder-class="cr-grey" class="cr-base" :placeholder="$t('extraction-apply.extraction-apply.gxo73a')" />
+                            <view class="form-gorup-title">{{$t('common.detailed_address')}}<text class="form-group-tips-must">*</text></view>
+                            <input type="text" name="address" :value="extraction_data.address || ''" placeholder-class="cr-grey" class="cr-base" :placeholder="$t('extraction-apply.detailed_address_format_between_80_characters')" />
                         </view>
 
                         <view class="form-gorup bg-white">
-                            <view class="form-gorup-title">{{$t('extraction-apply.extraction-apply.47v7m0')}}<text class="form-group-tips-must">*</text></view>
+                            <view class="form-gorup-title">{{$t('common.geographical_position')}}<text class="form-group-tips-must">*</text></view>
                             <view @tap="choose_location_event" class="form-gorup-text">
                                 <view v-if="(user_location.status || 0) == 1" class="cr-base">{{ user_location.lng }}, {{ user_location.lat }}</view>
-                                <view v-else class="cr-grey">{{$t('extraction-apply.extraction-apply.8831v6')}}</view>
+                                <view v-else class="cr-grey">{{$t('common.select_geographical_location')}}</view>
                             </view>
                         </view>
                     </view>
-                    <view v-if="(extraction_data || null) != null && (extraction_data.status || 0) == 1" class="cr-red margin-top-sm spacing-mb">{{$t('extraction-apply.extraction-apply.5y2yzu')}}</view>
+                    <view v-if="(extraction_data || null) != null && (extraction_data.status || 0) == 1" class="cr-red margin-top-sm spacing-mb">{{$t('extraction-apply.attention_editing_info_re_reviewed_before')}}</view>
                     <view class="bottom-fixed" :style="bottom_fixed_style">
                         <view class="bottom-line-exclude">
                             <button class="item bg-main br-main cr-white round text-size" type="default" form-type="submit" hover-class="none" :disabled="form_submit_disabled_status">{{$t('common.submit')}}</button>
@@ -89,8 +89,10 @@
     import componentNoData from "@/components/no-data/no-data";
     import componentChoiceLocation from '@/components/choice-location/choice-location';
     import componentUpload from '@/components/upload/upload';
+    import pluginLocale from '../locale/index.js';
 
     export default {
+        mixins: [pluginLocale],
         data() {
             return {
                 theme_view: app.globalData.get_theme_value_view(),
@@ -106,9 +108,9 @@
                 city_id: null,
                 county_id: null,
                 editor_path_type: '',
-                default_province: this.$t('extraction-apply.extraction-apply.s3h5o3'),
-                default_city: this.$t('extraction-apply.extraction-apply.4s4s15'),
-                default_county: this.$t('extraction-apply.extraction-apply.fk4gw5'),
+                default_province: this.$t('extraction-apply.select_province'),
+                default_city: this.$t('extraction-apply.select_city'),
+                default_county: this.$t('extraction-apply.select_district_county'),
                 province_value: null,
                 city_value: null,
                 county_value: null,
@@ -168,7 +170,7 @@
                 } else {
                     this.setData({
                         data_list_loding_status: 2,
-                        data_list_loding_msg: this.$t('extraction-apply.extraction-apply.m3xdif'),
+                        data_list_loding_msg: this.$t('common.authorize_user_info_first'),
                     });
                 }
             },
@@ -230,7 +232,7 @@
                     fail: () => {
                         this.setData({
                             data_list_loding_status: 2,
-                            data_list_loding_msg: this.$t('extraction-apply.extraction-apply.h8f437'),
+                            data_list_loding_msg: this.$t('extraction-apply.data_acquisition_failed'),
                         });
                     },
                 });
@@ -278,7 +280,7 @@
                         }
                     },
                     fail: () => {
-                        app.globalData.showToast(this.$t('extraction-apply.extraction-apply.fo7y6c'));
+                        app.globalData.showToast(this.$t('common.province_acquisition_failed'));
                     },
                 });
             },
@@ -306,7 +308,7 @@
                             }
                         },
                         fail: () => {
-                            app.globalData.showToast(this.$t('extraction-apply.extraction-apply.b6qg7b'));
+                            app.globalData.showToast(this.$t('common.city_acquisition_failed'));
                         },
                     });
                 }
@@ -336,7 +338,7 @@
                             }
                         },
                         fail: () => {
-                            app.globalData.showToast(this.$t('extraction-apply.extraction-apply.5s5734'));
+                            app.globalData.showToast(this.$t('common.district_county_acquisition_failed'));
                         },
                     });
                 }
@@ -424,14 +426,14 @@
 
                 // 数据校验
                 var validation = [
-                    { fields: 'name', msg: this.$t('extraction-apply.extraction-apply.q15b4n') },
-                    { fields: 'tel', msg: this.$t('extraction-apply.extraction-apply.3or25c') },
-                    { fields: 'province', msg: this.$t('extraction-apply.extraction-apply.m99d2g') },
-                    { fields: 'city', msg: this.$t('extraction-apply.extraction-apply.03587o') },
-                    { fields: 'county', msg: this.$t('extraction-apply.extraction-apply.pt8436') },
-                    { fields: 'address', msg: this.$t('extraction-apply.extraction-apply.v1g617') },
-                    { fields: 'lng', msg: this.$t('extraction-apply.extraction-apply.8831v6') },
-                    { fields: 'lat', msg: this.$t('extraction-apply.extraction-apply.8831v6') },
+                    { fields: 'name', msg: this.$t('common.fill_contact_person') },
+                    { fields: 'tel', msg: this.$t('common.fill_contact_phone_number') },
+                    { fields: 'province', msg: this.$t('common.select_province_2') },
+                    { fields: 'city', msg: this.$t('common.select_city_2') },
+                    { fields: 'county', msg: this.$t('extraction-apply.select_district_county_2') },
+                    { fields: 'address', msg: this.$t('common.provide_detailed_address') },
+                    { fields: 'lng', msg: this.$t('common.select_geographical_location') },
+                    { fields: 'lat', msg: this.$t('common.select_geographical_location') },
                 ];
 
                 // logo
@@ -465,7 +467,7 @@
                     if ((self.extraction_data || null) != null && (self.extraction_data.status || 0) == 1) {
                         uni.showModal({
                             title: this.$t('common.warm_tips'),
-                            content: this.$t('extraction-apply.extraction-apply.rm14pu'),
+                            content: this.$t('extraction-apply.data_needs_re_reviewed_before_take'),
                             confirmText: this.$t('common.confirm'),
                             cancelText: this.$t('common.not_yet'),
                             success: (result) => {

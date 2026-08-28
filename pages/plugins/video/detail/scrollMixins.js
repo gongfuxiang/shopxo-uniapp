@@ -152,10 +152,10 @@ export default {
 							const distance = this.distance + e.deltaY
 							if(distance>0 || this.distance + e.deltaY-this.windowHeight<-this.windowHeight*this.video_data_list.length) {
 								if (this.index == 0) {
-									this.showToast('当前已经是第一条了');
+									this.showToast(this.$t('video-detail.already_first_video'));
 								    return;
 								} else if (this.index == this.video_data_list.length - 1) {
-									this.showToast('当前已经是最后一条');
+									this.showToast(this.$t('video-detail.already_last_video'));
 									return
 								}
 							}

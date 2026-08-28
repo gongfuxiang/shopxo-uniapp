@@ -25,15 +25,15 @@
                                     <view v-if="(user.user_name_view || null) != null" class="cr-base">{{ user.user_name_view || '' }}</view>
                                 </view>
                                 <view class="margin-top-xxxl padding-top-xxxl">
-                                    <input type="number" :placeholder="$t('login.login.28k91h')" maxlength="11" name="mobile" @input="form_input_mobile_event" class="form-item margin-vertical-main wh-auto" />
+                                    <input type="number" :placeholder="$t('common.mobile_phone_number')" maxlength="11" name="mobile" @input="form_input_mobile_event" class="form-item margin-vertical-main wh-auto" />
                                     <view class="code pr margin-vertical-main">
-                                        <input type="number" :placeholder="$t('login.login.t3951j')" name="verify" maxlength="4" />
+                                        <input type="number" :placeholder="$t('common.verification_code')" name="verify" maxlength="4" />
                                         <button :class="'verify-submit pa round br text-size-sm cr-base ' + (verify_disabled ? 'sub-disabled' : '')" type="default" hover-class="none" size="mini" :loading="verify_loading" :disabled="verify_disabled" @tap="verify_send_event">{{ verify_submit_text }}</button>
                                     </view>
-                                    <button class="bg-main br-main cr-white round text-size margin-top-xxxl" form-type="submit" type="default" hover-class="none" :loading="form_submit_loading" :disabled="form_submit_loading">{{ $t('login.login.tfl656') }}</button>
+                                    <button class="bg-main br-main cr-white round text-size margin-top-xxxl" form-type="submit" type="default" hover-class="none" :loading="form_submit_loading" :disabled="form_submit_loading">{{ $t('login.confirm_binding') }}</button>
                                 </view>
                                 <view class="margin-top-xxxl padding-top-xxxl padding-horizontal-main padding-bottom-xxxl tc">
-                                    <text class="cr-blue" data-value="bind" @tap="opt_form_event">{{ $t('login.login.483nho') }}</text>
+                                    <text class="cr-blue" data-value="bind" @tap="opt_form_event">{{ $t('login.return_previous_page') }}</text>
                                 </view>
                             </form>
                         </view>
@@ -44,15 +44,15 @@
                                     <view v-if="(user.user_name_view || null) != null" class="cr-base">{{ user.user_name_view || '' }}</view>
                                 </view>
                                 <view class="margin-top-xxxl padding-top-xxxl">
-                                    <input type="text" :placeholder="$t('login.login.db1rf4')" maxlength="60" name="email" @input="form_input_email_event" key="login_email_1" class="form-item margin-vertical-xl wh-auto" />
+                                    <input type="text" :placeholder="$t('common.mail')" maxlength="60" name="email" @input="form_input_email_event" key="login_email_1" class="form-item margin-vertical-xl wh-auto" />
                                     <view class="code pr margin-vertical-main">
-                                        <input type="number" :placeholder="$t('login.login.t3951j')" name="verify" maxlength="4" />
+                                        <input type="number" :placeholder="$t('common.verification_code')" name="verify" maxlength="4" />
                                         <button :class="'verify-submit pa round br text-size-sm cr-base ' + (verify_disabled ? 'sub-disabled' : '')" type="default" hover-class="none" size="mini" :loading="verify_loading" :disabled="verify_disabled" @tap="verify_send_event">{{ verify_submit_text }}</button>
                                     </view>
-                                    <button class="bg-main br-main cr-white round text-size margin-top-xxxl" form-type="submit" type="default" hover-class="none" :loading="form_submit_loading" :disabled="form_submit_loading">{{ $t('login.login.tfl656') }}</button>
+                                    <button class="bg-main br-main cr-white round text-size margin-top-xxxl" form-type="submit" type="default" hover-class="none" :loading="form_submit_loading" :disabled="form_submit_loading">{{ $t('login.confirm_binding') }}</button>
                                 </view>
                                 <view class="margin-top-xxxl padding-top-xxxl padding-horizontal-main padding-bottom-xxxl tc">
-                                    <text class="cr-blue" data-value="bind" @tap="opt_form_event">{{ $t('login.login.483nho') }}</text>
+                                    <text class="cr-blue" data-value="bind" @tap="opt_form_event">{{ $t('login.return_previous_page') }}</text>
                                 </view>
                             </form>
                         </view>
@@ -67,24 +67,24 @@
                                 </view>
                                 <block v-if="current_opt_form == 'bind'">
                                     <view v-if="(common_user_verify_bind_mobile_list.length > 0 && common_user_verify_bind_mobile_list.indexOf(client_value) != -1) || (common_user_onekey_bind_mobile_list.length > 0 && common_user_onekey_bind_mobile_list.indexOf(client_value) != -1)" class="margin-top-xxxl padding-top-xxxl">
-                                        <button v-if="common_user_verify_bind_mobile_list.length > 0 && common_user_verify_bind_mobile_list.indexOf(client_value) != -1" class="bg-main-pair br-main-pair cr-white round text-size" type="warn" hover-class="none" data-value="bind_verify" @tap="opt_form_event">{{ $t('login.login.31r6p2') }}</button>
-                                        <button v-if="common_user_onekey_bind_mobile_list.length > 0 && common_user_onekey_bind_mobile_list.indexOf(client_value) != -1" class="margin-top-xxl bg-main br-main cr-white round text-size" type="default" hover-class="none" open-type="getPhoneNumber" @getphonenumber="confirm_phone_number_event">{{ $t('login.login.p3kxy2') }}</button>
+                                        <button v-if="common_user_verify_bind_mobile_list.length > 0 && common_user_verify_bind_mobile_list.indexOf(client_value) != -1" class="bg-main-pair br-main-pair cr-white round text-size" type="warn" hover-class="none" data-value="bind_verify" @tap="opt_form_event">{{ $t('login.mobile_verification_code') }}</button>
+                                        <button v-if="common_user_onekey_bind_mobile_list.length > 0 && common_user_onekey_bind_mobile_list.indexOf(client_value) != -1" class="margin-top-xxl bg-main br-main cr-white round text-size" type="default" hover-class="none" open-type="getPhoneNumber" @getphonenumber="confirm_phone_number_event">{{ $t('login.get_phone_number_log_one_click') }}</button>
                                     </view>
                                     <!-- 当前还没有账号的情况下才可以操作登录和注册绑定 -->
                                     <view v-if="(user || null) == null || (user.id || null) == null" class="margin-top-xxxl padding-top-xxxl padding-horizontal-main padding-bottom-main">
                                         <!-- 登录 -->
                                         <view v-if="(home_user_login_type || null) != null && home_user_login_type.length > 0" class="margin-bottom-xxxl tc">
-                                            <text class="cr-main round padding-top-xs padding-bottom-xs padding-horizontal-main" data-value="login" @tap="opt_form_event">{{ $t('login.login.54l805') }}</text>
+                                            <text class="cr-main round padding-top-xs padding-bottom-xs padding-horizontal-main" data-value="login" @tap="opt_form_event">{{ $t('login.bind_existing_account') }}</text>
                                         </view>
                                         <!-- 注册 -->
                                         <view v-if="(home_user_reg_type || null) != null && home_user_reg_type.length > 0" class="margin-bottom-xl tc">
-                                            <text class="cr-main-pair round padding-top-xs padding-bottom-xs padding-horizontal-main" data-value="reg" @tap="opt_form_event">{{ $t('login.login.q11t73') }}</text>
+                                            <text class="cr-main-pair round padding-top-xs padding-bottom-xs padding-horizontal-main" data-value="reg" @tap="opt_form_event">{{ $t('login.register_account_bind') }}</text>
                                         </view>
                                     </view>
                                 </block>
                                 <view v-if="current_opt_form == 'success'" class="tc margin-top-xxxl">
-                                    <view class="cr-green">{{ $t('login.login.s51ed9') }}</view>
-                                    <button type="default" size="mini" class="dis-inline-block auto bg-main br-main cr-white round text-size-sm padding-left-xxxl padding-right-xxxl padding-top-xs padding-bottom-xs margin-top-xl" @tap="success_event">{{ $t('login.login.483nho') }}</button>
+                                    <view class="cr-green">{{ $t('login.successfully_logged_click_return_previous_page') }}</view>
+                                    <button type="default" size="mini" class="dis-inline-block auto bg-main br-main cr-white round text-size-sm padding-left-xxxl padding-right-xxxl padding-top-xs padding-bottom-xs margin-top-xl" @tap="success_event">{{ $t('login.return_previous_page') }}</button>
                                 </view>
                             </view>
                         </block>
@@ -113,7 +113,7 @@
                                     <text class="cr-blue margin-left-sm">{{ plugins_thirdpartylogin_user.nickname }}</text>
                                     <button type="default" size="mini" class="br-red cr-red bg-white round va-m text-size-xs margin-left-lg padding-top-xs padding-bottom-xs" @tap="plugins_thirdpartylogin_cancel_event">{{ $t('common.cancel') }}</button>
                                 </view>
-                                <view class="cr-grey text-size-xs">{{ $t('login.login.e77788') }}{{ plugins_thirdpartylogin_user.platform_name }}{{ $t('login.login.1i4o86') }}</view>
+                                <view class="cr-grey text-size-xs">{{ $t('login.login_account_automatically_bound') }}{{ plugins_thirdpartylogin_user.platform_name }}{{ $t('common.user') }}</view>
                             </view>
                         </block>
 
@@ -125,33 +125,33 @@
                                     <view>
                                         <!-- 登录方式选择 -->
                                         <view v-if="(home_user_login_type || null) != null && home_user_login_type.length > 0" class="opt-type-list margin-vertical-xxxl">
-                                            <text v-if="home_user_login_type.indexOf('username') != -1" class="padding-vertical-sm" :class="current_opt_type === 'login_username' ? 'cr-main nav-active-line' : ''" data-value="login_username" @tap="opt_type_event">{{ $t('login.login.n2pv70') }}</text>
-                                            <text v-if="home_user_login_type.indexOf('sms') != -1" class="padding-vertical-sm" :class="current_opt_type === 'login_sms' ? 'cr-main nav-active-line' : ''" data-value="login_sms" @tap="opt_type_event">{{ $t('login.login.1p7843') }}</text>
-                                            <text v-if="home_user_login_type.indexOf('email') != -1" class="padding-vertical-sm" :class="current_opt_type === 'login_email' ? 'cr-main nav-active-line' : ''" data-value="login_email" @tap="opt_type_event">{{ $t('login.login.p54kf1') }}</text>
+                                            <text v-if="home_user_login_type.indexOf('username') != -1" class="padding-vertical-sm" :class="current_opt_type === 'login_username' ? 'cr-main nav-active-line' : ''" data-value="login_username" @tap="opt_type_event">{{ $t('login.account') }}</text>
+                                            <text v-if="home_user_login_type.indexOf('sms') != -1" class="padding-vertical-sm" :class="current_opt_type === 'login_sms' ? 'cr-main nav-active-line' : ''" data-value="login_sms" @tap="opt_type_event">{{ $t('common.login_phone') }}</text>
+                                            <text v-if="home_user_login_type.indexOf('email') != -1" class="padding-vertical-sm" :class="current_opt_type === 'login_email' ? 'cr-main nav-active-line' : ''" data-value="login_email" @tap="opt_type_event">{{ $t('common.mailbox') }}</text>
                                         </view>
-                                        <view v-else class="tc cr-grey padding-vertical-main">{{ $t('login.login.3i05ly') }}</view>
+                                        <view v-else class="tc cr-grey padding-vertical-main">{{ $t('login.temporarily_closed_login') }}</view>
                                         <!-- 账号密码 -->
                                         <block v-if="current_opt_type == 'login_username'">
-                                            <input type="text" :placeholder="$t('login.login.qe8a37')" maxlength="60" name="accounts" key="login_username_1" class="form-item margin-vertical-xl wh-auto" />
-                                            <input type="text" :placeholder="$t('login.login.08fchn')" minlength="6" maxlength="18" name="pwd" password="true" key="login_username_2" class="form-item margin-vertical-xl wh-auto" />
+                                            <input type="text" :placeholder="$t('login.user_name_phone_email')" maxlength="60" name="accounts" key="login_username_1" class="form-item margin-vertical-xl wh-auto" />
+                                            <input type="text" :placeholder="$t('login.login_password')" minlength="6" maxlength="18" name="pwd" password="true" key="login_username_2" class="form-item margin-vertical-xl wh-auto" />
                                             <view v-if="home_user_login_img_verify_state == 1" class="verify pr margin-vertical-xl">
-                                                <input type="text" :placeholder="$t('login.login.t3951j')" name="verify" maxlength="4" :value="form_input_image_verify_value" key="login_username_3" @input="form_input_image_verify_event" />
+                                                <input type="text" :placeholder="$t('common.verification_code')" name="verify" maxlength="4" :value="form_input_image_verify_value" key="login_username_3" @input="form_input_image_verify_event" />
                                                 <image v-if="(verify_image_url || null) != null" :src="verify_image_url" class="verify-image pa" mode="aspectFit" data-type="user_login" @tap="image_verify_event"></image>
                                             </view>
                                         </block>
                                         <!-- 手机 -->
                                         <block v-if="current_opt_type == 'login_sms'">
-                                            <input type="number" :placeholder="$t('login.login.28k91h')" maxlength="11" name="accounts" @input="form_input_mobile_event" key="login_sms_1" class="form-item margin-vertical-xl wh-auto" />
+                                            <input type="number" :placeholder="$t('common.mobile_phone_number')" maxlength="11" name="accounts" @input="form_input_mobile_event" key="login_sms_1" class="form-item margin-vertical-xl wh-auto" />
                                             <view class="code pr margin-vertical-xl">
-                                                <input type="number" :placeholder="$t('login.login.t3951j')" name="verify" maxlength="4" key="login_sms_2" />
+                                                <input type="number" :placeholder="$t('common.verification_code')" name="verify" maxlength="4" key="login_sms_2" />
                                                 <button :class="'verify-submit pa round br text-size-sm cr-grey-9 ' + (verify_disabled ? 'sub-disabled' : '')" type="default" hover-class="none" size="mini" :loading="verify_loading" :disabled="verify_disabled" @tap="verify_send_event">{{ verify_submit_text }}</button>
                                             </view>
                                         </block>
                                         <!-- 邮箱 -->
                                         <block v-if="current_opt_type == 'login_email'">
-                                            <input type="text" :placeholder="$t('login.login.db1rf4')" maxlength="60" name="accounts" @input="form_input_email_event" key="login_email_1" class="form-item margin-vertical-xl wh-auto" />
+                                            <input type="text" :placeholder="$t('common.mail')" maxlength="60" name="accounts" @input="form_input_email_event" key="login_email_1" class="form-item margin-vertical-xl wh-auto" />
                                             <view class="code pr margin-vertical-xl">
-                                                <input type="number" :placeholder="$t('login.login.t3951j')" name="verify" maxlength="4" key="login_email_1" />
+                                                <input type="number" :placeholder="$t('common.verification_code')" name="verify" maxlength="4" key="login_email_1" />
                                                 <button :class="'verify-submit pa round br text-size-sm cr-grey-9 ' + (verify_disabled ? 'sub-disabled' : '')" type="default" hover-class="none" size="mini" :loading="verify_loading" :disabled="verify_disabled" @tap="verify_send_event">{{ verify_submit_text }}</button>
                                             </view>
                                         </block>
@@ -165,19 +165,19 @@
                                                 </radio-group>
                                             </view>
                                             <view class="dis-inline-block va-m text-size-xs">
-                                                <text>{{ $t('login.login.nddg2x') }}</text>
-                                                <text class="cr-main" @tap="agreement_event" data-value="userregister">{{ $t('login.login.2v11we') }}</text>
-                                                <text>{{ $t('login.login.l3r4vr') }}</text>
-                                                <text class="cr-main" @tap="agreement_event" data-value="userprivacy">{{ $t('login.login.myno2x') }}</text>
+                                                <text>{{ $t('login.read_agree') }}</text>
+                                                <text class="cr-main" @tap="agreement_event" data-value="userregister">{{ $t('common.service_agreement') }}</text>
+                                                <text>{{ $t('login.and') }}</text>
+                                                <text class="cr-main" @tap="agreement_event" data-value="userprivacy">{{ $t('common.privacy_policy') }}</text>
                                             </view>
                                         </view>
-                                        <button class="bg-main br-main cr-white round text-size margin-top-xxxl" form-type="submit" type="default" hover-class="none" :loading="form_submit_loading" :disabled="form_submit_loading">{{ $t('login.login.i1deai') }}</button>
+                                        <button class="bg-main br-main cr-white round text-size margin-top-xxxl" form-type="submit" type="default" hover-class="none" :loading="form_submit_loading" :disabled="form_submit_loading">{{ $t('common.confirm_login') }}</button>
                                         <view class="margin-top-xxl oh flex-row jc-sb align-c">
                                             <!-- 注册 -->
                                             <view v-if="(home_user_reg_type || null) != null && home_user_reg_type.length > 0">
-                                                <text class="cr-grey-9" data-value="reg" @tap="opt_form_event">{{ $t('login.login.t75ee8') }}</text>
+                                                <text class="cr-grey-9" data-value="reg" @tap="opt_form_event">{{ $t('login.new_user_registration') }}</text>
                                             </view>
-                                            <text class="cr-grey-9" data-value="forget" @tap="opt_form_event">{{ $t('login.login.9d8gqi') }}</text>
+                                            <text class="cr-grey-9" data-value="forget" @tap="opt_form_event">{{ $t('login.retrieve_password') }}</text>
                                         </view>
                                     </view>
                                 </view>
@@ -192,37 +192,37 @@
                                     <view>
                                         <!-- 注册方式选择 -->
                                         <view v-if="(home_user_reg_type || null) != null && home_user_reg_type.length > 0" class="opt-type-list margin-vertical-xxxl">
-                                            <text v-if="home_user_reg_type.indexOf('username') != -1" class="padding-vertical-sm" :class="current_opt_type === 'reg_username' ? 'cr-main nav-active-line' : ''" data-value="reg_username" @tap="opt_type_event">{{ $t('login.login.n2pv70') }}</text>
-                                            <text v-if="home_user_reg_type.indexOf('sms') != -1" class="padding-vertical-sm" :class="current_opt_type === 'reg_sms' ? 'cr-main nav-active-line' : ''" data-value="reg_sms" @tap="opt_type_event">{{ $t('login.login.1p7843') }}</text>
-                                            <text v-if="home_user_reg_type.indexOf('email') != -1" class="padding-vertical-sm" :class="current_opt_type === 'reg_email' ? 'cr-main nav-active-line' : ''" data-value="reg_email" @tap="opt_type_event">{{ $t('login.login.p54kf1') }}</text>
+                                            <text v-if="home_user_reg_type.indexOf('username') != -1" class="padding-vertical-sm" :class="current_opt_type === 'reg_username' ? 'cr-main nav-active-line' : ''" data-value="reg_username" @tap="opt_type_event">{{ $t('login.account') }}</text>
+                                            <text v-if="home_user_reg_type.indexOf('sms') != -1" class="padding-vertical-sm" :class="current_opt_type === 'reg_sms' ? 'cr-main nav-active-line' : ''" data-value="reg_sms" @tap="opt_type_event">{{ $t('common.login_phone') }}</text>
+                                            <text v-if="home_user_reg_type.indexOf('email') != -1" class="padding-vertical-sm" :class="current_opt_type === 'reg_email' ? 'cr-main nav-active-line' : ''" data-value="reg_email" @tap="opt_type_event">{{ $t('common.mailbox') }}</text>
                                         </view>
-                                        <view v-else class="tc cr-grey padding-vertical-main">{{ $t('login.login.t59dho') }}</view>
+                                        <view v-else class="tc cr-grey padding-vertical-main">{{ $t('login.temporarily_closed_registration') }}</view>
                                         <!-- 账号密码 -->
                                         <block v-if="current_opt_type == 'reg_username'">
-                                            <input type="text" :placeholder="$t('login.login.rihgdf')" maxlength="60" name="accounts" key="reg_username_1" class="form-item margin-vertical-xl wh-auto" />
-                                            <input type="text" :placeholder="$t('login.login.08fchn')" minlength="6" maxlength="18" name="pwd" password="true" key="reg_username_2" class="form-item margin-vertical-xl wh-auto" />
+                                            <input type="text" :placeholder="$t('login.user_name')" maxlength="60" name="accounts" key="reg_username_1" class="form-item margin-vertical-xl wh-auto" />
+                                            <input type="text" :placeholder="$t('login.login_password')" minlength="6" maxlength="18" name="pwd" password="true" key="reg_username_2" class="form-item margin-vertical-xl wh-auto" />
                                             <view v-if="home_user_register_img_verify_state == 1" class="verify pr margin-vertical-xl">
-                                                <input type="text" :placeholder="$t('login.login.t3951j')" name="verify" maxlength="4" :value="form_input_image_verify_value" key="reg_username_3" @input="form_input_image_verify_event" />
+                                                <input type="text" :placeholder="$t('common.verification_code')" name="verify" maxlength="4" :value="form_input_image_verify_value" key="reg_username_3" @input="form_input_image_verify_event" />
                                                 <image v-if="(verify_image_url || null) != null" :src="verify_image_url" class="verify-image pa" mode="aspectFit" data-type="user_reg" @tap="image_verify_event"></image>
                                             </view>
                                         </block>
                                         <!-- 手机 -->
                                         <block v-if="current_opt_type == 'reg_sms'">
-                                            <input type="number" :placeholder="$t('login.login.28k91h')" maxlength="11" name="accounts" key="reg_sms_1" @input="form_input_mobile_event" class="form-item margin-vertical-xl wh-auto" />
+                                            <input type="number" :placeholder="$t('common.mobile_phone_number')" maxlength="11" name="accounts" key="reg_sms_1" @input="form_input_mobile_event" class="form-item margin-vertical-xl wh-auto" />
                                             <view class="code pr margin-vertical-xl">
-                                                <input type="number" :placeholder="$t('login.login.t3951j')" name="verify" maxlength="4" key="reg_sms_2" />
+                                                <input type="number" :placeholder="$t('common.verification_code')" name="verify" maxlength="4" key="reg_sms_2" />
                                                 <button :class="'verify-submit pa round br text-size-sm cr-grey-9 ' + (verify_disabled ? 'sub-disabled' : '')" type="default" hover-class="none" size="mini" :loading="verify_loading" :disabled="verify_disabled" @tap="verify_send_event">{{ verify_submit_text }}</button>
                                             </view>
-                                            <input type="text" :placeholder="$t('login.login.08fchn')" minlength="6" maxlength="18" name="pwd" password="true" key="reg_sms_3" class="form-item margin-vertical-xl wh-auto" />
+                                            <input type="text" :placeholder="$t('login.login_password')" minlength="6" maxlength="18" name="pwd" password="true" key="reg_sms_3" class="form-item margin-vertical-xl wh-auto" />
                                         </block>
                                         <!-- 邮箱 -->
                                         <block v-if="current_opt_type == 'reg_email'">
-                                            <input type="text" :placeholder="$t('login.login.db1rf4')" maxlength="60" name="accounts" key="reg_email_1" @input="form_input_email_event" class="form-item margin-vertical-xl wh-auto" />
+                                            <input type="text" :placeholder="$t('common.mail')" maxlength="60" name="accounts" key="reg_email_1" @input="form_input_email_event" class="form-item margin-vertical-xl wh-auto" />
                                             <view class="code pr margin-vertical-xl">
-                                                <input type="number" :placeholder="$t('login.login.t3951j')" name="verify" maxlength="4" key="reg_email_2" />
+                                                <input type="number" :placeholder="$t('common.verification_code')" name="verify" maxlength="4" key="reg_email_2" />
                                                 <button :class="'verify-submit pa round br text-size-sm cr-grey-9 ' + (verify_disabled ? 'sub-disabled' : '')" type="default" hover-class="none" size="mini" :loading="verify_loading" :disabled="verify_disabled" @tap="verify_send_event">{{ verify_submit_text }}</button>
                                             </view>
-                                            <input type="text" :placeholder="$t('login.login.08fchn')" minlength="6" maxlength="18" name="pwd" password="true" key="reg_email_3" class="form-item margin-vertical-xl wh-auto" />
+                                            <input type="text" :placeholder="$t('login.login_password')" minlength="6" maxlength="18" name="pwd" password="true" key="reg_email_3" class="form-item margin-vertical-xl wh-auto" />
                                         </block>
                                         <!-- 协议 -->
                                         <view class="margin-top-xxxl cr-grey">
@@ -234,17 +234,17 @@
                                                 </radio-group>
                                             </view>
                                             <view class="dis-inline-block va-m text-size-xs">
-                                                <text>{{ $t('login.login.nddg2x') }}</text>
-                                                <text class="cr-main" @tap="agreement_event" data-value="userregister">{{ $t('login.login.2v11we') }}</text>
-                                                <text>{{ $t('login.login.l3r4vr') }}</text>
-                                                <text class="cr-main" @tap="agreement_event" data-value="userprivacy">{{ $t('login.login.myno2x') }}</text>
+                                                <text>{{ $t('login.read_agree') }}</text>
+                                                <text class="cr-main" @tap="agreement_event" data-value="userregister">{{ $t('common.service_agreement') }}</text>
+                                                <text>{{ $t('login.and') }}</text>
+                                                <text class="cr-main" @tap="agreement_event" data-value="userprivacy">{{ $t('common.privacy_policy') }}</text>
                                             </view>
                                         </view>
-                                        <button class="bg-main br-main cr-white round text-size margin-top-xxxl" form-type="submit" type="default" hover-class="none" :loading="form_submit_loading" :disabled="form_submit_loading">{{ $t('login.login.hvunf8') }}</button>
+                                        <button class="bg-main br-main cr-white round text-size margin-top-xxxl" form-type="submit" type="default" hover-class="none" :loading="form_submit_loading" :disabled="form_submit_loading">{{ $t('login.confirm_registration') }}</button>
                                         <view class="margin-top-xxl oh flex-row jc-sb align-c">
                                             <!-- 登录 -->
                                             <view v-if="(home_user_login_type || null) != null && home_user_login_type.length > 0" class="tc">
-                                                <text class="cr-grey-9" data-value="login" @tap="opt_form_event">{{ $t('login.login.zy8tc4') }}</text>
+                                                <text class="cr-grey-9" data-value="login" @tap="opt_form_event">{{ $t('common.log_now') }}</text>
                                             </view>
                                         </view>
                                     </view>
@@ -258,21 +258,21 @@
                                 <!-- form表单距离去除顶部沾满整个空间的高度 -->
                                 <view class="flex-col jc-sb">
                                     <view class="margin-bottom-xxxl">
-                                        <input type="text" :placeholder="$t('login.login.d178m0')" maxlength="60" name="accounts" @input="form_input_accounts_event" class="form-item margin-vertical-xl wh-auto" />
+                                        <input type="text" :placeholder="$t('login.mobile_email')" maxlength="60" name="accounts" @input="form_input_accounts_event" class="form-item margin-vertical-xl wh-auto" />
                                         <view class="code pr margin-vertical-xl">
-                                            <input type="number" autocomplete="off" :placeholder="$t('login.login.t3951j')" name="verify" maxlength="4" />
+                                            <input type="number" autocomplete="off" :placeholder="$t('common.verification_code')" name="verify" maxlength="4" />
                                             <button :class="'verify-submit pa round br text-size-sm cr-base ' + (verify_disabled ? 'sub-disabled' : '')" type="default" hover-class="none" size="mini" :loading="verify_loading" :disabled="verify_disabled" @tap="verify_send_event">{{ verify_submit_text }}</button>
                                         </view>
-                                        <input type="text" autocomplete="off" :placeholder="$t('login.login.9wx3ch')" minlength="6" maxlength="18" name="pwd" password="true" class="form-item margin-vertical-xl wh-auto" />
+                                        <input type="text" autocomplete="off" :placeholder="$t('login.set_login_password')" minlength="6" maxlength="18" name="pwd" password="true" class="form-item margin-vertical-xl wh-auto" />
                                         <button class="bg-main br-main cr-white round text-size margin-top-xxxl" form-type="submit" type="default" hover-class="none" :loading="form_submit_loading" :disabled="form_submit_loading">{{ $t('common.confirm_sub') }}</button>
                                         <view class="margin-top-xxl oh flex-row jc-sb align-c">
                                             <!-- 登录 -->
                                             <view v-if="(home_user_login_type || null) != null && home_user_login_type.length > 0" class="tc">
-                                                <text class="cr-grey-9" data-value="login" @tap="opt_form_event">{{ $t('login.login.zy8tc4') }}</text>
+                                                <text class="cr-grey-9" data-value="login" @tap="opt_form_event">{{ $t('common.log_now') }}</text>
                                             </view>
                                             <!-- 注册 -->
                                             <view v-if="(home_user_reg_type || null) != null && home_user_reg_type.length > 0" class="tc">
-                                                <text class="cr-grey-9" data-value="reg" @tap="opt_form_event">{{ $t('login.login.b347k4') }}</text>
+                                                <text class="cr-grey-9" data-value="reg" @tap="opt_form_event">{{ $t('login.register_now') }}</text>
                                             </view>
                                         </view>
                                     </view>
@@ -283,7 +283,7 @@
                         <!-- #ifdef MP -->
                         <!-- 小程序授权 -->
                         <view v-if="current_opt_form == 'auth' && (user || null) == null" class="margin-top-xxxl tc">
-                            <view class="cr-base">{{ $t('login.login.836o8e') }}</view>
+                            <view class="cr-base">{{ $t('login.confirm_login_authorization_provide_better_servi') }}</view>
                             <view class="margin-top-sm cr-grey">
                                 <view class="dis-inline-block va-m" @tap="agreement_change">
                                     <radio-group style="transform: scale(0.6)">
@@ -293,10 +293,10 @@
                                     </radio-group>
                                 </view>
                                 <view class="dis-inline-block va-m text-size-xs">
-                                    <text>{{ $t('login.login.nddg2x') }}</text>
-                                    <text class="cr-main" @tap="agreement_event" data-value="userregister">{{ $t('login.login.2v11we') }}</text>
-                                    <text>{{ $t('login.login.l3r4vr') }}</text>
-                                    <text class="cr-main" @tap="agreement_event" data-value="userprivacy">{{ $t('login.login.myno2x') }}</text>
+                                    <text>{{ $t('login.read_agree') }}</text>
+                                    <text class="cr-main" @tap="agreement_event" data-value="userregister">{{ $t('common.service_agreement') }}</text>
+                                    <text>{{ $t('login.and') }}</text>
+                                    <text class="cr-main" @tap="agreement_event" data-value="userprivacy">{{ $t('common.privacy_policy') }}</text>
                                 </view>
                             </view>
                             <view class="margin-top-xxl">
@@ -304,13 +304,13 @@
                                     <button class="bg-yellow br-yellow cr-white round" type="default" size="mini" hover-class="none">{{ $t('common.cancel') }}</button>
                                 </navigator>
                                 <!-- #ifdef MP-WEIXIN || MP-TOUTIAO -->
-                                <button class="margin-left-lg bg-green br-green cr-white round" type="default" size="mini" @tap="get_user_info_event">{{ $t('buy.buy.33fugm') }}{{client_text}}{{ $t('login.login.tvl242') }}</button>
+                                <button class="margin-left-lg bg-green br-green cr-white round" type="default" size="mini" @tap="get_user_info_event">{{ $t('common.apply') }}{{client_text}}{{ $t('login.authorization_automatically_log') }}</button>
                                 <!-- #endif -->
                                 <!-- #ifdef MP-QQ || MP-BAIDU || MP-KUAISHOU -->
-                                <button class="margin-left-lg bg-green br-green cr-white round" type="default" size="mini" open-type="getUserInfo" @getuserinfo="get_user_info_event">{{ $t('buy.buy.33fugm') }}{{client_text}}{{ $t('login.login.tvl242') }}</button>
+                                <button class="margin-left-lg bg-green br-green cr-white round" type="default" size="mini" open-type="getUserInfo" @getuserinfo="get_user_info_event">{{ $t('common.apply') }}{{client_text}}{{ $t('login.authorization_automatically_log') }}</button>
                                 <!-- #endif -->
                                 <!-- #ifdef MP-ALIPAY -->
-                                <button class="margin-left-lg bg-green br-green cr-white round" type="default" size="mini" open-type="getAuthorize" @getAuthorize="get_user_info_event" scope="userInfo">{{ $t('buy.buy.33fugm') }}{{client_text}}{{ $t('login.login.tvl242') }}</button>
+                                <button class="margin-left-lg bg-green br-green cr-white round" type="default" size="mini" open-type="getAuthorize" @getAuthorize="get_user_info_event" scope="userInfo">{{ $t('common.apply') }}{{client_text}}{{ $t('login.authorization_automatically_log') }}</button>
                                 <!-- #endif -->
                             </view>
                         </view>
@@ -322,7 +322,7 @@
                         <view class="bottom-line-exclude">
                             <!-- #ifdef H5 || APP -->
                             <view v-if="(plugins_thirdpartylogin_data || null) != null && (plugins_thirdpartylogin_config || null) != null" class="plugins-thirdpartylogin tc">
-                                <view class="text-size-xs cr-grey-c margin-bottom-main">{{ $t('login.login.9q27d8') }}</view>
+                                <view class="text-size-xs cr-grey-c margin-bottom-main">{{ $t('common.other_login_methods') }}</view>
                                 <view class="flex-row align-c jc-c">
                                     <view v-for="(item, key, index) in plugins_thirdpartylogin_data" :key="index">
                                         <block v-if="index < 3">
@@ -351,7 +351,7 @@
                         </view>
                         <view class="form-content margin-top-xxxl padding-top-xxl">
                             <view class="verify pr margin-vertical-main">
-                                <input type="text" :placeholder="$t('login.login.t3951j')" name="verify" maxlength="4" :value="form_input_image_verify_value" @input="form_input_image_verify_event" />
+                                <input type="text" :placeholder="$t('common.verification_code')" name="verify" maxlength="4" :value="form_input_image_verify_value" @input="form_input_image_verify_event" />
                                 <image v-if="(verify_image_url || null) != null" :src="verify_image_url" class="verify-image pa" mode="aspectFit" :data-type="'user_' + current_opt_form" @tap="image_verify_event"></image>
                             </view>
                             <view class="margin-top-xxxl margin-bottom-xxxl">
@@ -382,10 +382,10 @@
                 </component-popup>
             </block>
             <view v-else class="padding-top-xxxl tc">
-                <view class="cr-red margin-top-xxxl">{{ $t('login.login.pgyv78') }}</view>
-                <view class="cr-grey-c text-size-xs margin-top-xxl">{{ $t('login.login.d76tgh') }}</view>
+                <view class="cr-red margin-top-xxxl">{{ $t('login.there_error_basic_data_automatically_loaded') }}</view>
+                <view class="cr-grey-c text-size-xs margin-top-xxl">{{ $t('login.auto_load_failed_click_load') }}</view>
                 <view class="margin-top-xl">
-                    <button type="default" size="mini" class="br-main cr-white bg-main dis-inline-block padding-left-xxxl padding-right-xxxl padding-top-sm padding-bottom-sm round" @tap="cache_refresh_event">{{ $t('login.login.6fe6ra') }}</button>
+                    <button type="default" size="mini" class="br-main cr-white bg-main dis-inline-block padding-left-xxxl padding-right-xxxl padding-top-sm padding-bottom-sm round" @tap="cache_refresh_event">{{ $t('login.load_basic_data') }}</button>
                 </view>
             </view>
         </view>
@@ -400,9 +400,11 @@
     import componentCommon from '@/components/common/common';
     import componentPopup from '@/components/popup/popup';
     import componentLangSwitch from '@/components/lang-switch/lang-switch';
+    import pluginLocale from './locale/index.js';
     let login_static_url = app.globalData.get_static_url('thirdpartylogin', true) + 'icon/';
 
     export default {
+        mixins: [pluginLocale],
         data() {
             return {
                 // 实际提交的语言字段
@@ -542,21 +544,21 @@
             set_resources_data() {
                 this.setData({
                     current_opt_type_title: {
-                        auth: this.$t('login.login.jw378f'),
-                        bind: this.$t('login.login.np9177'),
-                        bind_verify: this.$t('login.login.np9177'),
-                        bind_email: this.$t('login.login.tgsa4d'),
-                        login_username: this.$t('login.login.725312'),
-                        login_sms: this.$t('login.login.158yg2'),
-                        login_email: this.$t('login.login.r329eu'),
-                        reg_username: this.$t('login.login.39hn6v'),
-                        reg_sms: this.$t('login.login.z13km0'),
-                        reg_email: this.$t('login.login.jc0w0o'),
-                        forget: this.$t('login.login.8tmyuc'),
-                        success: this.$t('login.login.5p23c6'),
-                        bind_platform: this.$t('login.login.876tdf'),
+                        auth: this.$t('common.authorized_user_information'),
+                        bind: this.$t('common.bind_phone'),
+                        bind_verify: this.$t('common.bind_phone'),
+                        bind_email: this.$t('common.bind_email'),
+                        login_username: this.$t('login.account_password_login'),
+                        login_sms: this.$t('login.login_mobile_verification_code'),
+                        login_email: this.$t('login.email_verification_code_login'),
+                        reg_username: this.$t('login.account_password_registration'),
+                        reg_sms: this.$t('login.mobile_verification_code_registration'),
+                        reg_email: this.$t('login.email_verification_code_registration'),
+                        forget: this.$t('login.password_retrieval'),
+                        success: this.$t('login.login_successful'),
+                        bind_platform: this.$t('login.bind_account'),
                     },
-                    verify_submit_text: this.$t('login.login.s665h5'),
+                    verify_submit_text: this.$t('common.obtain_verification_code'),
                     client_text: this.$t('client.'+this.client_value),
                 });
             },
@@ -689,13 +691,13 @@
             get_user_info_event(e) {
                 // 是否已同意协议
                 if (!this.agreement_status) {
-                    app.globalData.showToast(this.$t('login.login.btu2c1'));
+                    app.globalData.showToast(this.$t('login.agree_agreement_first'));
                     return false;
                 }
 
                 // #ifdef MP-WEIXIN
                 uni.getUserProfile({
-                    desc: this.$t('login.login.no8ts6'),
+                    desc: this.$t('login.used_improve_member_info'),
                     lang: 'zh_CN',
                     success: (res) => {
                         this.user_auth_code(res.userInfo);
@@ -756,7 +758,7 @@
                 if ((auth_data || null) != null) {
                     app.globalData.user_auth_login(this, 'user_auth_back_event', null, auth_data);
                 } else {
-                    app.globalData.showToast(this.$t('login.login.3nmrg2'));
+                    app.globalData.showToast(this.$t('common.privilege_grant_failed'));
                 }
             },
 
@@ -821,20 +823,20 @@
                 // 手机号码验证：手机登录、手机注册、手机绑定
                 if (this.current_opt_type == 'login_sms' || this.current_opt_type == 'reg_sms' || this.current_opt_type == 'bind') {
                     if ((this.form_input_mobile_value || null) == null) {
-                        app.globalData.showToast(this.$t('login.login.4c5n8o'));
+                        app.globalData.showToast(this.$t('login.fill_phone_number'));
                         return false;
                     }
                 }
                 // 邮箱验证：邮箱登录、邮箱注册
                 if (this.current_opt_type == 'login_email' || this.current_opt_type == 'reg_email' || this.current_opt_type == 'bind_email') {
                     if ((this.form_input_email_value || null) == null) {
-                        app.globalData.showToast(this.$t('login.login.xak8g1'));
+                        app.globalData.showToast(this.$t('login.fill_email_address'));
                         return false;
                     }
                 }
                 // 密码找回：邮箱或手机
                 if (this.current_opt_type == 'forget' && (this.form_input_accounts_value || null) == null) {
-                    app.globalData.showToast(this.$t('login.login.ku05ty'));
+                    app.globalData.showToast(this.$t('login.fill_phone_email_address'));
                     return false;
                 }
                 // 是否开启图片验证码、绑定操作不使用图片验证码
@@ -857,7 +859,7 @@
                 if (this.current_opt_form != 'bind' && this.current_opt_form != 'bind_verify' && this.current_opt_form != 'bind_email') {
                     if (this.common_img_verify_state == 1) {
                         if ((this.form_input_image_verify_value || null) == null || this.form_input_image_verify_value.length < 4) {
-                            app.globalData.showToast(this.$t('login.login.7r5h37'));
+                            app.globalData.showToast(this.$t('login.enter_valid_verification_code'));
                             return false;
                         }
                     }
@@ -874,7 +876,7 @@
                             email: this.form_input_email_value || '',
                         };
                         if ((post_data.email || null) == null) {
-                            app.globalData.showToast(this.$t('login.login.xak8g1'));
+                            app.globalData.showToast(this.$t('login.fill_email_address'));
                             return false;
                         }
                     } else if (this.current_opt_form == 'bind_verify') {
@@ -883,7 +885,7 @@
                             mobile: this.form_input_mobile_value || '',
                         };
                         if ((post_data.mobile || null) == null) {
-                            app.globalData.showToast(this.$t('login.login.4c5n8o'));
+                            app.globalData.showToast(this.$t('login.fill_phone_number'));
                             return false;
                         }
                     }
@@ -900,7 +902,7 @@
                     }
                     var accounts = (this.current_opt_type == 'bind_verify' || this.current_opt_type == 'login_sms' || this.current_opt_type == 'reg_sms' ? this.form_input_mobile_value : this.current_opt_type == 'forget' ? this.form_input_accounts_value : this.form_input_email_value) || null;
                     if (accounts == null) {
-                        app.globalData.showToast(this.$t('login.login.24mvbh'));
+                        app.globalData.showToast(this.$t('login.fill_account_number'));
                         return false;
                     }
                     var post_data = {
@@ -944,19 +946,19 @@
                                 if (temp_time <= 1) {
                                     clearInterval(self.temp_clear_time);
                                     self.setData({
-                                        verify_submit_text: self.$t('login.login.s665h5'),
+                                        verify_submit_text: self.$t('common.obtain_verification_code'),
                                         verify_disabled: false,
                                     });
                                 } else {
                                     temp_time--;
                                     self.setData({
-                                        verify_submit_text: self.$t('login.login.n24i5u') + temp_time + self.$t('login.login.4306xr'),
+                                        verify_submit_text: self.$t('common.remain') + temp_time + self.$t('common.second'),
                                     });
                                 }
                             }, 1000);
                         } else {
                             this.setData({
-                                verify_submit_text: this.$t('login.login.s665h5'),
+                                verify_submit_text: this.$t('common.obtain_verification_code'),
                                 verify_loading: false,
                                 verify_disabled: false,
                                 form_input_image_verify_value: '',
@@ -968,7 +970,7 @@
                     fail: () => {
                         uni.hideLoading();
                         this.setData({
-                            verify_submit_text: this.$t('login.login.s665h5'),
+                            verify_submit_text: this.$t('common.obtain_verification_code'),
                             verify_loading: false,
                             verify_disabled: false,
                             form_input_image_verify_value: '',
@@ -981,8 +983,8 @@
             form_submit_bind_mobile(e) {
                 // 数据验证
                 var validation = [
-                    { fields: 'mobile', msg: this.$t('login.login.4c5n8o') },
-                    { fields: 'verify', msg: this.$t('login.login.01xmab') },
+                    { fields: 'mobile', msg: this.$t('login.fill_phone_number') },
+                    { fields: 'verify', msg: this.$t('login.fill_verification_code') },
                 ];
                 this.formBind(e, validation, app.globalData.get_request_url('appmobilebind', 'user'));
             },
@@ -990,8 +992,8 @@
             form_submit_bind_email(e) {
                 // 数据验证
                 var validation = [
-                    { fields: 'email', msg: this.$t('login.login.xak8g1') },
-                    { fields: 'verify', msg: this.$t('login.login.01xmab') },
+                    { fields: 'email', msg: this.$t('login.fill_email_address') },
+                    { fields: 'verify', msg: this.$t('login.fill_verification_code') },
                 ];
                 this.formBind(e, validation, app.globalData.get_request_url('appemailbind', 'user'));
             },
@@ -1014,7 +1016,7 @@
                 e.detail.value[field_unionid] = user[field_unionid] || '';
                 // #endif
                 // #ifdef MP
-                validation.push({ fields: field_openid, msg: this.$t('login.login.prqvf1') });
+                validation.push({ fields: field_openid, msg: this.$t('login.authorization_id_cannot_empty') });
                 // #endif
                 if (app.globalData.fields_check(e.detail.value, validation)) {
                     uni.showLoading({
@@ -1095,23 +1097,23 @@
             form_submit_login(e) {
                 // 是否已同意协议
                 if (!this.agreement_status) {
-                    app.globalData.showToast(this.$t('login.login.btu2c1'));
+                    app.globalData.showToast(this.$t('login.agree_agreement_first'));
                     return false;
                 }
                 // 数据验证
                 var validation = [];
                 if (this.current_opt_type == 'login_sms') {
-                    validation.push({ fields: 'accounts', msg: this.$t('login.login.yvj88j') });
+                    validation.push({ fields: 'accounts', msg: this.$t('login.enter_phone_number') });
                 }
                 if (this.current_opt_type == 'login_email') {
-                    validation.push({ fields: 'accounts', msg: this.$t('login.login.yo6x3p') });
+                    validation.push({ fields: 'accounts', msg: this.$t('login.enter_email_address') });
                 }
                 if (this.current_opt_type == 'login_username') {
-                    validation.push({ fields: 'accounts', msg: this.$t('login.login.n7vh75') });
-                    validation.push({ fields: 'pwd', msg: this.$t('login.login.277w03') });
+                    validation.push({ fields: 'accounts', msg: this.$t('login.enter_account') });
+                    validation.push({ fields: 'pwd', msg: this.$t('common.enter_password') });
                 }
                 if (this.current_opt_type == 'login_sms' || this.current_opt_type == 'login_email' || (this.current_opt_type == 'login_username' && this.home_user_login_img_verify_state == 1)) {
-                    validation.push({ fields: 'verify', msg: this.$t('login.login.cesl5d') });
+                    validation.push({ fields: 'verify', msg: this.$t('common.please_input_verify_code') });
                 }
                 if (app.globalData.fields_check(e.detail.value, validation)) {
                     // 登录方式
@@ -1135,7 +1137,7 @@
 
                     // 网络请求
                     uni.showLoading({
-                        title: this.$t('login.login.c5wa4u'),
+                        title: this.$t('login.logging'),
                     });
                     this.setData({
                         form_submit_loading: true,
@@ -1163,23 +1165,23 @@
             form_submit_reg(e) {
                 // 是否已同意协议
                 if (!this.agreement_status) {
-                    app.globalData.showToast(this.$t('login.login.btu2c1'));
+                    app.globalData.showToast(this.$t('login.agree_agreement_first'));
                     return false;
                 }
                 // 数据验证
                 var validation = [];
                 if (this.current_opt_type == 'reg_sms') {
-                    validation.push({ fields: 'accounts', msg: this.$t('login.login.yvj88j') });
+                    validation.push({ fields: 'accounts', msg: this.$t('login.enter_phone_number') });
                 }
                 if (this.current_opt_type == 'reg_email') {
-                    validation.push({ fields: 'accounts', msg: this.$t('login.login.yo6x3p') });
+                    validation.push({ fields: 'accounts', msg: this.$t('login.enter_email_address') });
                 }
                 if (this.current_opt_type == 'reg_username') {
-                    validation.push({ fields: 'accounts', msg: this.$t('login.login.n7vh75') });
-                    validation.push({ fields: 'pwd', msg: this.$t('login.login.277w03') });
+                    validation.push({ fields: 'accounts', msg: this.$t('login.enter_account') });
+                    validation.push({ fields: 'pwd', msg: this.$t('common.enter_password') });
                 }
                 if (this.current_opt_type == 'reg_sms' || this.current_opt_type == 'reg_email' || (this.current_opt_type == 'reg_username' && this.home_user_register_img_verify_state == 1)) {
-                    validation.push({ fields: 'verify', msg: this.$t('login.login.cesl5d') });
+                    validation.push({ fields: 'verify', msg: this.$t('common.please_input_verify_code') });
                 }
                 if (app.globalData.fields_check(e.detail.value, validation)) {
                     // 注册方式
@@ -1204,7 +1206,7 @@
 
                     // 网络请求
                     uni.showLoading({
-                        title: this.$t('login.login.g30ew7'),
+                        title: this.$t('login.registering'),
                     });
                     this.setData({
                         form_submit_loading: true,
@@ -1232,9 +1234,9 @@
             form_submit_forget(e) {
                 // 数据验证
                 var validation = [
-                    { fields: 'accounts', msg: this.$t('login.login.h0515x') },
-                    { fields: 'verify', msg: this.$t('login.login.cesl5d') },
-                    { fields: 'pwd', msg: this.$t('login.login.wysg7k') },
+                    { fields: 'accounts', msg: this.$t('login.enter_phone_email_address') },
+                    { fields: 'verify', msg: this.$t('common.please_input_verify_code') },
+                    { fields: 'pwd', msg: this.$t('login.set_password') },
                 ];
                 if (app.globalData.fields_check(e.detail.value, validation)) {
                     // 网络请求
@@ -1337,7 +1339,7 @@
             // 成功后处理
             success_back_handle(res) {
                 var self = this;
-                var msg = (this.plugins_thirdpartylogin_is_call_app == 1) ? this.$t('login.login.87yui2') : res.data.msg;
+                var msg = (this.plugins_thirdpartylogin_is_call_app == 1) ? this.$t('login.bind_successful') : res.data.msg;
                 app.globalData.showToast(msg, 'success');
                 var event_callback = this.params.event_callback || null;
                 setTimeout(function () {
@@ -1362,7 +1364,7 @@
             agreement_event(e) {
                 var value = e.currentTarget.dataset.value || null;
                 if (value == null) {
-                    app.globalData.showToast(this.$t('login.login.4wc3hr'));
+                    app.globalData.showToast(this.$t('common.incorrect_protocol_type'));
                     return false;
                 }
 
@@ -1370,7 +1372,7 @@
                 var key = 'agreement_' + value + '_url';
                 var url = app.globalData.get_config('config.' + key) || null;
                 if (url == null) {
-                    app.globalData.showToast(this.$t('login.login.x0nxxf'));
+                    app.globalData.showToast(this.$t('common.protocol_url_address_incorrect'));
                     return false;
                 }
 
@@ -1512,7 +1514,7 @@
             plugins_thirdpartylogin_event(e) {
                 // 是否已同意协议
                 if (!this.agreement_status) {
-                    app.globalData.showToast(this.$t('login.login.btu2c1'));
+                    app.globalData.showToast(this.$t('login.agree_agreement_first'));
                     return false;
                 }
                 this.setData({
@@ -1588,7 +1590,7 @@
                         break;
             
                     default:
-                        app.globalData.showToast(type + this.$t('login.login.li9573'));
+                        app.globalData.showToast(type + this.$t('login.login_method_not_processed'));
                 }
                 // #endif
             },
@@ -1675,7 +1677,7 @@
             popup_login_open_event() {
                 // 是否已同意协议
                 if (!this.agreement_status) {
-                    app.globalData.showToast(this.$t('login.login.btu2c1'));
+                    app.globalData.showToast(this.$t('login.agree_agreement_first'));
                     return false;
                 }
                 this.setData({

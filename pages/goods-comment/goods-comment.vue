@@ -9,7 +9,7 @@
             <view v-if="goods_score != null" class="score-container oh padding-main">
                 <view class="bg-white border-radius-main padding-main flex-row jc-sb align-c">
                     <view class="score tc">
-                        <view class="cr-base">{{$t('goods-comment.goods-comment.dfmjxd')}}</view>
+                        <view class="cr-base">{{$t('goods-comment.rate')}}</view>
                         <view class="value cr-main">{{ goods_score.avg || "0.0" }}</view>
                     </view>
                     <view class="progress tc border-radius-main flex-1 flex-width flex-row">
@@ -18,7 +18,7 @@
                                 <view v-if="item.portion > 0" :class="item.bar_class" :style="item.bar_style">{{ item.name }}</view>
                             </block>
                         </block>
-                        <text v-else class="cr-grey">{{$t('goods-comment.goods-comment.1qh8s8')}}</text>
+                        <text v-else class="cr-grey">{{$t('goods-comment.there_currently_rating_available')}}</text>
                     </view>
                 </view>
             </view>
@@ -45,9 +45,11 @@
     import componentNoData from "@/components/no-data/no-data";
     import componentBottomLine from "@/components/bottom-line/bottom-line";
     import componentGoodsComments from "@/pages/goods-detail/components/goods-comments/goods-comments";
+    import pluginLocale from './locale/index.js';
 
     var static_url = app.globalData.get_static_url("home");
     export default {
+        mixins: [pluginLocale],
         data() {
             return {
                 theme_view: app.globalData.get_theme_value_view(),

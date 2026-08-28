@@ -7,15 +7,15 @@
                     <view class="pa right-0"><iconfont :name="popup_accounts_status ? 'icon-arrow-top' : 'icon-arrow-bottom'" size="24rpx"></iconfont></view>
                 </view>
                 <view class="flex-shrink flex-row align-c margin-right-xxxl padding-right-xl pr" @tap="popup_operate_type_open_event">
-                    <view>{{ operate_type_name !== null && operate_type_name !== $t('common.all') ? operate_type_name : $t('wallet-log-detail.wallet-log-detail.tdf3wo') }}</view>
+                    <view>{{ operate_type_name !== null && operate_type_name !== $t('common.all') ? operate_type_name : $t('common.operation_type') }}</view>
                     <view class="pa right-0"><iconfont :name="popup_operate_type_status ? 'icon-arrow-top' : 'icon-arrow-bottom'" size="24rpx"></iconfont></view>
                 </view>
                 <view class="flex-shrink flex-row align-c margin-right-xxxl padding-right-xl pr" @tap="popup_business_type_open_event">
-                    <view>{{ business_type_name !== null && business_type_name !== $t('common.all') ? business_type_name : $t('invoice.invoice.l3832z') }}</view>
+                    <view>{{ business_type_name !== null && business_type_name !== $t('common.all') ? business_type_name : $t('common.business_type') }}</view>
                     <view class="pa right-0"><iconfont :name="popup_business_type_status ? 'icon-arrow-top' : 'icon-arrow-bottom'" size="24rpx"></iconfont></view>
                 </view>
                 <view class="flex-shrink flex-row align-c padding-right-xl pr" @tap="popup_coin_type_open_event">
-                    <view>{{ coin_type_name !== null && coin_type_name !== $t('common.all') ? coin_type_name : $t('transaction-list.transaction-list.cu39n5') }}</view>
+                    <view>{{ coin_type_name !== null && coin_type_name !== $t('common.all') ? coin_type_name : $t('transaction-list.currency_type_2') }}</view>
                     <view class="pa right-0"><iconfont :name="popup_coin_type_status ? 'icon-arrow-top' : 'icon-arrow-bottom'" size="24rpx"></iconfont></view>
                 </view>
             </view>
@@ -29,27 +29,27 @@
                             </view>
                             <view class="convert-group-row">
                                 <view class="margin-bottom-sm flex-row">
-                                    <text class="cr-grey-9 title">{{$t('transaction-list.transaction-list.1mf6wj')}}</text>
+                                    <text class="cr-grey-9 title">{{$t('transaction-list.currency_type')}}</text>
                                     <text class="fw-b warp">{{ item.coin_type_name }}</text>
                                 </view>
                                 <view class="margin-bottom-sm flex-row">
-                                    <text class="cr-grey-9 title">{{$t('detail.detail.4w20tq')}}</text>
+                                    <text class="cr-grey-9 title">{{$t('detail.operation_type')}}</text>
                                     <text class="fw-b warp">{{ item.operate_type_name }}</text>
                                 </view>
                                 <view class="margin-bottom-sm flex-row">
-                                    <text class="cr-grey-9 title">{{$t('transaction-list.transaction-list.2w1o1l')}}</text>
+                                    <text class="cr-grey-9 title">{{$t('transaction-list.operation_currency')}}</text>
                                     <text class="fw-b warp">{{ item.operate_coin }}</text>
                                 </view>
                                 <view class="margin-bottom-sm flex-row">
-                                    <text class="cr-grey-9 title">{{$t('transaction-list.transaction-list.jgx0cf')}}</text>
+                                    <text class="cr-grey-9 title">{{$t('transaction-list.original_currency')}}</text>
                                     <text class="fw-b warp">{{ item.original_coin }}</text>
                                 </view>
                                 <view class="margin-bottom-sm flex-row">
-                                    <text class="cr-grey-9 title">{{$t('convert-list.convert-list.6347mw')}}</text>
+                                    <text class="cr-grey-9 title">{{$t('convert-list.latest_currency')}}</text>
                                     <text class="fw-b warp">{{ item.latest_coin }}</text>
                                 </view>
                                 <view class="flex-row">
-                                    <text class="cr-grey-9 title">{{$t('transaction-list.transaction-list.7cv11k')}}</text>
+                                    <text class="cr-grey-9 title">{{$t('transaction-list.description')}}</text>
                                     <text class="fw-b warp">{{ item.msg }}</text>
                                 </view>
                             </view>
@@ -66,7 +66,7 @@
             <!-- 账户 -->
             <component-popup :propShow="popup_accounts_status" propPosition="top" :propTop="popup_top_height + 'px'" @onclose="popup_accounts_close_event">
                 <view class="padding-vertical-lg">
-                    <view class="padding-horizontal-main text-size-xs">{{$t('cash-list.cash-list.s7l616')}}</view>
+                    <view class="padding-horizontal-main text-size-xs">{{$t('cash-list.account_type')}}</view>
                     <view class="popup_accounts_container padding-sm flex-row flex-wrap align-c tc text-size-md">
                         <view class="flex-width-half-half">
                             <view class="item margin-sm padding-vertical-sm" :class="accounts_list_index == null ? 'cr-main bg-main-light' : ''" :data-name="$t('common.all')" :data-value="null" :data-index="null" @tap="accounts_list_event">{{$t('common.all')}}</view>
@@ -76,7 +76,7 @@
                         </view>
                     </view>
                     <view class="tc padding-top-lg br-t" @tap="popup_accounts_close_event">
-                        <text class="padding-right-sm">{{ $t('nav-more.nav-more.h9g4b1') }}</text>
+                        <text class="padding-right-sm">{{ $t('common.click_collapse') }}</text>
                         <iconfont name="icon-arrow-top" color="#ccc"></iconfont>
                     </view>
                 </view>
@@ -84,7 +84,7 @@
             <!-- 操作类型 -->
             <component-popup :propShow="popup_operate_type_status" propPosition="top" :propTop="popup_top_height + 'px'" @onclose="popup_operate_type_close_event">
                 <view class="padding-vertical-lg">
-                    <view class="padding-horizontal-main text-size-xs">{{$t('wallet-log-detail.wallet-log-detail.tdf3wo')}}</view>
+                    <view class="padding-horizontal-main text-size-xs">{{$t('common.operation_type')}}</view>
                     <view class="popup_accounts_container padding-sm flex-row flex-wrap align-c tc text-size-md">
                         <view class="flex-width-half-half">
                             <view class="item margin-sm padding-vertical-sm" :class="operate_type_list_index == null ? 'cr-main bg-main-light' : ''" :data-name="$t('common.all')" :data-value="null" :data-index="null" @tap="operate_type_list_event">{{$t('common.all')}}</view>
@@ -94,7 +94,7 @@
                         </view>
                     </view>
                     <view class="tc padding-top-lg br-t" @tap="popup_operate_type_close_event">
-                        <text class="padding-right-sm">{{ $t('nav-more.nav-more.h9g4b1') }}</text>
+                        <text class="padding-right-sm">{{ $t('common.click_collapse') }}</text>
                         <iconfont name="icon-arrow-top" color="#ccc"></iconfont>
                     </view>
                 </view>
@@ -102,7 +102,7 @@
             <!-- 业务类型 -->
             <component-popup :propShow="popup_business_type_status" propPosition="top" :propTop="popup_top_height + 'px'" @onclose="popup_business_type_close_event">
                 <view class="padding-vertical-lg">
-                    <view class="padding-horizontal-main text-size-xs">{{$t('invoice.invoice.l3832z')}}</view>
+                    <view class="padding-horizontal-main text-size-xs">{{$t('common.business_type')}}</view>
                     <view class="popup_accounts_container padding-sm flex-row flex-wrap align-c tc text-size-md">
                         <view class="flex-width-half-half">
                             <view class="item margin-sm padding-vertical-sm" :class="business_type_list_index == null ? 'cr-main bg-main-light' : ''" :data-name="$t('common.all')" :data-value="null" :data-index="null" @tap="business_type_list_event">{{$t('common.all')}}</view>
@@ -112,7 +112,7 @@
                         </view>
                     </view>
                     <view class="tc padding-top-lg br-t" @tap="popup_business_type_close_event">
-                        <text class="padding-right-sm">{{ $t('nav-more.nav-more.h9g4b1') }}</text>
+                        <text class="padding-right-sm">{{ $t('common.click_collapse') }}</text>
                         <iconfont name="icon-arrow-top" color="#ccc"></iconfont>
                     </view>
                 </view>
@@ -120,7 +120,7 @@
             <!-- 币类型 -->
             <component-popup :propShow="popup_coin_type_status" propPosition="top" :propTop="popup_top_height + 'px'" @onclose="popup_coin_type_close_event">
                 <view class="padding-vertical-lg">
-                    <view class="padding-horizontal-main text-size-xs">{{$t('transaction-list.transaction-list.cu39n5')}}</view>
+                    <view class="padding-horizontal-main text-size-xs">{{$t('transaction-list.currency_type_2')}}</view>
                     <view class="popup_accounts_container padding-sm flex-row flex-wrap align-c tc text-size-md">
                         <view class="flex-width-half-half">
                             <view class="item margin-sm padding-vertical-sm" :class="coin_type_list_index == null ? 'cr-main bg-main-light' : ''" :data-name="$t('common.all')" :data-value="null" :data-index="null" @tap="coin_type_list_event">{{$t('common.all')}}</view>
@@ -130,7 +130,7 @@
                         </view>
                     </view>
                     <view class="tc padding-top-lg br-t" @tap="popup_coin_type_close_event">
-                        <text class="padding-right-sm">{{ $t('nav-more.nav-more.h9g4b1') }}</text>
+                        <text class="padding-right-sm">{{ $t('common.click_collapse') }}</text>
                         <iconfont name="icon-arrow-top" color="#ccc"></iconfont>
                     </view>
                 </view>
@@ -147,6 +147,7 @@
     import componentNoData from '@/components/no-data/no-data';
     import componentPopup from '@/components/popup/popup';
     import componentBottomLine from '@/components/bottom-line/bottom-line';
+    import pluginLocale from '../locale/index.js';
     var accounts_static_url = app.globalData.get_static_url('coin', true) + 'app/';
     // 状态栏高度
     var bar_height = parseInt(app.globalData.get_system_info('statusBarHeight', 0, true));
@@ -154,6 +155,7 @@
     bar_height = 0;
     // #endif
     export default {
+        mixins: [pluginLocale],
         data() {
             return {
                 theme_view: app.globalData.get_theme_value_view(),

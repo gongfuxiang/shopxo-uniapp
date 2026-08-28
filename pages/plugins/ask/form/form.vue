@@ -9,11 +9,11 @@
                     </view>
                 </view>
                 <view class="form-gorup border-radius-main margin-bottom-main">
-                    <view class="margin-bottom-sm">{{ $t('ask.ask.question_content') }}<text class="form-group-tips-must">*</text></view>
+                    <view class="margin-bottom-sm">{{ $t('ask.question_content') }}<text class="form-group-tips-must">*</text></view>
                     <sp-editor @init="initEditor" @input="rich_text_event" @upinImage="up_in_image_event"></sp-editor>
                 </view>
                 <view class="form-gorup border-radius-main oh flex-row jc-sb align-c margin-bottom-main">
-                    <view class="">{{ $t('ask.ask.question_category') }}</view>
+                    <view class="">{{ $t('ask.question_category') }}</view>
                     <view class="flex-row jc-e align-c flex-1 flex-width">
                         <picker @change="select_change_event" :value="category_id_index" :range="ask_category_list" range-key="name" name="category_id" data-field="category_id" class="margin-right-sm wh-auto tr">
                             <view class="uni-input cr-base picker">
@@ -26,13 +26,13 @@
                     </view>
                 </view>
                 <view v-if="is_show_email_notice == 1" class="form-gorup border-radius-main oh flex-row jc-sb align-c margin-bottom-main">
-                    <view class="">{{ $t('ask.ask.email_notice') }}</view>
+                    <view class="">{{ $t('ask.email_notice') }}</view>
                     <view class="flex-row align-c flex-1 flex-width">
                         <input type="text" name="email_notice" :value="data.email_notice" placeholder-class="cr-grey-9 tr" class="cr-base tr" :placeholder="$t('common.please_input_email')" />
                     </view>
                 </view>
                 <view v-if="is_show_mobile_notice == 1" class="form-gorup border-radius-main oh flex-row jc-sb align-c margin-bottom-main">
-                    <view class="form-gorup-title">{{ $t('ask.ask.mobile_notice') }}</view>
+                    <view class="form-gorup-title">{{ $t('ask.mobile_notice') }}</view>
                     <view class="flex-row align-c flex-1 flex-width">
                         <input type="text" name="mobile_notice" :value="data.mobile_notice" maxlength="16" placeholder-class="cr-grey-9 tr" class="cr-base tr" :placeholder="$t('common.please_input_mobile')" />
                     </view>
@@ -42,7 +42,7 @@
                     <checkbox-group @change="is_anonymous_change_event">
                         <label class="cr-grey-9">
                             <checkbox value="1" :checked="false" :color="theme_color" style="transform: scale(0.7)" />
-                            <text class="pr top-xs">{{ $t('form.form.2f52v3') }}</text>
+                            <text class="pr top-xs">{{ $t('common.anonymous_publishing') }}</text>
                         </label>
                     </checkbox-group>
                 </view> -->
@@ -67,15 +67,17 @@
     import componentCommon from '@/components/common/common';
     import componentNoData from '@/components/no-data/no-data';
     import componentUpload from '@/components/upload/upload';
+    import pluginLocale from '../locale/index.js';
     const theme_color = app.globalData.get_theme_color();
 
     export default {
+        mixins: [pluginLocale],
         data() {
             return {
                 theme_view: app.globalData.get_theme_value_view(),
                 theme_color: theme_color,
                 data_list_loding_status: 1,
-                data_list_loding_msg: this.$t('form.form.bniyyt'),
+                data_list_loding_msg: this.$t('common.handling_errors'),
                 bottom_fixed_style: '',
                 params: {},
                 form_submit_loading: false,
@@ -134,7 +136,7 @@
                     // 提示错误
                     this.setData({
                         data_list_loding_status: 2,
-                        data_list_loding_msg: this.$t('form.form.8l3ul5'),
+                        data_list_loding_msg: this.$t('common.user_not_logged'),
                     });
                 }
             },
@@ -185,8 +187,8 @@
             formSubmit(e) {
                 // 数据验证
                 var validation = [
-                    { fields: 'content', msg: this.$t('form.form.5v5bjs') },
-                    { fields: 'title', msg: this.$t('form.form.5v5bjs') },
+                    { fields: 'content', msg: this.$t('form.fill_content') },
+                    { fields: 'title', msg: this.$t('form.fill_content') },
                 ];
                 const new_data = {
                     goods_id: this.params.goods_id || 0,
@@ -266,7 +268,7 @@
                 // 使用 uniCloud.uploadFile 上传图片的示例方法（可适用多选上传）
                 tempFiles.forEach(async (item) => {
                     uni.showLoading({
-                        title: self.$t('form.form.2e5rv3'),
+                        title: self.$t('common.uploading_wait_moment'),
                         mask: true,
                     });
                     await uni.uploadFile({

@@ -51,8 +51,10 @@
     import componentCommon from '@/components/common/common';
     import componentNoData from "@/components/no-data/no-data";
     import componentBottomLine from "@/components/bottom-line/bottom-line";
+    import pluginLocale from '../locale/index.js';
 
     export default {
+        mixins: [pluginLocale],
         data() {
             return {
                 theme_view: app.globalData.get_theme_value_view(),
@@ -65,8 +67,8 @@
                 data_is_loading: 0,
                 params: null,
                 content_list: [
-                    { name: this.$t('visit-list.visit-list.q76du4'), field: "content" },
-                    { name: this.$t('visit-list.visit-list.4z367h'), field: "images"},
+                    { name: this.$t('visit-list.visit_description'), field: "content" },
+                    { name: this.$t('visit-list.visiting_pictures'), field: "images"},
                     { name: this.$t('common.upd_time'), field: "upd_time" },
                 ],
             };
@@ -247,7 +249,7 @@
                 var temp_data = this.data_list;
                 var data = temp_data[index] || null;
                 if (data == null) {
-                    app.globalData.showToast(this.$t('extraction-switch.extraction-switch.613b58'));
+                    app.globalData.showToast(this.$t('common.extraction_switch_data_error'));
                     return false;
                 }
                 uni.showModal({

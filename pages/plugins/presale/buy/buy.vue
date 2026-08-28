@@ -63,11 +63,11 @@
                     <view class="bottom-line-exclude">
                         <view class="item oh round flex-row jc-sb align-c br-top-shadow bg-white padding-vertical-sm">
                             <view class="nav-base single-text padding-left-main fl">
-                                <text>{{ $t('buy.buy.wx78ju') }}</text>
+                                <text>{{ $t('common.buy_total') }}</text>
                                 <text class="sales-price">{{ currency_symbol }}{{ buy_base.total_deposit_price }}</text>
                             </view>
                             <view class="nav-submit padding-horizontal-main fr">
-                                <button class="btn bg-main cr-white round text-size-md" type="default" @tap="buy_submit_event" :disabled="buy_submit_disabled_status" hover-class="none">{{ $t('buy.buy.4884hk') }}</button>
+                                <button class="btn bg-main cr-white round text-size-md" type="default" @tap="buy_submit_event" :disabled="buy_submit_disabled_status" hover-class="none">{{ $t('common.place_order') }}</button>
                             </view>
                         </view>
                     </view>
@@ -91,9 +91,11 @@
     import componentCommon from '@/components/common/common';
     import componentNoData from '@/components/no-data/no-data';
     import componentPayment from '@/components/payment/payment';
+    import pluginLocale from '../locale/index.js';
 
     var common_static_url = app.globalData.get_static_url('common');
     export default {
+        mixins: [pluginLocale],
         data() {
             return {
                 theme_view: app.globalData.get_theme_value_view(),
@@ -120,7 +122,7 @@
                 qrcode_url: '',
                 // 前往支付页面携带的参数
                 to_page_back: {
-                    title: this.$t('buy.buy.718tux'),
+                    title: this.$t('common.enter_my_order'),
                     page: '/pages/plugins/presale/order/order',
                 },
                 // 支付失败跳转的页面
@@ -208,7 +210,7 @@
                 if (this.params == null) {
                     this.setData({
                         data_list_loding_status: 2,
-                        data_list_loding_msg: this.$t('buy.buy.p7e91u'),
+                        data_list_loding_msg: this.$t('common.incorrect_product_info'),
                     });
                     uni.stopPullDownRefresh();
                     return false;
@@ -301,7 +303,7 @@
                 var validation = [
                     {
                         fields: 'payment_id',
-                        msg: this.$t('buy.buy.71kidy'),
+                        msg: this.$t('common.select_payment_method'),
                     }
                 ];
                 if (!app.globalData.fields_check(data, validation)) {

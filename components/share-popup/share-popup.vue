@@ -11,14 +11,14 @@
                     <!-- #ifdef MP-ALIPAY -->
                     <view class="share-items oh cp" @tap="share_base_event">
                         <image class="image" :src="common_static_url + 'share-user-icon.png'" mode="scaleToFill"></image>
-                        <text class="cr-grey text-size-xs single-text">{{ $t('share-popup.share-popup.h04xiy') }}</text>
+                        <text class="cr-grey text-size-xs single-text">{{ $t('common.one_click_sharing_friends_group_chat') }}</text>
                     </view>
                     <!-- #endif -->
                     <!-- #ifdef MP-WEIXIN || MP-BAIDU || MP-QQ || MP-TOUTIAO || MP-KUAISHOU -->
                     <view class="share-items oh cp">
                         <button class="btn dis-block br-0 ht-auto" type="default" size="mini" open-type="share" hover-class="none" @tap="popup_close_event">
                             <image class="image" :src="common_static_url + 'share-user-icon.png'" mode="scaleToFill"></image>
-                            <text class="cr-grey text-size-xs single-text">{{ $t('share-popup.share-popup.h04xiy') }}</text>
+                            <text class="cr-grey text-size-xs single-text">{{ $t('common.one_click_sharing_friends_group_chat') }}</text>
                         </button>
                     </view>
                     <!-- #endif -->
@@ -26,33 +26,33 @@
                     <block v-if="is_app_weixin">
                         <view class="share-items oh cp" data-scene="WXSceneSession" data-provider="weixin" @tap="share_app_event">
                             <image class="image" :src="common_static_url + 'share-user-icon.png'" mode="scaleToFill"></image>
-                            <text class="cr-grey text-size-xs single-text">{{ $t('share-popup.share-popup.rhs2c5') }}</text>
+                            <text class="cr-grey text-size-xs single-text">{{ $t('common.one_click_sharing_wechat_friends_group') }}</text>
                         </view>
                         <view class="share-items oh cp" data-scene="WXSceneTimeline" data-provider="weixin" @tap="share_app_event">
                             <image class="image" :src="common_static_url + 'share-friend-icon.png'" mode="scaleToFill"></image>
-                            <text class="cr-grey text-size-xs single-text">{{ $t('share-popup.share-popup.mv9l10') }}</text>
+                            <text class="cr-grey text-size-xs single-text">{{ $t('common.one_click_sharing_wechat_moments') }}</text>
                         </view>
                         <view class="share-items oh cp" data-scene="WXSceneFavorite" data-provider="weixin" @tap="share_app_event">
                             <image class="image" :src="common_static_url + 'share-favor-icon.png'" mode="scaleToFill"></image>
-                            <text class="cr-grey text-size-xs single-text">{{ $t('share-popup.share-popup.f08y38') }}</text>
+                            <text class="cr-grey text-size-xs single-text">{{ $t('common.one_click_share_wechat_favorites') }}</text>
                         </view>
                     </block>
                     <block v-if="is_app_qq">
                         <view class="share-items oh cp" data-provider="qq" @tap="share_app_event">
                             <image class="image":src="common_static_url + 'share-qq-icon.png'" mode="scaleToFill"></image>
-                            <text class="cr-grey text-size-xs single-text">{{ $t('share-popup.share-popup.1242w9') }}</text>
+                            <text class="cr-grey text-size-xs single-text">{{ $t('common.one_click_sharing_qq_friends_spaces') }}</text>
                         </view>
                     </block>
                     <!-- #endif -->
                     <!-- #ifdef H5 || APP -->
                     <view class="share-items oh cp" @tap="share_url_copy_event">
                         <image class="image" :src="common_static_url + 'share-url-icon.png'" mode="scaleToFill"></image>
-                        <text class="cr-grey text-size-xs single-text">{{ $t('share-popup.share-popup.1oh013') }}</text>
+                        <text class="cr-grey text-size-xs single-text">{{ $t('common.click_copy_address_share_friends_group') }}</text>
                     </view>
                     <!-- #endif -->
                     <view v-if="is_goods_poster == 1 && (goods_id || 0) != 0" class="share-items oh cp" @tap="poster_event">
                         <image class="image" :src="common_static_url + 'share-poster-icon.png'" mode="scaleToFill"></image>
-                        <text class="cr-grey text-size-xs single-text">{{ $t('share-popup.share-popup.dcp2qu') }}</text>
+                        <text class="cr-grey text-size-xs single-text">{{ $t('common.generate_posters_share_them_social_media') }}</text>
                     </view>
                 </view>
             </view>
@@ -176,7 +176,7 @@
                 var user = app.globalData.get_user_info(this, 'poster_event');
                 if (user != false) {
                     uni.showLoading({
-                        title: this.$t('detail.detail.6xvl35'),
+                        title: this.$t('common.generating'),
                     });
                     uni.request({
                         url: app.globalData.get_request_url('goodsposter', 'distribution', 'distribution'),

@@ -4,7 +4,7 @@
             <view class="padding-horizontal-main padding-top-main">
                 <!-- 发货地址 -->
                 <view v-if="(detail.warehouse_address || null) != null" class="bg-white padding-main border-radius-main spacing-mb">
-                    <view class="br-b padding-bottom-sm fw-b text-size">{{$t('order.order.jhgfd1')}}</view>
+                    <view class="br-b padding-bottom-sm fw-b text-size">{{$t('order.shipping_info')}}</view>
                     <view class="address-base oh margin-top-sm">
                         <text v-if="(detail.warehouse_address.alias || null) != null" class="address-alias round br-main cr-main bg-white margin-right-sm">{{detail.warehouse_address.alias}}</text>
                         <text data-event="copy" :data-value="detail.warehouse_address.name" @tap="text_event">{{detail.warehouse_address.name}}</text>
@@ -14,7 +14,7 @@
                         <image class="icon fl" :src="common_static_url+'map-icon.png'" mode="widthFix"></image>
                         <view class="text fr">
                             <text data-event="copy" :data-value="detail.warehouse_address.address_info" @tap="text_event">{{detail.warehouse_address.address_info}}</text>
-                            <text v-if="(detail.warehouse_address.lng || 0) != 0 && (detail.warehouse_address.lat || 0) != 0" class="address-map-submit cr-base br round bg-white margin-left-sm text-size-xs" @tap="address_map_event">{{$t('user-order-detail.user-order-detail.7lp6gw')}}</text>
+                            <text v-if="(detail.warehouse_address.lng || 0) != 0 && (detail.warehouse_address.lat || 0) != 0" class="address-map-submit cr-base br round bg-white margin-left-sm text-size-xs" @tap="address_map_event">{{$t('common.view_location')}}</text>
                         </view>
                     </view>
                     <view class="address-divider margin-bottom-sm"></view>
@@ -22,7 +22,7 @@
                 
                 <!-- 收货地址 -->
                 <view v-if="(detail.user_address || null) != null" class="bg-white padding-main border-radius-main spacing-mb">
-                    <view class="br-b padding-bottom-sm fw-b text-size">{{$t('order.order.hbvwq4')}}</view>
+                    <view class="br-b padding-bottom-sm fw-b text-size">{{$t('order.receipt_info')}}</view>
                     <view class="address-base oh margin-top-sm">
                         <text v-if="(detail.user_address.alias || null) != null" class="address-alias round br-main cr-main bg-white margin-right-sm">{{detail.user_address.alias}}</text>
                         <text data-event="copy" :data-value="detail.user_address.name" @tap="text_event">{{detail.user_address.name}}</text>
@@ -33,7 +33,7 @@
                         <image class="icon fl" :src="common_static_url+'map-icon.png'" mode="widthFix"></image>
                         <view class="text fr">
                             <text data-event="copy" :data-value="detail.user_address.address_info" @tap="text_event">{{detail.user_address.address_info}}</text>
-                            <text v-if="(detail.user_address.lng || 0) != 0 && (detail.user_address.lat || 0) != 0" class="address-map-submit cr-base br round bg-white margin-left-sm text-size-xs" @tap="address_map_event">{{$t('user-order-detail.user-order-detail.7lp6gw')}}</text>
+                            <text v-if="(detail.user_address.lng || 0) != 0 && (detail.user_address.lat || 0) != 0" class="address-map-submit cr-base br round bg-white margin-left-sm text-size-xs" @tap="address_map_event">{{$t('common.view_location')}}</text>
                         </view>
                     </view>
                     <view class="address-divider margin-bottom-sm"></view>
@@ -69,7 +69,7 @@
 
                 <!-- 商品列表 -->
                 <view v-if="detail.goods_data.length > 0" class="goods bg-white padding-main border-radius-main spacing-mb">
-                    <view class="br-b padding-bottom-main fw-b text-size">{{$t('user-order-detail.user-order-detail.7f8p26')}}</view>
+                    <view class="br-b padding-bottom-main fw-b text-size">{{$t('common.product_information')}}</view>
                     <view v-for="(item, index) in detail.goods_data" :key="index" class="goods-item br-b-dashed oh padding-main">
                         <view :data-value="item.goods_url" @tap="url_event" class="cp">
                             <image class="goods-image fl radius" :src="item.images" mode="aspectFill"></image>
@@ -90,7 +90,7 @@
                         </view>
                     </view>
                     <view class="padding-top-main tr cr-base text-size">
-                        <text>{{$t('common.total')}}<text class="fw-b">{{detail.buy_number_count}}</text>{{$t('user-order-detail.user-order-detail.41ty94')}}<text class="sales-price margin-right-xs">{{detail.currency_data.currency_symbol}}{{detail.total_price}}</text></text>
+                        <text>{{$t('common.total')}}<text class="fw-b">{{detail.buy_number_count}}</text>{{$t('common.total_pieces')}}<text class="sales-price margin-right-xs">{{detail.currency_data.currency_symbol}}{{detail.total_price}}</text></text>
                     </view>
                 </view>
             </view>
@@ -112,9 +112,11 @@
     import componentCommon from '@/components/common/common';
     import componentNoData from "@/components/no-data/no-data";
     import componentBottomLine from "@/components/bottom-line/bottom-line";
+    import pluginLocale from '../locale/index.js';
 
     var common_static_url = app.globalData.get_static_url('common');
     export default {
+        mixins: [pluginLocale],
         data() {
             return {
                 theme_view: app.globalData.get_theme_value_view(),
@@ -185,18 +187,18 @@
                             this.setData({
                                 detail: data.data,
                                 detail_list: [
-                                    { name: this.$t('order-detail.order-detail.36op8f'), value: data.data.main_order_no || '', is_copy: 1 },
-                                    { name: this.$t('order-detail.order-detail.ygvc34'), value: data.data.merchant_name || '' },
-                                    { name: this.$t('order-detail.order-detail.x3ge6c'), value: data.data.total_price || '' },
-                                    { name: this.$t('order-detail.order-detail.8n1f72'), value: data.data.buy_number_count || '' },
-                                    { name: this.$t('order-detail.order-detail.2443o1'), value: data.data.status_name || '' },
-                                    { name: this.$t('order-detail.order-detail.342sfz'), value: data.data.start_delivery_time || '' },
-                                    { name: this.$t('order-detail.order-detail.2dw4gd'), value: data.data.success_delivery_time || '' },
-                                    { name: this.$t('order-detail.order-detail.r3bg45'), value: data.data.success_delivery_msg || '' },
-                                    { name: this.$t('order-detail.order-detail.521pp4'), value: data.data.success_delivery_images || '', type: 'images-list' },
-                                    { name: this.$t('order-detail.order-detail.u745i8'), value: data.data.abnormal_delivery_time || '' },
-                                    { name: this.$t('order.order.865029'), value: data.data.reason || '' },
-                                    { name: this.$t('order-detail.order-detail.5fq8pr'), value: data.data.add_time || '' },
+                                    { name: this.$t('common.order_detail_order_number'), value: data.data.main_order_no || '', is_copy: 1 },
+                                    { name: this.$t('order-detail.merchant_name'), value: data.data.merchant_name || '' },
+                                    { name: this.$t('common.order_amount'), value: data.data.total_price || '' },
+                                    { name: this.$t('common.product_quantity'), value: data.data.buy_number_count || '' },
+                                    { name: this.$t('order-detail.delivery_status'), value: data.data.status_name || '' },
+                                    { name: this.$t('order-detail.delivery_time'), value: data.data.start_delivery_time || '' },
+                                    { name: this.$t('common.completion_time'), value: data.data.success_delivery_time || '' },
+                                    { name: this.$t('order-detail.complete_description'), value: data.data.success_delivery_msg || '' },
+                                    { name: this.$t('order-detail.complete_photos'), value: data.data.success_delivery_images || '', type: 'images-list' },
+                                    { name: this.$t('order-detail.abnormal_time'), value: data.data.abnormal_delivery_time || '' },
+                                    { name: this.$t('order.abnormal_cause'), value: data.data.reason || '' },
+                                    { name: this.$t('order-detail.dispatch_time'), value: data.data.add_time || '' },
                                     { name: this.$t('common.upd_time'), value: data.data.upd_time || '' },
                                 ],
                                 data_list_loding_status: 3,
@@ -243,7 +245,7 @@
             // 地图查看
             address_map_event(e) {
                 if ((this.detail.user_address || null) == null) {
-                    app.globalData.showToast(this.$t('user-order-detail.user-order-detail.i876o3'));
+                    app.globalData.showToast(this.$t('common.incorrect_address'));
                     return false;
                 }
                 

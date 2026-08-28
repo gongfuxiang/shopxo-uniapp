@@ -20,16 +20,16 @@
                 <view v-if="(data.goods_list || null) != null && data.goods_list.length > 0">
                     <view class="spacing-nav-title flex-row align-c jc-sb text-size-xs">
                         <view class="title-left">
-                            <text class="text-wrapper title-left-border">{{$t('detail.detail.b4f3nw')}}</text>
+                            <text class="text-wrapper title-left-border">{{$t('detail.activity_products')}}</text>
                             <text class="vice-name margin-left-lg cr-grey">{{ data.vice_title }}</text>
                         </view>
-                        <text data-value="/pages/plugins/activity/index/index" @tap="url_event" class="arrow-right padding-right cr-grey cp">{{$t('detail.detail.ans2p4')}}</text>
+                        <text data-value="/pages/plugins/activity/index/index" @tap="url_event" class="arrow-right padding-right cr-grey cp">{{$t('detail.more_activities')}}</text>
                     </view>
                     <component-goods-list :propData="{ style_type: 1, goods_list: data.goods_list }" :propCurrencySymbol="currency_symbol"></component-goods-list>
                 </view>
                 <view v-else>
                     <!-- 提示信息 -->
-                    <component-no-data propStatus="0" :propMsg="$t('detail.detail.5knxg6')"></component-no-data>
+                    <component-no-data propStatus="0" :propMsg="$t('common.related_products_available')"></component-no-data>
                 </view>
             </view>
 
@@ -51,7 +51,9 @@
     import componentNoData from '@/components/no-data/no-data';
     import componentBottomLine from '@/components/bottom-line/bottom-line';
     import componentGoodsList from '@/components/goods-list/goods-list';
+    import pluginLocale from '../locale/index.js';
     export default {
+        mixins: [pluginLocale],
         data() {
             return {
                 theme_view: app.globalData.get_theme_value_view(),

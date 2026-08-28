@@ -2,20 +2,20 @@
     <view :class="theme_view">
         <block v-if="detail != null">
             <!-- 申请信息 -->
-            <component-panel-content :propData="detail" :propDataField="field_list" propExcludeField="express_name,express_number" :propTitle="$t('invoice-detail.invoice-detail.s70kj4')"></component-panel-content>
+            <component-panel-content :propData="detail" :propDataField="field_list" propExcludeField="express_name,express_number" :propTitle="$t('common.application_information')"></component-panel-content>
 
             <!-- 快递信息 -->
             <block v-if="detail.status == 2 && detail.invoice_type != 0">
-                <component-panel-content :propData="detail" :propDataField="field_list" propAppointField="express_name,express_number" :propTitle="$t('user-order-detail.user-order-detail.0876xf')"></component-panel-content>
+                <component-panel-content :propData="detail" :propDataField="field_list" propAppointField="express_name,express_number" :propTitle="$t('common.express_delivery_info')"></component-panel-content>
             </block>
 
             <!-- 电子发票 -->
             <block v-if="detail.status == 2 && detail.invoice_type == 0 && (detail.electronic_invoice || null) != null" class="panel-item padding-main border-radius-main bg-white spacing-mb">
-                <component-panel-content :propTitle="$t('invoice-detail.invoice-detail.1s2f0g')">
+                <component-panel-content :propTitle="$t('invoice-detail.electronic_invoice')">
                     <view v-for="(item, index) in detail.electronic_invoice" :key="index" class="item br-b-f5 oh padding-vertical-main">
                         <view class="content fl" @tap="electronic_invoice_event" :data-value="item.url">{{ item.title }}</view>
                     </view>
-                    <view class="cr-red padding-top-main">{{$t('invoice-detail.invoice-detail.4tu3v3')}}</view>
+                    <view class="cr-red padding-top-main">{{$t('invoice-detail.click_invoice_name_copy_then_go')}}</view>
                 </component-panel-content>
             </block>
 
@@ -37,7 +37,9 @@
     import componentNoData from "@/components/no-data/no-data";
     import componentBottomLine from "@/components/bottom-line/bottom-line";
     import componentPanelContent from "@/components/panel-content/panel-content";
+    import pluginLocale from '../locale/index.js';
     export default {
+        mixins: [pluginLocale],
         data() {
             return {
                 theme_view: app.globalData.get_theme_value_view(),

@@ -70,7 +70,7 @@
                                                 <text v-if="(plugins_vip_user_center_open_tips_data.user_vip.expire_time || null) != null" class="margin-left-xs">| {{ plugins_vip_user_center_open_tips_data.user_vip.expire_time }}</text>
                                             </block>
                                             <block v-else>
-                                                <text>{{$t('user.user.528t26')}}</text>
+                                                <text>{{$t('common.expired')}}</text>
                                             </block>
                                         </view>
                                     </view>
@@ -83,13 +83,13 @@
                     <view v-if="(payment_page_url || null) !== null || (vip_page_url || null) !== null" class="qrcode padding-horizontal-main pr oh">
                         <view class="qrcode-content flex-row align-c text-size-md" :style="'background-image: url(' + static_url + 'qrcode-bg.png)'" :class="(payment_page_url || null) == null || (vip_page_url || null) == null ? 'jc-sb' : 'jc-sa divider-r'">
                             <view v-if="(vip_page_url || null) != null" class="padding-horizontal-lg pr z-i ht-auto" :class="(payment_page_url || null) == null || (vip_page_url || null) == null ? 'wh-auto' : 'tc flex-width-half'" :data-value="vip_page_url" @tap="url_event">
-                                <view class="item pr top-lg dis-inline-block"> <image class="icon" :src="static_url + 'vip-code.png'" mode="widthFix"></image> </view>{{ $t('member-code.member-code.26bu38') }}</view
+                                <view class="item pr top-lg dis-inline-block"> <image class="icon" :src="static_url + 'vip-code.png'" mode="widthFix"></image> </view>{{ $t('common.member_code') }}</view
                             >
                             <view v-if="(payment_page_url || null) != null" class="padding-horizontal-lg pr z-i ht-auto" :class="(payment_page_url || null) == null || (vip_page_url || null) == null ? 'wh-auto' : 'tc flex-width-half'" :data-value="payment_page_url" @tap="url_event">
                                 <view class="item pr top-lg dis-inline-block">
                                     <image class="icon" :src="static_url + 'payment-code.png'" mode="widthFix"></image>
                                 </view>
-                                <text>{{ $t('user.user.91h03v') }}</text>
+                                <text>{{ $t('user.payment_code') }}</text>
                             </view>
                         </view>
                         <iconfont v-if="(payment_page_url || null) == null || (vip_page_url || null) == null" name="icon-arrow-right" propClass="iconfont pa" color="#FEF6CF"></iconfont>
@@ -300,28 +300,28 @@
                 var old_nav = this.head_nav_list;
                 var head_nav_list = [
                     {
-                        name: this.$t('promotion-order.promotion-order.iwa646'),
+                        name: this.$t('common.orders'),
                         url: 'user-order',
                         count: old_nav.length > 0 ? old_nav[0].count : 0,
                     },
                     {
-                        name: this.$t('user.user.3q4p8k'),
+                        name: this.$t('user.collection'),
                         url: 'user-favor',
                         count: old_nav.length > 0 ? old_nav[1].count : 0,
                     },
                     {
-                        name: this.$t('user.user.57xw84'),
+                        name: this.$t('user.tracks'),
                         url: 'user-goods-browse',
                         count: old_nav.length > 0 ? old_nav[2].count : 0,
                     },
                     {
-                        name: this.$t('user.user.k78280'),
+                        name: this.$t('common.points'),
                         url: 'user-integral',
                         count: old_nav.length > 0 ? old_nav[3].count : 0,
                     },
                 ];
                 var nav_logout_data = (user == null) ? null : {
-                    name: this.$t('user.user.2k0227'),
+                    name: this.$t('user.exit'),
                     icon: 'logout',
                 };
 
@@ -329,7 +329,7 @@
                     user: user,
                     head_nav_list: head_nav_list,
                     nav_logout_data: nav_logout_data,
-                    nickname: this.nickname || this.$t('login.login.6yfr9g'),
+                    nickname: this.nickname || this.$t('common.login_register'),
                 });
             },
 
@@ -395,7 +395,7 @@
                     // 有用户信息，是否需要绑定手机
                     if(app.globalData.user_is_bind_mobile(this.user)) {
                         this.setData({
-                            nickname: this.$t('login.login.np9177')
+                            nickname: this.$t('common.bind_phone')
                         });
                     }
                 }
@@ -424,25 +424,25 @@
                             // 订单状态总数
                             var user_order_status_list = [
                                 {
-                                    name: this.$t('user.user.9u8e61'),
+                                    name: this.$t('common.user_pay'),
                                     status: 1,
                                     count: 0,
                                     url: '/pages/user-order/user-order?status=1',
                                 },
                                 {
-                                    name: this.$t('user.user.66714e'),
+                                    name: this.$t('common.shipping'),
                                     status: 2,
                                     count: 0,
                                     url: '/pages/user-order/user-order?status=2',
                                 },
                                 {
-                                    name: this.$t('order.order.q820hx'),
+                                    name: this.$t('common.receive'),
                                     status: 3,
                                     count: 0,
                                     url: '/pages/user-order/user-order?status=3',
                                 },
                                 {
-                                    name: this.$t('user.user.aa1ri3'),
+                                    name: this.$t('user.sales'),
                                     status: 101,
                                     count: 0,
                                     url: '/pages/user-orderaftersale/user-orderaftersale',
@@ -547,7 +547,7 @@
             // 客服电话
             call_event() {
                 if (this.common_app_customer_service_tel == null) {
-                    app.globalData.showToast(this.$t('setup.setup.utnr7g'));
+                    app.globalData.showToast(this.$t('common.service_phone_2'));
                 } else {
                     app.globalData.call_tel(this.common_app_customer_service_tel);
                 }
@@ -597,7 +597,7 @@
                 var self = this;
                 uni.showModal({
                     title: this.$t('common.warm_tips'),
-                    content: this.$t('user.user.95s1ez'),
+                    content: this.$t('common.sure_continue_renewal_based_original_duration'),
                     confirmText: this.$t('common.confirm'),
                     cancelText: this.$t('common.not_yet'),
                     success: (result) => {

@@ -87,6 +87,7 @@ import componentBottomLine from '@/components/bottom-line/bottom-line';
 import componentBanner from '@/components/slider/slider';
 import componentCommon from '@/components/common/common';
 import { live_get_top_left_padding, isEmpty } from '@/common/js/common/common.js';
+    import pluginLocale from '../locale/index.js';
 const app = getApp();
 // 状态栏高度
 var bar_height = parseInt(app.globalData.get_system_info('statusBarHeight', 0));
@@ -94,6 +95,7 @@ var bar_height = parseInt(app.globalData.get_system_info('statusBarHeight', 0));
 bar_height = 0;
 // #endif
 export default {
+        mixins: [pluginLocale],
 	components: {
 		componentSearch,
 		componentNoData,

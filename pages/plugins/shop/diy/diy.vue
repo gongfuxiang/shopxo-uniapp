@@ -25,7 +25,9 @@
     import componentDiy from '@/pages/diy/components/diy/diy';
     import componentNoData from '@/components/no-data/no-data';
     import componentBottomLine from '@/components/bottom-line/bottom-line';
+    import pluginLocale from '../locale/index.js';
     export default {
+        mixins: [pluginLocale],
         components: {
             componentCommon,
             componentDiy,

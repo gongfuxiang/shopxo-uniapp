@@ -1,7 +1,7 @@
 <template>
     <component-popup :propShow="propShow" propPosition="bottom" @onclose="close_event">
         <view class="poupon-title padding-main tc text-size-md pr">
-            {{ $t('payment.payment.iu792d') }}
+            {{ $t('common.payment_details') }}
             <iconfont name="icon-close-line" propClass="pa right-0 margin-right-main margin-top-xs" size="30rpx" color="#999" @tap="close_event"></iconfont>
         </view>
         <view class="padding-horizontal-main">
@@ -25,10 +25,10 @@
                 </scroll-view>
             </view>
             <view class="payment-submit">
-                <button class="bg-main br-main cr-white round text-size wh-auto" type="default" hover-class="none" :disabled="submit_disabled || (is_friend_pay != 1 && payment_id <= 0)" @tap="submit_event">{{ is_friend_pay == 1 ? $t('friendpay.friendpay.create_link') : $t('payment.payment.25r53g') }}</button>
+                <button class="bg-main br-main cr-white round text-size wh-auto" type="default" hover-class="none" :disabled="submit_disabled || (is_friend_pay != 1 && payment_id <= 0)" @tap="submit_event">{{ is_friend_pay == 1 ? $t('common.create_link') : $t('common.payment_pay') }}</button>
             </view>
         </view>
-        <view v-else class="padding-top-xxxl padding-bottom-xxxl oh bg-white tc cr-grey">{{ $t('payment.payment.058a46') }}</view>
+        <view v-else class="padding-top-xxxl padding-bottom-xxxl oh bg-white tc cr-grey">{{ $t('common.payment_method_available') }}</view>
     </component-popup>
 </template>
 <script>
@@ -127,7 +127,7 @@
             // 创建代付
             create_event() {
                 if ((this.propOrderIds || '') == '') {
-                    app.globalData.showToast(this.$t('friendpay.friendpay.order_id_error'));
+                    app.globalData.showToast(this.$t('friendpay.order_id_error'));
                     return;
                 }
                 this.submit_disabled = true;

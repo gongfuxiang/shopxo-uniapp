@@ -16,7 +16,7 @@
                         <view class="pr">
                             <iconfont name="icon-sigh-o" size="32rpx"></iconfont>
                         </view>
-                        <text class="margin-left-sm text-size-xs">{{$t('collection.collection.9p43lu')}}</text>
+                        <text class="margin-left-sm text-size-xs">{{$t('collection.scan_initiate_transfer_other_party_verify')}}</text>
                     </view>
                 </block>
                 <block v-else>
@@ -34,7 +34,9 @@
     const app = getApp();
     import componentCommon from '@/components/common/common';
     import componentNoData from '@/components/no-data/no-data';
+    import pluginLocale from '../locale/index.js';
     export default {
+        mixins: [pluginLocale],
         data() {
             return {
                 theme_view: app.globalData.get_theme_value_view(),

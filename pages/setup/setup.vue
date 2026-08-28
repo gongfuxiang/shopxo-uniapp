@@ -6,22 +6,22 @@
                     <view class="item padding-vertical-xxl padding-right-xxxl arrow-right oh" data-value="/pages/personal/personal" @tap="url_event">
                         <image :src="user.avatar || default_avatar" mode="widthFix" class="circle br fl user-avatar"></image>
                         <view class="fl margin-left margin-top">
-                            <view>{{ user.user_name_view || $t('login.login.6yfr9g') }}</view>
+                            <view>{{ user.user_name_view || $t('common.login_register') }}</view>
                         </view>
                     </view>
 
                     <!-- 手机、邮箱、密码-->
                     <view v-if="common_user_is_mandatory_bind_mobile == 1 || ((home_user_login_type || null) != null && home_user_login_type.length > 0 && home_user_login_type.indexOf('sms') != -1)" class="item padding-vertical-xxl padding-right-xxxl arrow-right" data-value="/pages/login/login?opt_form=bind_verify" @tap="url_event">
-                        <text>{{ $t('setup.setup.x81v6d') }}</text>
-                        <text class="fr cr-grey">{{ user.mobile_security || '' }} {{ (user.mobile_security || null) == null ? $t('setup.setup.dfg4wf') : $t('setup.setup.j6skqh') }}</text>
+                        <text>{{ $t('setup.replace_phone') }}</text>
+                        <text class="fr cr-grey">{{ user.mobile_security || '' }} {{ (user.mobile_security || null) == null ? $t('setup.click_bind') : $t('setup.click_replace') }}</text>
                     </view>
                     <view v-if="(home_user_login_type || null) != null && home_user_login_type.length > 0 && home_user_login_type.indexOf('email') != -1" class="item padding-vertical-xxl padding-right-xxxl arrow-right" data-value="/pages/login/login?opt_type=bind_email&opt_form=bind_email" @tap="url_event">
-                        <text>{{$t('setup.setup.5u59b1')}}</text>
-                        <text class="fr cr-grey">{{ user.email_security || '' }} {{ (user.email_security || null) == null ? $t('setup.setup.dfg4wf') : $t('setup.setup.j6skqh') }}</text>
+                        <text>{{$t('setup.change_email')}}</text>
+                        <text class="fr cr-grey">{{ user.email_security || '' }} {{ (user.email_security || null) == null ? $t('setup.click_bind') : $t('setup.click_replace') }}</text>
                     </view>
                     <view class="item padding-vertical-xxl padding-right-xxxl arrow-right" data-value="/pages/password/password" @tap="url_event">
-                        <text>{{$t('setup.setup.v8438r')}}</text>
-                        <text class="fr cr-grey">{{ $t('setup.setup.j6skqh') }}</text>
+                        <text>{{$t('setup.change_password')}}</text>
+                        <text class="fr cr-grey">{{ $t('setup.click_replace') }}</text>
                     </view>
 
                     <!-- 第三方账户绑定-->
@@ -31,7 +31,7 @@
                             <block v-if="(item.bind_user_id || 0) == 0">
                                 <view class="item padding-vertical-xxl padding-right-xxxl arrow-right" :data-value="'/pages/login/login?opt_type=bind_platform&opt_form=bind_platform&platform_type='+index" @tap="url_event">
                                     <text>{{item.name}}</text>
-                                    <text class="fr cr-grey">{{ $t('setup.setup.dfg4wf') }}</text>
+                                    <text class="fr cr-grey">{{ $t('setup.click_bind') }}</text>
                                 </view>
                             </block>
                             <block v-else>
@@ -39,7 +39,7 @@
                                     <text>{{item.name}}</text>
                                     <view class="fr">
                                         <text class="cr-grey">{{item.bind_nickname}}</text>
-                                        <text class="cr-blue margin-left-sm">{{ $t('setup.setup.87ytgh') }}</text>
+                                        <text class="cr-blue margin-left-sm">{{ $t('setup.unbind') }}</text>
                                     </view>
                                 </view>
                             </block>
@@ -47,7 +47,7 @@
                     </block>
                     <!-- #endif -->
                     <view v-if="home_use_multilingual_status == 1" class="item padding-vertical-xxl padding-right-xxxl arrow-right" @tap="open_language_event">
-                        <text>{{ $t('setup.setup.r7jz13') }}</text>
+                        <text>{{ $t('setup.update_language') }}</text>
                         <text class="fr cr-grey">{{ language }}</text>
                     </view>
                 </view>
@@ -55,12 +55,12 @@
                 <!-- 地址、发票-->
                 <view class="panel-item padding-horizontal-main border-radius-main bg-white oh spacing-mb">
                     <view class="item padding-vertical-xxl padding-right-xxxl arrow-right" data-value="/pages/user-address/user-address" @tap="url_event">
-                        <text>{{ $t('setup.setup.42mba7') }}</text>
-                        <text class="fr cr-grey">{{ $t('setup.setup.5eltza') }}</text>
+                        <text>{{ $t('setup.address') }}</text>
+                        <text class="fr cr-grey">{{ $t('setup.click_manage') }}</text>
                     </view>
                     <view v-if="(plugins_invoice || null) != null" class="item padding-vertical-xxl padding-right-xxxl arrow-right" data-value="/pages/plugins/invoice/invoice/invoice" @tap="url_event">
-                        <text>{{ $t('setup.setup.t60222') }}</text>
-                        <text class="fr cr-grey">{{ $t('setup.setup.izg78g') }}</text>
+                        <text>{{ $t('setup.invoices') }}</text>
+                        <text class="fr cr-grey">{{ $t('setup.click_go') }}</text>
                     </view>
                 </view>
             </block>
@@ -69,27 +69,27 @@
             <view class="panel-item padding-horizontal-main border-radius-main bg-white oh spacing-mb">
                 <!-- #ifdef MP || APP -->
                 <view class="item padding-vertical-xxl padding-right-xxxl arrow-right" @tap="open_setting_event">
-                    <text>{{ $t('setup.setup.377uwg') }}</text>
-                    <text class="fr cr-grey">{{ $t('setup.setup.5eltza') }}</text>
+                    <text>{{ $t('common.permission_settings') }}</text>
+                    <text class="fr cr-grey">{{ $t('setup.click_manage') }}</text>
                 </view>
                 <!-- #endif -->
                 <view class="item padding-vertical-xxl padding-right-xxxl arrow-right" @tap="remove_user_cache_event">
-                    <text>{{ $t('setup.setup.5493ui') }}</text>
-                    <text class="fr cr-grey">{{ $t('setup.setup.f53166') }}</text>
+                    <text>{{ $t('setup.clear_cache') }}</text>
+                    <text class="fr cr-grey">{{ $t('setup.click_clear') }}</text>
                 </view>
                 <view v-if="(common_app_customer_service_tel || null) != null" class="item padding-vertical-xxl padding-right-xxxl arrow-right" @tap="call_event">
-                    <text>{{ $t('setup.setup.656fv1') }}</text>
-                    <text class="fr cr-grey">{{ common_app_customer_service_tel || '' }} {{ $t('setup.setup.f25wcx') }}</text>
+                    <text>{{ $t('setup.service_phone') }}</text>
+                    <text class="fr cr-grey">{{ common_app_customer_service_tel || '' }} {{ $t('setup.click_call') }}</text>
                 </view>
                 <view v-if="(user || null) != null" class="item padding-vertical-xxl padding-right-xxxl arrow-right" data-value="/pages/logout/logout" @tap="url_event">
-                    <text>{{ $t('setup.setup.11k15d') }}</text>
-                    <text class="fr cr-grey">{{ $t('setup.setup.48r261') }}</text>
+                    <text>{{ $t('setup.account_cancel') }}</text>
+                    <text class="fr cr-grey">{{ $t('setup.logout_cannot_recover') }}</text>
                 </view>
                 <view v-if="plugins_complaint_is_user_setup_app && (plugins_complaint_run_name || null) != null" class="item padding-vertical-xxl padding-right-xxxl arrow-right" data-value="/pages/plugins/complaint/form/form" @tap="url_event">
                     <text>{{plugins_complaint_run_name}}</text>
                 </view>
                 <view class="item padding-vertical-xxl padding-right-xxxl arrow-right" data-value="/pages/about/about" @tap="url_event">
-                    <text>{{ $t('setup.setup.tghrf2') }}</text>
+                    <text>{{ $t('setup.about_us') }}</text>
                 </view>
             </view>
             <!-- 打开语言选择弹层-->
@@ -105,7 +105,9 @@
     import componentCommon from '@/components/common/common';
     import componentPopup from '@/components/popup/popup';
     import componentLangSwitch from '@/components/lang-switch/lang-switch';
+    import pluginLocale from './locale/index.js';
     export default {
+        mixins: [pluginLocale],
         data() {
             return {
                 theme_view: app.globalData.get_theme_value_view(),
@@ -256,7 +258,7 @@
             // 客服电话
             call_event() {
                 if (this.common_app_customer_service_tel == null) {
-                    app.globalData.showToast(this.$t('setup.setup.utnr7g'));
+                    app.globalData.showToast(this.$t('common.service_phone_2'));
                 } else {
                     app.globalData.call_tel(this.common_app_customer_service_tel);
                 }

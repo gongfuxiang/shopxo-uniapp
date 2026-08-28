@@ -68,16 +68,16 @@
                 params: null,
                 nav_status_list: [
                     { name: this.$t('common.all'), value: '-1' },
-                    { name: this.$t('user-cash.user-cash.3v1gzc'), value: '0' },
-                    { name: this.$t('user-cash.user-cash.678iuy'), value: '1' },
-                    { name: this.$t('user-cash.user-cash.t7gtu0'), value: '2' },
-                    { name: this.$t('user-cash.user-cash.x47iu3'), value: '3' },
+                    { name: this.$t('user-cash.unpay'), value: '0' },
+                    { name: this.$t('user-cash.receive_pay'), value: '1' },
+                    { name: this.$t('user-cash.paid'), value: '2' },
+                    { name: this.$t('user-cash.fail_pay'), value: '3' },
                 ],
                 nav_status_index: 0,
                 content_list: [
-                    { name: this.$t('user-cash-detail.user-cash-detail.e8a3e8'), field: 'cash_no' },
-                    { name: this.$t('cash-create.cash-create.qg404q'), field: 'money' },
-                    { name: this.$t('cash-create.cash-create.9ugssd'), field: 'commission' },
+                    { name: this.$t('user-cash-detail.withdrawal_number'), field: 'cash_no' },
+                    { name: this.$t('cash-create.withdrawal_amount'), field: 'money' },
+                    { name: this.$t('cash-create.handling_fees'), field: 'commission' },
                 ],
             };
         },
@@ -255,7 +255,7 @@
                                     package: res.data.data.package,
                                     success: (res) => {
                                         temp_data_list[index]['status'] = 2;
-                                        temp_data_list[index]['status_name'] = this.$t('user-cash.user-cash.t7gtu0');
+                                        temp_data_list[index]['status_name'] = this.$t('user-cash.paid');
                                         this.setData({
                                             data_list: temp_data_list,
                                         });

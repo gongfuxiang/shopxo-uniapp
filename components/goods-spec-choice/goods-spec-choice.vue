@@ -297,7 +297,7 @@
                         }
                     }
                     if (active_count < sku_count) {
-                        app.globalData.showToast(this.$t('goods-detail.goods-detail.6brk57'));
+                        app.globalData.showToast(this.$t('common.please_select_spec'));
                         return false;
                     }
                 }

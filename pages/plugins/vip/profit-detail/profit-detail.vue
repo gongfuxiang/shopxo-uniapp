@@ -29,8 +29,10 @@
     import componentCommon from '@/components/common/common';
     import componentNoData from "@/components/no-data/no-data";
     import componentBottomLine from "@/components/bottom-line/bottom-line";
+    import pluginLocale from '../locale/index.js';
 
     export default {
+        mixins: [pluginLocale],
         data() {
             return {
                 theme_view: app.globalData.get_theme_value_view(),
@@ -100,12 +102,12 @@
                             this.setData({
                                 detail: data.data,
                                 detail_list: [
-                                    { name: this.$t('order-detail.order-detail.x3ge6c'), value: data.data.total_price || "" },
-                                    { name: this.$t('profit.profit.7y47sb'), value: data.data.profit_price || "" },
-                                    { name: this.$t('profit.profit.6a7t71'), value: data.data.level_name || "" },
-                                    { name: this.$t('profit-detail.profit-detail.kn8yye'), value: data.data.status_name || "" },
-                                    { name: this.$t('profit-detail.profit-detail.3jg81h'), value: data.data.commission_rules || "" },
-                                    { name: this.$t('user-order-detail.user-order-detail.h2c78h'), value: data.data.add_time || "" },
+                                    { name: this.$t('common.order_amount'), value: data.data.total_price || "" },
+                                    { name: this.$t('profit.rebate_amount'), value: data.data.profit_price || "" },
+                                    { name: this.$t('common.current_level'), value: data.data.level_name || "" },
+                                    { name: this.$t('common.settlement_status'), value: data.data.status_name || "" },
+                                    { name: this.$t('profit-detail.rebate_rules'), value: data.data.commission_rules || "" },
+                                    { name: this.$t('common.creation_time'), value: data.data.add_time || "" },
                                     { name: this.$t('common.upd_time'), value: data.data.upd_time || "" },
                                 ],
                                 data_list_loding_status: 3,

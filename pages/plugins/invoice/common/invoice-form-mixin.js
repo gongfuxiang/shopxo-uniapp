@@ -155,21 +155,21 @@ export default {
         // 构建表单校验规则
         invoice_form_build_validation(invoice_type, apply_type) {
             var validation = [
-                { fields: 'invoice_title', msg: this.$t('invoice-saveinfo.invoice-saveinfo.r13p43') },
+                { fields: 'invoice_title', msg: this.$t('invoice-saveinfo.fill_invoice_header_maximum_200_characters') },
             ];
             if (apply_type == 1) {
-                validation.push({ fields: 'invoice_code', msg: this.$t('invoice-saveinfo.invoice-saveinfo.ws4wbb') });
+                validation.push({ fields: 'invoice_code', msg: this.$t('invoice-saveinfo.fill_unified_social_credit_code_tax') });
             }
             if (invoice_type == 2) {
-                validation.push({ fields: 'invoice_bank', msg: this.$t('invoice-saveinfo.invoice-saveinfo.87itn8') });
-                validation.push({ fields: 'invoice_account', msg: this.$t('invoice-saveinfo.invoice-saveinfo.01lw93') });
-                validation.push({ fields: 'invoice_tel', msg: this.$t('invoice-saveinfo.invoice-saveinfo.414ihr') });
-                validation.push({ fields: 'invoice_address', msg: this.$t('invoice-saveinfo.invoice-saveinfo.g3yh32') });
+                validation.push({ fields: 'invoice_bank', msg: this.$t('invoice-saveinfo.fill_name_company_account_opening_bank') });
+                validation.push({ fields: 'invoice_account', msg: this.$t('invoice-saveinfo.fill_enterprise_account_number_maximum_160') });
+                validation.push({ fields: 'invoice_tel', msg: this.$t('invoice-saveinfo.fill_company_contact_phone_number_which') });
+                validation.push({ fields: 'invoice_address', msg: this.$t('invoice-saveinfo.fill_registered_address_company_maximum_230') });
             }
             if (invoice_type == 1 || invoice_type == 2) {
-                validation.push({ fields: 'name', msg: this.$t('invoice-saveinfo.invoice-saveinfo.4xy6xi') });
-                validation.push({ fields: 'tel', msg: this.$t('invoice-saveinfo.invoice-saveinfo.quhnk0') });
-                validation.push({ fields: 'address', msg: this.$t('invoice-saveinfo.invoice-saveinfo.kq77u3') });
+                validation.push({ fields: 'name', msg: this.$t('invoice-saveinfo.fill_recipient_name_format_between_30') });
+                validation.push({ fields: 'tel', msg: this.$t('invoice-saveinfo.fill_recipient_phone_number_which_should') });
+                validation.push({ fields: 'address', msg: this.$t('invoice-saveinfo.provide_recipient_address_maximum_230_characters') });
             }
             return validation;
         },

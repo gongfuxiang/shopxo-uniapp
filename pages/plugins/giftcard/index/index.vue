@@ -6,22 +6,22 @@
                     <view v-for="(item, index) in data_list" :key="index" class="item padding-main border-radius-main oh bg-white spacing-mb">
                         <view class="content">
                             <view class="single-text margin-top-xs">
-                                <text class="cr-grey-9 margin-right-main">{{ $t('giftcard-index.giftcard-index.87ytyh') }}:</text>
+                                <text class="cr-grey-9 margin-right-main">{{ $t('giftcard-index.card_type') }}:</text>
                                 <text class="cr-black">{{ item.data_type_name }}</text>
                             </view>
                             <view class="single-text margin-top-xs">
-                                <text class="cr-grey-9 margin-right-main">{{ $t('giftcard-index.giftcard-index.hfg2fg') }}:</text>
+                                <text class="cr-grey-9 margin-right-main">{{ $t('giftcard-index.cami_key') }}:</text>
                                 <text class="cr-black" data-event="copy" :data-value="item.secret_key" @tap="text_event">{{ item.secret_key }}</text>
                             </view>
                             <view v-if="(item.secret_value_text || null) != null" class="single-text margin-top-xs">
-                                <text class="cr-grey-9 margin-right-main">{{ $t('giftcard-index.giftcard-index.fyjnsd') }}:</text>
+                                <text class="cr-grey-9 margin-right-main">{{ $t('giftcard-index.card_security_data') }}:</text>
                                 <text class="cr-black am-margin-right-lg">{{ item.secret_value_text }}</text>
                                 <text v-if="item.data_type == 0" data-value="/pages/plugins/wallet/user/user" @tap="url_event" class="cr-grey fr">{{ $t('common.view_text') }}</text>
                                 <text v-else-if="item.data_type == 1" data-value="/pages/plugins/coupon/user/user" @tap="url_event" class="cr-grey fr">{{ $t('common.view_text') }}</text>
                                 <text v-else-if="item.data_type == 2" data-value="/pages/user-integral/user-integral" @tap="url_event" class="cr-grey fr">{{ $t('common.view_text') }}</text>
                             </view>
                             <block v-else>
-                                <view class="margin-top-sm fw-b">{{$t('giftcard-index.giftcard-index.fyjnsd')}}</view>
+                                <view class="margin-top-sm fw-b">{{$t('giftcard-index.card_security_data')}}</view>
                                 <view v-if="(item.secret_value_data || null) != null" class="secret-value-data margin-bottom-sm">
                                     <view v-for="(items, indexs) in item.secret_value_data" :key="indexs" class="oh">
                                         <view class="single-text fl value-title">{{items.title}}</view>
@@ -38,14 +38,14 @@
                                 </view>
                             </view>
                             <view v-if="(item.use_data || null) != null && item.use_data.length > 0">
-                                <view class="margin-top-sm fw-b">{{$t('giftcard-index.giftcard-index.6redfg')}}</view>
+                                <view class="margin-top-sm fw-b">{{$t('giftcard-index.use_data')}}</view>
                                 <view v-for="(uv, uk) in item.use_data" :key="uk">
                                     <view>
-                                        <text class="cr-grey-9 margin-right-main">{{$t('user-order-detail.user-order-detail.n18sd2')}}:</text>
+                                        <text class="cr-grey-9 margin-right-main">{{$t('common.user_order_detail_order_number')}}:</text>
                                         <text data-event="copy" :data-value="uv.order_no" @tap="text_event">{{uv.order_no}}</text>
                                     </view>
                                     <view>
-                                        <text class="cr-grey-9 margin-right-main">{{$t('user-order-detail.user-order-detail.yghjkf')}}:</text>
+                                        <text class="cr-grey-9 margin-right-main">{{$t('common.order_goods')}}:</text>
                                         <text :data-value="uv.goods_url" @tap="url_event">{{uv.goods_title}}</text>
                                     </view>
                                     <view>
@@ -68,7 +68,7 @@
                 <!-- 兑换卡密 -->
                 <view class="bottom-fixed" :style="bottom_fixed_style">
                     <view class="bottom-line-exclude">
-                        <button class="item round cr-main bg-white br-main text-size wh-auto sub-btn" type="default" hover-class="none" data-value="/pages/plugins/giftcard/form/form" @tap="url_event">{{$t('giftcard-index.giftcard-index.8tfgh2')}}</button>
+                        <button class="item round cr-main bg-white br-main text-size wh-auto sub-btn" type="default" hover-class="none" data-value="/pages/plugins/giftcard/form/form" @tap="url_event">{{$t('giftcard-index.card_exchange')}}</button>
                     </view>
                 </view>
             </view>
@@ -83,8 +83,10 @@
     import componentCommon from '@/components/common/common';
     import componentNoData from '@/components/no-data/no-data';
     import componentBottomLine from '@/components/bottom-line/bottom-line';
+    import pluginLocale from '../locale/index.js';
 
     export default {
+        mixins: [pluginLocale],
         data() {
             return {
                 theme_view: app.globalData.get_theme_value_view(),
@@ -99,7 +101,7 @@
                 data_is_loading: 0,
                 params: null,
                 content_list: [
-                    { name: this.$t('giftcard-index.giftcard-index.87yyj3'), field: 'exchange_time' },
+                    { name: this.$t('giftcard-index.redemption_time'), field: 'exchange_time' },
                     { name: this.$t('common.add_time'), field: 'add_time' },
                     { name: this.$t('common.upd_time'), field: 'upd_time' },
                 ],

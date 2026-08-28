@@ -30,9 +30,11 @@
     import componentNoData from "@/components/no-data/no-data";
     import componentBottomLine from "@/components/bottom-line/bottom-line";
     import componentShopHeader from '@/pages/plugins/shop/components/shop-header/shop-header';
+    import pluginLocale from '../locale/index.js';
 
     var common_static_url = app.globalData.get_static_url('common');
     export default {
+        mixins: [pluginLocale],
         data() {
             return {
                 theme_view: app.globalData.get_theme_value_view(),

@@ -34,13 +34,13 @@
                 <view class="search-map padding-main bg-base">
                     <view class="padding-main border-radius-main bg-white">
                         <view class="map-item map-base br-b">
-                            <text>{{$t('goods-search.goods-search.j8o278')}}</text>
+                            <text>{{$t('common.filter_out')}}</text>
                             <text class="cr-main"> {{data_total}} </text>
-                            <text>{{$t('goods-search.goods-search.t9nikq')}}</text>
+                            <text>{{$t('common.piece_data')}}</text>
                             <text class="fr cr-red" @tap="map_remove_event">{{$t('common.clear')}}</text>
                         </view>
                         <!-- 搜索关键字 -->
-                        <input type="text" confirm-type="done" :placeholder="$t('search.search.723rbx')" name="wd" :value="(post_data.wd || '')" class="map-keywords wh-auto round bg-base margin-top-lg" placeholder-class="cr-grey">
+                        <input type="text" confirm-type="done" :placeholder="$t('common.actually_searching_very_simple')" name="wd" :value="(post_data.wd || '')" class="map-keywords wh-auto round bg-base margin-top-lg" placeholder-class="cr-grey">
                     </view>
 
                     <!-- 分类 -->
@@ -83,9 +83,11 @@
     import componentNoData from "@/components/no-data/no-data";
     import componentBottomLine from "@/components/bottom-line/bottom-line";
     import componentGoodsList from "@/components/goods-list/goods-list";
+    import pluginLocale from '../locale/index.js';
 
     var common_static_url = app.globalData.get_static_url('common');
     export default {
+        mixins: [pluginLocale],
         data() {
             return {
                 theme_view: app.globalData.get_theme_value_view(),
@@ -106,11 +108,11 @@
                 // 排序导航
                 search_nav_sort_index: 0,
                 search_nav_sort_list: [
-                    { name: this.$t('goods-category.goods-category.x69aow'), field: "default", sort: "asc", "icon": null },
-                    { name: this.$t('goods-category.goods-category.at5p35'), field: "sales_count", sort: "asc", "icon": "default" },
-                    { name: this.$t('goods-category.goods-category.283ot0'), field: "access_count", sort: "asc", "icon": "default" },
-                    { name: this.$t('goods-category.goods-category.g2u3lf'), field: "min_price", sort: "asc", "icon": "default" },
-                    { name: this.$t('goods-category.goods-category.5p4ksj'), field: "id", sort: "asc", "icon": "default" }
+                    { name: this.$t('common.goods_category_all'), field: "default", sort: "asc", "icon": null },
+                    { name: this.$t('common.sales_volume'), field: "sales_count", sort: "asc", "icon": "default" },
+                    { name: this.$t('common.heat'), field: "access_count", sort: "asc", "icon": "default" },
+                    { name: this.$t('common.price'), field: "min_price", sort: "asc", "icon": "default" },
+                    { name: this.$t('common.latest'), field: "id", sort: "asc", "icon": "default" }
                 ],
                 // 数据展示样式（0图文、1九方格）
                 data_show_type_value: 1,

@@ -3,7 +3,7 @@
         <button v-if="propOrder.operate_data.is_cancel == 1" class="round bg-white cr-yellow br-yellow margin-bottom-main" type="default" size="mini" @tap="cancel_event" hover-class="none">{{ $t('common.cancel') }}</button>
         <button v-if="propOrder.operate_data.is_pay == 1" class="round bg-white cr-green br-green margin-bottom-main" type="default" size="mini" @tap="pay_event" hover-class="none">{{ $t('common.pay') }}</button>
         <button v-if="payvoucher_show" class="round bg-white cr-blue br-blue margin-bottom-main" type="default" size="mini" @tap="payvoucher_event" hover-class="none">{{ payvoucher_name }}</button>
-        <button v-if="propOrder.operate_data.is_collect == 1" class="round bg-white cr-green br-green margin-bottom-main" type="default" size="mini" @tap="collect_event" hover-class="none">{{ $t('orderallot-list.orderallot-list.w2w2w4') }}</button>
+        <button v-if="propOrder.operate_data.is_collect == 1" class="round bg-white cr-green br-green margin-bottom-main" type="default" size="mini" @tap="collect_event" hover-class="none">{{ $t('common.receiving_goods') }}</button>
         <button v-if="propOrder.operate_data.is_comments == 1" class="round bg-white cr-green br-green margin-bottom-main" type="default" size="mini" @tap="comments_event" hover-class="none">{{ $t('common.comment') }}</button>
         <button v-if="more_actions_count > 0" class="round bg-white cr-base br-base margin-bottom-main" type="default" size="mini" @tap="more_open_event" hover-class="none">{{ $t('common.more') }}</button>
 
@@ -94,7 +94,7 @@
                 if ((order.plugins_express_data || 0) == 1 && (order.express_data || null) != null) {
                     actions.push({
                         key: 'express',
-                        name: this.$t('orderallot-list.orderallot-list.w2t242'),
+                        name: this.$t('common.logistics'),
                         type: 'url',
                         value: '/pages/plugins/express/detail/detail?oid=' + order.id,
                     });
@@ -111,7 +111,7 @@
                 if ((order.plugins_delivery_data || 0) > 0) {
                     actions.push({
                         key: 'delivery',
-                        name: this.$t('orderallot-list.orderallot-list.w2t242'),
+                        name: this.$t('common.logistics'),
                         type: 'url',
                         value: '/pages/plugins/delivery/logistics/logistics?id=' + order.plugins_delivery_data,
                     });
@@ -135,7 +135,7 @@
                 if ((order.plugins_is_order_batch_button || 0) == 1) {
                     actions.push({
                         key: 'order_batch',
-                        name: this.$t('orderallot-list.orderallot-list.6m73j2'),
+                        name: this.$t('common.batch'),
                         type: 'url',
                         value: '/pages/plugins/realstore/batchorder-list/batchorder-list?oid=' + order.id,
                     });
@@ -143,7 +143,7 @@
                 if ((order.plugins_is_order_frequencycard_button || 0) == 1) {
                     actions.push({
                         key: 'frequencycard',
-                        name: this.$t('orderallot-list.orderallot-list.b13k5r'),
+                        name: this.$t('common.secondary_card'),
                         type: 'url',
                         value: '/pages/plugins/realstore/frequencycard-list/frequencycard-list?oid=' + order.id,
                     });

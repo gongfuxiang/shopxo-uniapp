@@ -9,9 +9,9 @@
                     <view v-if="cart_status" class="bg-white border-radius-main pr oh margin-horizontal-main margin-bottom-xxxl">
                         <block v-if="(cart || null) != null && (cart.data || null) != null && cart.data.length > 0">
                             <view class="oh br-b padding-vertical-main padding-horizontal-main text-size-xs">
-                                <text class="va-m cr-base">{{$t('goods-category.goods-category.ico62g')}}</text>
+                                <text class="va-m cr-base">{{$t('common.selected_product')}}</text>
                                 <view v-if="(info.buy_use_type_list || null) != null && info.buy_use_type_list.length > 0" class="dis-inline-block margin-left-xl">
-                                    <text class="cr-red">{{$t('realstore-cart.realstore-cart.v437n6')}}</text>
+                                    <text class="cr-red">{{$t('realstore-cart.any_purchased_items')}}</text>
                                     <view class="va-m dis-inline-block br-green cr-green round padding-horizontal-sm padding-vertical-xs cp" @tap="buy_use_type_event">
                                         <text class="va-m">{{$t('common.switch_text')}}({{info.buy_use_type_list[buy_use_type_active_index]['name']}})</text>
                                         <view class="va-m dis-inline-block margin-left-xs">
@@ -64,9 +64,9 @@
                             </scroll-view>
                         </block>
                         <block v-else>
-                            <component-no-data propStatus="0" :propMsg="$t('realstore-cart.realstore-cart.2dc65q')"></component-no-data>
+                            <component-no-data propStatus="0" :propMsg="$t('realstore-cart.add_product_first')"></component-no-data>
                             <view v-if="(info.buy_use_type_list || null) != null && info.buy_use_type_list.length > 0" class="padding-vertical-xxxl margin-vertical-xxxl tc text-size-xs">
-                                <text class="cr-red va-m">{{$t('realstore-cart.realstore-cart.v437n6')}}</text>
+                                <text class="cr-red va-m">{{$t('realstore-cart.any_purchased_items')}}</text>
                                 <view class="va-m dis-inline-block br-green cr-green round padding-horizontal padding-vertical-xs cp" @tap="buy_use_type_event">
                                     <text class="va-m">{{$t('common.switch_text')}}{{info.buy_use_type_list[buy_use_type_active_index]['name']}})</text>
                                     <view class="va-m dis-inline-block margin-left-xs">
@@ -108,7 +108,7 @@
                 <!-- 下单类型弹窗选择 -->
                 <view class="plugins-realstore-buy-type-choice pf bg-white border-radius-main padding-xxl">
                     <view class="tc margin-top-xs margin-bottom-xl">
-                        <text class="cr-grey text-size">{{$t('realstore-cart.realstore-cart.d1kk7x')}}</text>
+                        <text class="cr-grey text-size">{{$t('realstore-cart.select_order_type')}}</text>
                         <view v-if="(base.is_tips_user_choice_buy_use_type_mandatory || 0) == 0" class="fr" @tap="buy_use_type_choice_close_event">
                             <iconfont name="icon-close-line" size="28rpx" color="#999"></iconfont>
                         </view>
@@ -195,7 +195,7 @@
                                     </view>
 
                                     <view v-if="staff_booking_get_booking_unit(gindex, uindex).staff_id > 0" class="margin-top-sm">
-                                        <view class="cr-grey text-size-xss margin-bottom-xs">{{$t('realstore-cart.realstore-cart.8r2w5t')}}</view>
+                                        <view class="cr-grey text-size-xss margin-bottom-xs">{{$t('realstore-cart.select_date')}}</view>
                                         <scroll-view scroll-x="true" class="scroll-view-horizontal plugins-realstore-staff-booking-unit-date-scroll" :show-scrollbar="false">
                                             <view v-for="(date_item, date_index) in staff_booking_ymd_list" :key="date_index"
                                                 :class="'plugins-realstore-staff-booking-date-item margin-right-sm radius text-size-sm br ' + ((date_item.day_label || '') != '' ? 'plugins-realstore-staff-booking-date-item-with-label ' : 'plugins-realstore-staff-booking-date-item-no-label ') + (staff_booking_get_booking_unit(gindex, uindex).ymd == date_item.ymd ? 'br-main bg-main-light cr-main' : (date_item.disabled == 1 ? 'bg-grey-disabled cr-grey' : 'bg-white br-grey cr-base cp'))"
@@ -214,9 +214,9 @@
                                     </view>
 
                                     <view v-if="staff_booking_get_booking_unit(gindex, uindex).staff_id > 0 && staff_booking_get_booking_unit(gindex, uindex).ymd > 0" class="plugins-realstore-staff-booking-period-list margin-top-sm">
-                                        <view class="cr-grey text-size-xss margin-bottom-xs">{{$t('realstore-cart.realstore-cart.1h6y9u')}}</view>
+                                        <view class="cr-grey text-size-xss margin-bottom-xs">{{$t('realstore-cart.select_time_slot_2')}}</view>
                                         <view v-if="staff_booking_is_unit_periods_empty_loading(gindex, uindex)" class="cr-grey text-size-xs">{{$t('common.loading_in_text')}}</view>
-                                        <view v-else-if="staff_booking_get_unit_periods(gindex, uindex).length <= 0" class="cr-grey text-size-xs">{{$t('realstore-cart.realstore-cart.4f3x7v')}}</view>
+                                        <view v-else-if="staff_booking_get_unit_periods(gindex, uindex).length <= 0" class="cr-grey text-size-xs">{{$t('realstore-cart.available_time_slots_date')}}</view>
                                         <view v-else class="plugins-realstore-staff-booking-period-wrap">
                                             <view v-for="(period, pindex) in staff_booking_get_unit_periods(gindex, uindex)" :key="pindex"
                                                 :class="'plugins-realstore-staff-booking-period-tag dis-inline-block margin-right-sm margin-bottom-sm padding-horizontal-sm padding-vertical-xs radius text-size-xs br ' + staff_booking_get_period_class(gindex, uindex, staff_booking_get_booking_unit(gindex, uindex).staff_id, period)"
@@ -224,7 +224,7 @@
                                                 :data-uindex="uindex"
                                                 :data-pindex="pindex"
                                                 @tap="staff_booking_goods_period_event">
-                                                {{ period.name || '' }}<text v-if="parseInt(period.is_available || 0) == 0" class="cr-grey">({{ parseInt(period.occupied_flag || 0) == 1 ? $t('realstore-cart.realstore-cart.2p5q8r') : $t('realstore-cart.realstore-cart.6t1w4x') }})</text>
+                                                {{ period.name || '' }}<text v-if="parseInt(period.is_available || 0) == 0" class="cr-grey">({{ parseInt(period.occupied_flag || 0) == 1 ? $t('realstore-cart.booked') : $t('realstore-cart.taken') }})</text>
                                             </view>
                                         </view>
                                     </view>
@@ -236,7 +236,7 @@
 
                 <view class="padding-main">
                     <button type="default" hover-class="none" :loading="staff_booking_submit_loading" :disabled="staff_booking_submit_loading || staff_booking_init_loading_status != 3" class="radius bg-main cr-white text-size-md wh-auto" @tap="staff_booking_submit_event">
-                        {{$t('realstore-cart.realstore-cart.9y3z7a')}}
+                        {{$t('realstore-cart.confirm_checkout')}}
                     </button>
                 </view>
             </view>
@@ -413,7 +413,7 @@
                                                 if(arr.indexOf(buy_button[i]['type']) != -1) {
                                                     cart_status = true;
                                                     cart_type = buy_button[i]['type'];
-                                                    cart_text = this.$t('realstore-cart.realstore-cart.b27ln3');
+                                                    cart_text = this.$t('realstore-cart.add_cart');
                                                     break;
                                                 }
                                             }
@@ -502,7 +502,7 @@
                             // 购物车获取成功回调
                             this.$emit('CartDataBackEvent', this.cart);
                         } else {
-                            app.globalData.showToast(this.$t('realstore-cart.realstore-cart.47h2a0'));
+                            app.globalData.showToast(this.$t('realstore-cart.request_failed_try_again'));
                         }
                         
                         // 结算按钮处理
@@ -555,10 +555,10 @@
                         if(limit_type.length > 0) {
                             var type_data = this.buy_use_type_data();
                             if(limit_type.indexOf(type_data.data_index) != -1 || limit_type.indexOf(type_data.data_index.toString()) != -1) {
-                                return this.$t('realstore-cart.realstore-cart.miv944')+ this.propCurrencySymbol + starting_price;
+                                return this.$t('realstore-cart.start')+ this.propCurrencySymbol + starting_price;
                             }
                         } else {
-                            return this.$t('realstore-cart.realstore-cart.miv944') + this.propCurrencySymbol + starting_price;
+                            return this.$t('realstore-cart.start') + this.propCurrencySymbol + starting_price;
                         }
                     }
                 }
@@ -622,7 +622,7 @@
 
                 // 门店商品是否正常
                 if((this.realstore_goods_data || null) == null) {
-                    app.globalData.showToast(this.$t('realstore-cart.realstore-cart.20epzm'));
+                    app.globalData.showToast(this.$t('realstore-cart.product_data_incorrect'));
                     return false;
                 }
                 this.$refs.goods_buy.init(this.realstore_goods_data, {...this.params, ...{buy_event_type: 'cart'}});
@@ -648,7 +648,7 @@
                     }
                 }
                 if(ids.length <= 0) {
-                    app.globalData.showToast(this.$t('realstore-cart.realstore-cart.2dc65q'));
+                    app.globalData.showToast(this.$t('realstore-cart.add_product_first'));
                     return false;
                 }
 
@@ -708,7 +708,7 @@
             // 门店状态判断
             is_status_check() {
                 if((this.info || null) == null) {
-                    app.globalData.showToast(this.$t('realstore-cart.realstore-cart.8tzr7l'));
+                    app.globalData.showToast(this.$t('realstore-cart.incorrect_store_info'));
                     return false;
                 } else {
                     if(this.info.status_info.status != 1) {
@@ -724,7 +724,7 @@
                 var self = this;
                 uni.showModal({
                     title: self.$t('common.warm_tips'),
-                    content: self.$t('goods-category.goods-category.o6i1w2'),
+                    content: self.$t('common.after_picking_so_long_really_want'),
                     confirmText: self.$t('common.confirm'),
                     cancelText: self.$t('common.not_yet'),
                     success: (result) => {
@@ -816,13 +816,13 @@
                 var max = spec_buy_max_number > 0 ? spec_buy_max_number : buy_max_number;
                 if(max > 0 && stock > max) {
                     stock = max;
-                    app.globalData.showToast(this.$t('goods-category.goods-category.z1eh3v') + max + inventory_unit);
+                    app.globalData.showToast(this.$t('common.purchase_limit') + max + inventory_unit);
                     return false;
                 }
 
                 // 数量是否改变
                 if(goods[stock_field] == stock) {
-                    app.globalData.showToast(this.$t('goods-category.goods-category.1ox23z'));
+                    app.globalData.showToast(this.$t('common.quantity_unchanged'));
                     return false;
                 }
 
@@ -1017,7 +1017,7 @@
                 // 操作类型
                 if(opt_number == 0) {
                     if(cart_item == null) {
-                        app.globalData.showToast(this.$t('goods-category.goods-category.x46kbv'));
+                        app.globalData.showToast(this.$t('common.cart_id_incorrect'));
                         return false;
                     }
                     this.cart_delete(cart_item.id, cart_item.goods_id);
@@ -1093,7 +1093,7 @@
                 this.setData({
                     buy_use_type_choice_status: false,
                 });
-                app.globalData.showToast(this.$t('recommend-form.recommend-form.145ci4'), 'success');
+                app.globalData.showToast(this.$t('common.selection_successful'), 'success');
             },
 
             // 下单类型确认处理
@@ -1250,7 +1250,7 @@
                 if((this.propStaffBookingPopupTitle || '') != '') {
                     return this.propStaffBookingPopupTitle;
                 }
-                return api_title || this.$t('realstore-cart.realstore-cart.3k8m2p');
+                return api_title || this.$t('realstore-cart.select_staff_time_slot');
             },
 
             // 打开员工预定弹窗并初始化
@@ -1442,7 +1442,7 @@
                                     item.booking_periods_id = 0;
                                     item.period_text = '';
                                     if(matched != null) {
-                                        app.globalData.showToast(this.$t('realstore-cart.realstore-cart.0b4c8d'));
+                                        app.globalData.showToast(this.$t('realstore-cart.time_slot_occupied_select_again'));
                                     }
                                 }
                             }
@@ -1523,7 +1523,7 @@
             // 选择/取消选择日期
             staff_booking_goods_ymd_event(e) {
                 if(parseInt(e.currentTarget.dataset.disabled || 0) == 1) {
-                    app.globalData.showToast(this.$t('realstore-cart.realstore-cart.1e5f9g'));
+                    app.globalData.showToast(this.$t('realstore-cart.date_available'));
                     return false;
                 }
                 var gindex = e.currentTarget.dataset.gindex;
@@ -1532,7 +1532,7 @@
                 var form = JSON.parse(JSON.stringify(this.staff_booking_form || {}));
                 var item = form[gindex][uindex];
                 if((item.staff_id || 0) == 0) {
-                    app.globalData.showToast(this.$t('realstore-cart.realstore-cart.2h6i0j'));
+                    app.globalData.showToast(this.$t('realstore-cart.select_staff_first'));
                     return false;
                 }
                 if((item.ymd || 0) == ymd) {
@@ -1624,11 +1624,11 @@
                 var form = JSON.parse(JSON.stringify(this.staff_booking_form || {}));
                 var item = form[gindex][uindex];
                 if((item.staff_id || 0) == 0) {
-                    app.globalData.showToast(this.$t('realstore-cart.realstore-cart.2h6i0j'));
+                    app.globalData.showToast(this.$t('realstore-cart.select_staff_first'));
                     return false;
                 }
                 if((item.ymd || 0) == 0) {
-                    app.globalData.showToast(this.$t('realstore-cart.realstore-cart.3k7l1m'));
+                    app.globalData.showToast(this.$t('realstore-cart.select_date_first'));
                     return false;
                 }
                 var periods = this.staff_booking_get_unit_periods(gindex, uindex);
@@ -1643,7 +1643,7 @@
                     return true;
                 }
                 if(!this.staff_booking_is_period_available(gindex, uindex, item.staff_id, period)) {
-                    app.globalData.showToast(this.$t('realstore-cart.realstore-cart.4n8o2p'));
+                    app.globalData.showToast(this.$t('realstore-cart.time_slot_occupied'));
                     return false;
                 }
                 item.booking_periods_id = period.id;
@@ -1654,7 +1654,7 @@
             // 校验并提交员工预定
             staff_booking_submit_event() {
                 if((this.staff_booking_cart_list || null) == null || this.staff_booking_cart_list.length <= 0) {
-                    app.globalData.showToast(this.$t('realstore-cart.realstore-cart.5q9r3s'));
+                    app.globalData.showToast(this.$t('realstore-cart.cart_empty'));
                     return false;
                 }
                 var booking_data = [];
@@ -1663,7 +1663,7 @@
                     for(var ui in units) {
                         var item = units[ui];
                         if((item.staff_id || 0) == 0 || (item.ymd || 0) == 0 || (item.booking_periods_id || 0) == 0) {
-                            app.globalData.showToast(this.$t('realstore-cart.realstore-cart.6t0u4v'));
+                            app.globalData.showToast(this.$t('realstore-cart.select_staff_date_time_slot_each'));
                             return false;
                         }
                         var periods = this.staff_booking_get_unit_periods(gi, ui);
@@ -1675,7 +1675,7 @@
                             }
                         }
                         if(matched == null || !this.staff_booking_is_period_available(gi, ui, item.staff_id, matched)) {
-                            app.globalData.showToast(this.$t('realstore-cart.realstore-cart.7w1x5y'));
+                            app.globalData.showToast(this.$t('realstore-cart.selected_time_slot_occupied_select_again'));
                             return false;
                         }
                         booking_data.push({

@@ -10,35 +10,35 @@
                 <form @submit="form_submit" class="form-container">
                     <view class="padding-top-sm">
                         <view class="text-size-md spacing-mb">
-                            <text>{{$t('user-base.user-base.g5663y')}}</text>
-                            <text v-if="(check_field.is_avatar || 0) == 1">{{$t('personal.personal.cw1d8p')}}</text>
-                            <text v-if="(check_field.is_nickname || 0) == 1">、{{$t('personal.personal.gw8br3')}}</text>
-                            <text v-if="(check_field.is_mobile || 0) == 1">、{{$t('login.login.28k91h')}}</text>
+                            <text>{{$t('user-base.get')}}</text>
+                            <text v-if="(check_field.is_avatar || 0) == 1">{{$t('common.avatar')}}</text>
+                            <text v-if="(check_field.is_nickname || 0) == 1">、{{$t('common.nickname')}}</text>
+                            <text v-if="(check_field.is_mobile || 0) == 1">、{{$t('common.mobile_phone_number')}}</text>
                         </view>
                         <view class="padding-bottom-main cr-grey-9 br-b">
-                            <text>{{$t('user-base.user-base.913g4e')}}</text>
-                            <text v-if="(check_field.is_avatar || 0) == 1">{{$t('personal.personal.cw1d8p')}}</text>
-                            <text v-if="(check_field.is_nickname || 0) == 1">、{{$t('personal.personal.gw8br3')}}</text>
-                            <text v-if="(check_field.is_mobile || 0) == 1">、{{$t('login.login.28k91h')}}</text>
-                            <text>{{$t('user-base.user-base.yujeaf')}}</text>
+                            <text>{{$t('user-base.get_users')}}</text>
+                            <text v-if="(check_field.is_avatar || 0) == 1">{{$t('common.avatar')}}</text>
+                            <text v-if="(check_field.is_nickname || 0) == 1">、{{$t('common.nickname')}}</text>
+                            <text v-if="(check_field.is_mobile || 0) == 1">、{{$t('common.mobile_phone_number')}}</text>
+                            <text>{{$t('user-base.improve_personal_information_mainly_used_provide')}}</text>
                         </view>
                         <view v-if="(check_field.is_avatar || 0) == 1" class="form-gorup oh flex-row align-c br-b">
-                            <view class="form-gorup-title text-size-md">{{$t('personal.personal.cw1d8p')}}<text class="form-group-tips-must">*</text></view>
+                            <view class="form-gorup-title text-size-md">{{$t('common.avatar')}}<text class="form-group-tips-must">*</text></view>
                             <button class="bg-white br-0 padding-0 margin-left-xxl flex-row jc-sb align-c flex-1" hover-class="none" open-type="chooseAvatar" @chooseavatar="choose_avatar_event" @tap="choose_avatar_event">
                                 <image :src="user_avatar || default_avatar" mode="widthFix" class="circle br user-base-avatar"></image>
                                 <iconfont name="icon-arrow-right" size="24rpx" color="#ccc"></iconfont>
                             </button>
                         </view>
                         <view v-if="(check_field.is_nickname || 0) == 1" class="form-gorup oh flex-row align-c br-b">
-                            <view class="form-gorup-title text-size-md">{{$t('personal.personal.gw8br3')}}<text class="form-group-tips-must">*</text></view>
+                            <view class="form-gorup-title text-size-md">{{$t('common.nickname')}}<text class="form-group-tips-must">*</text></view>
                             <view class="user-nickname-container padding-left-xxl">
-                                <input :type="client_value == 'weixin' ? 'nickname': 'text'" maxlength="16" placeholder-class="cr-grey-c" class="cr-base" :placeholder="$t('user-base.user-base.o19lj3')" @input="on_input_nickname" @blur="on_input_nickname" />
+                                <input :type="client_value == 'weixin' ? 'nickname': 'text'" maxlength="16" placeholder-class="cr-grey-c" class="cr-base" :placeholder="$t('user-base.enter_nickname_16_characters')" @input="on_input_nickname" @blur="on_input_nickname" />
                             </view>
                         </view>
                         <view v-if="(check_field.is_mobile || 0) == 1" class="form-gorup oh flex-row align-c br-b">
-                            <view class="form-gorup-title text-size-md">{{$t('login.login.1p7843')}}<text class="form-group-tips-must">*</text></view>
+                            <view class="form-gorup-title text-size-md">{{$t('common.login_phone')}}<text class="form-group-tips-must">*</text></view>
                             <view class="user-mobile-container padding-left-xxl">
-                                <button class="bg-white br-white text-size-md margin-top-sm padding-left-0 tl" :class="(user_mobile || null) == null ? 'cr-green' : ''" type="default" hover-class="none" open-type="getPhoneNumber" @getphonenumber="confirm_phone_number_event">{{ user_mobile || $t('login.login.8fghjs') }}</button>
+                                <button class="bg-white br-white text-size-md margin-top-sm padding-left-0 tl" :class="(user_mobile || null) == null ? 'cr-green' : ''" type="default" hover-class="none" open-type="getPhoneNumber" @getphonenumber="confirm_phone_number_event">{{ user_mobile || $t('login.get_phone_number') }}</button>
                             </view>
                         </view>
 
@@ -170,7 +170,7 @@
                 };
                 if((user || null) != null) {
                     // 默认昵称则赋空值
-                    var arr = [this.$t('user-base.user-base.8u9on2'), this.$t('user-base.user-base.t8i9l4'), this.$t('user-base.user-base.0imw74'), this.$t('user-base.user-base.27q5af'), this.$t('user-base.user-base.211pk4'), this.$t('user-base.user-base.5x8o43'), 'WeChat User', 'Usuarios de Wechat'];
+                    var arr = [this.$t('user-base.alipay_users'), this.$t('user-base.baidu_users'), this.$t('user-base.headline_users'), this.$t('user-base.qq_users'), this.$t('user-base.kwai_users'), this.$t('user-base.wechat_users'), 'WeChat User', 'Usuarios de Wechat'];
                     if ((user.nickname || null) == null || arr.indexOf(user.nickname) != -1) {
                         user['nickname'] = '';
                         check_field['is_nickname'] = 1;
@@ -347,19 +347,19 @@
                 if (parseInt(this.check_field.is_avatar || 0) == 1) {
                     validation.push({
                         fields: 'avatar',
-                        msg: this.$t('user-base.user-base.gzc3y4'),
+                        msg: this.$t('user-base.upload_profile_picture'),
                     });
                 }
                 if (parseInt(this.check_field.is_nickname || 0) == 1) {
                     validation.push({
                         fields: 'nickname',
-                        msg: this.$t('user-base.user-base.lro9u7'),
+                        msg: this.$t('user-base.fill_nickname'),
                     });
                 }
                 if (parseInt(this.check_field.is_mobile || 0) == 1) {
                     validation.push({
                         fields: 'mobile',
-                        msg: this.$t('login.login.tghjer'),
+                        msg: this.$t('login.obtain_mobile_phone_number'),
                     });
                 }
                 // 数据

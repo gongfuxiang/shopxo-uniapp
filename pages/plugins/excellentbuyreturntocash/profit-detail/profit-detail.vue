@@ -29,8 +29,10 @@
     import componentCommon from '@/components/common/common';
     import componentNoData from "@/components/no-data/no-data";
     import componentBottomLine from "@/components/bottom-line/bottom-line";
+    import pluginLocale from '../locale/index.js';
 
     export default {
+        mixins: [pluginLocale],
         data() {
             return {
                 theme_view: app.globalData.get_theme_value_view(),
@@ -100,16 +102,16 @@
                             this.setData({
                                 detail: data.data,
                                 detail_list: [
-                                    { name: this.$t('order-detail.order-detail.36op8f'), value: data.data.order_no },
-                                    { name: this.$t('order-detail.order-detail.x3ge6c'), value: data.data.total_price || "" },
-                                    { name: this.$t('order-detail.order-detail.v52n5r'), value: data.data.refund_price || "" },
-                                    { name: this.$t('profit.profit.nk58v6'), value: data.data.valid_price || "" },
-                                    { name: this.$t('profit.profit.vuvz6g'), value: data.data.profit_price || "" },
-                                    { name: this.$t('profit-detail.profit-detail.kn8yye'), value: data.data.status_name || "" },
-                                    { name: this.$t('user-order-detail.user-order-detail.yxwu8n'), value: data.data.order_status_name || "" },
-                                    { name: this.$t('profit-detail.profit-detail.x28rw5'), value: data.data.order_pay_status_name || "" },
-                                    { name: this.$t('order.order.330m76'), value: data.data.order_client_type_name || "" },
-                                    { name: this.$t('profit-detail.profit-detail.jkrvf3'), value: (data.data.status == 2 && (data.data.success_estimate_icon || null) != null ? "(" + data.data.success_estimate_icon + ") " : "") + data.data.success_time || "" },
+                                    { name: this.$t('common.order_detail_order_number'), value: data.data.order_no },
+                                    { name: this.$t('common.order_amount'), value: data.data.total_price || "" },
+                                    { name: this.$t('common.refund_amount'), value: data.data.refund_price || "" },
+                                    { name: this.$t('profit.effective_amount'), value: data.data.valid_price || "" },
+                                    { name: this.$t('profit.refund_amount'), value: data.data.profit_price || "" },
+                                    { name: this.$t('common.settlement_status'), value: data.data.status_name || "" },
+                                    { name: this.$t('common.order_status'), value: data.data.order_status_name || "" },
+                                    { name: this.$t('common.order_payment_status'), value: data.data.order_pay_status_name || "" },
+                                    { name: this.$t('common.source_terminal'), value: data.data.order_client_type_name || "" },
+                                    { name: this.$t('profit-detail.settlement_time'), value: (data.data.status == 2 && (data.data.success_estimate_icon || null) != null ? "(" + data.data.success_estimate_icon + ") " : "") + data.data.success_time || "" },
                                     { name: this.$t('common.add_time'), value: data.data.add_time || "" },
                                     { name: this.$t('common.upd_time'), value: data.data.upd_time || "" },
                                 ],

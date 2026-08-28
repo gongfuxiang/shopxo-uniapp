@@ -24,12 +24,12 @@
                 <image :src="avatar" mode="aspectFill" class="user-avatar fl circle"></image>
                 <view class="right-base flex-1 flex-width">
                     <view class="comments border-radius-main padding-main">
-                        <textarea :placeholder="$t('ask-comments.ask-comments.m67961')" placeholder-class="cr-grey" class="wh-auto bg-grey-f8" :value="input_comments_value" :maxlength="input_comments_length_max" @input="comments_input_event" @blur="comments_input_event"></textarea>
+                        <textarea :placeholder="$t('common.looking_forward_speech')" placeholder-class="cr-grey" class="wh-auto bg-grey-f8" :value="input_comments_value" :maxlength="input_comments_length_max" @input="comments_input_event" @blur="comments_input_event"></textarea>
                         <view class="oh flex-row jc-sb align-e">
                             <image :src="common_static_url + 'emoji-icon.png'" mode="aspectFill" class="emoji-icon va-m" @tap="emoji_event"></image>
                             <view class="flex-row align-e">
                                 <!-- #ifndef MP-ALIPAY -->
-                                <text class="text-size-xs cr-grey-d margin-right-sm">{{$t('login.login.n24i5u')}}{{ input_comments_length_value }}{{$t('ask-comments.ask-comments.6l6vz7')}}</text>
+                                <text class="text-size-xs cr-grey-d margin-right-sm">{{$t('common.remain')}}{{ input_comments_length_value }}{{$t('common.word')}}</text>
                                 <!-- #endif  -->
                                 <button type="default" size="mini" class="comment-btn cr-white border-radius-sm text-size-md va-m" :class="input_comments_value.length > 0 ? 'bg-main br-main ' : 'comment-btn-default'" @tap="comments_event">{{$t('common.comment')}}</button>
                             </view>
@@ -97,8 +97,8 @@
                             </view>
                             <view v-if="(item.comments_count || 0) > 0 && (item.is_comments_list_submit == undefined || item.is_comments_list_submit == 1)" class="margin-top-lg text-size-xs">
                                 <text :data-index="index" :data-blogid="item.blog_id" :data-blogcommentsid="item.id" @tap="comments_list_reply_event">
-                                    <text v-if="item.is_comments_list_submit == undefined" class="cr-grey">{{$t('goods-list.goods-list.278qr1')}}{{ item.comments_count }}{{$t('ask-comments.ask-comments.ymmd24')}}</text>
-                                    <text v-else class="cr-grey">{{$t('ask-comments.ask-comments.dfhg54')}}</text>
+                                    <text v-if="item.is_comments_list_submit == undefined" class="cr-grey">{{$t('common.view_all')}}{{ item.comments_count }}{{$t('common.replies')}}</text>
+                                    <text v-else class="cr-grey">{{$t('common.view_more_replies')}}</text>
                                     <iconfont name="icon-arrow-bottom" size="24rpx" propClass="margin-left-xs pr top-xs"></iconfont>
                                 </text>
                             </view>
@@ -108,13 +108,13 @@
                 <block v-if="((data_base.blog_detail_comments_more_page_number || 0) == 0 && (data.comments_count || 0) > 20) || ((data_base.blog_detail_comments_more_page_number || 0) > 0 && data.comments_count > data_base.blog_detail_comments_more_page_number)">
                     <view v-if="propType == 'detail'" class="margin-top-xxxl tc padding-vertical-main bg-grey-f8 border-radius-sm">
                         <text :data-value="'/pages/plugins/blog/comments/comments?id=' + data.id" @tap="url_event">
-                            <text class="cr-grey">{{$t('goods-list.goods-list.278qr1')}}{{ data.comments_count }}{{$t('ask-comments.ask-comments.5401r1')}}</text>
+                            <text class="cr-grey">{{$t('common.view_all')}}{{ data.comments_count }}{{$t('common.comments')}}</text>
                             <iconfont name="icon-arrow-right" size="24rpx" propClass="margin-left-xs pr top-xs"></iconfont>
                         </text>
                     </view>
                     <view v-if="propType == 'comments' && (data.is_comments_list_submit == undefined || data.is_comments_list_submit == 1)" class="margin-top-xxxl tc padding-vertical-main bg-grey-f8 border-radius-sm">
                         <text :data-blogid="data.id" @tap="comments_list_reply_event">
-                            <text class="cr-grey">{{$t('ask-comments.ask-comments.4l77wt')}}</text>
+                            <text class="cr-grey">{{$t('common.view_more_comments')}}</text>
                             <iconfont name="icon-arrow-bottom" size="24rpx" propClass="margin-left-xs pr top-xs"></iconfont>
                         </text>
                     </view>
@@ -131,11 +131,11 @@
                             </view>
                         </view>
                     </view>
-                    <textarea :placeholder="$t('ask-comments.ask-comments.m67961')" placeholder-class="cr-grey" class="wh-auto br padding-main" :value="input_comments_value" :maxlength="input_comments_length_max" @input="comments_input_event" @blur="comments_input_event"></textarea>
+                    <textarea :placeholder="$t('common.looking_forward_speech')" placeholder-class="cr-grey" class="wh-auto br padding-main" :value="input_comments_value" :maxlength="input_comments_length_max" @input="comments_input_event" @blur="comments_input_event"></textarea>
                     <view class="margin-top-lg oh">
                         <image :src="common_static_url + 'emoji-icon.png'" mode="aspectFill" class="emoji-icon va-m" @tap="emoji_event"></image>
                         <view class="fr">
-                            <text class="va-m text-size-xs cr-grey margin-right-lg">{{$t('login.login.n24i5u')}}{{ input_comments_length_value }}{{$t('ask-comments.ask-comments.6l6vz7')}}</text>
+                            <text class="va-m text-size-xs cr-grey margin-right-lg">{{$t('common.remain')}}{{ input_comments_length_value }}{{$t('common.word')}}</text>
                             <button type="default" size="mini" class="comment-btn cr-white border-radius-sm text-size-xs va-m" :class="input_comments_value.length > 0 ? 'bg-main br-main ' : 'comment-btn-default'" @tap="comments_event">{{$t('common.comment')}}</button>
                         </view>
                     </view>
@@ -265,7 +265,7 @@
             // 表情选择事件
             emoji_event() {
                 if (this.input_comments_length_value == 0) {
-                    app.globalData.showToast(this.$t('ask-comments.ask-comments.3o1rq6'));
+                    app.globalData.showToast(this.$t('common.maximum_input_character_limit_been_exceeded'));
                     return false;
                 }
                 if ((this.$refs.emoji || null) != null) {
@@ -379,7 +379,7 @@
                 var user = app.globalData.get_user_info(this, 'comments_event', e);
                 if (user != false) {
                     if (this.input_comments_value == '') {
-                        app.globalData.showToast(this.$t('user-order-comments.user-order-comments.8f303u'));
+                        app.globalData.showToast(this.$t('common.fill_comment_content'));
                         return false;
                     }
                     uni.showLoading({

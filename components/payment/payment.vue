@@ -4,7 +4,7 @@
         <component-popup :propShow="popup_view_pay_qrcode_is_show" propPosition="bottom" @onclose="popup_view_pay_qrcode_event_close">
             <view class="padding-top-xxxl padding-bottom-xxxl padding-left-xxxl padding-right-xxxl tc">
                 <block v-if="(popup_view_pay_data || null) == null || (popup_view_pay_data.qrcode_url || null) == null || (popup_view_pay_data.name || null) == null || (popup_view_pay_data.order_no || null) == null">
-                    <text class="cr-grey">{{$t('payment.payment.973g2e')}}</text>
+                    <text class="cr-grey">{{$t('payment.payment_info')}}</text>
                 </block>
                 <block v-else>
                     <view class="fw-b text-size cr-base margin-bottom-sm">{{ popup_view_pay_data.name }}</view>
@@ -14,7 +14,7 @@
                     <view v-if="(popup_view_pay_data.msg || null) != null" class="cr-yellow margin-top-sm">{{ popup_view_pay_data.msg }}</view>
                     <!-- #ifdef H5 -->
                     <view v-if="popup_view_pay_data.pay_url != null" class="margin-top-xl">
-                        <a :href="popup_view_pay_data.pay_url" target="_blank" class="dis-inline-block cr-green">{{$t('payment.payment.z3y296')}}</a>
+                        <a :href="popup_view_pay_data.pay_url" target="_blank" class="dis-inline-block cr-green">{{$t('payment.try_clicking_pay')}}</a>
                     </view>
                     <!-- #endif -->
                 </block>
@@ -22,7 +22,7 @@
         </component-popup>
         <!-- 支付方式 popup -->
         <component-popup :propShow="is_show_payment_popup" propPosition="bottom" @onclose="payment_popup_event_close">
-            <view class="poupon-title padding-main tc text-size-md pr">{{$t('payment.payment.iu792d')}}<iconfont name="icon-close-line" propClass="pa right-0 margin-right-main margin-top-xs" size="30rpx" color="#999" @tap="payment_popup_event_close"></iconfont>
+            <view class="poupon-title padding-main tc text-size-md pr">{{$t('common.payment_details')}}<iconfont name="icon-close-line" propClass="pa right-0 margin-right-main margin-top-xs" size="30rpx" color="#999" @tap="payment_popup_event_close"></iconfont>
             </view>
             <view class="tc padding-top-sm padding-bottom-sm br-b lh-il">
                 <text class="text-size-md cr-price">{{ propCurrencySymbol }}</text>
@@ -43,18 +43,18 @@
                 </view>
                 <view class="payment-submit">
                     <view class="bottom-line-exclude">
-                        <button class="bg-main br-main cr-white round text-size" type="default" hover-class="none" @tap="popup_payment_event" :disabled="submit_disabled_status">{{$t('payment.payment.25r53g')}}</button>
+                        <button class="bg-main br-main cr-white round text-size" type="default" hover-class="none" @tap="popup_payment_event" :disabled="submit_disabled_status">{{$t('common.payment_pay')}}</button>
                     </view>
                 </view>
             </view>
-            <view v-else class="padding-top-xxxl padding-bottom-xxxl oh bg-white tc cr-grey">{{$t('payment.payment.058a46')}}</view>
+            <view v-else class="padding-top-xxxl padding-bottom-xxxl oh bg-white tc cr-grey">{{$t('common.payment_method_available')}}</view>
         </component-popup>
 
         <!-- 支付html展示 -->
         <component-popup :propShow="popup_view_pay_html_is_show" propPosition="bottom" @onclose="popup_view_pay_html_event_close">
             <view class="popup-pay-html-content padding-top-xxxl padding-bottom-xxxl padding-left-xxxl padding-right-xxxl tc">
                 <block v-if="(popup_view_pay_html_content || null) == null">
-                    <text class="cr-grey">{{$t('payment.payment.973g2e')}}</text>
+                    <text class="cr-grey">{{$t('payment.payment_info')}}</text>
                 </block>
                 <block v-else>
                     <mp-html :content="popup_view_pay_html_content" />
@@ -68,7 +68,7 @@
                 <view class="padding-vertical-xxxxl">{{$t('common.payment_in_text')}}</view>
                 <view class="margin-top-lg">
                     <button type="default" size="mini" class="bg-white br-black cr-black text-size-sm round margin-right-xxxxl" data-type="0" @tap="payment_confirm_event">{{$t('common.not_have_name')}}</button>
-                    <button type="default" size="mini" class="bg-main br-main cr-white text-size-sm round margin-left-xxxxl" data-type="1" @tap="payment_confirm_event">{{$t('order.order.s8g966')}}</button>
+                    <button type="default" size="mini" class="bg-main br-main cr-white text-size-sm round margin-left-xxxxl" data-type="1" @tap="payment_confirm_event">{{$t('common.paid')}}</button>
                 </view>
             </view>
         </view>
@@ -313,7 +313,7 @@
             // 支付弹窗发起支付
             popup_payment_event() {
                 if (this.submit_disabled_status) {
-                    app.globalData.showToast(this.$t('payment.payment.x6d585'));
+                    app.globalData.showToast(this.$t('payment.select_payment_method_first'));
                     return false;
                 }
                 this.setData({
@@ -342,14 +342,14 @@
                                 var self = this;
                                 uni.showModal({
                                     title: self.$t('common.warm_tips'),
-                                    content: self.$t('payment.payment.011cj4'),
+                                    content: self.$t('payment.payment_fee_deducted_immediately_after_operation'),
                                     confirmText: self.$t('common.confirm'),
                                     cancelText: self.$t('common.not_yet'),
                                     success(res) {
                                         if (res.confirm) {
                                             self.pay_handle_event(order_id, payment_id);
                                         } else {
-                                            self.order_item_pay_fail_handle(null, order_id, self.$t('paytips.paytips.6mpsl7'));
+                                            self.order_item_pay_fail_handle(null, order_id, self.$t('common.user_cancels_payment'));
                                         }
                                     },
                                 });
@@ -379,7 +379,7 @@
                         }
                     }
                     if (payment == null) {
-                        app.globalData.showToast(this.$t('payment.payment.7ihx9u'));
+                        app.globalData.showToast(this.$t('payment.incorrect_payment_method'));
                         return false;
                     }
                 }
@@ -408,7 +408,7 @@
                 // #endif
                 // 请求支付接口
                 uni.showLoading({
-                    title: this.$t('payment.payment.e1f54e'),
+                    title: this.$t('payment.requesting'),
                     mask: true
                 });
                 if (this.propPayUrl) {
@@ -477,7 +477,7 @@
                                                         // 进入指定页面
                                                         self.to_other();
                                                     } else {
-                                                        self.order_item_pay_fail_handle(data, order_id, self.$t('paytips.paytips.6mpsl7'));
+                                                        self.order_item_pay_fail_handle(data, order_id, self.$t('common.user_cancels_payment'));
                                                     }
                                                 },
                                             });
@@ -488,7 +488,7 @@
                                             break;
                                         // 默认
                                         default:
-                                            app.globalData.showToast(this.$t('payment.payment.vhx5dv'));
+                                            app.globalData.showToast(this.$t('payment.wrong_payment_type'));
                                     }
                                 }
                             } else {
@@ -509,7 +509,7 @@
                         },
                     });
                 } else {
-                    app.globalData.showToast(this.$t('payment.payment.597s8b'));
+                    app.globalData.showToast(this.$t('payment.payment_component_interface_cannot_empty'));
                 }
             },
             // APP支付
@@ -541,11 +541,11 @@
                                         self.order_item_pay_success_handle(data, order_id);
                                     },
                                     fail: function (err) {
-                                        self.order_item_pay_fail_handle(data, order_id, self.$t('paytips.paytips.6y488i'));
+                                        self.order_item_pay_fail_handle(data, order_id, self.$t('common.payment_failed'));
                                     }
                                 });
                             } else {
-                                app.globalData.showToast(data.payment.payment+self.$t('payment.payment.bv637f'));
+                                app.globalData.showToast(data.payment.payment+self.$t('payment.payment_undefined'));
                             }
                         }
                     });
@@ -554,12 +554,12 @@
                     var status = true;
                     if(data.data.substr(0, 12) == 'weixinapp://') {
                         if(this.weixinapp == null) {
-                            app.globalData.showToast(this.$t('detail.detail.86g7e1'));
+                            app.globalData.showToast(this.$t('run.wechat_app_not_installed'));
                             return false;
                         }
                         var weixin_original_id = app.globalData.get_config('config.common_app_mini_weixin_share_original_id', null);
                         if(weixin_original_id == null) {
-                            app.globalData.showToast(this.$t('detail.detail.567uyh'));
+                            app.globalData.showToast(this.$t('run.wechat_original_id_configured_background'));
                             return false;
                         }
                         this.weixinapp.launchMiniProgram({
@@ -599,15 +599,15 @@
                         if(self.open_pay_url_status) {
                             uni.hideLoading();
                             uni.showModal({
-                                content: self.$t('payment.payment.sdfs31'),
+                                content: self.$t('payment.payment_been_completed'),
                                 showCancel: true,
                                 cancelText: self.$t('common.not_have_name'),
-                                confirmText: self.$t('order.order.s8g966'),
+                                confirmText: self.$t('common.paid'),
                                 success(res) {
                                     if (res.confirm) {
                                         self.order_item_pay_success_handle(data, order_id);
                                     } else {
-                                        self.order_item_pay_fail_handle(data, order_id, self.$t('paytips.paytips.6y488i'));
+                                        self.order_item_pay_fail_handle(data, order_id, self.$t('common.payment_failed'));
                                     }
                                 },
                             });
@@ -625,14 +625,14 @@
                         self.order_item_pay_success_handle(data, order_id);
                     },
                     fail: (res) => {
-                        self.order_item_pay_fail_handle(data, order_id, self.$t('paytips.paytips.6y488i'));
+                        self.order_item_pay_fail_handle(data, order_id, self.$t('common.payment_failed'));
                     },
                 });
             },
             // 头条小程序非普通交易支付处理
             toutiao_transaction_pay_handle(self, data, order_id) {
                 if(!uni.canIUse('requestOrder') || !uni.canIUse('getOrderPayment')) {
-                    app.globalData.showToast(self.$t('payment.payment.4dszme'));
+                    app.globalData.showToast(self.$t('payment.use_real_machine_operation_basic_version'));
                     return false;
                 }
                 uni.requestOrder({
@@ -646,7 +646,7 @@
                                 self.order_item_pay_success_handle(data, order_id);
                             },
                             fail: (res) => {
-                                self.order_item_pay_fail_handle(data, order_id, self.$t('paytips.paytips.6y488i'));
+                                self.order_item_pay_fail_handle(data, order_id, self.$t('common.payment_failed'));
                             }
                         });
                     },
@@ -673,7 +673,7 @@
                             });
                         },
                         fail(res) {
-                            app.globalData.showToast(self.$t('paytips.paytips.6y488i'));
+                            app.globalData.showToast(self.$t('common.payment_failed'));
                         }
                     });
                 } else {
@@ -697,13 +697,13 @@
                         success: (res) => {
                             // #ifdef MP-ALIPAY
                             if (res.resultCode != 9000) {
-                                self.order_item_pay_fail_handle(data, order_id, res.memo || self.$t('paytips.paytips.6y488i'));
+                                self.order_item_pay_fail_handle(data, order_id, res.memo || self.$t('common.payment_failed'));
                                 return false;
                             }
                             // #endif
                             // #ifdef MP-TOUTIAO
                             if (res.code != 0) {
-                                self.order_item_pay_fail_handle(data, order_id, self.$t('paytips.paytips.6y488i'));
+                                self.order_item_pay_fail_handle(data, order_id, self.$t('common.payment_failed'));
                                 return false;
                             }
                             // #endif
@@ -721,7 +721,7 @@
                                     msg = null;
                                 }
                             }
-                            self.order_item_pay_fail_handle(data, order_id, msg || self.$t('paytips.paytips.6y488i'));
+                            self.order_item_pay_fail_handle(data, order_id, msg || self.$t('common.payment_failed'));
                         },
                     });
                 }
@@ -735,14 +735,14 @@
                         referer: app.globalData.data.request_url,
                         success: function (res) {
                             app.globalData.alert({
-                                msg: self.$t('payment.payment.k2i010'),
+                                msg: self.$t('payment.after_successful_payment_make_duplicate_payments'),
                                 is_show_cancel: 0,
                             });
                             // 支付接口调用成功，但是不知道是否支付成功，所以需要重新获取列表数据
                             self.$emit('reset-event');
                         },
                         fail: function (res) {
-                            self.order_item_pay_fail_handle(data, order_id, self.$t('paytips.paytips.6y488i'));
+                            self.order_item_pay_fail_handle(data, order_id, self.$t('common.payment_failed'));
                         },
                     });
                 } else {
@@ -817,7 +817,7 @@
                     }
                     // 未匹配到的支付处理方式
                     if (!status) {
-                        app.globalData.showToast(data.payment.name + self.$t('payment.payment.2rw3qh'));
+                        app.globalData.showToast(data.payment.name + self.$t('payment.payment_method_been_adapted_yet'));
                     }
                 }
             },
@@ -878,7 +878,7 @@
                 if(parseInt(e.currentTarget.dataset.type || 0) == 1) {
                     this.order_item_pay_success_handle(this.pay_response_data, this.order_id);
                 } else {
-                    this.order_item_pay_fail_handle(this.pay_response_data, this.order_id, this.$t('paytips.paytips.6y488i'));
+                    this.order_item_pay_fail_handle(this.pay_response_data, this.order_id, this.$t('common.payment_failed'));
                 }
             },
 

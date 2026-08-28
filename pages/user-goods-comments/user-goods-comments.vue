@@ -11,7 +11,7 @@
                     <view class="content margin-top">
                         <view v-if="(item.goods || null) !== null" :data-value="item.goods.goods_url" @tap="url_event">
                             <view class="margin-top-xs flex-row align-c">
-                                <view class="cr-grey margin-right-xl">{{$t('user-order-detail.user-order-detail.7f8p26')}}</view>
+                                <view class="cr-grey margin-right-xl">{{$t('common.product_information')}}</view>
                                 <view class="cr-base flex-1 flex-width flex-row align-c">
                                     <image class="br radius margin-right-sm goods-img" :src="item.goods.images" mode="aspectFit"></image>
                                     <text class="single-text flex-1 flex-width">{{ item.goods.title }}</text>
@@ -49,7 +49,9 @@
     import componentCommon from '@/components/common/common';
     import componentNoData from '@/components/no-data/no-data';
     import componentBottomLine from '@/components/bottom-line/bottom-line';
+    import pluginLocale from './locale/index.js';
     export default {
+        mixins: [pluginLocale],
         data() {
             return {
                 theme_view: app.globalData.get_theme_value_view(),
@@ -62,12 +64,12 @@
                 data_is_loading: 0,
                 params: null,
                 content_list: [
-                    { name: this.$t('user-goods-comments.user-goods-comments.58804r'), field: 'is_show_text' },
-                    { name: this.$t('user-goods-comments.user-goods-comments.jnk6da'), field: 'is_reply_text' },
-                    { name: this.$t('user-goods-comments.user-goods-comments.yyjemb'), field: 'is_anonymous_text' },
-                    { name: this.$t('user-goods-comments.user-goods-comments.0nhrj0'), field: 'content' },
-                    { name: this.$t('user-detail.user-detail.u411r2'), field: 'reply' },
-                    { name: this.$t('user-detail.user-detail.teo6qd'), field: 'reply_time_time' },
+                    { name: this.$t('user-goods-comments.displayed'), field: 'is_show_text' },
+                    { name: this.$t('user-goods-comments.want_reply'), field: 'is_reply_text' },
+                    { name: this.$t('user-goods-comments.anonymous'), field: 'is_anonymous_text' },
+                    { name: this.$t('user-goods-comments.comment_content'), field: 'content' },
+                    { name: this.$t('user-detail.reply_content'), field: 'reply' },
+                    { name: this.$t('user-detail.reply_time'), field: 'reply_time_time' },
                 ],
             };
         },
@@ -236,7 +238,7 @@
                 var temp_data = this.data_list;
                 var data = temp_data[index] || null;
                 if (data == null) {
-                    app.globalData.showToast(this.$t('extraction-switch.extraction-switch.613b58'));
+                    app.globalData.showToast(this.$t('common.extraction_switch_data_error'));
                     return false;
                 }
                 uni.showModal({

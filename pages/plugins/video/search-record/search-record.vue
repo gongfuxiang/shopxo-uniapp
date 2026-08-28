@@ -86,6 +86,7 @@ import componentLoading from '@/pages/plugins/video/components/loading.vue';
 import componentNoData from '@/components/no-data/no-data';
 import { video_get_top_left_padding, isEmpty } from '@/common/js/common/common.js';
 import componentCommon from '@/components/common/common';
+    import pluginLocale from '../locale/index.js';
 const app = getApp();
 var system = app.globalData.get_system_info(null, null, true);
 // 状态栏高度
@@ -94,6 +95,7 @@ var bar_height = parseInt(app.globalData.get_system_info('statusBarHeight', 0));
 bar_height = 0;
 // #endif
 export default {
+        mixins: [pluginLocale],
 	components: {
 		componentSearch,
 		componentLoading,

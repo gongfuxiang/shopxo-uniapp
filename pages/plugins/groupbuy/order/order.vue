@@ -11,7 +11,7 @@
                         :propIsOnInputEvent="true"
                         :propIsOnEvent="true"
                         :propIsRequired="false"
-                        :propPlaceholder="$t('plugins-groupbuy-order.order.gbo001')"
+                        :propPlaceholder="$t('plugins-groupbuy-order.order.enter_group_buy_order')"
                         propIconColor="#ccc"
                         propPlaceholderClass="cr-grey-c"
                         propBgColor="#f6f6f6"
@@ -54,7 +54,7 @@
                     </block>
                     <component-panel-content :propData="item" :propDataField="field_list" propIsItemShowMax="6" propExcludeField="add_time,status_name" :propIsTerse="true"></component-panel-content>
                     <view v-if="(item.team_url || null) != null || (item.system_order_url || null) != null || (item.is_operate_cancel || 0) == 1 || (item.is_operate_delete || 0) == 1" class="item-operation tr margin-top-main">
-                        <button v-if="(item.team_url || null) != null" class="btn round bg-main br-main cr-white text-size-md margin-bottom-sm" type="default" size="mini" :data-value="item.team_url" @tap="url_event" hover-class="none">{{ $t('groupbuy.groupbuy.join_team') }}</button>
+                        <button v-if="(item.team_url || null) != null" class="btn round bg-main br-main cr-white text-size-md margin-bottom-sm" type="default" size="mini" :data-value="item.team_url" @tap="url_event" hover-class="none">{{ $t('groupbuy.join_team') }}</button>
                         <button v-if="(item.system_order_url || null) != null" class="btn round br-green cr-green bg-white text-size-md margin-bottom-sm" type="default" size="mini" :data-value="item.system_order_url" @tap="url_event" hover-class="none">{{ $t('common.order') }}</button>
                         <button v-if="(item.is_operate_cancel || 0) == 1" class="btn round br-grey-9 bg-white text-size-md" type="default" size="mini" @tap="cancel_event" :data-value="item.id" :data-index="index" hover-class="none">{{$t('common.cancel')}}</button>
                         <button v-if="(item.is_operate_delete || 0) == 1" class="btn round br-red cr-red bg-white text-size-md" type="default" size="mini" @tap="delete_event" :data-value="item.id" :data-index="index" hover-class="none">{{$t('common.del')}}</button>
@@ -79,6 +79,7 @@
     import componentNoData from '@/components/no-data/no-data';
     import componentBottomLine from '@/components/bottom-line/bottom-line';
     import componentPanelContent from '@/components/panel-content/panel-content';
+    import pluginLocale from '../locale/index.js';
 
     // 状态栏高度
     var bar_height = parseInt(app.globalData.get_system_info('statusBarHeight', 0, true));
@@ -87,6 +88,7 @@
     // #endif
 
     export default {
+        mixins: [pluginLocale],
         data() {
             return {
                 theme_view: app.globalData.get_theme_value_view(),

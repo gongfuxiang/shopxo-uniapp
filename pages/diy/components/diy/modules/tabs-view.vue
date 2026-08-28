@@ -57,7 +57,7 @@
         <!-- 选项卡更多弹窗 -->
         <componentPopup :propShow="popup_status" :propIsBar="propIsBar" propPosition="top" :propMask="true" :propTop="newPropTop" :propStyle="newPropStyle" @onclose="quick_close_event">
             <view :class="'padding-bottom-lg ' + (['toutiao', 'app', 'h5'].includes(platform) ? 'padding-top-lg' : 'padding-top')">
-                <view class="padding-left-main padding-bottom-main">{{ $t('diy.diy.all_tabs') }}</view>
+                <view class="padding-left-main padding-bottom-main">{{ $t('diy.all_tabs') }}</view>
                 <view class="divider-b">
                     <view class="nav-list-more">
                         <view class="flex-row flex-wrap align-c">
@@ -70,7 +70,7 @@
                     </view>
                 </view>
                 <view class="tc padding-top-lg flex-row jc-c align-c" @tap="quick_close_event">
-                    <text class="padding-right-sm">{{ $t('nav-more.nav-more.h9g4b1') }}</text>
+                    <text class="padding-right-sm">{{ $t('common.click_collapse') }}</text>
                     <iconfont name="icon-arrow-top" color="#ccc" propContainerDisplay="flex"></iconfont>
                 </view>
             </view>

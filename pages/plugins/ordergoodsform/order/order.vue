@@ -21,7 +21,7 @@
                         <block v-if="(item.form_data || null) != null">
                             <component-form-input-detail :propData="item.form_data"></component-form-input-detail>
                         </block>
-                        <view v-else class="text-size-xs cr-grey">{{$t('order.order.93j3zq')}}</view>
+                        <view v-else class="text-size-xs cr-grey">{{$t('order.form_data')}}</view>
                     </view>
                 </view>
             </view>
@@ -44,9 +44,11 @@
     import componentNoData from "@/components/no-data/no-data";
     import componentBottomLine from "@/components/bottom-line/bottom-line";
     import componentFormInputDetail from '@/pages/form-input/components/form-input-detail/form-input-detail';
+    import pluginLocale from '../locale/index.js';
 
     var common_static_url = app.globalData.get_static_url("common");
     export default {
+        mixins: [pluginLocale],
         data() {
             return {
                 theme_view: app.globalData.get_theme_value_view(),

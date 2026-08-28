@@ -44,8 +44,10 @@
     import componentCommon from '@/components/common/common';
     import componentNoData from "@/components/no-data/no-data";
     import componentBottomLine from "@/components/bottom-line/bottom-line";
+    import pluginLocale from '../locale/index.js';
 
     export default {
+        mixins: [pluginLocale],
         data() {
             return {
                 theme_view: app.globalData.get_theme_value_view(),
@@ -122,7 +124,7 @@
                             this.setData({
                                 data_bottom_line_status: status,
                                 data_list_loding_status: status ? 3 : 0,
-                                data_list_loding_msg: status ? "" : this.$t('detail.detail.j5owf1'),
+                                data_list_loding_msg: status ? "" : this.$t('detail.there_currently_logistics_info_available'),
                                 data_status: status,
                                 express_info: express_info,
                                 express_data: data.express_data || [],

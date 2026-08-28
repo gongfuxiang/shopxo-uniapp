@@ -37,16 +37,16 @@
                         </view>
 
                         <view class="oh margin-top-xl">
-                            <view class="fl margin-top-sm">{{$t('givegift-gift.givegift-gift.8yghjd')}}</view>
+                            <view class="fl margin-top-sm">{{$t('givegift-gift.unlimited_collection')}}</view>
                             <view class="fr">
                                 <switch name="is_no_limit_receive" :checked="true" />
                             </view>
                         </view>
 
                         <view class="oh margin-top-xl right-width">
-                            <view class="fl margin-top-sm">{{$t('givegift-gift.givegift-gift.567uye')}}</view>
+                            <view class="fl margin-top-sm">{{$t('givegift-gift.message_reminder')}}</view>
                             <view class="fr">
-                                <input type="text" class="br round padding-horizontal lh-xxl ht-xxl" placeholder-class="cr-grey-c" :placeholder="$t('givegift-gift.givegift-gift.rtyu33')" name="message_tips" />
+                                <input type="text" class="br round padding-horizontal lh-xxl ht-xxl" placeholder-class="cr-grey-c" :placeholder="$t('givegift-gift.message_prompt_maximum_format_200_characters')" name="message_tips" />
                             </view>
                         </view>
                     </view>
@@ -94,7 +94,9 @@
     import componentNoData from '@/components/no-data/no-data';
     import componentPayment from '@/components/payment/payment';
     import componentSharePopup from '@/components/share-popup/share-popup';
+    import pluginLocale from '../locale/index.js';
     export default {
+        mixins: [pluginLocale],
         data() {
             return {
                 theme_view: app.globalData.get_theme_value_view(),
@@ -119,7 +121,7 @@
                 // 前往支付页面携带的参数
                 to_page_back: {
                     page: '/pages/plugins/givegift/gift/gift',
-                    title: this.$t('givegift.givegift.my_gift')
+                    title: this.$t('givegift.my_gift')
                 },
                 // 支付失败跳转的页面
                 to_fail_page: '/pages/plugins/givegift/gift/gift',
@@ -267,20 +269,20 @@
                 var min = spec_buy_min_number > 0 ? spec_buy_min_number : buy_min_number;
                 if (min > 0 && number < min) {
                     number = min;
-                    app.globalData.showToast(this.$t('recommend-detail.recommend-detail.265vyu') + min + inventory_unit);
+                    app.globalData.showToast(this.$t('common.starting_purchase') + min + inventory_unit);
                 }
 
                 // 最大购买数量
                 var max = spec_buy_max_number > 0 ? spec_buy_max_number : buy_max_number;
                 if (max > 0 && number > max) {
                     number = max;
-                    app.globalData.showToast(this.$t('goods-category.goods-category.z1eh3v') + max + inventory_unit);
+                    app.globalData.showToast(this.$t('common.purchase_limit') + max + inventory_unit);
                 }
 
                 // 是否超过库存数量
                 if (number > inventory) {
                     number = inventory;
-                    app.globalData.showToast(this.$t('recommend-detail.recommend-detail.2sis3v') + inventory + inventory_unit);
+                    app.globalData.showToast(this.$t('common.inventory_quantity') + inventory + inventory_unit);
                 }
 
                 this.setData({ buy_number: number });

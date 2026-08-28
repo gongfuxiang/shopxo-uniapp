@@ -42,8 +42,10 @@
     import componentNoData from '@/components/no-data/no-data';
     import componentUserSignin from '../components/user-signin/user-signin';
     import componentUserQrcode from '../components/user-qrcode/user-qrcode';
+    import pluginLocale from '../locale/index.js';
 
     export default {
+        mixins: [pluginLocale],
         data() {
             return {
                 theme_view: app.globalData.get_theme_value_view(),

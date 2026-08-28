@@ -6,12 +6,12 @@
                     <view class="border-radius-main bg-white spacing-mb oh">
                         <view class="form-gorup">
                             <view class="flex-row jc-sb align-c br-b-f5 padding-bottom-sm">
-                                <view class="form-gorup-title">{{$t('user-address-save.user-address-save.5yhgps')}}<text class="form-group-tips-must">*</text></view>
-                                <input type="text" name="name" :value="address_data.name || ''" maxlength="16" placeholder-class="cr-grey-9" class="cr-base flex-1 flex-width" :placeholder="$t('user-address-save.user-address-save.wii4sp')" />
+                                <view class="form-gorup-title">{{$t('common.name')}}<text class="form-group-tips-must">*</text></view>
+                                <input type="text" name="name" :value="address_data.name || ''" maxlength="16" placeholder-class="cr-grey-9" class="cr-base flex-1 flex-width" :placeholder="$t('user-address-save.contact_person_16')" />
                             </view>
                             <view class="flex-row jc-sb align-c padding-top-sm">
-                                <view class="form-gorup-title">{{$t('promotion-user.promotion-user.62c8m1')}}<text class="form-group-tips-must">*</text></view>
-                                <input type="text" name="tel" :value="address_data.tel || ''" maxlength="30" placeholder-class="cr-grey-9" class="cr-base flex-1 flex-width" :placeholder="$t('user-address-save.user-address-save.65507o')" />
+                                <view class="form-gorup-title">{{$t('common.order_phone')}}<text class="form-group-tips-must">*</text></view>
+                                <input type="text" name="tel" :value="address_data.tel || ''" maxlength="30" placeholder-class="cr-grey-9" class="cr-base flex-1 flex-width" :placeholder="$t('common.landline_mobile_phone')" />
                             </view>
                         </view>
                     </view>
@@ -20,12 +20,12 @@
                         <view class="form-gorup">
                             <view class="flex-row jc-sb br-b-f5 padding-vertical-sm pr">
                                 <view class="form-gorup-title">
-                                    <text>{{$t('user-address-save.user-address-save.h8f148')}}</text>
+                                    <text>{{$t('user-address-save.region')}}</text>
                                     <text class="form-group-tips-must">*</text>
                                 </view>
                                 <view class="flex-1 flex-width flex-col">
                                     <view v-if="home_user_address_map_status == 1" @tap="choose_user_location_event" class="flex-row jc-sb align-c">
-                                        <view v-if="home_user_address_map_status == 1" class="cr-main" @tap="choose_user_location_event">{{$t('user-address-save.user-address-save.13rpdw')}}</view>
+                                        <view v-if="home_user_address_map_status == 1" class="cr-main" @tap="choose_user_location_event">{{$t('user-address-save.click_select_geographical_location')}}</view>
                                         <iconfont name="icon-location" size="28rpx"></iconfont>
                                     </view>
                                     <block v-if="is_user_address_forbid_choice_region == 0">
@@ -33,13 +33,13 @@
                                             <view class="flex-1 flex-width">
                                                 <view @tap="open_region" class="single-text">
                                                     <text v-if="province_name"> {{ province_name }}{{ city_name ? '-' + city_name : '' }}{{ county_name ? '-' + county_name : '' }} </text>
-                                                    <text v-else class="cr-grey-9">{{$t('extraction-apply.extraction-apply.cy87k6')}}</text>
+                                                    <text v-else class="cr-grey-9">{{$t('common.provinces_cities_districts')}}</text>
                                                 </view>
                                                 <component-region-picker :propProvinceId="province_id" :propCityId="city_id" :propCountyId="county_id" :propShow="region_picker_show" @onclose="close_event" @callBackEvent="region_event"></component-region-picker>
                                             </view>
                                             <view class="code-search oh pr">
-                                                <input type="text" :value="address_data.address_last_code || ''" maxlength="30" placeholder-class="cr-grey-9" class="code-input cr-base dis-inline-block bg-base text-size-xs padding-left-sm va-m" :placeholder="$t('user-address-save.user-address-save.he685s')" @input="region_code_value_event" />
-                                                <button type="default" size="mini" class="btn bg-black br-black cr-white text-size-xs pa" @tap="region_code_event" :disabled="form_submit_disabled_status">{{$t('user-address-save.user-address-save.mb7cjx')}}</button>
+                                                <input type="text" :value="address_data.address_last_code || ''" maxlength="30" placeholder-class="cr-grey-9" class="code-input cr-base dis-inline-block bg-base text-size-xs padding-left-sm va-m" :placeholder="$t('user-address-save.number')" @input="region_code_value_event" />
+                                                <button type="default" size="mini" class="btn bg-black br-black cr-white text-size-xs pa" @tap="region_code_event" :disabled="form_submit_disabled_status">{{$t('user-address-save.retrieval')}}</button>
                                             </view>
                                         </view>
                                     </block>
@@ -51,24 +51,24 @@
                                 </view>
                             </view>
                             <view class="flex-row jc-sb align-c br-b-f5 padding-vertical-sm">
-                                <view class="form-gorup-title">{{$t('user-address-save.user-address-save.4rc269')}}<text class="form-group-tips-must">*</text></view>
+                                <view class="form-gorup-title">{{$t('user-address-save.address')}}<text class="form-group-tips-must">*</text></view>
                                 <view class="flex-1 flex-width">
-                                    <input type="text" name="address" :value="address_data.address || ''" maxlength="80" placeholder-class="cr-grey-9" :class="'cr-base bs-bb ' + (home_user_address_map_status == 1 ? 'address-value' : '')" :placeholder="$t('user-address-save.user-address-save.vdkv32')" />
+                                    <input type="text" name="address" :value="address_data.address || ''" maxlength="80" placeholder-class="cr-grey-9" :class="'cr-base bs-bb ' + (home_user_address_map_status == 1 ? 'address-value' : '')" :placeholder="$t('user-address-save.detailed_address_80')" />
                                 </view>
                             </view>
                             <!-- 智能识别 -->
                             <view v-if="is_user_address_discern == 1" class="pr padding-top-sm">
                                 <view class="intelligent-identification oh" :style="identfication_show ? 'height:254rpx;' : 'height:0;'">
                                     <view class="bg-base border-radius-main padding-main oh">
-                                        <textarea @input="address_discern_value_event" :value="address_discern_value" class="margin-0" :placeholder="$t('user-address-save.user-address-save.b32r6v')" placeholder-class="cr-grey" />
+                                        <textarea @input="address_discern_value_event" :value="address_discern_value" class="margin-0" :placeholder="$t('user-address-save.paste_entire_address_segment_automatically_split')" placeholder-class="cr-grey" />
                                         <view class="padding-top-sm tr" :class="identfication_show ? '' : 'dis-none'">
                                             <button type="default" size="mini" class="btn round cr-base text-size-xs margin-right-sm padding-0 tc" @tap="clear_discern_submit_event">{{$t('common.clear')}}</button>
-                                            <button type="default" size="mini" class="btn round bg-main cr-white text-size-xs padding-0 tc" @tap="address_discern_submit_event">{{$t('user-address-save.user-address-save.s3o1p5')}}</button>
+                                            <button type="default" size="mini" class="btn round bg-main cr-white text-size-xs padding-0 tc" @tap="address_discern_submit_event">{{$t('user-address-save.scan')}}</button>
                                         </view>
                                     </view>
                                 </view>
                                 <view class="tc padding-top-main" @tap="identfication_change">
-                                    <text class="padding-right-sm">{{$t('user-address-save.user-address-save.42l857')}}</text>
+                                    <text class="padding-right-sm">{{$t('user-address-save.address_pasting_board')}}</text>
                                     <iconfont :name="identfication_show ? 'icon-arrow-top' : 'icon-arrow-bottom'" size="28rpx" color="#666"></iconfont>
                                 </view>
                             </view>
@@ -78,14 +78,14 @@
                     <view class="border-radius-main bg-white spacing-mb oh">
                         <view class="form-gorup">
                             <view class="flex-row br-b-f5 padding-top-sm padding-bottom-main">
-                                <view class="form-gorup-title padding-top-sm alias-title">{{$t('user-address-save.user-address-save.231435')}}</view>
+                                <view class="form-gorup-title padding-top-sm alias-title">{{$t('user-address-save.label')}}</view>
                                 <view class="flex-1 flex-width">
                                     <view class="flex-row">
                                         <view v-for="(item, index) in alias_list" :key="index" class="alias-btn" :class="item === (address_data.alias || null) ? 'bg-main cr-white br-main' : 'bg-white cr-black br-grey-d'" :data-value="item" @tap="alias_change">{{ item }}</view>
                                     </view>
                                     <view class="padding-top-lg label-edit-right">
                                         <view v-if="alias_eidt_bool" class="flex-row align-c alias-add pr">
-                                            <input type="text" v-model="alias_eidt_text" maxlength="16" placeholder-class="cr-grey-9" class="input-alias cr-base dis-inline-block bg-base text-size-xs padding-left-sm va-m" :placeholder="$t('user-address-save.user-address-save.l6vjlm')" />
+                                            <input type="text" v-model="alias_eidt_text" maxlength="16" placeholder-class="cr-grey-9" class="input-alias cr-base dis-inline-block bg-base text-size-xs padding-left-sm va-m" :placeholder="$t('user-address-save.enter_label_name')" />
                                             <button type="default" size="mini" class="btn round cr-white text-size-xs pa" :class="(alias_eidt_text || null) !== null ? 'br-main bg-main' : 'bg-grey br-grey'" @tap="alias_add_submit_event">{{$t('common.ok_text')}}</button>
                                         </view>
                                         <view v-else>
@@ -104,7 +104,7 @@
                                 </view>
                             </view>
                             <view class="flex-row jc-sb align-c padding-top-main">
-                                <view class="form-gorup-title default-title">{{$t('user-address-save.user-address-save.g43klm')}}</view>
+                                <view class="form-gorup-title default-title">{{$t('user-address-save.default_address')}}</view>
                                 <switch :color="theme_color" :checked="(address_data.is_default || 0) == 1 ? true : false" @change="default_ads_change_event" />
                             </view>
                         </view>
@@ -114,16 +114,16 @@
                     <view v-if="home_user_address_idcard_status == 1" class="idcard-container border-radius-main bg-white oh">
                         <view class="form-gorup">
                             <view class="flex-row align-c br-b-f5 padding-vertical-sm">
-                                <view class="form-gorup-title">{{$t('user-address-save.user-address-save.3w7r14')}}<text class="form-group-tips-must">*</text></view>
-                                <input type="text" name="idcard_name" :value="address_data.idcard_name || ''" maxlength="16" placeholder-class="cr-grey-9" class="cr-base flex-1 flex-width" :placeholder="$t('user-address-save.user-address-save.c73v42')" />
+                                <view class="form-gorup-title">{{$t('user-address-save.id_card_name')}}<text class="form-group-tips-must">*</text></view>
+                                <input type="text" name="idcard_name" :value="address_data.idcard_name || ''" maxlength="16" placeholder-class="cr-grey-9" class="cr-base flex-1 flex-width" :placeholder="$t('user-address-save.fill_real_name')" />
                             </view>
                             <view class="flex-row align-c br-b-f5 padding-vertical-sm">
-                                <view class="form-gorup-title">{{$t('user-address-save.user-address-save.0y1vl6')}}<text class="form-group-tips-must">*</text></view>
-                                <input type="idcard" name="idcard_number" :value="address_data.idcard_number || ''" maxlength="18" placeholder-class="cr-grey-9" class="cr-base flex-1 flex-width" :placeholder="$t('user-address-save.user-address-save.c742c8')" />
+                                <view class="form-gorup-title">{{$t('user-address-save.id')}}<text class="form-group-tips-must">*</text></view>
+                                <input type="idcard" name="idcard_number" :value="address_data.idcard_number || ''" maxlength="18" placeholder-class="cr-grey-9" class="cr-base flex-1 flex-width" :placeholder="$t('user-address-save.fill_id_number_number')" />
                             </view>
                             <view class="flex-row align-c padding-vertical-sm margin-bottom-lg">
-                                <view class="form-gorup-title">{{$t('user-address-save.user-address-save.761ek6')}}<text class="form-group-tips-must">*</text></view>
-                                <view class="form-upload-data cr-grey-9 text-size-xs">{{$t('user-address-save.user-address-save.c811s5')}}</view>
+                                <view class="form-gorup-title">{{$t('user-address-save.id_card_photo')}}<text class="form-group-tips-must">*</text></view>
+                                <view class="form-upload-data cr-grey-9 text-size-xs">{{$t('user-address-save.fill_original_id_card_shooting_clear')}}</view>
                             </view>
                             <view class="flex-row align-c">
                                 <view class="flex-width-half oh padding-right-main pr">
@@ -169,10 +169,12 @@
     import componentNoData from '@/components/no-data/no-data';
     import componentRegionPicker from '@/pages/common/components/region-picker/region-picker';
     import componentChoiceLocation from '@/components/choice-location/choice-location';
+    import pluginLocale from './locale/index.js';
     var common_static_url = app.globalData.get_static_url('common');
     const theme_color = app.globalData.get_theme_color();
     const theme_color_light = app.globalData.get_theme_color(null, true);
     export default {
+        mixins: [pluginLocale],
         data() {
             return {
                 theme_view: app.globalData.get_theme_value_view(),
@@ -207,7 +209,7 @@
                 // 智能识别
                 identfication_show: false,
                 // 别名
-                alias_list: [this.$t('user-address-save.user-address-save.t1loj5'), this.$t('user-address-save.user-address-save.6t396c'), this.$t('user-address-save.user-address-save.34rqp8')],
+                alias_list: [this.$t('user-address-save.home'), this.$t('user-address-save.company'), this.$t('user-address-save.school')],
                 alias_eidt_bool: false,
                 alias_eidt_text: '',
                 btn_bg_color: 'background:linear-gradient(107deg, ' + theme_color_light + ' 0%, ' + theme_color + ' 100%)',
@@ -235,7 +237,7 @@
 
             // 设置标题
             uni.setNavigationBarTitle({
-                title: this.$t('user-address-save.user-address-save.4rc269') + ((this.params.id || null) == null ? this.$t('invoice-saveinfo.invoice-saveinfo.004t56') : this.$t('common.edit')),
+                title: this.$t('user-address-save.address') + ((this.params.id || null) == null ? this.$t('common.invoice_saveinfo_add') : this.$t('common.edit')),
             });
 
             // 初始化配置
@@ -351,7 +353,7 @@
                         }
                     },
                     fail: () => {
-                        app.globalData.showToast(this.$t('user-address-save.user-address-save.2pey0m'));
+                        app.globalData.showToast(this.$t('user-address-save.province_info_failed'));
                     },
                 });
             },
@@ -396,7 +398,7 @@
             file_upload_event(e) {
                 var form_name = e.currentTarget.dataset.value || null;
                 if (form_name == null) {
-                    app.globalData.showToast(this.$t('user-address-save.user-address-save.7w01kd'));
+                    app.globalData.showToast(this.$t('user-address-save.form_name_type_incorrect'));
                     return false;
                 }
 
@@ -460,12 +462,12 @@
             upload_delete_event(e) {
                 var form_name = e.currentTarget.dataset.value || null;
                 if (form_name == null) {
-                    app.globalData.showToast(this.$t('user-address-save.user-address-save.7w01kd'));
+                    app.globalData.showToast(this.$t('user-address-save.form_name_type_incorrect'));
                     return false;
                 }
                 uni.showModal({
                     title: this.$t('common.warm_tips'),
-                    content: this.$t('order.order.psi67g'),
+                    content: this.$t('common.unable_recover_continue_after_deletion'),
                     success(res) {
                         if (res.confirm) {
                             var temp_idcard_images_data = self.idcard_images_data || {};
@@ -497,7 +499,7 @@
             // 地址信息识别确认事件
             address_discern_submit_event(e) {
                 if ((this.address_discern_value || null) == null) {
-                    app.globalData.showToast(this.$t('user-address-save.user-address-save.z687lv'));
+                    app.globalData.showToast(this.$t('user-address-save.enter_address_info_first'));
                     return false;
                 }
 
@@ -584,26 +586,26 @@
 
                 // 数据校验
                 var validation = [
-                    { fields: 'name', msg: this.$t('extraction-apply.extraction-apply.q15b4n') },
-                    { fields: 'tel', msg: this.$t('extraction-apply.extraction-apply.3or25c') },
-                    { fields: 'province', msg: this.$t('extraction-apply.extraction-apply.m99d2g') },
-                    { fields: 'city', msg: this.$t('extraction-apply.extraction-apply.03587o') },
-                    { fields: 'address', msg: this.$t('extraction-apply.extraction-apply.v1g617') },
+                    { fields: 'name', msg: this.$t('common.fill_contact_person') },
+                    { fields: 'tel', msg: this.$t('common.fill_contact_phone_number') },
+                    { fields: 'province', msg: this.$t('common.select_province_2') },
+                    { fields: 'city', msg: this.$t('common.select_city_2') },
+                    { fields: 'address', msg: this.$t('common.provide_detailed_address') },
                 ];
 
                 // 是否开启了地理位置选择
                 if (this.home_user_address_map_status == 1) {
-                    validation.push({ fields: 'lng', msg: this.$t('extraction-apply.extraction-apply.8831v6') });
-                    validation.push({ fields: 'lat', msg: this.$t('extraction-apply.extraction-apply.8831v6') });
+                    validation.push({ fields: 'lng', msg: this.$t('common.select_geographical_location') });
+                    validation.push({ fields: 'lat', msg: this.$t('common.select_geographical_location') });
                 }
 
                 // 是否开启了用户身份证信息
                 if (this.home_user_address_idcard_status == 1) {
                     // 验证
-                    validation.push({ fields: 'idcard_name', msg: this.$t('user-address-save.user-address-save.lrlmxf') });
-                    validation.push({ fields: 'idcard_number', msg: this.$t('user-address-save.user-address-save.0x8i97') });
-                    validation.push({ fields: 'idcard_front', msg: this.$t('user-address-save.user-address-save.224l36') });
-                    validation.push({ fields: 'idcard_back', msg: this.$t('user-address-save.user-address-save.glf52g') });
+                    validation.push({ fields: 'idcard_name', msg: this.$t('user-address-save.fill_id_card_name') });
+                    validation.push({ fields: 'idcard_number', msg: this.$t('user-address-save.fill_id_card_number') });
+                    validation.push({ fields: 'idcard_front', msg: this.$t('user-address-save.upload_photo_front_id_card') });
+                    validation.push({ fields: 'idcard_back', msg: this.$t('user-address-save.upload_photo_back_id_card') });
 
                     // 数据
                     form_data['idcard_front'] = this.idcard_images_data.idcard_front || '';
@@ -679,7 +681,7 @@
             // 地址编号搜索
             region_code_event(e) {
                 if ((this.region_code_value || null) == null) {
-                    app.globalData.showToast(this.$t('user-address-save.user-address-save.wkfi45'));
+                    app.globalData.showToast(this.$t('user-address-save.enter_data'));
                     return false;
                 }
                 this.setData({
@@ -800,7 +802,7 @@
             address_delete_event() {
                 var value = this.params.id || null;
                 if (value == null) {
-                    app.globalData.showToast(this.$t('user-address-save.user-address-save.620370'));
+                    app.globalData.showToast(this.$t('user-address-save.address_id_incorrect'));
                     return false;
                 }
                 uni.showModal({

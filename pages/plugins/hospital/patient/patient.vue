@@ -8,28 +8,28 @@
                 <form @submit="form_submit" class="form-container">
                     <view class="oh border-radius-main tr">
                         <view class="form-gorup flex-row jc-sb align-c br-b-f9">
-                            <view class="form-gorup-title">{{ $t('hospital.hospital.real_name') }}<text class="form-group-tips-must">*</text></view>
+                            <view class="form-gorup-title">{{ $t('hospital.real_name') }}<text class="form-group-tips-must">*</text></view>
                             <view class="flex-row align-c flex-1 flex-width">
                                 <input type="text" name="name" :value="data.name || ''" maxlength="30" placeholder-class="cr-grey-9" class="cr-base" :placeholder="$t('common.please_input_real_name')" />
                             </view>
                         </view>
                         <view class="form-gorup flex-row jc-sb align-c br-b-f9">
-                            <view class="form-gorup-title">{{ $t('hospital.hospital.idcard') }}<text class="form-group-tips-must">*</text></view>
+                            <view class="form-gorup-title">{{ $t('hospital.id_number') }}<text class="form-group-tips-must">*</text></view>
                             <view class="flex-row align-c flex-1 flex-width">
                                 <input type="idcard" name="idcard" :value="data.idcard || ''" maxlength="60" placeholder-class="cr-grey-9" class="cr-base" :placeholder="$t('common.please_input_idcard')" />
                             </view>
                         </view>
                         <view class="form-gorup flex-row jc-sb align-c br-b-f9">
-                            <view class="form-gorup-title">{{ $t('hospital.hospital.mobile') }}<text class="form-group-tips-must">*</text></view>
+                            <view class="form-gorup-title">{{ $t('hospital.mobile') }}<text class="form-group-tips-must">*</text></view>
                             <view class="flex-row align-c flex-1 flex-width">
                                 <input type="text" name="mobile" :value="data.mobile || ''" maxlength="30" placeholder-class="cr-grey-9" class="cr-base" :placeholder="$t('common.please_input_mobile')" />
                             </view>
                         </view>
                         <view class="form-gorup flex-row jc-sb align-c br-b-f9">
-                            <view class="form-gorup-title">{{ $t('hospital.hospital.gender') }}<text class="form-group-tips-must">*</text></view>
+                            <view class="form-gorup-title">{{ $t('hospital.gender') }}<text class="form-group-tips-must">*</text></view>
                             <view class="flex-row align-c flex-1 flex-width">
                                 <picker class="picker" name="gender" data-field="gender_index" @change="select_change_event" :value="select_index.gender_index" :range="common_gender_list" range-key="name">
-                                    <text v-if="select_index.gender_index === ''" class="cr-grey-9">{{ $t('hospital.hospital.please_select_gender') }}</text>
+                                    <text v-if="select_index.gender_index === ''" class="cr-grey-9">{{ $t('hospital.please_select_gender') }}</text>
                                     <text v-else class="cr-base">{{common_gender_list[select_index.gender_index].name}}</text>
                                     <view class="dis-inline-block margin-left-xs">
                                         <iconfont name="icon-arrow-right" size="28rpx" color="#ccc"></iconfont>
@@ -38,24 +38,24 @@
                             </view>
                         </view>
                         <view class="form-gorup flex-row jc-sb align-c br-b-f9">
-                            <view class="form-gorup-title">{{ $t('hospital.hospital.age') }}</view>
+                            <view class="form-gorup-title">{{ $t('hospital.age') }}</view>
                             <view class="flex-row align-c flex-1 flex-width">
                                 <input type="number" name="age" :value="data.age || ''" placeholder-class="cr-grey-9" class="cr-base" :placeholder="$t('common.please_input_age')" />
                             </view>
                         </view>
                         <view class="form-gorup flex-row jc-sb align-c br-b-f9">
-                            <view class="form-gorup-title">{{ $t('hospital.hospital.weight') }}</view>
+                            <view class="form-gorup-title">{{ $t('hospital.weight') }}</view>
                             <view class="flex-row align-c flex-1 flex-width">
                                 <input type="digit" name="weight" :value="data.weight || ''" placeholder-class="cr-grey-9" class="cr-base" :placeholder="$t('common.please_input_weight')" />
                             </view>
                         </view>
                         <view class="form-gorup flex-row jc-sb align-c br-b-f9">
-                            <view class="form-gorup-title">{{ $t('hospital.hospital.health_info') }}</view>
+                            <view class="form-gorup-title">{{ $t('hospital.health_info') }}</view>
                             <view class="flex-row align-c flex-1 flex-width">
                                 <view class="form-gorup-value" @tap="popup_health_event">
                                     <view class="dis-inline-block single-text va-m health-tips">
                                         <text v-if="(health_tips || null) != null" class="cr-base">{{health_tips}}</text>
-                                        <text v-else class="cr-grey-9">{{ $t('hospital.hospital.health_info_placeholder') }}</text>
+                                        <text v-else class="cr-grey-9">{{ $t('hospital.health_info_placeholder') }}</text>
                                     </view>
                                     <view class="dis-inline-block margin-left-xs va-m">
                                         <iconfont name="icon-arrow-right" size="28rpx" color="#ccc"></iconfont>
@@ -64,10 +64,10 @@
                             </view>
                         </view>
                         <view class="form-gorup flex-row jc-sb align-c br-b-f9">
-                            <view class="form-gorup-title">{{ $t('hospital.hospital.relation_tag') }}</view>
+                            <view class="form-gorup-title">{{ $t('hospital.relation_tag') }}</view>
                             <view class="flex-row align-c flex-1 flex-width">
                                 <picker class="picker" name="relation_tags" data-field="relation_tags_index" @change="select_change_event" :value="select_index.relation_tags_index" :range="hospital_relation_tags_list" range-key="name">
-                                    <text v-if="select_index.relation_tags_index === ''" class="cr-grey-9">{{ $t('hospital.hospital.relation_tag_placeholder') }}</text>
+                                    <text v-if="select_index.relation_tags_index === ''" class="cr-grey-9">{{ $t('hospital.relation_tag_placeholder') }}</text>
                                     <text v-else class="cr-base">{{hospital_relation_tags_list[select_index.relation_tags_index].name}}</text>
                                     <view class="dis-inline-block margin-left-xs">
                                         <iconfont name="icon-arrow-right" size="28rpx" color="#ccc"></iconfont>
@@ -96,28 +96,28 @@
                         <view class="form-container">
                             <view class="form-gorup">
                                 <view class="flex-row jc-sb align-c">
-                                    <view class="form-gorup-title">{{ $t('hospital.hospital.allergy_history') }}</view>
+                                    <view class="form-gorup-title">{{ $t('hospital.allergy_history') }}</view>
                                     <switch :color="theme_color" :checked="(health.is_history_of_allergy || 0) == 1" data-field="is_history_of_allergy" @change="health_switch_value_event" style="transform:scale(0.7)" />
                                 </view>
                                 <input v-if="(health.is_history_of_allergy || 0) == 1" type="text" :value="health.is_history_of_allergy_value || ''" data-field="history_of_allergy_value" @input="health_input_value_event" placeholder-class="cr-grey-9" class="cr-base" :placeholder="$t('common.please_input_allergy_item')" />
                             </view>
                             <view class="form-gorup br-t-f9">
                                 <view class="flex-row jc-sb align-c">
-                                    <view class="form-gorup-title">{{ $t('hospital.hospital.sickness_history') }}</view>
+                                    <view class="form-gorup-title">{{ $t('hospital.sickness_history') }}</view>
                                     <switch :color="theme_color" :checked="(health.is_history_of_sickness || 0) == 1" data-field="is_history_of_sickness" @change="health_switch_value_event" style="transform:scale(0.7)" />
                                 </view>
                                 <input v-if="(health.is_history_of_sickness || 0) == 1" type="text" :value="health.is_history_of_sickness_value || ''" data-field="history_of_sickness_value" @input="health_input_value_event" placeholder-class="cr-grey-9" class="cr-base" :placeholder="$t('common.please_input_sickness_item')" />
                             </view>
                             <view class="form-gorup flex-row jc-sb align-c br-t-f9">
-                                <view class="form-gorup-title">{{ $t('hospital.hospital.liver_abnormal') }}</view>
+                                <view class="form-gorup-title">{{ $t('hospital.liver_abnormal') }}</view>
                                 <switch :color="theme_color" :checked="(health.liver_type || 0) == 1" data-field="liver_type" @change="health_switch_value_event" style="transform:scale(0.7)" />
                             </view>
                             <view class="form-gorup flex-row jc-sb align-c br-t-f9">
-                                <view class="form-gorup-title">{{ $t('hospital.hospital.kidney_abnormal') }}</view>
+                                <view class="form-gorup-title">{{ $t('hospital.kidney_abnormal') }}</view>
                                 <switch :color="theme_color" :checked="(health.renal_type || 0) == 1" data-field="renal_type" @change="health_switch_value_event" style="transform:scale(0.7)" />
                             </view>
                             <view v-if="(data.gender || 0) == 1" class="form-gorup flex-row jc-sb align-c br-t-f9">
-                                <view class="form-gorup-title">{{ $t('hospital.hospital.pregnancy') }}</view>
+                                <view class="form-gorup-title">{{ $t('hospital.pregnancy') }}</view>
                                 <view class="flex-row align-c flex-1 flex-width tr">
                                     <picker class="picker" data-field="pregnancy" @change="health_input_value_event" :value="health.pregnancy || 0" :range="hospital_pregnancy_list" range-key="name">
                                         <text class="cr-base">{{hospital_pregnancy_list[health.pregnancy || 0].name}}</text>
@@ -151,8 +151,10 @@
     import componentCommon from '@/components/common/common';
     import componentPopup from '@/components/popup/popup';
     import componentNoData from '@/components/no-data/no-data';
+    import pluginLocale from '../locale/index.js';
 
     export default {
+        mixins: [pluginLocale],
         data() {
             return {
                 theme_view: app.globalData.get_theme_value_view(),
@@ -337,12 +339,12 @@
                 if(is_history_of_allergy == 1) {
                     var value = this.health.is_history_of_allergy_value || '';
                     if(value === '') {
-                        app.globalData.showToast(this.$t('hospital-patient.hospital-patient.h001ah'));
+                        app.globalData.showToast(this.$t('hospital-patient.fill_allergy_history'));
                         return false;
                     }
-                    var msg = this.$t('hospital.hospital.allergy_history_label')+value;
+                    var msg = this.$t('hospital.allergy_history_label')+value;
                 } else {
-                    var msg = this.$t('hospital.hospital.no_allergy');
+                    var msg = this.$t('hospital.no_allergy');
                     var value = '';
                 }
                  arr.push({
@@ -357,12 +359,12 @@
                 if(is_history_of_sickness == 1) {
                     var value = this.health.is_history_of_sickness_value || '';
                     if(value === '') {
-                        app.globalData.showToast(this.$t('hospital-patient.hospital-patient.h002dh'));
+                        app.globalData.showToast(this.$t('hospital-patient.fill_disease_history'));
                         return false;
                     }
-                    var msg = this.$t('hospital.hospital.sickness_history_label')+value;
+                    var msg = this.$t('hospital.sickness_history_label')+value;
                 } else {
-                    var msg = this.$t('hospital.hospital.no_sickness');
+                    var msg = this.$t('hospital.no_sickness');
                     var value = '';
                 }
                  arr.push({
@@ -377,7 +379,7 @@
                  arr.push({
                     type: 'liver_type', 
                     status: liver_type,  
-                    msg: this.$t('hospital.hospital.no_liver_issue')+((liver_type == 1) ? this.$t('common.abnormal') : this.$t('common.normal')),
+                    msg: this.$t('hospital.no_liver_issue')+((liver_type == 1) ? this.$t('common.abnormal') : this.$t('common.normal')),
                 });
                 
                 // 肾功能
@@ -385,7 +387,7 @@
                  arr.push({
                     type: 'renal_type', 
                     status: renal_type,  
-                    msg: this.$t('hospital.hospital.no_kidney_issue')+((renal_type == 1) ? this.$t('common.abnormal') : this.$t('common.normal')),
+                    msg: this.$t('hospital.no_kidney_issue')+((renal_type == 1) ? this.$t('common.abnormal') : this.$t('common.normal')),
                 });
                 
                 // 妊娠哺乳
@@ -398,7 +400,7 @@
                  arr.push({
                     type: 'pregnancy', 
                     status: temp_pregnancy.value,  
-                    msg: this.$t('hospital.hospital.pregnancy_label')+temp_pregnancy.name,
+                    msg: this.$t('hospital.pregnancy_label')+temp_pregnancy.name,
                 });
                 return arr;
             },
@@ -449,7 +451,7 @@
                     { fields: 'name', msg: this.$t('common.please_input_real_name') },
                     { fields: 'idcard', msg: this.$t('common.please_input_idcard') },
                     { fields: 'mobile', msg: this.$t('common.please_input_mobile') },
-                    { fields: 'gender', msg: this.$t('hospital.hospital.please_select_gender'), is_can_zero: 1 },
+                    { fields: 'gender', msg: this.$t('hospital.please_select_gender'), is_can_zero: 1 },
                 ];
                 // 验证提交表单
                 if (app.globalData.fields_check(form_data, validation)) {

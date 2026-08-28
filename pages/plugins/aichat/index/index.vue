@@ -6,8 +6,8 @@
 
         <view v-else-if="!is_enabled" class="aichat-disabled padding-main">
             <view class="aichat-disabled-card bg-white border-radius-main padding-xl tc">
-                <view class="text-size-lg fw-b">智能客服咨询功能未开启</view>
-                <view class="cr-grey text-size-sm margin-top-sm">请在后台【AI智能客服 → 基础配置】中开启「用户咨询页」</view>
+                <view class="text-size-lg fw-b">{{$t('aichat.disabled_title')}}</view>
+                <view class="cr-grey text-size-sm margin-top-sm">{{$t('aichat.disabled_desc')}}</view>
             </view>
             <component-common ref="common" :propIsFooterSeat="false"></component-common>
         </view>
@@ -23,15 +23,15 @@
                     </view>
                     <view class="aichat-new-chat flex-row align-c jc-c" @tap="start_new_chat">
                         <iconfont name="icon-add" size="28rpx" color="#fff"></iconfont>
-                        <text class="margin-left-sm">开启新对话</text>
+                        <text class="margin-left-sm">{{$t('aichat.new_chat')}}</text>
                     </view>
                 </view>
                 <view class="aichat-sidebar-section-title flex-row align-c">
                     <iconfont name="icon-timing-time" size="26rpx" color="#8a919f"></iconfont>
-                    <text class="margin-left-sm">对话历史</text>
+                    <text class="margin-left-sm">{{$t('aichat.history')}}</text>
                 </view>
                 <scroll-view scroll-y class="aichat-history-scroll">
-                    <view v-if="displayed_sessions.length === 0" class="aichat-history-empty">暂无历史对话</view>
+                    <view v-if="displayed_sessions.length === 0" class="aichat-history-empty">{{$t('aichat.history_empty')}}</view>
                     <view
                         v-for="(item, index) in displayed_sessions"
                         :key="index"
@@ -88,7 +88,7 @@
                             :auto-height="true"
                             :show-confirm-bar="false"
                             :adjust-position="true"
-                            placeholder="有什么问题尽管问我"
+                            :placeholder="$t('aichat.placeholder')"
                             placeholder-class="cr-grey-9"
                             @input="input_event"
                             @confirm="send_event"
@@ -151,11 +151,11 @@
                                     >
                                         <view class="aichat-msg-revision-hd">
                                             <view class="aichat-msg-revision-meta">
-                                                <text class="aichat-msg-revision-tag">已重新回答</text>
+                                                <text class="aichat-msg-revision-tag">{{$t('aichat.revised_answer')}}</text>
                                                 <text class="aichat-msg-revision-ver">{{ revision_ver_text(rev, ri) }}</text>
                                             </view>
                                             <view class="aichat-msg-revision-ops">
-                                                <view class="aichat-msg-revision-btn" :data-msg-index="idx" :data-rev-index="ri" @tap="toggle_revision_event">{{ rev.open ? '收起' : '展开' }}</view>
+                                                <view class="aichat-msg-revision-btn" :data-msg-index="idx" :data-rev-index="ri" @tap="toggle_revision_event">{{ rev.open ? $t('common.retract') : $t('common.expand') }}</view>
                                                 <view class="aichat-msg-revision-btn" :data-msg-index="idx" :data-rev-index="ri" @tap="view_revision_event">{{$t('common.view_text')}}</view>
                                             </view>
                                         </view>
@@ -174,7 +174,7 @@
                                                         <image v-if="g.images" class="aichat-goods-img" :src="g.images" mode="aspectFill"></image>
                                                         <view v-else class="aichat-goods-img aichat-goods-img-empty"></view>
                                                         <view class="aichat-goods-meta flex-1">
-                                                            <view class="aichat-goods-title">{{ g.title || '商品' }}</view>
+                                                            <view class="aichat-goods-title">{{ g.title || $t('common.goods') }}</view>
                                                             <view v-if="g.price !== '' && g.price !== null && g.price !== undefined" class="aichat-goods-price">
                                                                 {{ g.show_price_symbol || '￥' }}{{ g.price }}
                                                             </view>
@@ -213,7 +213,7 @@
                                             <image v-if="g.images" class="aichat-goods-img" :src="g.images" mode="aspectFill"></image>
                                             <view v-else class="aichat-goods-img aichat-goods-img-empty"></view>
                                             <view class="aichat-goods-meta flex-1">
-                                                <view class="aichat-goods-title">{{ g.title || '商品' }}</view>
+                                                <view class="aichat-goods-title">{{ g.title || $t('common.goods') }}</view>
                                                 <view v-if="g.price !== '' && g.price !== null && g.price !== undefined" class="aichat-goods-price">
                                                     {{ g.show_price_symbol || '￥' }}{{ g.price }}
                                                 </view>
@@ -306,7 +306,7 @@
                             :auto-height="true"
                             :show-confirm-bar="false"
                             :adjust-position="true"
-                            placeholder="有什么问题尽管问我"
+                            :placeholder="$t('aichat.placeholder')"
                             placeholder-class="cr-grey-9"
                             @input="input_event"
                             @confirm="send_event"
@@ -347,7 +347,7 @@
                                     <image v-if="g.images" class="aichat-goods-img" :src="g.images" mode="aspectFill"></image>
                                     <view v-else class="aichat-goods-img aichat-goods-img-empty"></view>
                                     <view class="aichat-goods-meta flex-1">
-                                        <view class="aichat-goods-title">{{ g.title || '商品' }}</view>
+                                        <view class="aichat-goods-title">{{ g.title || $t('common.goods') }}</view>
                                         <view v-if="g.price !== '' && g.price !== null && g.price !== undefined" class="aichat-goods-price">
                                             {{ g.show_price_symbol || '￥' }}{{ g.price }}
                                         </view>
@@ -370,11 +370,13 @@
     import componentCommon from '@/components/common/common';
     import componentNoData from '@/components/no-data/no-data';
     import componentPopup from '@/components/popup/popup';
+    import pluginLocale from '../locale/index.js';
 
     const STORAGE_KEY = 'plugins_aichat_consult_sessions_v1';
     const GUEST_TOKEN_KEY = 'plugins_aichat_guest_token';
 
     export default {
+        mixins: [pluginLocale],
         data() {
             return {
                 theme_view: app.globalData.get_theme_value_view(),
@@ -382,14 +384,14 @@
                 is_enabled: 0,
                 is_login: 0,
                 use_remote: true,
-                application_name: '智能客服助手',
+                application_name: this.$t('pages.plugins-aichat-index'),
                 logo: '',
                 welcome: '',
                 desc: '',
                 quick_questions: [],
                 welcome_title: '',
-                thinking_text: '正在思考，请稍候...',
-                session_loading_text: '正在加载对话...',
+                thinking_text: this.$t('aichat.thinking'),
+                session_loading_text: this.$t('aichat.session_loading'),
                 page_size: 20,
                 history_page: 1,
                 history_has_more: false,
@@ -399,7 +401,7 @@
                 msg_loading_more: false,
                 msg_more_show: false,
                 msg_guest_start: 0,
-                main_title: '新对话',
+                main_title: this.$t('aichat.new_session'),
                 sidebar_open: false,
                 sidebar_closing: false,
                 is_chatting: false,
@@ -437,7 +439,7 @@
             },
             // 思考中文案拆成单字（渐变动画）
             thinking_chars() {
-                var text = String(this.thinking_text || '正在思考，请稍候...');
+                var text = String(this.thinking_text || this.$t('aichat.thinking'));
                 return text.split('');
             },
             // 最后一条机器人消息下标（用于追问展示）
@@ -603,7 +605,7 @@
             },
             // 标题截断
             truncate_title(text, max) {
-                text = String(text || '').trim() || '新对话';
+                text = String(text || '').trim() || this.$t('aichat.new_session');
                 max = max || 18;
                 return text.length > max ? text.slice(0, max) + '...' : text;
             },
@@ -647,7 +649,7 @@
                     }
                     slots.push({
                         type: 'img',
-                        alt: alt ? String(alt) : '图片',
+                        alt: alt ? String(alt) : self.$t('common.image'),
                         url: url,
                     });
                     return '@@AICHATIMG' + (slots.length - 1) + '@@';
@@ -674,7 +676,7 @@
                     return token || all;
                 });
                 raw = raw.replace(/(^|[\s])(https?:\/\/[^\s<>"']+\.(?:png|jpe?g|gif|webp|bmp)(?:\?[^\s<>"']*)?)/gi, function (all, pre, url) {
-                    var token = push_img('图片', url);
+                    var token = push_img(self.$t('common.image'), url);
                     return token ? (pre + token) : all;
                 });
                 var html = this.escape_html(raw);
@@ -762,7 +764,8 @@
             // 第 N 版 · 时间
             revision_ver_text(rev, index) {
                 var time_text = this.format_revision_time(rev && rev.time);
-                return '第 ' + (index + 1) + ' 版' + (time_text ? (' · ' + time_text) : '');
+                var suffix = this.$t('aichat.revision_suffix');
+                return this.$t('aichat.revision_prefix') + ' ' + (index + 1) + (suffix ? (' ' + suffix) : '') + (time_text ? (' · ' + time_text) : '');
             },
             // 当前消息时间
             message_time_text(msg) {
@@ -876,7 +879,7 @@
                         return this.truncate_title(msgs[i].text, 30);
                     }
                 }
-                return '新对话';
+                return this.$t('aichat.new_session');
             },
             // 记录消息区当前滚动位置
             on_msg_scroll(e) {
@@ -1199,7 +1202,7 @@
                             if (Array.isArray(d.sessions)) {
                                 sessions = d.sessions.map((row) => ({
                                     id: row.id,
-                                    title: row.title || '新对话',
+                                    title: row.title || this.$t('aichat.new_session'),
                                     updated_at: row.updated_at || row.upd_time || 0,
                                     messages: null,
                                 }));
@@ -1207,7 +1210,7 @@
                             // 初始化已带详情：写入缓存，进页免再拉 consultdetail
                             if (d.session_detail && d.session_detail.consult) {
                                 var did = d.session_detail.consult.id;
-                                var dtitle = d.session_detail.consult.title || '新对话';
+                                var dtitle = d.session_detail.consult.title || this.$t('aichat.new_session');
                                 var dmsgs = Array.isArray(d.session_detail.messages) ? d.session_detail.messages : [];
                                 var dmore = parseInt(d.session_detail.has_more || 0, 10) === 1;
                                 var hit = false;
@@ -1229,12 +1232,12 @@
                                 page_loading: false,
                                 is_enabled: parseInt(d.is_enabled || 0),
                                 is_login: is_login,
-                                application_name: d.application_name || '智能客服助手',
+                                application_name: d.application_name || this.$t('pages.plugins-aichat-index'),
                                 logo: d.logo || '',
                                 welcome: d.welcome || '',
                                 welcome_title: d.welcome_title || '',
-                                thinking_text: d.thinking_text || '正在思考，请稍候...',
-                                session_loading_text: d.session_loading_text || '正在加载对话...',
+                                thinking_text: d.thinking_text || this.$t('aichat.thinking'),
+                                session_loading_text: d.session_loading_text || this.$t('aichat.session_loading'),
                                 page_size: parseInt(d.page_size || 20, 10) || 20,
                                 history_has_more: parseInt(d.sessions_has_more || 0, 10) === 1,
                                 history_page: 1,
@@ -1266,7 +1269,7 @@
                     this.setData({
                         is_chatting: true,
                         session_loading: true,
-                        main_title: '加载中...',
+                        main_title: this.$t('common.loading_in_text'),
                         messages: [],
                     });
                 }
@@ -1276,7 +1279,7 @@
                         self.open_session(id);
                     } else {
                         self.set_url_consult_id('');
-                        self.setData({ is_chatting: false, session_loading: false, main_title: '新对话' });
+                        self.setData({ is_chatting: false, session_loading: false, main_title: this.$t('aichat.new_session') });
                     }
                 };
                 if (self._sessions_need_refresh) {
@@ -1300,7 +1303,7 @@
                             self.save_guest_token(res.data.data.guest_token);
                             var rows = res.data.data.list.map((row) => ({
                                 id: row.id,
-                                title: row.title || '新对话',
+                                title: row.title || this.$t('aichat.new_session'),
                                 updated_at: row.updated_at || 0,
                                 messages: null,
                             }));
@@ -1345,7 +1348,7 @@
                     asking: false,
                     goods_context_keywords: '',
                     input_value: '',
-                    main_title: '新对话',
+                    main_title: this.$t('aichat.new_session'),
                     welcome_title: this.welcome_title || '',
                     sidebar_open: false,
                     scroll_into: '',
@@ -1447,7 +1450,7 @@
                         msg_guest_start: sliced.start,
                         is_chatting: true,
                         session_loading: false,
-                        main_title: session.title || '新对话',
+                        main_title: session.title || this.$t('aichat.new_session'),
                     });
                     this.restore_goods_context();
                     this.scroll_bottom({ delays: [50, 160, 360, 700] });
@@ -1455,7 +1458,7 @@
                 }
 
                 var exist = this.find_session(id);
-                this.setData({ current_id: id, main_title: (exist && exist.title) || '加载中...' });
+                this.setData({ current_id: id, main_title: (exist && exist.title) || this.$t('common.loading_in_text') });
                 if (exist && Array.isArray(exist.messages) && exist.messages.length) {
                     this.setData({
                         messages: this.normalize_messages(exist.messages),
@@ -1535,7 +1538,7 @@
                                 return;
                             }
                             if (!silent) {
-                                app.globalData.showToast((res.data && res.data.msg) || '加载对话失败');
+                                app.globalData.showToast((res.data && res.data.msg) || this.$t('aichat.load_session_fail'));
                                 if (self.same_id(self.current_id, id)) {
                                     self.start_new_chat();
                                 }
@@ -1573,7 +1576,7 @@
                         }
                         var detail = {
                             id: res.data.data.consult ? res.data.data.consult.id : id,
-                            title: (res.data.data.consult && res.data.data.consult.title) ? res.data.data.consult.title : '新对话',
+                            title: (res.data.data.consult && res.data.data.consult.title) ? res.data.data.consult.title : this.$t('aichat.new_session'),
                             messages: incoming,
                             has_more: more_flag,
                         };
@@ -1614,7 +1617,7 @@
                             return;
                         }
                         if (req_id !== self.detail_req_seq || silent) return;
-                        app.globalData.showToast('加载对话失败，请稍后重试');
+                        app.globalData.showToast(this.$t('aichat.load_session_fail_retry'));
                         if (self.same_id(self.current_id, id)) {
                             self.start_new_chat();
                         }
@@ -1626,8 +1629,8 @@
                 var id = e.currentTarget.dataset.id;
                 var self = this;
                 uni.showModal({
-                    title: '提示',
-                    content: '确定删除该对话吗？',
+                    title: this.$t('common.tips'),
+                    content: this.$t('aichat.delete_confirm'),
                     success: (ret) => {
                         if (ret.confirm) {
                             self.delete_session(id);
@@ -1654,7 +1657,7 @@
                     dataType: 'json',
                     success: (res) => {
                         if (res.data.code != 0) {
-                            app.globalData.showToast((res.data && res.data.msg) || '删除失败');
+                            app.globalData.showToast((res.data && res.data.msg) || this.$t('common.del_fail'));
                             return;
                         }
                         self.setData({
@@ -1673,11 +1676,11 @@
                 }
                 if (this.use_remote) {
                     this.setData({ current_id: '' });
-                    return { id: '', title: '新对话', messages: [] };
+                    return { id: '', title: this.$t('aichat.new_session'), messages: [] };
                 }
                 var session = {
                     id: this.uid(),
-                    title: '新对话',
+                    title: this.$t('aichat.new_session'),
                     messages: [],
                     updated_at: Date.now(),
                 };
@@ -1747,7 +1750,7 @@
                     var sessions = this.sessions.filter((s) => !this.same_id(s.id, this.current_id));
                     sessions.unshift(session);
                     this.save_local_sessions_list(sessions);
-                    this.setData({ sessions: sessions, main_title: session.title || '新对话' });
+                    this.setData({ sessions: sessions, main_title: session.title || this.$t('aichat.new_session') });
                     typeof done === 'function' && done();
                     return;
                 }
@@ -1975,7 +1978,7 @@
                         }
                         if (res.data.code == 0 && res.data.data) {
                             self.save_guest_token(res.data.data.guest_token);
-                            answer = res.data.data.answer || '暂时无法回答，请稍后再试。';
+                            answer = res.data.data.answer || this.$t('aichat.no_answer');
                             suggests = Array.isArray(res.data.data.suggests) ? res.data.data.suggests : [];
                             goods = Array.isArray(res.data.data.goods) ? res.data.data.goods : [];
                             if (self.use_remote) {
@@ -2021,7 +2024,7 @@
                                 });
                             }
                         } else {
-                            answer = (res.data && res.data.msg) ? res.data.msg : '请求失败，请稍后再试。';
+                            answer = (res.data && res.data.msg) ? res.data.msg : this.$t('aichat.request_fail');
                             if (!self.use_remote && replace_idx < 0) bot_mid = self.msg_uid();
                         }
                         var bot_idx = list.length;
@@ -2095,11 +2098,11 @@
                             } else {
                                 self.setData({ asking: false });
                             }
-                            app.globalData.showToast('网络异常，请检查网络后重试。');
+                            app.globalData.showToast(this.$t('common.internet_error_tips'));
                             return;
                         }
                         var list = self.messages.filter((m) => m.role !== 'loading');
-                        var fail_text = '网络异常，请检查网络后重试。';
+                        var fail_text = this.$t('common.internet_error_tips');
                         var fail_mid = self.use_remote ? '' : self.msg_uid();
                         list.push({
                             role: 'bot',
@@ -2140,7 +2143,7 @@
                     }
                     uni.setClipboardData({
                         data: String(msg.text || ''),
-                        success: () => app.globalData.showToast('已复制', 'success'),
+                        success: () => app.globalData.showToast(this.$t('common.copy_success'), 'success'),
                     });
                     return;
                 }
@@ -2154,7 +2157,7 @@
                     }
                     var q = this.paired_user_question(idx);
                     if (!q) {
-                        app.globalData.showToast('没有找到对应的问题，无法重新生成');
+                        app.globalData.showToast(this.$t('aichat.no_question_regenerate'));
                         return;
                     }
                     this.send_question(q, { replace_index: idx });
@@ -2205,7 +2208,7 @@
                                 rollback[idx] = Object.assign({}, rollback[idx], { feedback: msg.feedback || 0 });
                                 self.setData({ messages: rollback });
                             }
-                            app.globalData.showToast((res.data && res.data.msg) || '操作失败');
+                            app.globalData.showToast((res.data && res.data.msg) || this.$t('common.operate_fail'));
                         } else {
                             var s = self.find_session(self.current_id);
                             if (s) {

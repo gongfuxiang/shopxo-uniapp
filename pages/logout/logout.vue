@@ -9,7 +9,7 @@
                         </view>
                         <view class="bottom-fixed" :style="bottom_fixed_style">
                             <view class="bottom-line-exclude">
-                                <button class="item bg-grey br-grey cr-base round text-size fl" type="default" size="mini" hover-class="none" @tap="logout_submit_event">{{$t('logout.logout.u10002')}}</button>
+                                <button class="item bg-grey br-grey cr-base round text-size fl" type="default" size="mini" hover-class="none" @tap="logout_submit_event">{{$t('logout.confirm_cancellation')}}</button>
                                 <button class="item bg-main br-main cr-white round text-size fr" type="default" size="mini" hover-class="none" @tap="logout_cancel_event">{{$t('common.cancel')}}</button>
                             </view>
                         </view>
@@ -29,7 +29,9 @@
     const app = getApp();
     import componentCommon from '@/components/common/common';
     import componentNoData from '@/components/no-data/no-data';
+    import pluginLocale from './locale/index.js';
     export default {
+        mixins: [pluginLocale],
         data() {
             return {
                 theme_view: app.globalData.get_theme_value_view(),
@@ -75,7 +77,7 @@
                 } else {
                     this.setData({
                         data_list_loding_status: 0,
-                        data_list_loding_msg: this.$t('setup.setup.nwt4o1'),
+                        data_list_loding_msg: this.$t('common.please_login_first'),
                     });
                 }
             },
@@ -115,7 +117,7 @@
                 // 是否再次确认
                 if (e.alert_status != 0 && e.alert_status != 1) {
                     app.globalData.alert({
-                        msg: this.$t('logout.logout.9vfzz4'),
+                        msg: this.$t('logout.after_account_cancellation_cannot_restored_sure'),
                         is_show_cancel: 1,
                         object: this,
                         method: 'logout_submit_event',

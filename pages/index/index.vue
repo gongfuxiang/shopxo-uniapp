@@ -79,7 +79,7 @@
                                     <view class="flex-1">
                                         <!-- 是否开启搜索框前面icon扫一扫 -->
                                         <block v-if="is_home_search_scan == 1">
-                                            <component-search :propIsEnterSearchStart="true" :propIsBtn="true" propSize="sm" :propPlaceholder="$t('customview.customview.726k7y')" propPlaceholderClass="cr-grey-c" propIconColor="#999" propBgColor="#fff"
+                                            <component-search :propIsEnterSearchStart="true" :propIsBtn="true" propSize="sm" :propPlaceholder="$t('common.enter_product_name_search')" propPlaceholderClass="cr-grey-c" propIconColor="#999" propBgColor="#fff"
                                                 :propRightIcon="is_imagesearch == 1 ? 'icon-camera' : ''"
                                                 :propRightIconColor="'#999'"
                                                 @onrighticon="imagesearch_event"
@@ -89,7 +89,7 @@
                                             ></component-search>
                                         </block>
                                         <block v-else>
-                                            <component-search :propIsEnterSearchStart="true" :propIsBtn="true" propSize="sm" :propPlaceholder="$t('customview.customview.726k7y')" propPlaceholderClass="cr-grey-c" propIconColor="#999" propBgColor="#fff"
+                                            <component-search :propIsEnterSearchStart="true" :propIsBtn="true" propSize="sm" :propPlaceholder="$t('common.enter_product_name_search')" propPlaceholderClass="cr-grey-c" propIconColor="#999" propBgColor="#fff"
                                                 :propRightIcon="is_imagesearch == 1 ? 'icon-camera' : ''"
                                                 :propRightIconColor="'#999'"
                                                 @onrighticon="imagesearch_event"
@@ -279,7 +279,7 @@
                                 <view v-if="pv.plugins == 'salerecords' && (plugins_salerecords_data || null) != null && (plugins_salerecords_data.data || null) != null && plugins_salerecords_data.data.length > 0" class="plugins-salerecords bg-white border-radius-main padding-main spacing-mb">
                                     <view class="spacing-nav-title flex-row align-c jc-sb text-size-xs">
                                         <view class="title-left">
-                                            <text class="text-wrapper">{{ plugins_salerecords_data.base.home_bottom_title || $t('index.index.s5r784') }}</text>
+                                            <text class="text-wrapper">{{ plugins_salerecords_data.base.home_bottom_title || $t('common.latest_purchase') }}</text>
                                             <text v-if="(plugins_salerecords_data.base || null) != null && (plugins_salerecords_data.base.home_bottom_desc || null) != null" class="vice-name margin-left-sm cr-grey-9">{{ plugins_salerecords_data.base.home_bottom_desc }}</text>
                                         </view>
                                     </view>

@@ -19,7 +19,7 @@
                     <view class="padding-main border-radius-main bg-white spacing-mb">
                         <view class="doc-content-title pr margin-bottom-lg">
                             <view class="text-size-lg fw-b flex-row jc-c align-c">
-                                <iconfont v-if="access_icon_visible(content_data)" name="icon-lock" size="36rpx" propClass="margin-right-sm" :color="content_data.is_lock == 1 ? '' : '#1AAD19'"></iconfont>
+                                <iconfont v-if="access_icon_visible(content_data)" :name="content_data.is_lock == 1 ? 'icon-lock' : 'icon-unlock'" size="36rpx" propClass="margin-right-sm" :color="content_data.is_lock == 1 ? '' : '#1AAD19'"></iconfont>
                                 <text>{{ content_data.title }}</text>
                             </view>
                             <view class="doc-share-entry" @tap="popup_share_event">
@@ -52,11 +52,11 @@
                                 <view v-if="content_data.access_plans && content_data.access_plans.length > 1" class="doc-plan-list spacing-mb">
                                     <view v-for="(item, index) in content_data.access_plans" :key="item.days" class="doc-plan-item pr oh" :class="selected_plan && selected_plan.days == item.days ? 'br-main' : ''" :data-index="index" @tap="plan_select_event">
                                         <view class="text-size-sm">{{ item.days_name }}</view>
-                                        <view class="cr-price text-size-xs">{{ item.integral_text || (item.integral + $t('doc.integral')) }}</view>
+                                        <view class="cr-price text-size-xs">{{ item.integral_text || (item.integral + $t('doc.points')) }}</view>
                                         <iconfont v-if="selected_plan && selected_plan.days == item.days" name="icon-subscript" size="68rpx" propClass="doc-plan-check cr-main"></iconfont>
                                     </view>
                                 </view>
-                                <view v-else class="am-text-center spacing-mb">{{ $t('doc.need_integral') }}<text class="cr-price">{{ selected_plan ? selected_plan.integral : content_data.access_integral }}</text>{{ $t('doc.integral') }}<text v-if="selected_plan && selected_plan.days_name" class="cr-grey text-size-sm margin-left-sm">{{ selected_plan.days_name }}</text></view>
+                                <view v-else class="am-text-center spacing-mb">{{ $t('doc.need_integral') }}<text class="cr-price">{{ selected_plan ? selected_plan.integral : content_data.access_integral }}</text>{{ $t('doc.points') }}<text v-if="selected_plan && selected_plan.days_name" class="cr-grey text-size-sm margin-left-sm">{{ selected_plan.days_name }}</text></view>
                                 <view class="cr-grey text-size-sm am-text-center spacing-mb">{{ $t('doc.current_integral', { num: user_integral }) }}</view>
                                 <button class="bg-main cr-white round text-size margin-top-lg" :loading="submit_loading" @tap="integral_submit">{{ $t('doc.integral_view') }}</button>
                             </view>
@@ -76,11 +76,11 @@
                     </view>
                     <view v-if="content_data.is_lock != 1 && (content_data.prev || content_data.next)" class="last-next-data spacing-mt margin-bottom-xxxl cr-grey-9">
                         <view v-if="content_data.prev" class="flex-row" :data-id="content_data.prev.id" @tap="content_switch_event">
-                            <text>{{ $t('article-detail.article-detail.281s4a') }}</text>
+                            <text>{{ $t('common.previous_article') }}</text>
                             <text class="dis-inline-block flex-row flex-width single-text cp item">{{ content_data.prev.title }}</text>
                         </view>
                         <view v-if="content_data.next" class="margin-top flex-row cr-main" :data-id="content_data.next.id" @tap="content_switch_event">
-                            <text>{{ $t('article-detail.article-detail.uq5814') }}</text>
+                            <text>{{ $t('common.next_article') }}</text>
                             <text class="dis-inline-block flex-row flex-width single-text cp item">{{ content_data.next.title }}</text>
                         </view>
                     </view>
@@ -155,7 +155,7 @@
                             <block v-if="menu_data.file_list && menu_data.file_list.length > 0">
                                 <block v-for="(item, index) in menu_data.file_list" :key="item.id">
                                     <view v-if="menu_item_visible(item)" class="doc-menu-item level-root flex-row align-c" :class="item.id == doc_content_id ? 'active cr-main' : ''" :data-id="item.id" @tap="menu_select_event">
-                                        <iconfont v-if="access_icon_visible(item)" name="icon-lock" size="28rpx" propClass="margin-right-sm" :color="item.is_lock == 1 ? '' : '#1AAD19'"></iconfont>
+                                        <iconfont v-if="access_icon_visible(item)" :name="item.is_lock == 1 ? 'icon-lock' : 'icon-unlock'" size="28rpx" propClass="margin-right-sm" :color="item.is_lock == 1 ? '' : '#1AAD19'"></iconfont>
                                         <text class="flex-1 single-text" :style="item.title_color ? ('color:' + item.title_color) : ''">{{ item.title }}</text>
                                     </view>
                                 </block>
@@ -170,7 +170,7 @@
                                         <block v-if="menu_is_expand('c'+cat.id)">
                                             <block v-for="(item, index) in (cat.doc_list || [])" :key="item.id">
                                                 <view v-if="menu_item_visible(item)" class="doc-menu-item flex-row align-c" :class="item.id == doc_content_id ? 'active cr-main' : ''" :data-id="item.id" @tap="menu_select_event">
-                                                    <iconfont v-if="access_icon_visible(item)" name="icon-lock" size="28rpx" propClass="margin-right-sm" :color="item.is_lock == 1 ? '' : '#1AAD19'"></iconfont>
+                                                    <iconfont v-if="access_icon_visible(item)" :name="item.is_lock == 1 ? 'icon-lock' : 'icon-unlock'" size="28rpx" propClass="margin-right-sm" :color="item.is_lock == 1 ? '' : '#1AAD19'"></iconfont>
                                                     <text class="flex-1 single-text" :style="item.title_color ? ('color:' + item.title_color) : ''">{{ item.title }}</text>
                                                 </view>
                                             </block>
@@ -183,7 +183,7 @@
                                                     <block v-if="menu_is_expand('s'+sub.id)">
                                                         <block v-for="(item, index) in (sub.doc_list || [])" :key="item.id">
                                                             <view v-if="menu_item_visible(item)" class="doc-menu-item sub flex-row align-c" :class="item.id == doc_content_id ? 'active cr-main' : ''" :data-id="item.id" @tap="menu_select_event">
-                                                                <iconfont v-if="access_icon_visible(item)" name="icon-lock" size="28rpx" propClass="margin-right-sm" :color="item.is_lock == 1 ? '' : '#1AAD19'"></iconfont>
+                                                                <iconfont v-if="access_icon_visible(item)" :name="item.is_lock == 1 ? 'icon-lock' : 'icon-unlock'" size="28rpx" propClass="margin-right-sm" :color="item.is_lock == 1 ? '' : '#1AAD19'"></iconfont>
                                                                 <text class="flex-1 single-text" :style="item.title_color ? ('color:' + item.title_color) : ''">{{ item.title }}</text>
                                                             </view>
                                                         </block>

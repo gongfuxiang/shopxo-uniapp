@@ -21,13 +21,13 @@
                     </view>
                     <view v-if="((item.distance_value || null) != null && (item.distance_unit || null) != null) || ((item.lng || 0) != 0 && (item.lat || 0) != 0)" class="br-t oh padding-top-main margin-top-main">
                         <view v-if="(item.distance_value || null) != null && (item.distance_unit || null) != null" class="fl margin-top-lg">
-                            <text class="cr-grey">{{$t('extraction-switch.extraction-switch.w94x36')}}</text>
+                            <text class="cr-grey">{{$t('common.extraction_switch_distance')}}</text>
                             <text class="cr-base">{{ item.distance_value }}</text>
                             <text class="cr-grey">{{ item.distance_unit }}</text>
                         </view>
                         <view class="item-operation fr oh">
                             <button v-if="(item.is_default || 0) == 0" class="round bg-white cr-green br-green" type="default" size="mini" @tap="address_switch_event" :data-index="index" hover-class="none">{{$t('common.select')}}</button>
-                            <button v-if="(item.lng || 0) != 0 && (item.lat || 0) != 0" class="round bg-white cr-base br" type="default" size="mini" @tap="address_map_event" :data-index="index" hover-class="none">{{$t('buy.buy.o7722q')}}</button>
+                            <button v-if="(item.lng || 0) != 0 && (item.lat || 0) != 0" class="round bg-white cr-base br" type="default" size="mini" @tap="address_map_event" :data-index="index" hover-class="none">{{$t('common.consult_map')}}</button>
                         </view>
                     </view>
                 </view>
@@ -54,8 +54,10 @@ const app = getApp();
     import componentNoData from "@/components/no-data/no-data";
     import componentBottomLine from "@/components/bottom-line/bottom-line";
     import componentChoiceLocation from '@/components/choice-location/choice-location';
+    import pluginLocale from '../locale/index.js';
     var common_static_url = app.globalData.get_static_url("common");
     export default {
+        mixins: [pluginLocale],
         data() {
             return {
                 theme_view: app.globalData.get_theme_value_view(),
@@ -225,7 +227,7 @@ const app = getApp();
                 var index = e.currentTarget.dataset.index || 0;
                 var data = this.data_list[index] || null;
                 if (data == null) {
-                    app.globalData.showToast(this.$t('user-order-detail.user-order-detail.i876o3'));
+                    app.globalData.showToast(this.$t('common.incorrect_address'));
                     return false;
                 }
 
@@ -253,7 +255,7 @@ const app = getApp();
                 var index = e.currentTarget.dataset.index || 0;
                 var temp_data = this.data_list;
                 if ((temp_data[index] || null) == null) {
-                    app.globalData.showToast(this.$t('extraction-switch.extraction-switch.613b58'));
+                    app.globalData.showToast(this.$t('common.extraction_switch_data_error'));
                     return false;
                 }
 

@@ -30,7 +30,7 @@
                             </view>
                             <text class="va-m margin-left-xs">{{ item.province_name }}{{ item.city_name }}{{ item.county_name }}{{ item.address }}</text>
                         </view>
-                        <view v-if="(item.distance || null) != null" class="text-size-xs cr-grey-c pa address-distance">{{$t('extraction-address.extraction-address.42v8tv')}}{{ item.distance }}</view>
+                        <view v-if="(item.distance || null) != null" class="text-size-xs cr-grey-c pa address-distance">{{$t('common.distance_from_you')}}{{ item.distance }}</view>
                     </view>
                     <!-- 右侧操作 -->
                     <view class="icon-list pa">
@@ -191,7 +191,7 @@ export default {
         address_map_event(e) {
             var info = this.data_list[e.currentTarget.dataset.index] || {};
             if (info.lat == 0 || info.lng == 0) {
-                app.globalData.showToast(this.$t('user-order-detail.user-order-detail.i876o3'));
+                app.globalData.showToast(this.$t('common.incorrect_address'));
                 return false;
             }
             var address = (info.province_name || "") + (info.city_name || "") + (info.county_name || "") + (info.address || "");

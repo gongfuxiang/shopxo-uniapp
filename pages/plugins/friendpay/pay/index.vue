@@ -10,14 +10,14 @@
                         <view>{{ invite_text_plain || buyer_invite_fallback }}</view>
                     </view>
                     <view class="tc margin-top-sm">
-                        <text class="cr-grey">{{ $t('friendpay.friendpay.pay_amount') }}</text>
+                        <text class="cr-grey">{{ $t('friendpay.pay_amount') }}</text>
                         <text class="sales-price text-size-xl margin-left-sm">{{ currency_symbol }}{{ order_total_price }}</text>
                     </view>
                     <component-friendpay-goods-list :propGoodsList="order_goods_list"></component-friendpay-goods-list>
                 </view>
                 <!-- 支付方式 -->
                 <view v-if="payment_list.length > 0" class="bg-white border-radius-main padding-main spacing-mb">
-                    <view class="fw-b text-size-sm">{{ $t('friendpay.friendpay.select_payment') }}</view>
+                    <view class="fw-b text-size-sm">{{ $t('friendpay.select_payment') }}</view>
                     <view v-for="(item, index) in payment_list" :key="index" class="flex-row jc-sb align-c padding-vertical-sm" @tap="payment_event" :data-value="item.id">
                         <view class="flex-row align-c flex-1 flex-width">
                             <image v-if="(item.logo || null) != null" :src="item.logo" mode="widthFix" class="pay-icon margin-right-sm"></image>
@@ -30,8 +30,8 @@
             </view>
             <view class="bottom-fixed" :style="bottom_fixed_style">
                 <view class="bottom-line-exclude padding-main">
-                    <button v-if="is_login == 0" class="bg-main cr-white round text-size wh-auto" type="default" hover-class="none" @tap="login_event">{{ $t('friendpay.friendpay.login_to_pay') }}</button>
-                    <button v-else class="bg-main cr-white round text-size wh-auto" type="default" hover-class="none" :disabled="submit_disabled" @tap="pay_event">{{ $t('friendpay.friendpay.confirm_pay') }}</button>
+                    <button v-if="is_login == 0" class="bg-main cr-white round text-size wh-auto" type="default" hover-class="none" @tap="login_event">{{ $t('friendpay.login_to_pay') }}</button>
+                    <button v-else class="bg-main cr-white round text-size wh-auto" type="default" hover-class="none" :disabled="submit_disabled" @tap="pay_event">{{ $t('friendpay.confirm_pay') }}</button>
                 </view>
             </view>
         </view>
@@ -61,7 +61,9 @@
     import componentNoData from '@/components/no-data/no-data';
     import componentPayment from '@/components/payment/payment';
     import componentFriendpayGoodsList from '@/pages/plugins/friendpay/components/goods-list/goods-list';
+    import pluginLocale from '../locale/index.js';
     export default {
+        mixins: [pluginLocale],
         components: {
             componentCommon,
             componentNoData,
@@ -95,7 +97,7 @@
         computed: {
             // 页面标题
             pageTitle() {
-                return (this.page_text.pay_page_title || this.$t('friendpay.friendpay.pay_page_title'));
+                return (this.page_text.pay_page_title || this.$t('friendpay.pay_page_title'));
             },
             // 支付成功页地址
             success_page_full() {
@@ -109,7 +111,7 @@
             // 邀请文案兜底
             buyer_invite_fallback() {
                 var name = (this.order_data || {}).buyer_name || '';
-                return this.$t('friendpay.friendpay.invite_fallback_pay').replace('${name}', name);
+                return this.$t('friendpay.invite_fallback_pay').replace('${name}', name);
             },
             // 是否展示下单人信息
             has_buyer_name() {
@@ -162,7 +164,7 @@
                 if ((this.id || '') == '') {
                     this.setData({
                         data_list_loding_status: 0,
-                        data_list_loding_msg: this.$t('friendpay.friendpay.link_error'),
+                        data_list_loding_msg: this.$t('friendpay.link_error'),
                     });
                     return;
                 }
@@ -232,7 +234,7 @@
             // 确认代付
             pay_event() {
                 if (this.payment_id <= 0) {
-                    app.globalData.showToast(this.$t('buy.buy.71kidy'));
+                    app.globalData.showToast(this.$t('common.select_payment_method'));
                     return;
                 }
                 if ((this.$refs.payment || null) != null) {

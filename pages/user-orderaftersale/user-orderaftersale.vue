@@ -78,6 +78,7 @@
     import componentSearch from '@/components/search/search';
     import componentNoData from "@/components/no-data/no-data";
     import componentBottomLine from "@/components/bottom-line/bottom-line";
+    import pluginLocale from './locale/index.js';
     
     // 状态栏高度
     var bar_height = parseInt(app.globalData.get_system_info('statusBarHeight', 0, true));
@@ -85,6 +86,7 @@
     bar_height = 0;
     // #endif
     export default {
+        mixins: [pluginLocale],
         data() {
             return {
                 theme_view: app.globalData.get_theme_value_view(),
@@ -109,12 +111,12 @@
                 // 状态（0待确认, 1待退货, 2待审核, 3已完成, 4已拒绝, 5已取消）
                 nav_status_list: [
                     { name: this.$t('common.all'), value: "-1" },
-                    { name: this.$t('user-orderaftersale.user-orderaftersale.3wggcu'), value: "0" },
-                    { name: this.$t('user-orderaftersale.user-orderaftersale.1kcn16'), value: "1" },
-                    { name: this.$t('user-orderaftersale.user-orderaftersale.2kzi0t'), value: "2" },
-                    { name: this.$t('order.order.15lr5l'), value: "3" },
-                    { name: this.$t('user-orderaftersale.user-orderaftersale.1p5456'), value: "4" },
-                    { name: this.$t('order.order.1k98tk'), value: "5" },
+                    { name: this.$t('user-orderaftersale.confirmed'), value: "0" },
+                    { name: this.$t('user-orderaftersale.returned'), value: "1" },
+                    { name: this.$t('user-orderaftersale.pending_review'), value: "2" },
+                    { name: this.$t('common.completed'), value: "3" },
+                    { name: this.$t('user-orderaftersale.rejected'), value: "4" },
+                    { name: this.$t('common.canceled'), value: "5" },
                 ],
                 nav_status_index: 0,
             };
@@ -344,7 +346,7 @@
                                     if (res.data.code == 0) {
                                         var temp_data_list = this.data_list;
                                         temp_data_list[index]["status"] = 5;
-                                        temp_data_list[index]["status_text"] = this.$t('order.order.1k98tk');
+                                        temp_data_list[index]["status_text"] = this.$t('common.canceled');
                                         this.setData({
                                             data_list: temp_data_list,
                                         });
@@ -372,7 +374,7 @@
                 var oid = e.currentTarget.dataset.oid || 0;
                 var did = e.currentTarget.dataset.did || 0;
                 if (oid == 0 || did == 0) {
-                    app.globalData.showToast(this.$t('user-order-detail.user-order-detail.5k6k56'));
+                    app.globalData.showToast(this.$t('common.parameter_error'));
                     return false;
                 }
 

@@ -124,7 +124,7 @@
             init() {
                 let location = app.globalData.choice_user_location_init();
                 if ((this.propTextDefaultName || null) != null) {
-                    var default_name = this.$t('shopxo-uniapp.app.4v6q86');
+                    var default_name = this.$t('run.location_not_selected');
                     if (location.text == default_name) {
                         location.text = this.propTextDefaultName;
                     }

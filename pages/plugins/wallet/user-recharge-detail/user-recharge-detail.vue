@@ -29,8 +29,10 @@
     import componentCommon from '@/components/common/common';
     import componentNoData from "@/components/no-data/no-data";
     import componentBottomLine from "@/components/bottom-line/bottom-line";
+    import pluginLocale from '../locale/index.js';
 
     export default {
+        mixins: [pluginLocale],
         data() {
             return {
                 theme_view: app.globalData.get_theme_value_view(),
@@ -98,13 +100,13 @@
                             this.setData({
                                 detail: data.data,
                                 detail_list: [
-                                    { name: this.$t('user-recharge-detail.user-recharge-detail.ch84a8'), value: data.data.recharge_no || "" },
-                                    { name: this.$t('user-recharge-detail.user-recharge-detail.dq5v2u'), value: data.data.status_name || "" },
-                                    { name: this.$t('user-recharge-detail.user-recharge-detail.7272ia'), value: data.data.money || "" },
-                                    { name: this.$t('user-order-detail.user-order-detail.516tlr'), value: data.data.pay_money <= 0 ? "" : data.data.pay_money || "" },
-                                    { name: this.$t('user-order-detail.user-order-detail.0e1sfs'), value: data.data.payment_name || "" },
-                                    { name: this.$t('user-order-detail.user-order-detail.h2c78h'), value: data.data.add_time || "" },
-                                    { name: this.$t('user-order-detail.user-order-detail.wn83rn'), value: data.data.pay_time || "" },
+                                    { name: this.$t('user-recharge-detail.recharge_order_number'), value: data.data.recharge_no || "" },
+                                    { name: this.$t('user-recharge-detail.recharge_status'), value: data.data.status_name || "" },
+                                    { name: this.$t('user-recharge-detail.recharge_amount'), value: data.data.money || "" },
+                                    { name: this.$t('common.payment_amount'), value: data.data.pay_money <= 0 ? "" : data.data.pay_money || "" },
+                                    { name: this.$t('common.payment_method'), value: data.data.payment_name || "" },
+                                    { name: this.$t('common.creation_time'), value: data.data.add_time || "" },
+                                    { name: this.$t('common.payment_time'), value: data.data.pay_time || "" },
                                 ],
                                 data_list_loding_status: 3,
                                 data_bottom_line_status: true,

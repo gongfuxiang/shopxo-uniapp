@@ -27,7 +27,7 @@
                         <button v-if="item.status == 0 || item.status == 1" class="round bg-white cr-base br-grey" type="default" size="mini" @tap="popup_edit_open_event" :data-index="index" hover-class="none">{{$t('common.edit')}}</button>
                         <block v-if="item.status == 0">
                             <button class="round bg-white cr-green br-green" type="default" size="mini" @tap="pay_event" :data-value="item.id" :data-price="item.total_price" :data-index="index" :data-payment="item.payment_id" hover-class="none">{{$t('common.pay')}}</button>
-                            <button v-if="(item.plugins_payvoucher_data || null) != null && (item.plugins_payvoucher_data.is_show || 0) == 1" class="round bg-white cr-blue br-blue" type="default" size="mini" @tap="payvoucher_event" :data-value="item.id" :data-page="(item.plugins_payvoucher_data.page || '')" hover-class="none">{{ item.plugins_payvoucher_data.name || '凭证' }}</button>
+                            <button v-if="(item.plugins_payvoucher_data || null) != null && (item.plugins_payvoucher_data.is_show || 0) == 1" class="round bg-white cr-blue br-blue" type="default" size="mini" @tap="payvoucher_event" :data-value="item.id" :data-page="(item.plugins_payvoucher_data.page || '')" hover-class="none">{{ item.plugins_payvoucher_data.name || $t('common.voucher') }}</button>
                             <button class="round bg-white cr-yellow br-yellow" type="default" size="mini" @tap="cancel_event" :data-value="item.id" :data-index="index" hover-class="none">{{$t('common.cancel')}}</button>
                         </block>
                         <block v-if="item.status == 1">
@@ -61,13 +61,13 @@
                             <view class="border-radius-main spacing-mb oh">
                                 <view class="form-gorup">
                                     <view class="flex-row jc-sb align-c padding-top-sm">
-                                        <view class="form-gorup-title">{{$t('givegift-gift.givegift-gift.567uye')}}</view>
-                                        <input type="text" name="message_tips" :value="edit_data.message_tips || ''" class="br-b-f5 tr message-tips" placeholder-class="cr-grey-c" :placeholder="$t('givegift-gift.givegift-gift.rtyu33')" />
+                                        <view class="form-gorup-title">{{$t('givegift-gift.message_reminder')}}</view>
+                                        <input type="text" name="message_tips" :value="edit_data.message_tips || ''" class="br-b-f5 tr message-tips" placeholder-class="cr-grey-c" :placeholder="$t('givegift-gift.message_prompt_maximum_format_200_characters')" />
                                     </view>
                                 </view>
                                 <view class="form-gorup">
                                     <view class="flex-row jc-sb align-c padding-bottom-sm">
-                                        <view class="form-gorup-title">{{$t('givegift-gift.givegift-gift.8yghjd')}}</view>
+                                        <view class="form-gorup-title">{{$t('givegift-gift.unlimited_collection')}}</view>
                                         <switch name="is_no_limit_receive" :checked="edit_data.is_no_limit_receive == 1" />
                                     </view>
                                 </view>
@@ -116,7 +116,9 @@
     import componentBottomLine from '@/components/bottom-line/bottom-line';
     import componentPayment from '@/components/payment/payment';
     import componentPopup from '@/components/popup/popup';
+    import pluginLocale from '../locale/index.js';
     export default {
+        mixins: [pluginLocale],
         data() {
             return {
                 theme_view: app.globalData.get_theme_value_view(),
@@ -425,7 +427,7 @@
                     if (order_ids_arr.indexOf(temp_data_list[i]['id'].toString()) != -1) {
                         temp_data_list[i]['pay_price'] = temp_data_list[i]['total_price'];
                         temp_data_list[i]['status'] = 1;
-                        temp_data_list[i]['status_name'] = this.$t('order.order.s8g966');
+                        temp_data_list[i]['status_name'] = this.$t('common.paid');
                     }
                 }
                 this.setData({
@@ -461,7 +463,7 @@
                                     if (res.data.code == 0) {
                                         var temp_data_list = this.data_list;
                                         temp_data_list[index]['status'] = 2;
-                                        temp_data_list[index]['status_name'] = this.$t('order.order.1k98tk');
+                                        temp_data_list[index]['status_name'] = this.$t('common.canceled');
                                         this.setData({
                                             data_list: temp_data_list,
                                         });

@@ -268,8 +268,8 @@
                     const wrap = new_form.theme == '3' ? '' : 'flex-wrap ';
                     // 默认数据
                     const data_style_list = [
-                        { name: this.$t('diy.diy.single_column_display'), value: '0', width: 128, height: 128 },
-                        { name: this.$t('diy.diy.large_image_display'), value: '1', width: 0, height: 221 },
+                        { name: this.$t('diy.single_column_display'), value: '0', width: 128, height: 128 },
+                        { name: this.$t('diy.large_image_display'), value: '1', width: 0, height: 221 },
                     ];
                     const scale = sys_width / 390;
                     // 主图大小的控制
@@ -285,10 +285,10 @@
                     }
                     // 商品图片大小的控制
                     const goods_style_list = [
-                        { name: this.$t('diy.diy.single_column_display'), value: '0', width: 50, height: 50 },
-                        { name: this.$t('diy.diy.two_column_vertical'), value: '1', width: 0, height: 156 },
-                        { name: this.$t('diy.diy.two_column_horizontal_full'), value: '2', width:50, height: 50 },
-                        { name: this.$t('diy.diy.horizontal_slide_display'), value: '3', width:0, height: 0 },
+                        { name: this.$t('diy.single_column_display'), value: '0', width: 50, height: 50 },
+                        { name: this.$t('diy.two_column_vertical'), value: '1', width: 0, height: 156 },
+                        { name: this.$t('diy.two_column_horizontal_full'), value: '2', width:50, height: 50 },
+                        { name: this.$t('diy.horizontal_slide_display'), value: '3', width:0, height: 0 },
                     ]
                     const goods_list = goods_style_list.filter(item => item.value == new_form.theme);
                     let goods_img_style = '';

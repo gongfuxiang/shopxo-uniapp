@@ -44,7 +44,7 @@
                                                     <text class="cr-grey text-size-xss margin-left-xs">{{item.base.inventory_unit || goods.inventory_unit}}</text>
                                                 </view>
                                             </view>
-                                            <text v-if="(item.base.inventory || 0) == 0" class="fr text-size-xs cr-grey">{{$t('goods-batch-buy.goods-batch-buy.dsfd98')}}</text>
+                                            <text v-if="(item.base.inventory || 0) == 0" class="fr text-size-xs cr-grey">{{$t('goods-batch-buy.out_stock')}}</text>
                                             <view v-else class="tc oh round fr item-right text-size-xs">
                                                 <view @tap="batchbuy_goods_buy_number_event" class="number-submit tc cr-grey fl va-m" data-type="0" :data-index="index">-</view>
                                                 <input @blur="batchbuy_goods_buy_number_blur" class="number-input tc cr-grey bg-white fl va-m radius-0" type="number" :value="item.buy_number || 0" :data-index="index" />
@@ -75,7 +75,7 @@
                                                     <text class="cr-grey text-size-xss margin-left-xs">{{item.base.inventory_unit || goods.inventory_unit}}</text>
                                                 </view>
                                             </view>
-                                            <text v-if="(item.base.inventory || 0) == 0" class="fr text-size-xs cr-grey">{{$t('goods-batch-buy.goods-batch-buy.dsfd98')}}</text>
+                                            <text v-if="(item.base.inventory || 0) == 0" class="fr text-size-xs cr-grey">{{$t('goods-batch-buy.out_stock')}}</text>
                                             <view v-else :class="'tc oh round fr item-right text-size-xs margin-top'+((item.images || null) == null ? 'xs' : '')">
                                                 <view @tap="batchbuy_goods_buy_number_event" class="number-submit tc cr-grey fl va-m" data-type="0" :data-index="index">-</view>
                                                 <input @blur="batchbuy_goods_buy_number_blur" class="number-input tc cr-grey bg-white fl va-m radius-0" type="number" :value="item.buy_number || 0" :data-index="index" />
@@ -91,11 +91,11 @@
                                 <text class="text-size-xs">
                                     <text>{{$t('common.selected')}}</text>
                                     <text class="cr-red padding-left-xs padding-right-xs">{{ base_data.kind }}</text>
-                                    <text>{{$t('goods-batch-buy.goods-batch-buy.9ectyf')}}</text>
+                                    <text>{{$t('goods-batch-buy.species')}}</text>
                                     <text class="cr-red padding-left-xs padding-right-xs">{{ base_data.quantity }}</text>
                                     <text>{{ goods.inventory_unit }}</text>
                                 </text>
-                                <text class="text-size-xs fr">{{$t('goods-batch-buy.goods-batch-buy.geq82x')}}<text class="fw-b sales-price">{{ propCurrencySymbol }}{{ base_data.amount_money }}</text></text>
+                                <text class="text-size-xs fr">{{$t('goods-batch-buy.amount')}}<text class="fw-b sales-price">{{ propCurrencySymbol }}{{ base_data.amount_money }}</text></text>
                             </view>
                             <view v-if="(opt_button || null) != null && opt_button.length > 0" class="padding-bottom-main">
                                 <view :class="'oh buy-nav-btn-number-' + (opt_button.length || 0)">
@@ -109,7 +109,7 @@
                         </view>
                     </view>
                     <block v-else>
-                        <view class="cr-grey tc padding-top-xl padding-bottom-xxxl">{{$t('goods-batch-buy.goods-batch-buy.ypby1k')}}</view>
+                        <view class="cr-grey tc padding-top-xl padding-bottom-xxxl">{{$t('goods-batch-buy.relevant_info_available')}}</view>
                     </block>
                 </view>
             </view>
@@ -251,17 +251,17 @@ export default {
             // 不能小于起购数则0
             if (number > 0 && min > 0 && number < min) {
                 number = 0;
-                app.globalData.showToast(this.$t('recommend-detail.recommend-detail.265vyu') + min + inventory_unit);
+                app.globalData.showToast(this.$t('common.starting_purchase') + min + inventory_unit);
             }
             // 不能超过最大限购
             if (max > 0 && number > max) {
                 number = max;
-                app.globalData.showToast(this.$t('goods-category.goods-category.z1eh3v') + max + inventory_unit);
+                app.globalData.showToast(this.$t('common.purchase_limit') + max + inventory_unit);
             }
             // 不能超过库存
             if (number > inventory) {
                 number = inventory;
-                app.globalData.showToast(this.$t('recommend-detail.recommend-detail.2sis3v') + inventory + inventory_unit);
+                app.globalData.showToast(this.$t('common.inventory_quantity') + inventory + inventory_unit);
             }
             temp_spec_data["buy_number"] = number;
             if (parseInt(temp_data.is_only_level_one || 0) == 1) {
@@ -425,7 +425,7 @@ export default {
                     }
                 });
                 if (goods_data.length <= 0) {
-                    app.globalData.showToast(this.$t('goods-detail.goods-detail.6brk57'));
+                    app.globalData.showToast(this.$t('common.please_select_spec'));
                     return false;
                 }
 
@@ -447,7 +447,7 @@ export default {
                         break;
 
                     default:
-                        app.globalData.showToast(this.$t('goods-batch-buy.goods-batch-buy.7tp1tc'));
+                        app.globalData.showToast(this.$t('goods-batch-buy.incorrect_operation_event_type'));
                 }
             }
         },

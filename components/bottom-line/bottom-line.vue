@@ -3,7 +3,7 @@
         <view v-if="(propStatus || false)" class="data-bottom-line">
             <view class="bottom-exclude flex-row align-c jc-c" :style="'width:' + new_width">
                 <view class="line-item left line-item-left"></view>
-                <text class="line-item msg line-item-msg" :style="'width:' + split_width">{{propMsg || $t('bottom-line.bottom-line.44bct2')}}</text>
+                <text class="line-item msg line-item-msg" :style="'width:' + split_width">{{propMsg || $t('bottom-line.bottom_line')}}</text>
                 <view class="line-item right line-item-right"></view>
             </view>
         </view>

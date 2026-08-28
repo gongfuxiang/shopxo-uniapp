@@ -26,7 +26,7 @@
                             </block>
                         </view>
                         <view v-if="item.status == 0" class="item-operation tr br-t-dashed padding-top-main margin-top-main">
-                            <button class="round bg-white br cr-base" type="default" size="mini" hover-class="none" :data-index="index" :data-oid="item.order_id" :data-uid="item.order_user_id" @tap="list_submit_take_event">{{$t('extraction-order.extraction-order.2y7lq1')}}</button>
+                            <button class="round bg-white br cr-base" type="default" size="mini" hover-class="none" :data-index="index" :data-oid="item.order_id" :data-uid="item.order_user_id" @tap="list_submit_take_event">{{$t('extraction-order.picking_up_goods')}}</button>
                         </view>
                     </view>
                 </view>
@@ -55,7 +55,7 @@
                             <uni-icons type="scan" size="56rpx" color="#666"></uni-icons>
                         </view>
                         <!-- #endif -->
-                        <input type="number" class="wh-auto" :placeholder="$t('extraction-order.extraction-order.suo4oz')" placeholder-class="cr-grey-c" :value="extraction_code" @input="extraction_code_input_event" />
+                        <input type="number" class="wh-auto" :placeholder="$t('extraction-order.enter_pickup_code')" placeholder-class="cr-grey-c" :value="extraction_code" @input="extraction_code_input_event" />
                     </view>
                 </view>
                 <view class="form-gorup form-gorup-submit">
@@ -74,7 +74,7 @@
                             <uni-icons type="scan" size="56rpx" color="#666"></uni-icons>
                         </view>
                         <!-- #endif -->
-                        <input type="number" class="wh-auto" :placeholder="$t('extraction-order.extraction-order.suo4oz')" placeholder-class="cr-grey-c" :value="search_keywords_value" @input="search_input_keywords_event" />
+                        <input type="number" class="wh-auto" :placeholder="$t('extraction-order.enter_pickup_code')" placeholder-class="cr-grey-c" :value="search_keywords_value" @input="search_input_keywords_event" />
                     </view>
                 </view>
                 <view class="form-gorup form-gorup-submit">
@@ -93,8 +93,10 @@ const app = getApp();
     import componentPopup from "@/components/popup/popup";
     import componentNoData from "@/components/no-data/no-data";
     import componentBottomLine from "@/components/bottom-line/bottom-line";
+    import pluginLocale from '../locale/index.js';
 
     export default {
+        mixins: [pluginLocale],
         data() {
             return {
                 theme_view: app.globalData.get_theme_value_view(),
@@ -108,8 +110,8 @@ const app = getApp();
                 params: null,
                 nav_status_list: [
                     { name: this.$t('common.all'), value: "-1" },
-                    { name: this.$t('extraction.extraction.53h4fj'), value: "0" },
-                    { name: this.$t('extraction.extraction.wq25fk'), value: "1" },
+                    { name: this.$t('common.pending'), value: "0" },
+                    { name: this.$t('extraction.processed'), value: "1" },
                 ],
                 nav_status_index: 0,
                 is_show_take_popup: false,
@@ -119,8 +121,8 @@ const app = getApp();
                 is_show_search_popup: false,
                 search_keywords_value: "",
                 content_list: [
-                    { name: this.$t('order-detail.order-detail.36op8f'), field: "order_no" },
-                    { name: this.$t('user-order-detail.user-order-detail.516tlr'), field: "pay_price" },
+                    { name: this.$t('common.order_detail_order_number'), field: "order_no" },
+                    { name: this.$t('common.payment_amount'), field: "pay_price" },
                 ],
             };
         },
@@ -337,11 +339,11 @@ const app = getApp();
             form_submit_take_event(e) {
                 // 参数
                 if ((this.extraction_code || null) == null) {
-                    app.globalData.showToast(this.$t('extraction-order.extraction-order.znufs8'));
+                    app.globalData.showToast(this.$t('extraction-order.enter_pickup_code_2'));
                     return false;
                 }
                 if ((this.extraction_value || null) == null) {
-                    app.globalData.showToast(this.$t('extraction-order.extraction-order.hbj4y7'));
+                    app.globalData.showToast(this.$t('extraction-order.incorrect_operation_data'));
                     return false;
                 }
 
@@ -371,7 +373,7 @@ const app = getApp();
                             var temp_data_list = this.data_list;
                             var index = this.extraction_value.index;
                             temp_data_list[index]["status"] = 1;
-                            temp_data_list[index]["status_name"] = this.$t('extraction.extraction.wq25fk');
+                            temp_data_list[index]["status_name"] = this.$t('extraction.processed');
                             this.setData({
                                 is_show_take_popup: false,
                                 data_list: temp_data_list,

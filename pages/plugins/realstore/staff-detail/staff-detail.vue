@@ -5,7 +5,7 @@
                 <component-banner :propData="photo_list" propSize="max" propRadius="" :propIsSpacingMb="false" :propHeight="photo_height" propImageMode="aspectFill"></component-banner>
             </view>
             <view class="staff-header padding-main bg-white spacing-mb">
-                <view v-if="(staff.booking_count || 0) > 0" class="staff-booking-count cr-grey text-size-xs">{{ $t('realstore-staff.realstore-staff.3b9c2d') }}{{ staff.booking_count }}</view>
+                <view v-if="(staff.booking_count || 0) > 0" class="staff-booking-count cr-grey text-size-xs">{{ $t('realstore-staff.booked') }}{{ staff.booking_count }}</view>
                 <view class="flex-row align-c">
                     <image v-if="(staff.avatar || null) != null && staff.avatar != ''" class="staff-avatar-large circle br margin-right-main" :src="staff.avatar" mode="aspectFill"></image>
                     <view v-else class="staff-avatar-large staff-avatar-placeholder circle br margin-right-main">
@@ -43,7 +43,7 @@
                                 <view v-else class="flex-1 flex-width"></view>
                                 <block v-if="(item.is_error || 0) == 0">
                                     <button class="goods-select-btn round text-size-xs bg-main cr-white br-main" type="default" size="mini" hover-class="none" :data-index="index" @tap="goods_select_event">
-                                        {{ $t('realstore-staff.realstore-staff.2c9d4e') }}
+                                        {{ $t('realstore-staff.select') }}
                                     </button>
                                 </block>
                                 <block v-else>
@@ -54,7 +54,7 @@
                     </view>
                 </view>
                 <view v-else>
-                    <component-no-data :propStatus="goods_list_loding_status" :propMsg="$t('realstore-staff.realstore-staff.0i6j9k')" :propLoadingLogoTop="(photo_list.length > 0 ? 85 : 35)+'vh'"></component-no-data>
+                    <component-no-data :propStatus="goods_list_loding_status" :propMsg="$t('realstore-staff.bookable_services_2')" :propLoadingLogoTop="(photo_list.length > 0 ? 85 : 35)+'vh'"></component-no-data>
                 </view>
                 <component-bottom-line :propStatus="data_bottom_line_status"></component-bottom-line>
             </view>
@@ -64,7 +64,7 @@
         </block>
 
         <component-goods-buy ref="goods_buy" @BackConfirmEvent="goods_buy_back_event"></component-goods-buy>
-        <component-realstore-cart ref="staff_booking_cart" :propStatus="false" :propCurrencySymbol="currency_symbol" :propStaffBookingPopupTitle="$t('realstore-cart.realstore-cart.8s3t6u')"></component-realstore-cart>
+        <component-realstore-cart ref="staff_booking_cart" :propStatus="false" :propCurrencySymbol="currency_symbol" :propStaffBookingPopupTitle="$t('realstore-cart.select_time_slot')"></component-realstore-cart>
         <component-common ref="common"></component-common>
     </view>
 </template>
@@ -76,6 +76,7 @@
     import componentGoodsBuy from '@/components/goods-buy/goods-buy';
     import componentRealstoreCart from '@/pages/plugins/realstore/components/realstore-cart/realstore-cart';
     import componentBanner from '@/components/slider/slider';
+    import pluginLocale from '../locale/index.js';
 
     const app = getApp();
     var system_info = app.globalData.get_system_info() || {};
@@ -83,6 +84,7 @@
     var photo_height = (win_width <= 0) ? '55vh' : app.globalData.window_width_handle(win_width) + 'px';
 
     export default {
+        mixins: [pluginLocale],
         data() {
             return {
                 theme_view: app.globalData.get_theme_value_view(),
@@ -178,7 +180,7 @@
                 if ((this.params || null) == null || (this.params.id || 0) <= 0) {
                     this.setData({
                         data_list_loding_status: 2,
-                        data_list_loding_msg: this.$t('realstore-staff.realstore-staff.5d1e4f'),
+                        data_list_loding_msg: this.$t('realstore-staff.invalid_parameters'),
                     });
                     uni.stopPullDownRefresh();
                     return false;

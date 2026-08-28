@@ -6,7 +6,7 @@
                 <view class="bg-white border-radius-main">
                     <block v-for="(item, index) in data_list" :key="index">
                         <view :class="index > 0 ? 'br-t-f5' : ''" class="padding-horizontal-main padding-vertical-xxl oh">
-                            <text>{{$t('order-detail.order-detail.36op8f')}}：</text>
+                            <text>{{$t('common.order_detail_order_number')}}：</text>
                             <text>{{item.order_no}}</text>
                             <text class="cr-green br-green bg-white round padding-horizontal-lg padding-vertical-xs text-size-xs fr" :data-value="item.url" @tap="url_event">{{$t('common.view_text')}}</text>
                         </view>
@@ -31,7 +31,9 @@
     import componentCommon from '@/components/common/common';
     import componentNoData from "@/components/no-data/no-data";
     import componentBottomLine from "@/components/bottom-line/bottom-line";
+    import pluginLocale from './locale/index.js';
     export default {
+        mixins: [pluginLocale],
         data() {
             return {
                 theme_view: app.globalData.get_theme_value_view(),

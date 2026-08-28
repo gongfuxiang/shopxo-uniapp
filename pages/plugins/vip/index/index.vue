@@ -11,7 +11,7 @@
                         <view v-if="(data_base.banner_top_title || null) != null" class="banner-title single-text text-size-lg margin-top-xxxl"> {{ data_base.banner_top_title }} </view>
                         <!-- 购买按钮 -->
                         <button data-value="/pages/plugins/vip/buy/buy" @tap="url_event" class="banner-buy fw-b round auto margin-top-xxxl" hover-class="none" :style="buy_vip_btn">
-                            {{ data_base.banner_middle_name || $t('index.index.tbo22p') }}
+                            {{ data_base.banner_middle_name || $t('index.join') }}
                         </button>
                     </view>
                 </view>
@@ -50,8 +50,10 @@
     import componentNavBack from '@/components/nav-back/nav-back';
     import componentNoData from '@/components/no-data/no-data';
     import componentBottomLine from '@/components/bottom-line/bottom-line';
+    import pluginLocale from '../locale/index.js';
     let vip_static = app.globalData.get_static_url('vip', true);
     export default {
+        mixins: [pluginLocale],
         data() {
             return {
                 theme_view: app.globalData.get_theme_value_view(),

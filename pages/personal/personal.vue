@@ -7,7 +7,7 @@
                     <view class="padding-main page-bottom-fixed">
                         <view class="bg-white border-radius-main oh">
                             <view class="form-gorup oh flex-row jc-sb align-c">
-                                <view>{{$t('personal.personal.cw1d8p')}}</view>
+                                <view>{{$t('common.avatar')}}</view>
                                 <view class="flex-row align-c">
                                     <button class="bg-white br-0 lh-0 padding-horizontal-sm" hover-class="none" open-type="chooseAvatar" @chooseavatar="choose_avatar_event" @tap="choose_avatar_event">
                                         <image :src="user_data.avatar || default_avatar" mode="widthFix" class="circle br user-avatar flex-1 flex-width"></image>
@@ -17,31 +17,31 @@
                             </view>
 
                             <view class="form-gorup oh flex-row jc-sb align-c">
-                                <view class="form-gorup-title">{{$t('personal.personal.gw8br3')}}<text class="form-group-tips-must">*</text></view>
+                                <view class="form-gorup-title">{{$t('common.nickname')}}<text class="form-group-tips-must">*</text></view>
                                 <view class="flex-row align-c flex-1 flex-width">
-                                    <input :type="application_client_type == 'weixin' ? 'nickname' : 'text'" name="nickname" :value="user_data.nickname || ''" maxlength="16" placeholder-class="cr-grey-9 tr" class="cr-base tr margin-right-sm" :placeholder="$t('personal.personal.44112i')" />
+                                    <input :type="application_client_type == 'weixin' ? 'nickname' : 'text'" name="nickname" :value="user_data.nickname || ''" maxlength="16" placeholder-class="cr-grey-9 tr" class="cr-base tr margin-right-sm" :placeholder="$t('personal.nickname_16')" />
                                 </view>
                             </view>
 
                             <view class="form-gorup oh flex-row jc-sb align-c">
-                                <view class="form-gorup-title">{{$t('personal.personal.jibx42')}}</view>
+                                <view class="form-gorup-title">{{$t('personal.birthday')}}</view>
                                 <view class="flex-1 flex-width flex-row jc-e align-c">
                                     <picker class="margin-right-sm wh-auto tr" name="birthday" mode="date" :value="user_data.birthday || ''" data-field="birthday" @change="select_change_event">
-                                        <view :class="'picker ' + ((user_data.birthday || null) == null ? 'cr-grey' : '')">{{ user_data.birthday || $t('personal.personal.85404s') }}</view>
+                                        <view :class="'picker ' + ((user_data.birthday || null) == null ? 'cr-grey' : '')">{{ user_data.birthday || $t('personal.select_birthday') }}</view>
                                     </picker>
                                     <iconfont name="icon-arrow-right" size="34rpx" color="#ccc"></iconfont>
                                 </view>
                             </view>
 
                             <view class="form-gorup oh flex-row jc-sb align-c">
-                                <view class="form-gorup-title">{{$t('personal.personal.6m33c4')}}</view>
+                                <view class="form-gorup-title">{{$t('common.detailed_address')}}</view>
                                 <view class="flex-row align-c flex-1 flex-width">
-                                    <input type="text" name="address" :value="user_data.address || ''" maxlength="30" placeholder-class="cr-grey-9 tr" class="cr-base tr margin-right-sm" :placeholder="$t('personal.personal.re674n')" />
+                                    <input type="text" name="address" :value="user_data.address || ''" maxlength="30" placeholder-class="cr-grey-9 tr" class="cr-base tr margin-right-sm" :placeholder="$t('personal.address_up_30_long')" />
                                 </view>
                             </view>
 
                             <view class="form-gorup oh flex-row jc-sb align-c">
-                                <view class="form-gorup-title">{{$t('personal.personal.x2fofv')}}</view>
+                                <view class="form-gorup-title">{{$t('personal.gender')}}</view>
                                 <view class="flex-row jc-e align-c flex-1 flex-width">
                                     <picker @change="select_change_event" :value="user_data.gender || ''" :range="gender_list" range-key="name" name="gender" data-field="gender" class="margin-right-sm wh-auto tr">
                                         <view class="uni-input cr-base picker">{{ gender_list[user_data.gender].name || '' }}</view>
@@ -72,7 +72,9 @@
     const app = getApp();
     import componentCommon from '@/components/common/common';
     import componentNoData from '@/components/no-data/no-data';
+    import pluginLocale from './locale/index.js';
     export default {
+        mixins: [pluginLocale],
         data() {
             return {
                 theme_view: app.globalData.get_theme_value_view(),
@@ -122,7 +124,7 @@
                 } else {
                     this.setData({
                         data_list_loding_status: 0,
-                        data_list_loding_msg: this.$t('setup.setup.nwt4o1'),
+                        data_list_loding_msg: this.$t('common.please_login_first'),
                     });
                 }
             },

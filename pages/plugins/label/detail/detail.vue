@@ -9,8 +9,8 @@
                     >{{ label.name }}</view
                 >
                 <view class="dis-inline-block cr-grey margin-left-sm"
-                    >{{$t('detail.detail.025362')}}<text class="cr-red fw-b margin-left-xs margin-right-xs">{{ data_total }}</text
-                    >{{$t('detail.detail.0av5r9')}}</view
+                    >{{$t('common.total_views_prefix')}}<text class="cr-red fw-b margin-left-xs margin-right-xs">{{ data_total }}</text
+                    >{{$t('detail.related_products_2')}}</view
                 >
             </view>
 
@@ -56,9 +56,11 @@
     import componentNoData from "@/components/no-data/no-data";
     import componentBottomLine from "@/components/bottom-line/bottom-line";
     import componentGoodsList from "@/components/goods-list/goods-list";
+    import pluginLocale from '../locale/index.js';
 
     var common_static_url = app.globalData.get_static_url("common");
     export default {
+        mixins: [pluginLocale],
         data() {
             return {
                 theme_view: app.globalData.get_theme_value_view(),
@@ -75,11 +77,11 @@
                 data_page: 1,
                 label: null,
                 search_nav_sort_list: [
-                    { name: this.$t('goods-category.goods-category.x69aow'), field: "default", sort: "asc", icon: null },
-                    { name: this.$t('goods-category.goods-category.at5p35'), field: "sales", sort: "asc", icon: "default" },
-                    { name: this.$t('goods-category.goods-category.283ot0'), field: "access", sort: "asc", icon: "default" },
-                    { name: this.$t('goods-category.goods-category.g2u3lf'), field: "price", sort: "asc", icon: "default" },
-                    { name: this.$t('goods-category.goods-category.5p4ksj'), field: "new", sort: "asc", icon: "default" },
+                    { name: this.$t('common.goods_category_all'), field: "default", sort: "asc", icon: null },
+                    { name: this.$t('common.sales_volume'), field: "sales", sort: "asc", icon: "default" },
+                    { name: this.$t('common.heat'), field: "access", sort: "asc", icon: "default" },
+                    { name: this.$t('common.price'), field: "price", sort: "asc", icon: "default" },
+                    { name: this.$t('common.latest'), field: "new", sort: "asc", icon: "default" },
                 ],
                 search_nav_sort_value: "",
                 // 数据展示样式（0图文、1九方格）
@@ -161,7 +163,7 @@
                                 data_base: data.base || null,
                                 label: label,
                                 data_list_loding_status: label == null ? 0 : 1,
-                                data_list_loding_msg: this.$t('detail.detail.53m44k'),
+                                data_list_loding_msg: this.$t('detail.label_data_does_exist'),
                             });
 
                             if (this.label != null) {

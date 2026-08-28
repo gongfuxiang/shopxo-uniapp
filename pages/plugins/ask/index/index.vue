@@ -31,11 +31,11 @@
                                         <mp-html :content="item.content" />
                                     </view>
                                     <view class="status flex-row align-c spacing-mt text-size-xs">
-                                        <view v-if="nav_index !== 1" class="ask-status cr-white border-radius-sm text-size-xss" :class="item.is_reply == 1 ? 'ask-bg-green' : 'ask-bg-yellow'">{{ item.is_reply == 1 ? $t('index.index.1c17n3') : $t('index.index.75l3l2') }}</view>
+                                        <view v-if="nav_index !== 1" class="ask-status cr-white border-radius-sm text-size-xss" :class="item.is_reply == 1 ? 'ask-bg-green' : 'ask-bg-yellow'">{{ item.is_reply == 1 ? $t('index.returned') : $t('index.unreturned') }}</view>
                                         <view class="num cr-grey-9 flex-row self-c">
                                             {{ item.add_time_date }}
                                             <view class="fw-b padding-horizontal-xs">·</view>
-                                            {{ item.access_count || '0' }}{{ $t('detail.detail.e6ga1y') }}</view>
+                                            {{ item.access_count || '0' }}{{ $t('common.total_views_suffix') }}</view>
                                     </view>
                                 </view>
                             </view>
@@ -54,10 +54,10 @@
             <view class="bottom-line-exclude">
                 <view class="item flex-row jc-sa align-c text-size fw-b br bg-white round padding-vertical">
                     <view data-value="/pages/plugins/ask/form/form" @tap="url_event" class="flex-1 tc flex-col jc-c align-c cp">
-                        <view class="divider-r-d wh-auto"> <iconfont name="icon-edit-below-line" size="30rpx" color="#333" propClass="margin-right-sm"></iconfont>{{ $t('goods-detail.goods-detail.7ulh8b') }}</view>
+                        <view class="divider-r-d wh-auto"> <iconfont name="icon-edit-below-line" size="30rpx" color="#333" propClass="margin-right-sm"></iconfont>{{ $t('common.ask_question') }}</view>
                     </view>
                     <view data-value="/pages/plugins/ask/user-list/user-list" @tap="url_event" class="flex-1 tc flex-col jc-c align-c cp">
-                        <view class="wh-auto"> <iconfont name="icon-list-dot" size="32rpx" color="#333" propClass="margin-right-sm pr top-xs"></iconfont>{{ $t('detail.detail.p7o522') }}</view>
+                        <view class="wh-auto"> <iconfont name="icon-list-dot" size="32rpx" color="#333" propClass="margin-right-sm pr top-xs"></iconfont>{{ $t('detail.my_question') }}</view>
                     </view>
                 </view>
             </view>
@@ -75,6 +75,7 @@
     import componentBottomLine from '@/components/bottom-line/bottom-line';
     import componentSearch from '@/components/search/search';
     import componentBanner from '@/components/slider/slider';
+    import pluginLocale from '../locale/index.js';
 
     // 状态栏高度
     var bar_height = parseInt(app.globalData.get_system_info('statusBarHeight', 0, true));
@@ -82,6 +83,7 @@
     bar_height = 0;
     // #endif
     export default {
+        mixins: [pluginLocale],
         data() {
             return {
                 theme_view: app.globalData.get_theme_value_view(),
@@ -191,7 +193,7 @@
                             } else {
                                 this.setData({
                                     data_list_loding_status: 2,
-                                    data_list_loding_msg: this.$t('index.index.17vy72'),
+                                    data_list_loding_msg: this.$t('index.missing_tab_data'),
                                 });
                             }
                         } else {

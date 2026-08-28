@@ -18,8 +18,8 @@
                             ></component-panel-content>
                         </view>
                         <view class="item-operation tr margin-top-main">
-                            <button class="round bg-white br-grey-9 text-size-md" type="default" size="mini" hover-class="none" :data-value="'/pages/plugins/signin/detail/detail?id='+item.id" @tap="url_event">{{ $t('detail.detail.y2217b') }}</button>
-                            <button v-if="(data_base.is_team_show_coming_user || 0) == 1" class="round bg-white cr-main br-main text-size-md" type="default" size="mini" hover-class="none" :data-value="'/pages/plugins/signin/user-coming-list/user-coming-list?id='+item.id" @tap="url_event">{{ $t('login.login.1i4o86') }}</button>
+                            <button class="round bg-white br-grey-9 text-size-md" type="default" size="mini" hover-class="none" :data-value="'/pages/plugins/signin/detail/detail?id='+item.id" @tap="url_event">{{ $t('detail.sign') }}</button>
+                            <button v-if="(data_base.is_team_show_coming_user || 0) == 1" class="round bg-white cr-main br-main text-size-md" type="default" size="mini" hover-class="none" :data-value="'/pages/plugins/signin/user-coming-list/user-coming-list?id='+item.id" @tap="url_event">{{ $t('common.user') }}</button>
                             <button class="round bg-white cr-main br-main text-size-md" type="default" size="mini" hover-class="none" :data-value="'/pages/plugins/signin/user-qrcode-saveinfo/user-qrcode-saveinfo?id='+item.id" @tap="url_event">{{ $t('common.edit') }}</button>
                         </view>
                     </view>
@@ -30,7 +30,7 @@
                     <!-- 组队 -->
                     <view v-if="(data_base || null) != null && (data_base.is_team || 0) == 1" class="bottom-fixed">
                         <view class="bottom-line-exclude">
-                            <button class="item cr-white bg-main br-main text-size auto round" type="default" hover-class="none" data-value="/pages/plugins/signin/user-qrcode-saveinfo/user-qrcode-saveinfo" @tap="url_event">{{ $t('user-qrcode.user-qrcode.8p57v3') }}</button>
+                            <button class="item cr-white bg-main br-main text-size auto round" type="default" hover-class="none" data-value="/pages/plugins/signin/user-qrcode-saveinfo/user-qrcode-saveinfo" @tap="url_event">{{ $t('user-qrcode.team_up_check') }}</button>
                         </view>
                     </view>
                 </view>

@@ -17,7 +17,7 @@
                                         </view>
                                         <view class="pr z-i flex-row jc-c align-s">
                                             <view class="flex-1 flex-width">
-                                                <view>{{$t('frequencycard-list.frequencycard-list.954ewh')}}</view>
+                                                <view>{{$t('common.frequencycard_list_effective')}}</view>
                                                 <text class="fw-b effective">{{ is_price_show ? user_wallet.normal_money || '0.00' : '***' }}</text>
                                             </view>
                                             <view class="flex-row">
@@ -95,7 +95,7 @@
                             <view class="bottom-fixed" :style="bottom_fixed_style">
                                 <view class="bottom-line-exclude">
                                     <view class="flex-row jc-sb align-c gap-10">
-                                        <button v-if="(data_base || null) != null && (data_base.is_enable_recharge || 0) == 1" class="item round cr-white bg-main br-main text-size wh-auto" type="default" hover-class="none" data-value="/pages/plugins/wallet/recharge/recharge" @tap="url_event">{{$t('recharge.recharge.otwkjn')}}</button>
+                                        <button v-if="(data_base || null) != null && (data_base.is_enable_recharge || 0) == 1" class="item round cr-white bg-main br-main text-size wh-auto" type="default" hover-class="none" data-value="/pages/plugins/wallet/recharge/recharge" @tap="url_event">{{$t('common.recharge')}}</button>
                                         <button v-if="(data_base || null) != null && (data_base.is_enable_cash || 0) == 1" class="item round cr-main bg-white br-main text-size wh-auto" type="default" hover-class="none" data-value="/pages/plugins/wallet/cash-auth/cash-auth" @tap="url_event">{{$t('common.withdraw')}}</button>
                                     </view>
                                 </view>
@@ -124,6 +124,7 @@
     import componentUserRecharge from '../components/user-recharge/user-recharge';
     import componentUserCash from '../components/user-cash/user-cash';
     import componentTransfer from '../components/transfer/transfer';
+    import pluginLocale from '../locale/index.js';
     var wallet_static_url = app.globalData.get_static_url('wallet', true) + 'app/';
     // 状态栏高度
     var bar_height = parseInt(app.globalData.get_system_info('statusBarHeight', 0, true));
@@ -132,6 +133,7 @@
     // #endif
 
     export default {
+        mixins: [pluginLocale],
         data() {
             return {
                 theme_view: app.globalData.get_theme_value_view(),

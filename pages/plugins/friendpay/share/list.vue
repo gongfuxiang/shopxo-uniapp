@@ -1,8 +1,8 @@
 <template>
     <view :class="theme_view">
         <view class="nav-base bg-white flex-row jc-sa align-c">
-            <view :class="'item tc ' + (list_type == 'owner' ? 'cr-main nav-active-line' : '')" data-type="owner" @tap="type_event">{{ $t('friendpay.friendpay.list_owner') }}</view>
-            <view :class="'item tc ' + (list_type == 'payer' ? 'cr-main nav-active-line' : '')" data-type="payer" @tap="type_event">{{ $t('friendpay.friendpay.list_payer') }}</view>
+            <view :class="'item tc ' + (list_type == 'owner' ? 'cr-main nav-active-line' : '')" data-type="owner" @tap="type_event">{{ $t('friendpay.list_owner') }}</view>
+            <view :class="'item tc ' + (list_type == 'payer' ? 'cr-main nav-active-line' : '')" data-type="payer" @tap="type_event">{{ $t('friendpay.list_payer') }}</view>
         </view>
         <scroll-view :scroll-y="true" class="scroll-box scroll-box-ece-nav" @scrolltolower="scroll_lower" lower-threshold="60">
             <view v-if="data_list.length > 0" class="data-list padding-horizontal-main padding-top-main">
@@ -16,7 +16,7 @@
                     </view>
                     <view class="item-operation tr br-t padding-top-main margin-top-main">
                         <button class="round bg-white cr-base br-base" type="default" size="mini" hover-class="none" @tap="detail_event" :data-id="item.id">{{ $t('common.detail_text') }}</button>
-                        <button v-if="list_type == 'owner' && item.status == 0" class="round bg-white cr-main br-main margin-left-sm" type="default" size="mini" hover-class="none" @tap="share_event" :data-id="item.id">{{ $t('friendpay.friendpay.go_share') }}</button>
+                        <button v-if="list_type == 'owner' && item.status == 0" class="round bg-white cr-main br-main margin-left-sm" type="default" size="mini" hover-class="none" @tap="share_event" :data-id="item.id">{{ $t('friendpay.go_share') }}</button>
                     </view>
                 </view>
             </view>
@@ -34,7 +34,9 @@
     import componentPanelContent from '@/components/panel-content/panel-content';
     import componentNoData from '@/components/no-data/no-data';
     import componentBottomLine from '@/components/bottom-line/bottom-line';
+    import pluginLocale from '../locale/index.js';
     export default {
+        mixins: [pluginLocale],
         data() {
             return {
                 theme_view: app.globalData.get_theme_value_view(),

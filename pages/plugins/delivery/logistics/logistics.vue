@@ -24,14 +24,14 @@
                     </view>
                     <view class="br-t-dashed margin-top-sm padding-top-sm text-size-sm cr-base">
                         <view>
-                            <text>{{$t('logistics.logistics.dxu6ql')}}</text>
+                            <text>{{$t('logistics.delivery_time')}}</text>
                             <text v-if="(start_delivery_time || null) != null">{{start_delivery_time}}</text>
-                            <text v-else class="cr-grey-9">{{$t('logistics.logistics.5542tq')}}</text>
+                            <text v-else class="cr-grey-9">{{$t('logistics.delivery_started_yet')}}</text>
                         </view>
                         <view class="margin-top-sm">
-                            <text>{{$t('logistics.logistics.895ug2')}}</text>
+                            <text>{{$t('logistics.delivery_time_2')}}</text>
                             <text v-if="(success_delivery_time || null) != null">{{success_delivery_time}}</text>
-                            <text v-else class="cr-grey-9">{{$t('logistics.logistics.76q0ii')}}</text>
+                            <text v-else class="cr-grey-9">{{$t('logistics.yet_delivered')}}</text>
                         </view>
                     </view>
                 </view>
@@ -51,9 +51,11 @@
     import componentCommon from '@/components/common/common';
     import componentNoData from "@/components/no-data/no-data";
     import componentBottomLine from "@/components/bottom-line/bottom-line";
+    import pluginLocale from '../locale/index.js';
 
     var plugins_static_url = app.globalData.get_static_url('delivery', true);
     export default {
+        mixins: [pluginLocale],
         data() {
             return {
                 theme_view: app.globalData.get_theme_value_view(),

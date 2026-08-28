@@ -13,8 +13,8 @@
                     <view class="margin-top-xxxxl cr-base text-size-sm">{{describe}}</view>
                     <!-- 协议 -->
                     <view class="margin-top-xxxxl padding-vertical-xxxxl">
-                        <text class="cp cr-blue margin-right" data-value="userregister" @tap="agreement_event">{{ $t('login.login.2v11we') }}</text>
-                        <text class="cp cr-blue margin-left" data-value="userprivacy" @tap="agreement_event">{{ $t('login.login.myno2x') }}</text>
+                        <text class="cp cr-blue margin-right" data-value="userregister" @tap="agreement_event">{{ $t('common.service_agreement') }}</text>
+                        <text class="cp cr-blue margin-left" data-value="userprivacy" @tap="agreement_event">{{ $t('common.privacy_policy') }}</text>
                     </view>
                 </view>
             </view>
@@ -29,7 +29,9 @@
     const app = getApp();
     import componentCommon from '@/components/common/common';
     import componentAppAdmin from '@/components/app-admin/app-admin';
+    import pluginLocale from './locale/index.js';
     export default {
+        mixins: [pluginLocale],
         data() {
             return {
                 theme_view: app.globalData.get_theme_value_view(),
@@ -72,7 +74,7 @@
             agreement_event(e) {
                 var value = e.currentTarget.dataset.value || null;
                 if (value == null) {
-                    app.globalData.showToast(this.$t('login.login.4wc3hr'));
+                    app.globalData.showToast(this.$t('common.incorrect_protocol_type'));
                     return false;
                 }
             
@@ -80,7 +82,7 @@
                 var key = 'agreement_' + value + '_url';
                 var url = app.globalData.get_config('config.' + key) || null;
                 if (url == null) {
-                    app.globalData.showToast(this.$t('login.login.x0nxxf'));
+                    app.globalData.showToast(this.$t('common.protocol_url_address_incorrect'));
                     return false;
                 }
             

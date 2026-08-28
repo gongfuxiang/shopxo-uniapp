@@ -130,7 +130,7 @@ export default {
                     }
                 },
                 fail: () => {
-                    app.globalData.showToast(this.$t('extraction-apply.extraction-apply.fo7y6c'));
+                    app.globalData.showToast(this.$t('common.province_acquisition_failed'));
                 },
             });
         },
@@ -161,7 +161,7 @@ export default {
                         }
                     },
                     fail: () => {
-                        app.globalData.showToast(this.$t('extraction-apply.extraction-apply.b6qg7b'));
+                        app.globalData.showToast(this.$t('common.city_acquisition_failed'));
                     },
                 });
             }
@@ -191,7 +191,7 @@ export default {
                         }
                     },
                     fail: () => {
-                        app.globalData.showToast(this.$t('extraction-apply.extraction-apply.5s5734'));
+                        app.globalData.showToast(this.$t('common.district_county_acquisition_failed'));
                     },
                 });
             }

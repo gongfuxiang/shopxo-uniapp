@@ -2,9 +2,9 @@
     <view :class="theme_view">
         <view v-if="is_show_open_setting" class="open-setting-view">
             <view class="content bg-white">
-                <view class="msg cr-grey">{{$t('open-setting-location.open-setting-location.61wezw')}}</view>
-                <view class="value cr-base">{{$t('open-setting-location.open-setting-location.6vev38')}}<text>{{$t('open-setting-location.open-setting-location.lult41')}}</text>{{$t('open-setting-location.open-setting-location.407106')}}</view>
-                <button type="primary" open-type="openSetting" size="mini" @opensetting="setting_event">{{$t('open-setting-location.open-setting-location.65q4b3')}}</button>
+                <view class="msg cr-grey">{{$t('open-setting-location.enable_corresponding_permission_services')}}</view>
+                <view class="value cr-base">{{$t('open-setting-location.get')}}<text>{{$t('open-setting-location.position_info')}}</text>{{$t('open-setting-location.permissions')}}</view>
+                <button type="primary" open-type="openSetting" size="mini" @opensetting="setting_event">{{$t('open-setting-location.open_settings_page')}}</button>
                 <view class="tc margin-top-sm">
                     <navigator open-type="navigateBack" class="cp cr-grey dis-inline-block" hover-class="none">{{$t('common.return')}}</navigator>
                 </view>
@@ -20,10 +20,12 @@
     </view>
 </template>
 <script>
+    import pluginLocale from './locale/index.js';
 const app = getApp();
 
 var common_static_url = app.globalData.get_static_url("common");
 export default {
+        mixins: [pluginLocale],
     data() {
         return {
             theme_view: app.globalData.get_theme_value_view(),
@@ -131,7 +133,7 @@ export default {
 
                     // 取消则自动返回、则显示错误
                     // error=11 支付宝取消、msg包含cancel则其他平台
-                    var msg = res.errorMessage || res.chooseLocation || res.errMsg || this.$t('open-setting-location.open-setting-location.hwn386');
+                    var msg = res.errorMessage || res.chooseLocation || res.errMsg || this.$t('open-setting-location.location_selection_failed');
                     if(res.error == 11 || msg.indexOf('cancel') != -1) {
                         // app则不执行返回操作、上面已经返回过了
                         // #ifndef APP

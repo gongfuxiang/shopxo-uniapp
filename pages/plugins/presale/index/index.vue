@@ -11,7 +11,7 @@
             <view class="padding-horizontal-main padding-top-main">
                 <!-- 通知信息 -->
                 <view v-if="(data_base.content_notice || null) != null && data_base.content_notice.length > 0" class="padding-bottom" @tap="notice_open_event">
-                    <text class="text-size-xs cr-blak">{{$t('index.index.516559')}}</text>
+                    <text class="text-size-xs cr-blak">{{$t('common.activity_rules')}}</text>
                     <iconfont name="icon-help" size="26rpx" propClass="margin-left-xs" color="#999"></iconfont>
                 </view>
 
@@ -24,18 +24,18 @@
                 </block>
                 <block v-else>
                     <!-- 提示信息 -->
-                    <component-no-data propStatus="0" :propMsg="$t('detail.detail.5knxg6')"></component-no-data>
+                    <component-no-data propStatus="0" :propMsg="$t('common.related_products_available')"></component-no-data>
                 </block>
             </view>
 
             <!-- 弹窗 -->
             <component-popup v-if="(data_base.content_notice || null) != null && data_base.content_notice.length > 0" :propShow="popup_notice_status" propPosition="bottom" @onclose="notice_close_event">
                 <view class="padding-main">
-                    <view class="cr-black text-size-md fw-b margin-bottom-main">{{$t('index.index.516559')}}</view>
+                    <view class="cr-black text-size-md fw-b margin-bottom-main">{{$t('common.activity_rules')}}</view>
                     <scroll-view :scroll-y="true" class="content-notice">
                         <view v-for="(item, index) in data_base.content_notice" :key="index" class="cr-grey text-size-md">{{ item }}</view>
                     </scroll-view>
-                    <button type="default" class="bg-main cr-white round text-size-md wh-auto margin-top-lg" @tap="notice_close_event">{{$t('index.index.qbi72m')}}</button>
+                    <button type="default" class="bg-main cr-white round text-size-md wh-auto margin-top-lg" @tap="notice_close_event">{{$t('common.got')}}</button>
                 </view>
             </component-popup>
         </block>
@@ -57,7 +57,9 @@
     import componentBottomLine from '@/components/bottom-line/bottom-line';
     import componentGoodsList from '@/components/goods-list/goods-list';
     import componentPopup from '@/components/popup/popup';
+    import pluginLocale from '../locale/index.js';
     export default {
+        mixins: [pluginLocale],
         data() {
             return {
                 theme_view: app.globalData.get_theme_value_view(),

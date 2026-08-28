@@ -14,12 +14,12 @@
                     v-if="(detail.continuous_rules || null) != null && detail.continuous_rules.length > 0"
                     class="panel-item padding-main border-radius-main bg-white spacing-mb"
                 >
-                    <view class="br-b padding-bottom-main fw-b text-size">{{ $t("user-qrcode-detail.user-qrcode-detail.18680z") }}</view>
+                    <view class="br-b padding-bottom-main fw-b text-size">{{ $t("user-qrcode-detail.double_reward_consecutive_attendance") }}</view>
                     <view class="panel-content oh">
                         <view v-for="(item, index) in detail.continuous_rules" :key="index" class="item br-b oh padding-vertical-main">
                             <view class="content fl">
-                                {{ $t("user-qrcode-detail.user-qrcode-detail.dupsnc") }}{{ item.number }}{{ $t("user-qrcode-detail.user-qrcode-detail.b5ilz3") }}{{ item.value
-                                }}{{ $t("user-qrcode-detail.user-qrcode-detail.c8e5of") }}
+                                {{ $t("user-qrcode-detail.continuity") }}{{ item.number }}{{ $t("user-qrcode-detail.heaven_flip") }}{{ item.value
+                                }}{{ $t("user-qrcode-detail.times") }}
                             </view>
                         </view>
                     </view>
@@ -27,23 +27,23 @@
 
                 <!-- 指定时段额外奖励（文案由后台生成） -->
                 <view v-if="(detail.specified_time_reward_text || '').length > 0" class="panel-item padding-main border-radius-main bg-white spacing-mb">
-                    <view class="br-b padding-bottom-main fw-b text-size">{{ $t("user-qrcode-detail.user-qrcode-detail.37bh73") }}</view>
+                    <view class="br-b padding-bottom-main fw-b text-size">{{ $t("user-qrcode-detail.additional_rewards_during_designated_time_period") }}</view>
                     <view class="panel-content oh">
                         <view class="item oh padding-vertical-main">
                             <view class="content fl">{{ detail.specified_time_reward_text }}</view>
                         </view>
                         <view v-if="(detail.specified_time_reward_award_ready || 0) != 1" class="cr-red padding-top-sm text-size-sm">
-                            {{ $t("user-qrcode-detail.user-qrcode-detail.specified_time_incomplete_tip") }}
+                            {{ $t("user-qrcode-detail.specified_time_incomplete_tip") }}
                         </view>
                     </view>
                 </view>
 
                 <!-- 推广：链接 + 各端二维码 -->
                 <view v-if="share_block_visible" class="panel-item padding-main border-radius-main bg-white spacing-mb">
-                    <view class="br-b padding-bottom-main fw-b text-size">{{ $t("user-qrcode-detail.user-qrcode-detail.share_block") }}</view>
+                    <view class="br-b padding-bottom-main fw-b text-size">{{ $t("user-qrcode-detail.share_block") }}</view>
                     <view class="panel-content oh">
                         <view v-if="(detail.share_data.url || '').length > 0" class="item br-b-f5 oh padding-vertical-main">
-                            <view class="title fl padding-right-main cr-grey">{{ $t("user-qrcode-detail.user-qrcode-detail.share_link_label") }}</view>
+                            <view class="title fl padding-right-main cr-grey">{{ $t("user-qrcode-detail.share_link_label") }}</view>
                             <view class="content fl br-l padding-left-main oh">
                                 <text class="text-word-break">{{ detail.share_data.url }}</text>
                                 <view class="dis-inline-block margin-left" :data-value="detail.share_data.url" @tap="text_copy_event">
@@ -84,8 +84,10 @@
     import componentNoData from "@/components/no-data/no-data";
     import componentBottomLine from "@/components/bottom-line/bottom-line";
     import componentPanelContent from "@/components/panel-content/panel-content";
+    import pluginLocale from '../locale/index.js';
 
     export default {
+        mixins: [pluginLocale],
         data() {
             return {
                 theme_view: app.globalData.get_theme_value_view(),

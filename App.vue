@@ -504,26 +504,26 @@
                                                     // 授权按钮不可点击时背景颜色 默认值：#73aaf5（仅ios支持）
                                                     disabledColor: theme_color_light,
                                                     // 授权按钮文案 默认值：“本机号码一键登录”
-                                                    title: i18n.t('shopxo-uniapp.app.5a7r0v'),
+                                                    title: i18n.t('run.one_click_login_local_number'),
                                                 },
                                                 otherLoginButton: {
                                                     // 其他登录方式按钮文字 默认值：“其他登录方式”
-                                                    title: i18n.t('login.login.9q27d8'),
+                                                    title: i18n.t('common.other_login_methods'),
                                                 },
                                                 privacyTerms: {
                                                     // 条款前的文案 默认值：“我已阅读并同意”
-                                                    prefix: i18n.t('shopxo-uniapp.app.33k281'),
+                                                    prefix: i18n.t('run.have_read_and_agree'),
                                                     // 条款后的文案 默认值：“并使用本机号码登录”
-                                                    suffix: i18n.t('shopxo-uniapp.app.8l688n'),
+                                                    suffix: i18n.t('run.login_with_local_number'),
                                                     // 自定义协议条款，最大支持2个，需要同时设置url和title. 否则不生效
                                                     privacyItems: [
                                                         {
                                                             url: self.get_config('config.agreement_userregister_url'),
-                                                            title: i18n.t('shopxo-uniapp.app.28r5dr'),
+                                                            title: i18n.t('run.service_agreement'),
                                                         },
                                                         {
                                                             url: self.get_config('config.agreement_userprivacy_url'),
-                                                            title: i18n.t('shopxo-uniapp.app.lb493k'),
+                                                            title: i18n.t('run.privacy_policy'),
                                                         },
                                                     ],
                                                 },
@@ -565,7 +565,7 @@
                                                     })
                                                     .catch((err) => {
                                                         uni.closeAuthView();
-                                                        self.showToast(i18n.t('shopxo-uniapp.app.ch1pd2'));
+                                                        self.showToast(i18n.t('run.local_number_component_failed'));
                                                     });
                                             },
                                             fail(res) {
@@ -788,7 +788,7 @@
                     },
                     fail: (e) => {
                         uni.hideLoading();
-                        self.showToast(i18n.t('login.login.3nmrg2'));
+                        self.showToast(i18n.t('common.privilege_grant_failed'));
                     },
                 });
             },
@@ -820,7 +820,7 @@
             login_to_auth() {
                 uni.showModal({
                     title: i18n.t('common.warm_tips'),
-                    content: i18n.t('login.login.jw378f'),
+                    content: i18n.t('common.authorized_user_information'),
                     confirmText: i18n.t('common.confirm'),
                     cancelText: i18n.t('common.not_yet'),
                     success: (result) => {
@@ -1149,7 +1149,7 @@
                         case 3:
                             var values = value.split('|');
                             if (values.length != 4) {
-                                this.showToast(i18n.t('shopxo-uniapp.app.5y1c52'));
+                                this.showToast(i18n.t('run.event_value_format_error'));
                                 return false;
                             }
                             this.open_location(values[2], values[3], values[0], values[1]);
@@ -1242,7 +1242,7 @@
                         },
                     });
                 } else {
-                    self.showToast(i18n.t('shopxo-uniapp.app.t754n6'));
+                    self.showToast(i18n.t('run.alert_message_empty'));
                 }
             },
 
@@ -1728,13 +1728,13 @@
              */
             open_location(lng, lat, name, address, scale) {
                 // #ifdef MP-KUAISHOU
-                this.showToast(i18n.t('shopxo-uniapp.app.iq66pg'));
+                this.showToast(i18n.t('run.copy_address_to_web_map'));
                 return false;
                 // #endif
 
                 // 参数判断
                 if (lng == undefined || lat == undefined || lng == '' || lat == '') {
-                    this.showToast(i18n.t('shopxo-uniapp.app.v2j475'));
+                    this.showToast(i18n.t('run.invalid_coordinates'));
                     return false;
                 }
                 lat = parseFloat(lat);
@@ -1747,7 +1747,7 @@
                     if (key != null) {
                         var plugin = requirePlugin('routePlan');
                         var end_point = JSON.stringify({
-                            name: name || i18n.t('extraction-apply.extraction-apply.47v7m0'),
+                            name: name || i18n.t('common.geographical_position'),
                             longitude: lng,
                             latitude: lat,
                         });
@@ -1760,7 +1760,7 @@
                 // #endif
                 // 转换坐标打开位置
                 uni.openLocation({
-                    name: name || i18n.t('extraction-apply.extraction-apply.47v7m0'),
+                    name: name || i18n.t('common.geographical_position'),
                     address: address || '',
                     scale: scale || 18,
                     longitude: lng,
@@ -1787,7 +1787,7 @@
                         key: this.data.cache_user_uuid_key,
                         data: uuid,
                         fail: () => {
-                            this.showToast(i18n.t('shopxo-uniapp.app.3m1gbe'));
+                            this.showToast(i18n.t('run.uuid_cache_failed'));
                         },
                     });
                 }
@@ -1866,7 +1866,7 @@
                         // 地图协议（名称|地址|lng|lat）
                         var values = value.substr(6).split('|');
                         if (values.length != 4) {
-                            this.showToast(i18n.t('shopxo-uniapp.app.5y1c52'));
+                            this.showToast(i18n.t('run.event_value_format_error'));
                             return false;
                         }
                         this.open_location(values[2], values[3], values[0], values[1]);
@@ -1899,11 +1899,11 @@
                                         path: value
                                     });
                                 } else {
-                                    self.showToast(i18n.t('detail.detail.86g7e1'));
+                                    self.showToast(i18n.t('run.wechat_app_not_installed'));
                                 }
                             });
                         } else {
-                            self.showToast(i18n.t('detail.detail.567uyh'));
+                            self.showToast(i18n.t('run.wechat_original_id_configured_background'));
                         }
                         return false;
                         // #endif
@@ -1922,7 +1922,7 @@
                         // #endif
 
                         // 非微信环境和APP环境
-                        this.showToast(i18n.t('detail.detail.9d3o6w'));
+                        this.showToast(i18n.t('run.open_wechat_mini_program'));
                     } else {
                         // 默认切换或跳转页面
                         if (this.is_page(value)) {
@@ -1990,7 +1990,7 @@
                         },
                     });
                 } else {
-                    this.showToast(i18n.t('shopxo-uniapp.app.r539kf'));
+                    this.showToast(i18n.t('run.copy_content_empty'));
                 }
             },
 
@@ -2003,7 +2003,7 @@
                         urls: urls || [value],
                     });
                 } else {
-                    this.showToast(i18n.t('shopxo-uniapp.app.qm8548'));
+                    this.showToast(i18n.t('run.image_url_empty'));
                 }
             },
 
@@ -2108,7 +2108,7 @@
                                     }
                                 },
                                 fail(res) {
-                                    self.showToast(msg || i18n.t('shopxo-uniapp.app.gbiac6'));
+                                    self.showToast(msg || i18n.t('run.please_open_authorization'));
                                     setTimeout(function () {
                                         uni.openSetting();
                                     }, 1000);
@@ -2327,7 +2327,7 @@
             // 是否朋友圈单页访问提示
             is_single_page_check() {
                 if (this.is_current_single_page() == 1) {
-                    this.showToast(i18n.t('shopxo-uniapp.app.3eqv71'));
+                    this.showToast(i18n.t('run.please_use_miniprogram_full_service'));
                     return false;
                 }
                 return true;
@@ -2421,7 +2421,7 @@
             // 进入客服
             chat_entry_handle(url) {
                 if ((url || null) == null) {
-                    this.showToast(i18n.t('shopxo-uniapp.app.08cg8y'));
+                    this.showToast(i18n.t('run.customer_service_url_error'));
                 } else {
                     // 拼接基础参数
                     url = this.request_params_handle(url);
@@ -2485,7 +2485,7 @@
                 uni.removeStorageSync(this.data.cache_app_star_tips_interval_time_key);
 
                 // 非小程序则两秒后回到首页
-                this.showToast(i18n.t('shopxo-uniapp.app.'+((client_value == 'mp' || !is_remove_user) ? '0gwt7z' : '87yghj')), 'success');
+                this.showToast(i18n.t('run.'+((client_value == 'mp' || !is_remove_user) ? 'clear_success' : 'logout_success')), 'success');
             },
 
             // 是否站点变灰
@@ -2647,7 +2647,7 @@
                     var self = this;
                     this.trigger_staff_booking(buy_data, pages, context_vm, function(success) {
                         if(!success) {
-                            self.showToast(i18n.t('shopxo-uniapp.app.8z2a6b'));
+                            self.showToast(i18n.t('run.staff_booking_load_failed'));
                         }
                     });
                     return true;
@@ -2683,7 +2683,7 @@
                         }
                     },
                     fail: (res) => {
-                        self.showToast(i18n.t('shopxo-uniapp.app.di6v5t'));
+                        self.showToast(i18n.t('run.please_get_authorization_first'));
                         if (typeof object === 'object' && (method || null) != null) {
                             object[method](0);
                         }
@@ -2696,7 +2696,7 @@
                 }
                 // #endif
                 // #ifdef MP-KUAISHOU
-                self.showToast(i18n.t('shopxo-uniapp.app.nu5058'));
+                self.showToast(i18n.t('run.location_select_not_supported'));
                 if (typeof object === 'object' && (method || null) != null) {
                     object[method](0);
                 }
@@ -3190,7 +3190,7 @@
                     };
                 }
                 // 默认名称
-                var default_name = i18n.t('shopxo-uniapp.app.4v6q86');
+                var default_name = i18n.t('run.location_not_selected');
                 // 位置选择失败的状态，名称和默认名称不一致则认为是成功的
                 if(user_location.status == 3 && user_location.name != default_name) {
                     user_location.status = 1;
@@ -3255,7 +3255,7 @@
                                     type: 'wgs84',
                                     success: function (res) {
                                         var address = {
-                                            name: i18n.t('shopxo-uniapp.app.tghyu3'),
+                                            name: i18n.t('run.current_location'),
                                             address: '',
                                             lat: res.latitude || null,
                                             lng: res.longitude || null,

@@ -69,11 +69,11 @@
                     { name: this.$t('common.increase'), value: '1' },
                 ],
                 content_list: [
-                    { name: this.$t('invoice.invoice.l3832z'), field: 'business_type_name' },
-                    { name: this.$t('wallet-log-detail.wallet-log-detail.744os7'), field: 'money_type_name' },
-                    { name: this.$t('wallet-log-detail.wallet-log-detail.ruq60b'), field: 'operation_money' },
-                    { name: this.$t('wallet-log-detail.wallet-log-detail.4q7pfq'), field: 'original_money' },
-                    { name: this.$t('wallet-log-detail.wallet-log-detail.r814ne'), field: 'latest_money' },
+                    { name: this.$t('common.business_type'), field: 'business_type_name' },
+                    { name: this.$t('wallet-log-detail.amount_type'), field: 'money_type_name' },
+                    { name: this.$t('wallet-log-detail.operation_amount'), field: 'operation_money' },
+                    { name: this.$t('wallet-log-detail.original_amount'), field: 'original_money' },
+                    { name: this.$t('wallet-log-detail.latest_amount'), field: 'latest_money' },
                 ],
             };
         },

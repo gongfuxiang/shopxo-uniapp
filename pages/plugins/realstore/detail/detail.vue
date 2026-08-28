@@ -10,7 +10,7 @@
                         <template slot="right" :class="is_top_search_width ? 'top-search-width' : 'flex-1 flex-width'">
                             <view v-if="is_base_mode != 1" :class="'va-m wh-auto top-nav-search '+(is_realstore_top_nav_back == 1 ? 'padding-left-main' : '')">
                                 <block v-if="client_type == 'h5'">
-                                    <component-search @oninput="search_input_event" :propIsOnInputEvent="true" @onsearch="search_button_event" :propIsOnEvent="true" :propIsRequired="false" propIconColor="#333" propPlaceholderClass="cr-grey-c" :propPlaceholder="$t('detail.detail.q42ger')" propBgColor="#fff"></component-search>
+                                    <component-search @oninput="search_input_event" :propIsOnInputEvent="true" @onsearch="search_button_event" :propIsOnEvent="true" :propIsRequired="false" propIconColor="#333" propPlaceholderClass="cr-grey-c" :propPlaceholder="$t('detail.product_search')" propBgColor="#fff"></component-search>
                                 </block>
                                 <block v-else>
                                     <component-search
@@ -25,7 +25,7 @@
                                         propPlaceholderClass="cr-grey-c"
                                         propBgColor="#fff"
                                         propIconColor="#333"
-                                        :propPlaceholder="$t('detail.detail.q42ger')"
+                                        :propPlaceholder="$t('detail.product_search')"
                                     ></component-search>
                                 </block>
                             </view>
@@ -61,8 +61,8 @@
                                             </view>
                                         </view>
                                         <view class="margin-top-xs text-size-xss cr-grey tl">
-                                            <view v-if="(info.status_info.time || null) != null">{{$t('detail.detail.dor2v9')}}{{ info.status_info.time }}</view>
-                                            <view v-if="(info.distance || null) != null">{{$t('extraction-address.extraction-address.42v8tv')}}{{ info.distance }}</view>
+                                            <view v-if="(info.status_info.time || null) != null">{{$t('detail.business_hours')}}{{ info.status_info.time }}</view>
+                                            <view v-if="(info.distance || null) != null">{{$t('common.distance_from_you')}}{{ info.distance }}</view>
                                         </view>
                                     </view>
                                 </view>
@@ -75,7 +75,7 @@
                                                 {{ info.province_name }}{{ info.city_name }}{{ info.county_name }}{{ info.address }}
                                             </view>
                                             <!-- #ifndef MP-KUAISHOU -->
-                                            <view v-if="info.lat != 0 && info.lng != 0" class="dis-inline-block tc cp border-radius-sm text-size-xss cr-green br-green padding-horizontal-xs margin-left-xs" @tap="address_map_event">{{$t('detail.detail.688i26')}}</view>
+                                            <view v-if="info.lat != 0 && info.lng != 0" class="dis-inline-block tc cp border-radius-sm text-size-xss cr-green br-green padding-horizontal-xs margin-left-xs" @tap="address_map_event">{{$t('detail.map')}}</view>
                                             <!-- #endif -->
                                         </view>
                                         <!-- 右侧操作 -->
@@ -106,7 +106,7 @@
                     <!-- 门店基础模式 - 商品 -->
                     <view v-if="is_base_mode == 1 && (is_base_mode_show_type == 0 || (is_base_mode_show_type == 2 && nav_base_index == 0))" class="padding-horizontal-main border-radius-main bg-white">
                         <view v-if="is_base_mode_show_type == 0" class="padding-top-sm margin-bottom-sm margin-top-main">
-                            <view class="fw-b title-left-border">{{$t('goods-detail.goods-detail.dfge45')}}</view>
+                            <view class="fw-b title-left-border">{{$t('goods-detail.store_introduction')}}</view>
                         </view>
                         <scroll-view :scroll-y="true" class="cr-base text-size-sm" :style="content_style">
                             <view class="right-content-actual base-mode-goods">
@@ -218,7 +218,7 @@
                                     <view>
                                         <iconfont name="icon-map-navigator" class="lh-sm" size="26rpx"></iconfont>
                                     </view>
-                                    <view class="cr-base text-size-md">{{$t('detail.detail.688i26')}}</view>
+                                    <view class="cr-base text-size-md">{{$t('detail.map')}}</view>
                                 </view>
                                 <!-- #endif -->
                                 <view class="item" @tap="share_event">
@@ -257,7 +257,7 @@
                 <view class="popup-service-container">
                     <view v-if="(info || null) != null && (data_base || null) != null && is_service_info == 1" class="header-service">
                         <view v-if="(info.chat_info || null) != null" class="item padding-main single-text">
-                            <text class="va-m">{{$t('detail.detail.r4124d')}}</text>
+                            <text class="va-m">{{$t('common.detail_service')}}</text>
                             <view class="dis-inline-block chat-info cp" @tap="chat_event">
                                 <image class="dis-inline-block va-m" :src="info.chat_info.icon" mode="scaleToFill"></image>
                                 <text class="margin-left-sm va-m cr-blue" :data-value="info.chat_info.chat_url">{{ info.chat_info.name }}</text>
@@ -269,17 +269,17 @@
                                 <text class="cp" @tap="text_copy_event" :data-value="info.service_data.service_qq">{{ info.service_data.service_qq }}</text>
                             </view>
                             <view v-if="(info.service_data.service_tel || null) != null" class="item padding-main br-t-f9 single-text">
-                                <text>{{$t('order.order.7dxbm5')}}</text>
+                                <text>{{$t('common.order_phone')}}</text>
                                 <text class="cp" @tap="tel_event" :data-value="info.service_data.service_tel">{{ info.service_data.service_tel }}</text>
                             </view>
                             <view v-if="(info.service_data.service_weixin_qrcode || null) != null || (info.service_data.service_line_qrcode || null) != null" class="oh qrcode tc br-t-f9 padding-top-main">
                                 <view v-if="(info.service_data.service_weixin_qrcode || null) != null" class="item padding-bottom-lg dis-inline-block">
                                     <image class="radius cp" :src="info.service_data.service_weixin_qrcode" mode="scaleToFill" @tap="image_show_event" :data-value="info.service_data.service_weixin_qrcode"></image>
-                                    <view>{{$t('detail.detail.54k10s')}}</view>
+                                    <view>{{$t('common.long_press_wechat_consultation')}}</view>
                                 </view>
                                 <view v-if="(info.service_data.service_line_qrcode || null) != null" class="item padding-bottom-lg dis-inline-block">
                                     <image class="radius cp" :src="info.service_data.service_line_qrcode" mode="scaleToFill" @tap="image_show_event" :data-value="info.service_data.service_line_qrcode"></image>
-                                    <view>{{$t('detail.detail.vj4nom')}}</view>
+                                    <view>{{$t('common.long_press_line_consult')}}</view>
                                 </view>
                             </view>
                         </block>
@@ -306,10 +306,12 @@
     import componentPopup from '@/components/popup/popup';
     import componentRealstoreCart from '@/pages/plugins/realstore/components/realstore-cart/realstore-cart';
     import componentSharePopup from '@/components/share-popup/share-popup';
+    import pluginLocale from '../locale/index.js';
 
     var common_static_url = app.globalData.get_static_url('common');
     var status_bar_height = parseInt(app.globalData.get_system_info('statusBarHeight', 0, true));
     export default {
+        mixins: [pluginLocale],
         data() {
             return {
                 theme_view: app.globalData.get_theme_value_view(),
@@ -350,39 +352,39 @@
                 // 基础导航
                 nav_base_index: 0,
                 nav_base_list: [
-                    { name: this.$t('goods-detail.goods-detail.dfge45'), value: 0 },
-                    { name: this.$t('goods-detail.goods-detail.567uhg'), value: 1 },
+                    { name: this.$t('goods-detail.store_introduction'), value: 0 },
+                    { name: this.$t('goods-detail.store_products'), value: 1 },
                 ],
                 // 下单类型
                 buy_use_type_active_index: 0,
                 // 排序导航
                 search_nav_sort_index: 0,
                 search_nav_sort_list: [{
-                		name: this.$t('goods-category.goods-category.x69aow'),
+                		name: this.$t('common.goods_category_all'),
                 		field: 'default',
                 		sort: 'asc',
                 		icon: null
                 	},
                 	{
-                		name: this.$t('goods-category.goods-category.at5p35'),
+                		name: this.$t('common.sales_volume'),
                 		field: 'sales_count',
                 		sort: 'asc',
                 		icon: 'default'
                 	},
                 	{
-                		name: this.$t('goods-category.goods-category.283ot0'),
+                		name: this.$t('common.heat'),
                 		field: 'access_count',
                 		sort: 'asc',
                 		icon: 'default'
                 	},
                 	{
-                		name: this.$t('goods-category.goods-category.g2u3lf'),
+                		name: this.$t('common.price'),
                 		field: 'min_price',
                 		sort: 'asc',
                 		icon: 'default'
                 	},
                 	{
-                		name: this.$t('goods-category.goods-category.5p4ksj'),
+                		name: this.$t('common.latest'),
                 		field: 'id',
                 		sort: 'asc',
                 		icon: 'default'
@@ -562,7 +564,7 @@
                                     favor_info: {
                                         count: this.info.favor_count || 0,
                                         status: status,
-                                        text: (status == 1 ? this.$t('goods-detail.goods-detail.by7052') : '') + this.$t('common.favor'),
+                                        text: (status == 1 ? this.$t('common.already') : '') + this.$t('common.favor'),
                                     },
                                 });
 
@@ -818,7 +820,7 @@
                         // 是否购物车中操作
                         if (type == 0) {
                             this.$refs.realstore_cart.cart_event(true);
-                            app.globalData.showToast(this.$t('goods-category.goods-category.gy7y0w'));
+                            app.globalData.showToast(this.$t('common.products_different_specifications_need_reduced_s'));
                         } else {
                             if ((this.$refs.goods_buy || null) != null) {
                                 var buy_params = this.params;
@@ -946,7 +948,7 @@
             address_map_event(e) {
                 var info = this.info || {};
                 if (info.lat == 0 || info.lng == 0) {
-                    app.globalData.showToast(this.$t('user-order-detail.user-order-detail.i876o3'));
+                    app.globalData.showToast(this.$t('common.incorrect_address'));
                     return false;
                 }
                 var address = (info.province_name || '') + (info.city_name || '') + (info.county_name || '') + (info.address || '');

@@ -24,7 +24,7 @@
                             </view>
                             <view class="bargain-detail-price-main">
                                 <view class="bargain-detail-price-left">
-                                    <view class="cr-white text-size-xs">{{ $t('bargain.bargain.goods_price') }}</view>
+                                    <view class="cr-white text-size-xs">{{ $t('bargain.goods_price') }}</view>
                                     <view class="bargain-detail-price-value cr-white fw-b margin-top-xs">
                                         <text class="text-size-xs">{{ currency_symbol }}</text>
                                         <text class="text-size-xl">{{ display_price }}</text>
@@ -37,15 +37,15 @@
                             <view class="multi-text text-size-md">{{ bargain.title || goods.title }}</view>
                             <view class="bargain-detail-status-bar margin-top-main">
                                 <view class="bargain-detail-status-item flex-row jc-c align-c">
-                                    <text class="bargain-detail-status-label text-size-xs cr-grey">{{ $t('bargain.bargain.help_cut') }}</text>
+                                    <text class="bargain-detail-status-label text-size-xs cr-grey">{{ $t('bargain.help_cut') }}</text>
                                     <text class="bargain-detail-status-value text-size-sm cr-black margin-left-xs">{{ bargain.help_number_text || bargain.help_number }}{{ $t('common.person_unit') }}</text>
                                 </view>
                                 <view class="bargain-detail-status-item flex-row jc-c align-c">
-                                    <text class="bargain-detail-status-label text-size-xs cr-grey">{{ $t('bargain.bargain.join_count') }}</text>
+                                    <text class="bargain-detail-status-label text-size-xs cr-grey">{{ $t('bargain.join_count') }}</text>
                                     <text class="bargain-detail-status-value text-size-sm cr-black margin-left-xs">{{ bargain.bargain_participant_count || 0 }}</text>
                                 </view>
                                 <view class="bargain-detail-status-item flex-row jc-c align-c">
-                                    <text class="bargain-detail-status-label text-size-xs cr-grey">{{ $t('bargain.bargain.launch_count') }}</text>
+                                    <text class="bargain-detail-status-label text-size-xs cr-grey">{{ $t('bargain.launch_count') }}</text>
                                     <text class="bargain-detail-status-value text-size-sm cr-black margin-left-xs">{{ bargain.user_start_limit_text || 1 }}</text>
                                 </view>
                             </view>
@@ -117,7 +117,9 @@
     import componentBargainDotTitle from '../components/bargain-dot-title/bargain-dot-title';
     import componentBottomLine from '@/components/bottom-line/bottom-line';
     import componentSharePopup from '@/components/share-popup/share-popup';
+    import pluginLocale from '../locale/index.js';
     export default {
+        mixins: [pluginLocale],
         data() {
             return {
                 theme_view: app.globalData.get_theme_value_view(),
@@ -135,7 +137,7 @@
                 display_price: '0.00',
                 spec_selected_text: '',
                 buy_disabled: false,
-                buy_button_text: this.$t('bargain.bargain.join_bargain'),
+                buy_button_text: this.$t('bargain.join_bargain'),
                 buy_button_type: 'start',
                 buy_record_url: '',
                 detail_buy_display_default: null,
@@ -263,7 +265,7 @@
                             }
                             var buy_display = result.detail_buy_display || {};
                             var inventory = parseInt(goods.inventory || 0);
-                            var buy_button_text = buy_display.buy_button_text || this.$t('bargain.bargain.join_bargain');
+                            var buy_button_text = buy_display.buy_button_text || this.$t('bargain.join_bargain');
                             var buy_button_type = buy_display.buy_button_type || 'start';
                             var buy_record_url = buy_display.buy_button_url || '';
                             var buy_disabled = buy_display.buy_disabled == 1;
@@ -276,7 +278,7 @@
                             if (!show_original_price && (goods.min_original_price || goods.original_price) != null && sale_min > 0) {
                                 show_original_price = parseFloat(goods.min_original_price || goods.original_price) > sale_min;
                             }
-                            var share_desc = (bargain.help_number_text || bargain.help_number || 0) + this.$t('bargain.bargain.people_helped') + (bargain.bargain_success_text || this.$t('bargain.bargain.invite_bargain'));
+                            var share_desc = (bargain.help_number_text || bargain.help_number || 0) + this.$t('bargain.people_helped') + (bargain.bargain_success_text || this.$t('bargain.invite_bargain'));
                             this.setData({
                                 goods: goods,
                                 bargain: bargain,
@@ -348,7 +350,7 @@
                 var record = ((e || {}).back_data || {}).user_bargain_record || null;
                 if (record != null && (record.share_url || null) != null) {
                     this.setData({
-                        buy_button_text: this.$t('bargain.bargain.view_bargain'),
+                        buy_button_text: this.$t('bargain.view_bargain'),
                         buy_button_type: 'record',
                         buy_record_url: record.share_url,
                         buy_disabled: false,
@@ -357,7 +359,7 @@
                 }
                 var def = this.detail_buy_display_default || {};
                 this.setData({
-                    buy_button_text: def.buy_button_text || this.$t('bargain.bargain.join_bargain'),
+                    buy_button_text: def.buy_button_text || this.$t('bargain.join_bargain'),
                     buy_button_type: def.buy_button_type || 'start',
                     buy_record_url: def.buy_button_url || '',
                     buy_disabled: def.buy_disabled == 1,
@@ -384,7 +386,7 @@
                     buy_event_type: 'back',
                     is_success_tips: 0,
                     buy_button: {
-                        data: [{ type: 'back', name: this.buy_button_text || this.$t('bargain.bargain.join_bargain'), color: 'main' }],
+                        data: [{ type: 'back', name: this.buy_button_text || this.$t('bargain.join_bargain'), color: 'main' }],
                     },
                 }
                 );

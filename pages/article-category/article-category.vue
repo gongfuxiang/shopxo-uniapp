@@ -20,7 +20,7 @@
                                 <view v-if="(item.describe || null) != null" class="cr-base margin-top-sm multi-text text-size-sm">{{item.describe}}</view>
                                 <view class="pa right-0 bottom-0 base-right-bottom cr-grey text-size-xs">
                                     <text class="fl">{{ item.add_time }}</text>
-                                    <text class="fr">{{$t('article-category.article-category.gxra15')}}{{ item.access_count }}</text>
+                                    <text class="fr">{{$t('article-category.view_volume')}}{{ item.access_count }}</text>
                                 </view>
                             </view>
                         </view>
@@ -28,7 +28,7 @@
                             <view class="fw-b single-text text-size" :style="(item.title_color || null) != null ? 'color:' + item.title_color + ' !important;' : ''">{{ item.title }}</view>
                             <view class="cr-grey oh text-size-xs margin-top-sm">
                                 <text class="fl">{{ item.add_time }}</text>
-                                <text class="fr">{{$t('article-category.article-category.gxra15')}}{{ item.access_count }}</text>
+                                <text class="fr">{{$t('article-category.view_volume')}}{{ item.access_count }}</text>
                             </view>
                         </block>
                     </view>
@@ -52,8 +52,10 @@
     import componentCommon from '@/components/common/common';
     import componentNoData from "@/components/no-data/no-data";
     import componentBottomLine from "@/components/bottom-line/bottom-line";
+    import pluginLocale from './locale/index.js';
 
     export default {
+        mixins: [pluginLocale],
         data() {
             return {
                 theme_view: app.globalData.get_theme_value_view(),

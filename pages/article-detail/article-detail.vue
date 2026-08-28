@@ -5,11 +5,11 @@
                 <view class="fw-b text-size-xl">{{ data.title }}</view>
                 <view class="cr-grey margin-top-lg oh br-t padding-top-main">
                     <view class="fl">
-                        <text>{{$t('article-detail.article-detail.728374')}}</text>
+                        <text>{{$t('common.article_detail_time')}}</text>
                         <text>{{ data.add_time }}</text>
                     </view>
                     <view class="fr">
-                        <text class="margin-left-xxxl">{{$t('article-detail.article-detail.j92ru0')}}</text>
+                        <text class="margin-left-xxxl">{{$t('common.browsing')}}</text>
                         <text>{{ data.access_count }}</text>
                     </view>
                 </view>
@@ -21,11 +21,11 @@
             <!-- 上一篇、下一篇 -->
             <view v-if="(last_next || null) != null" class="last-next-data spacing-mb">
                 <view v-if="(last_next.last || null) != null">
-                    <text class="cr-grey va-m">{{$t('article-detail.article-detail.281s4a')}}</text>
+                    <text class="cr-grey va-m">{{$t('common.previous_article')}}</text>
                     <text :data-value="last_next.last.url" @tap="url_event" class="dis-inline-block va-m cr-blue cp item">{{ last_next.last.title }}</text>
                 </view>
                 <view v-if="(last_next.next || null) != null" class="margin-top-sm">
-                    <text class="cr-grey va-m">{{$t('article-detail.article-detail.uq5814')}}</text>
+                    <text class="cr-grey va-m">{{$t('common.next_article')}}</text>
                     <text :data-value="last_next.next.url" @tap="url_event" class="dis-inline-block va-m cr-blue cp item">{{ last_next.next.title }}</text>
                 </view>
             </view>
@@ -44,8 +44,10 @@
     import componentCommon from '@/components/common/common';
     import componentNoData from "@/components/no-data/no-data";
     import componentBottomLine from "@/components/bottom-line/bottom-line";
+    import pluginLocale from './locale/index.js';
 
     export default {
+        mixins: [pluginLocale],
         data() {
             return {
                 theme_view: app.globalData.get_theme_value_view(),

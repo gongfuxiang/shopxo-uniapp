@@ -34,7 +34,7 @@
                             </view>
                         </view>
                         <view v-if="(data_base.content_notice || null) != null && data_base.content_notice.length > 0" @tap="notice_open_event">
-                            <text class="text-size-xs cr-blak">{{$t('index.index.516559')}}</text>
+                            <text class="text-size-xs cr-blak">{{$t('common.activity_rules')}}</text>
                             <iconfont name="icon-help" size="26rpx" propClass="margin-left-xs" color="#999"></iconfont>
                         </view>
                     </view>
@@ -45,7 +45,7 @@
                     </view>
                     <view v-else>
                         <!-- 提示信息 -->
-                        <component-no-data propStatus="0" :propMsg="$t('detail.detail.5knxg6')"></component-no-data>
+                        <component-no-data propStatus="0" :propMsg="$t('common.related_products_available')"></component-no-data>
                     </view>
                 </view>
                 <!-- 结尾 -->
@@ -53,11 +53,11 @@
                 <!-- 弹窗 -->
                 <component-popup v-if="(data_base.content_notice || null) != null && data_base.content_notice.length > 0" :propShow="popup_status" :propIsBar="propIsBar" propPosition="bottom" @onclose="notice_close_event">
                     <view class="padding-main">
-                        <view class="cr-black text-size-md fw-b margin-bottom-main">{{$t('index.index.516559')}}</view>
+                        <view class="cr-black text-size-md fw-b margin-bottom-main">{{$t('common.activity_rules')}}</view>
                         <scroll-view :scroll-y="true" class="content-notice">
                             <view v-for="(item, index) in data_base.content_notice" :key="index" class="cr-grey text-size-md">{{ item }}</view>
                         </scroll-view>
-                        <button type="default" class="bg-main cr-white round text-size-md wh-auto margin-top-lg" @tap="notice_close_event">{{$t('index.index.qbi72m')}}</button>
+                        <button type="default" class="bg-main cr-white round text-size-md wh-auto margin-top-lg" @tap="notice_close_event">{{$t('common.got')}}</button>
                     </view>
                 </component-popup>
             </scroll-view>
@@ -80,7 +80,9 @@
     import componentBottomLine from '@/components/bottom-line/bottom-line';
     import componentGoodsList from '@/components/goods-list/goods-list';
     import componentPopup from '@/components/popup/popup';
+    import pluginLocale from '../locale/index.js';
     export default {
+        mixins: [pluginLocale],
         data() {
             return {
                 theme_view: app.globalData.get_theme_value_view(),
@@ -113,7 +115,7 @@
                 // 配置商品列表按钮
                 is_open_grid_btn_set: false,
                 grid_btn_config: {
-                    name: this.$t('index.index.872w3v'),
+                    name: this.$t('index.about_start_robbery'),
                     disabled: true,
                 },
             };
@@ -161,14 +163,14 @@
             seckill_status(val) {
                 if (val === 0) {
                     let newData = {
-                        name: this.$t('index.index.872w3v'),
+                        name: this.$t('index.about_start_robbery'),
                     };
                     this.setData({
                         grid_btn_config: Object.assign({}, this.grid_btn_config, newData),
                     });
                 } else if (val === 2) {
                     let newData = {
-                        name: this.$t('index.index.443683'),
+                        name: this.$t('common.ended'),
                     };
                     this.setData({
                         grid_btn_config: Object.assign({}, this.grid_btn_config, newData),
@@ -207,7 +209,7 @@
                             var is_valid = time == null ? 0 : time.status <= 1 ? 1 : 0;
                             if (goods.length > 0) {
                                 for (var i in goods) {
-                                    goods[i]['price_icon'] = is_valid == 1 ? current.goods_detail_icon || this.$t('index.index.399f6c') : '';
+                                    goods[i]['price_icon'] = is_valid == 1 ? current.goods_detail_icon || this.$t('index.second_price_reduction') : '';
                                 }
                             }
                             this.setData({

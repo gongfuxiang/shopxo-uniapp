@@ -21,7 +21,7 @@
                 </view>
                 <view class="form-content margin-top-xxxl padding-top-xxl">
                     <view class="verify pr margin-vertical-main">
-                        <input type="text" :placeholder="$t('login.login.t3951j')" name="verify" maxlength="4" :value="form_input_image_verify_value" @input="form_input_image_verify_event" />
+                        <input type="text" :placeholder="$t('common.verification_code')" name="verify" maxlength="4" :value="form_input_image_verify_value" @input="form_input_image_verify_event" />
                         <image v-if="(verify_image_url || null) != null" :src="verify_image_url" class="verify-image pa" mode="aspectFit" @tap.stop="image_verify_event"></image>
                     </view>
                     <view class="margin-top-xxxl margin-bottom-xxxl">
@@ -116,7 +116,7 @@ import { get_format_checks, isEmpty } from '@/common/js/common/common.js';
                     form_value: com_data?.form_value || '', 
                     form_value_code: com_data?.form_value_code || '',
                     format: com_data.format,
-                    verify_submit_text: this.$t('login.login.s665h5'),
+                    verify_submit_text: this.$t('common.obtain_verification_code'),
                     verify_submit_disabled: this.get_data_check(com_data?.form_value || '') ? false : true,
                 });
             },
@@ -225,19 +225,19 @@ import { get_format_checks, isEmpty } from '@/common/js/common/common.js';
                                 if (temp_time <= 1) {
                                     clearInterval(self.temp_clear_time);
                                     self.setData({
-                                        verify_submit_text: self.$t('login.login.s665h5'),
+                                        verify_submit_text: self.$t('common.obtain_verification_code'),
                                         verify_disabled: false,
                                     });
                                 } else {
                                     temp_time--;
                                     self.setData({
-                                        verify_submit_text: self.$t('login.login.n24i5u') + temp_time + self.$t('login.login.4306xr'),
+                                        verify_submit_text: self.$t('common.remain') + temp_time + self.$t('common.second'),
                                     });
                                 }
                             }, 1000);
                         } else {
                             self.setData({
-                                verify_submit_text: self.$t('login.login.s665h5'),
+                                verify_submit_text: self.$t('common.obtain_verification_code'),
                                 verify_disabled: false,
                                 form_input_image_verify_value: '',
                             });
@@ -251,7 +251,7 @@ import { get_format_checks, isEmpty } from '@/common/js/common/common.js';
                     fail: () => {
                         uni.hideLoading();
                         self.setData({
-                            verify_submit_text: self.$t('login.login.s665h5'),
+                            verify_submit_text: self.$t('common.obtain_verification_code'),
                             verify_disabled: false,
                             form_input_image_verify_value: '',
                         });

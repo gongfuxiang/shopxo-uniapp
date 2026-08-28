@@ -4,14 +4,14 @@
             <block v-if="data_list_loding_status == 3">
                 <form @submit="form_submit" class="form-container">
                     <view class="border-radius-main bg-white padding-main padding-bottom-xxxxl spacing-mb">
-                        <view class="title fw-b text-size margin-vertical-xxxl">{{$t('giftcard-index.giftcard-index.hfg2fg')}}</view>
+                        <view class="title fw-b text-size margin-vertical-xxxl">{{$t('giftcard-index.cami_key')}}</view>
                         <view class="flex-row align-c padding-bottom-xl">
                             <!-- #ifndef H5 -->
                             <view class="margin-right" @tap="scan_event">
                                 <uni-icons type="scan" size="56rpx" color="#666"></uni-icons>
                             </view>
                             <!-- #endif -->
-                            <input type="text" class="wh-auto secret-key-value" :placeholder="$t('giftcard-index.giftcard-index.fu3rf1')" placeholder-class="cr-grey-c" :value="secret_key_value" @input="secret_key_event" />
+                            <input type="text" class="wh-auto secret-key-value" :placeholder="$t('giftcard-index.enter_card_password_key')" placeholder-class="cr-grey-c" :value="secret_key_value" @input="secret_key_event" />
                         </view>
                     </view>
                     <view class="padding-main">
@@ -36,7 +36,9 @@
     const app = getApp();
     import componentCommon from '@/components/common/common';
     import componentNoData from '@/components/no-data/no-data';
+    import pluginLocale from '../locale/index.js';
     export default {
+        mixins: [pluginLocale],
         data() {
             return {
                 theme_view: app.globalData.get_theme_value_view(),
@@ -80,7 +82,7 @@
                 if (user == false) {
                     this.setData({
                         data_list_loding_status: 0,
-                        data_list_loding_msg: this.$t('setup.setup.nwt4o1'),
+                        data_list_loding_msg: this.$t('common.please_login_first'),
                     });
                 } else {
                     this.setData({
@@ -122,7 +124,7 @@
                     secret_key: this.secret_key_value
                 }
                 var validation = [
-                    { fields: 'secret_key', msg: this.$t('giftcard-index.giftcard-index.fu3rf1') }
+                    { fields: 'secret_key', msg: this.$t('giftcard-index.enter_card_password_key') }
                 ];
                 if (app.globalData.fields_check(form_data, validation)) {
                     uni.showLoading({
