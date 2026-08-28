@@ -717,12 +717,9 @@
 }
 
 .msg-input-placeholder {
-	font-size: 24rpx;
+	font-size: 26rpx;
 	color: #b2b2b2;
-	line-height: 36rpx;
-	white-space: nowrap;
-	overflow: hidden;
-	text-overflow: ellipsis;
+	line-height: 45rpx;
 }
 
 .panel-box {

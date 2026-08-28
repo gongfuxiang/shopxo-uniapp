@@ -710,7 +710,7 @@ export default {
 },
 
 		input_placeholder_style() {
-	return 'font-size:24rpx;color:#b2b2b2;line-height:36rpx;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;';
+	return 'font-size:26rpx;color:#b2b2b2;line-height:45rpx;';
 },
 
 		consult_panel_has_source_tab() {
@@ -4340,16 +4340,24 @@ export default {
 				if ((!receive || !receive.id || String(receive.id) != String(id)) && st.user_list) {
 					const hit = st.user_list.find((row) => String(row.id) == String(id));
 					if (hit) {
-						receive = hit.receive_user;
+						receive = hit.receive_user || {
+							id: hit.id,
+							name: hit.name,
+							avatar: hit.avatar,
+						};
 					}
 				}
 				if ((!receive || !receive.id) && st.receive_user && parseInt(st.receive_user.id, 10) == id) {
 					receive = st.receive_user;
 				}
-				if (!receive || !receive.id) {
-					return null;
+				// 刷新丢缓存时：用路由 id 兜底，避免拉不到 record
+				if (!receive || !receive.id || String(receive.id) != String(id)) {
+					receive = {
+						id,
+						name: (receive && receive.name) || this.chat_title || '在线客服',
+						avatar: (receive && receive.avatar) || this.default_avatar,
+					};
 				}
-				// 对齐 admin-app：切换会话前先离开上一个
 				if (st.receive_user && String(st.receive_user.id) != String(receive.id)) {
 					chat_leave_session();
 				}
@@ -4588,6 +4596,7 @@ export default {
 				} else if (chat_state.receive_user?.id) {
 					this.sync_receive_user_ui(chat_state.receive_user);
 				}
+				this.list_ready = false;
 				this.load_chat_record_if_connected();
 				// WS / receive_user 就绪后补发进页续聊
 				this.try_enter_auto_continue();
@@ -7837,9 +7846,8 @@ export default {
 						app.globalData.chat_viewing_id = '';
 					}
 				} catch (e) {}
-				// 对齐 PC：离开会话
+				// 对齐 PC：离开会话；保留 receive 缓存，刷新会话页可按 id 恢复拉记录
 				chat_leave_session();
-				chat_set_receive_user(null);
 		},
 
 		chat_page_on_ready() {

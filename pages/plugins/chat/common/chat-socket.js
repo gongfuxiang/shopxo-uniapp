@@ -2545,7 +2545,12 @@ const handle_message = (raw) => {
 				if (receive.avatar) {
 					receive.avatar = absolutize_url(receive.avatar);
 				}
-				state.receive_user = receive;
+				// 列表进会话后刷新重连：勿用 success.receive 冲掉已选客服（管理端 work 不会覆盖）
+				const cur_id = parseInt((state.receive_user && state.receive_user.id) || 0) || 0;
+				const next_id = parseInt(receive.id || 0) || 0;
+				if (!(cur_id > 0) || cur_id == next_id) {
+					state.receive_user = receive;
+				}
 			}
 			if (data.data && data.data.user_list) {
 				// 对齐 PC UserFriendView：空 data 不冲掉已有列表（首连空则保持空）
