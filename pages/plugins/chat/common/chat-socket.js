@@ -2983,7 +2983,10 @@ const handle_message = (raw) => {
 			break;
 
 		case 'queue-status':
-			// 对齐 PC 咨询端：不展示访客排队位次提示；工作台本身忽略
+			// 对齐 PC ChatQueueStatusApply：访客排队位次提示仅咨询端，工作台忽略
+			if (state.user_type == 'user') {
+				emit('queue_status', (data.data != null) ? data.data : data);
+			}
 			break;
 
 		case 'user-history':

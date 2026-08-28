@@ -506,6 +506,7 @@ export default {
 			ai_switching: false,
 			session_ended: false,
 			agent_online_others: 0,
+			queue_status_text: '',
 			agent_transfer_list: [],
 			agent_transfer_selected_id: '',
 			agent_transfer_ref: null,
@@ -883,6 +884,7 @@ export default {
 				});
 			}
 		},
+		queue_status_text() { this.measure_chrome(); },
 		show_float_ai_bar() { this.measure_chrome(); },
 		panel_type() { this.measure_chrome(); },
 		quote_draft() { this.measure_chrome(); },
@@ -1050,20 +1052,24 @@ export default {
 				try {
 					uni.createSelectorQuery().in(this)
 						.select('.nav-wrap').boundingClientRect()
+						.select('.header-meta').boundingClientRect()
 						.select('.composer-fixed').boundingClientRect()
 						.exec((res) => {
 							if (!this.page_alive) {
 								return;
 							}
 							const nav = res && res[0];
-							const composer = res && res[1];
+							const meta = res && res[1];
+							const composer = res && res[2];
 							if (nav && nav.height > 0) {
 								const navH = Math.round(nav.height);
+								const metaH = Math.round((meta && meta.height) || 0);
+								const occupyH = navH + metaH;
 								if (Math.abs(navH - Number(this.nav_bar_h || 0)) >= 1) {
 									this.nav_bar_h = navH;
 								}
-								if (Math.abs(navH - Number(this.nav_occupy_h || 0)) >= 1) {
-									this.nav_occupy_h = navH;
+								if (Math.abs(occupyH - Number(this.nav_occupy_h || 0)) >= 1) {
+									this.nav_occupy_h = occupyH;
 								}
 							}
 							if (composer && composer.height > 0) {
@@ -4603,6 +4609,23 @@ export default {
 
 		},
 
+		on_queue_status(payload) {
+			
+				if (!this.page_alive) {
+					return;
+				}
+				const data = payload || {};
+				const pos = parseInt(data.position || data.queue_position || 0) || 0;
+				const total = parseInt(data.total || data.queue_total || 0) || 0;
+				if (pos > 0) {
+					this.queue_status_text = total > 0 ? ('排队中，您前面还有 ' + Math.max(0, pos - 1) + ' 人') : ('排队中，当前第 ' + pos + ' 位');
+					return;
+				}
+				const tip = String(data.msg || data.content || data.tips || '').trim();
+				this.queue_status_text = tip;
+			
+		},
+
 		on_chat_rating_open() {
 			
 				if (!this.page_alive) {
@@ -4712,6 +4735,7 @@ export default {
 			on_chat_event('record_around', this.on_record_around);
 			on_chat_event('chat_rating', this.on_chat_rating);
 			on_chat_event('chat_rating_open', this.on_chat_rating_open);
+			on_chat_event('queue_status', this.on_queue_status);
 			on_chat_event('chat_pending_send_fail', this.on_chat_pending_send_fail);
 			on_chat_event('chat_pending_send_flush', this.on_chat_pending_send_flush);
 		},
@@ -4775,6 +4799,7 @@ export default {
 			off_chat_event('record_around', this.on_record_around);
 			off_chat_event('chat_rating', this.on_chat_rating);
 			off_chat_event('chat_rating_open', this.on_chat_rating_open);
+			off_chat_event('queue_status', this.on_queue_status);
 			off_chat_event('chat_pending_send_fail', this.on_chat_pending_send_fail);
 			off_chat_event('chat_pending_send_flush', this.on_chat_pending_send_flush);
 		},

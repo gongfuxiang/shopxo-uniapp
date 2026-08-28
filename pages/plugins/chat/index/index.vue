@@ -19,6 +19,9 @@
 				</view>
 			</view>
 		</view>
+		<view v-if="!isEmpty(queue_status_text)" class="header-meta queue-status-bar" :style="{ top: nav_bar_h + 'px' }">
+			<text class="header-meta-v">{{ queue_status_text }}</text>
+		</view>
 		<view class="chat-main" :style="chat_main_style" @tap="hide_panel_event">
 			<view v-if="history_loading" class="history-more">
 				<view class="history-more-spin"></view>
