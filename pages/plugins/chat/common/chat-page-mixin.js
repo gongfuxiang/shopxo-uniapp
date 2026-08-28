@@ -6027,9 +6027,12 @@ export default {
 			
 				this.show_rating_modal = false;
 				this.rating_submitting = false;
-				setTimeout(() => {
-					chat_back_to_list_event(this.chat_entry_back_params());
-				}, 100);
+				if (rating_submit_fallback_timer) {
+					clearTimeout(rating_submit_fallback_timer);
+					rating_submit_fallback_timer = null;
+				}
+				// 发出评价 / 关闭评价后立刻回列表，不等服务端回包
+				chat_back_to_list_event(this.chat_entry_back_params());
 			
 		},
 
@@ -6077,16 +6080,7 @@ export default {
 					this.rating_submitting = false;
 					return;
 				}
-				// 对齐 PC：等 chat-rating 回包后再关窗并继续会话
-				if (rating_submit_fallback_timer) {
-					clearTimeout(rating_submit_fallback_timer);
-				}
-				rating_submit_fallback_timer = setTimeout(() => {
-					rating_submit_fallback_timer = null;
-					if (this.page_alive && this.rating_submitting) {
-						this.rating_submitting = false;
-					}
-				}, 3000);
+				// 评价发出即回列表，不等 chat-rating 回包
 				this.finish_end_rating_flow();
 			
 		},
@@ -6100,6 +6094,7 @@ export default {
 					clearTimeout(rating_submit_fallback_timer);
 					rating_submit_fallback_timer = null;
 				}
+				// 提交时已立刻离开；若仍停在评价窗（异常路径）再兜底关闭
 				if (this.show_rating_modal) {
 					this.finish_end_rating_flow();
 				}
