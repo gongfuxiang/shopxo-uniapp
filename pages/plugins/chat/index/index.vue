@@ -49,9 +49,14 @@
 					<text v-if="!isEmpty(input_status_msg)" class="input-status-msg">{{ input_status_msg }}</text>
 				</view>
 			</view>
-			<!-- 对齐 PC 咨询端：转人工客服 / 切回智能客服 / 结束对话 -->
+			<!-- 咨询端：结束对话在最左（与其它手机端一致），后接转人工 / 切回智能 -->
 			<view v-if="show_float_ai_bar" class="ai-float-wrap">
 				<view class="ai-float-bar">
+					<view
+						v-if="show_end_btn"
+						class="ai-bar-btn"
+						@tap="end_session_event"
+					><text class="ai-bar-btn-text">结束对话</text></view>
 					<view
 						v-if="show_transfer_human_btn"
 						class="ai-bar-btn"
@@ -64,11 +69,6 @@
 						:class="{ 'is-disabled': ai_switching }"
 						@tap="back_ai_event"
 					><text class="ai-bar-btn-text">切回智能客服</text></view>
-					<view
-						v-if="show_end_btn"
-						class="ai-bar-btn"
-						@tap="end_session_event"
-					><text class="ai-bar-btn-text">结束对话</text></view>
 				</view>
 			</view>
 
