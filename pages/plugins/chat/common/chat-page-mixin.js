@@ -48,7 +48,6 @@ import {
 	chat_can_end,
 	chat_end_session,
 	chat_continue_session,
-	chat_session_revive_inflight,
 	chat_submit_rating,
 	chat_can_rating,
 	chat_can_show_read,
@@ -150,7 +149,7 @@ let session_page_engaged = false;
 let page_visible = true;
 /** 离开聊天页期间会话结束：回页时重连续聊，不弹「是否继续」 */
 let ended_while_page_hidden = false;
-/** 自动续聊 / 结束态发消息排队 continue 期间，忽略迟到的 chat-end、chat-rating-open */
+/** 自动续聊 / 结束态发消息排队 continue 期间，忽略迟到的 chat-end、chat-rating-open（对齐 admin） */
 let suppress_ended_choice = false;
 let suppress_ended_choice_timer = null;
 
@@ -173,42 +172,10 @@ const clear_suppress_ended_choice = () => {
 	}
 };
 
-/** 续聊恢复后延迟再允许「是否继续」弹窗，避免迟到 chat-end 误弹 */
-let allow_ended_prompt_timer = null;
-const clear_allow_ended_prompt_timer = () => {
-	if (allow_ended_prompt_timer) {
-		clearTimeout(allow_ended_prompt_timer);
-		allow_ended_prompt_timer = null;
-	}
-};
-const schedule_allow_ended_prompt = (ms = 5000) => {
-	clear_allow_ended_prompt_timer();
-	allow_ended_prompt = false;
-	allow_ended_prompt_timer = setTimeout(() => {
-		allow_ended_prompt_timer = null;
-		if (record_init_done && session_page_engaged && !pending_session_revive) {
-			allow_ended_prompt = true;
-		}
-	}, ms);
-};
-
-/** 结束态发消息进入排队续聊时，统一标记续聊中并屏蔽结束弹窗 */
+/** 结束态发消息进入排队续聊时，统一标记续聊中并屏蔽结束弹窗（对齐 admin） */
 const mark_send_revive_queued = () => {
 	pending_session_revive = true;
-	arm_suppress_ended_choice(8000);
-};
-
-/** 用户在本页真正开始聊天后，才允许超时结束弹窗 */
-const mark_session_page_engaged = () => {
-	if (session_page_engaged) {
-		return;
-	}
-	session_page_engaged = true;
-	pending_session_revive = false;
-	arm_suppress_ended_choice(2000);
-	if (record_init_done) {
-		schedule_allow_ended_prompt(2000);
-	}
+	arm_suppress_ended_choice(3000);
 };
 
 let flash_record_timer = null;
@@ -4402,13 +4369,13 @@ export default {
 					ended_while_page_hidden = false;
 					this.show_ended_choice_modal = false;
 					ended_choice_showing = false;
-					if (prev_ended) {
-						// 刚从结束态恢复：先解除结束态，但不立刻 engaged（避免迟到 chat-end 误弹）
+					// 对齐 admin：续聊成功后立刻 engaged，允许之后超时再弹「是否继续」
+					if (prev_ended && pending_session_revive) {
 						pending_session_revive = false;
-						arm_suppress_ended_choice(8000);
-						// engaged 仍为 false 时 schedule 也不会打开弹窗权限
-						schedule_allow_ended_prompt(8000);
-					} else if (record_init_done && !pending_session_revive && session_page_engaged) {
+						session_page_engaged = true;
+						arm_suppress_ended_choice(2000);
+					}
+					if (record_init_done) {
 						allow_ended_prompt = true;
 					}
 				} else if (
@@ -4417,7 +4384,6 @@ export default {
 					&& !prev_ended
 					&& !suppress_ended_choice
 					&& !pending_session_revive
-					&& !chat_session_revive_inflight()
 				) {
 					// 仅本页聊天过程中变为结束才询问；进页已结束/续聊中不弹
 					this.prompt_ended_session_choice();
@@ -5797,6 +5763,9 @@ export default {
 
 		toggle_goods_panel_event() {
 			
+				if (!this.assert_can_compose()) {
+					return;
+				}
 				this.open_consult_popup_event({ currentTarget: { dataset: { type: 'goods' } } });
 			
 		},
@@ -5924,11 +5893,10 @@ export default {
 		mark_enter_ended_session() {
 			session_page_engaged = false;
 			pending_session_revive = true;
-			clear_allow_ended_prompt_timer();
 			allow_ended_prompt = false;
 		},
 
-		/** 进页结束态 / WS 就绪后：主动发 chat-continue（可重复尝试直到连上） */
+		/** 进页结束态 / WS 就绪后：主动发 chat-continue（对齐 admin） */
 		try_enter_auto_continue() {
 			if (!this.page_alive || this.skip_auto_continue) {
 				return false;
@@ -5941,20 +5909,15 @@ export default {
 				return false;
 			}
 			if (!st.ai?.ended && !this.session_ended) {
-				const was_pending = pending_session_revive;
 				pending_session_revive = false;
-				if (was_pending) {
-					// 进页以为已结束但已恢复：等用户发消息后再 engaged
-					arm_suppress_ended_choice(8000);
-					schedule_allow_ended_prompt(8000);
-				} else if (record_init_done) {
-					session_page_engaged = true;
+				session_page_engaged = true;
+				if (record_init_done) {
 					allow_ended_prompt = true;
 				}
 				return false;
 			}
 			this.mark_enter_ended_session();
-			arm_suppress_ended_choice(8000);
+			arm_suppress_ended_choice(3000);
 			return chat_continue_session({ silent: true });
 		},
 
@@ -5975,7 +5938,7 @@ export default {
 
 		prompt_ended_session_choice() {
 			
-				// 仅本页聊天过程中超时/对方结束才弹；进页已结束走静默 chat-continue
+				// 仅本页聊天过程中超时/对方结束才弹；进页已结束走静默 chat-continue（对齐 admin）
 				if (!this.page_alive || this.skip_auto_continue || this.show_rating_modal) {
 					return;
 				}
@@ -6018,7 +5981,7 @@ export default {
 			ended_choice_showing = false;
 			this.show_ended_choice_modal = false;
 			this.mark_enter_ended_session();
-			arm_suppress_ended_choice(8000);
+			arm_suppress_ended_choice(3000);
 			chat_resume_connect();
 			this.sync_connect_ui();
 			this.$nextTick(() => {
@@ -7478,7 +7441,8 @@ export default {
 					return;
 				}
 				pending_session_revive = false;
-				mark_session_page_engaged();
+				session_page_engaged = true;
+				arm_suppress_ended_choice(2000);
 				this.message_list.forEach((row) => {
 					if (row && row.is_self && row.send_status == 'sending' && row.upload_status != 'uploading') {
 						this.schedule_mark_send_ok(row.key);
@@ -7527,7 +7491,6 @@ export default {
 					return;
 				}
 				if (ok !== 'queued') {
-					mark_session_page_engaged();
 					this.schedule_mark_send_ok(row.key);
 				}
 			
@@ -7620,7 +7583,6 @@ export default {
 				page_visible = true;
 				ended_while_page_hidden = false;
 				clear_suppress_ended_choice();
-				clear_allow_ended_prompt_timer();
 				this.show_ended_choice_modal = false;
 				this.list_ready = false;
 				history_edge_armed = false;
@@ -7797,7 +7759,6 @@ export default {
 				page_visible = false;
 				ended_while_page_hidden = false;
 				clear_suppress_ended_choice();
-				clear_allow_ended_prompt_timer();
 				try {
 					this.show_ended_choice_modal = false;
 					this.show_rating_modal = false;
