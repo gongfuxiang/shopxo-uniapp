@@ -7,12 +7,16 @@
 
 ```
 pages/plugins/chat/
-  list/list.vue            # 会话列表（页内标题栏 + 搜索）
-  index/index.vue          # 会话详情（自定义标题栏）
-  common/                  # WS / 上传 / 初始化 / 页面逻辑
+  list/list.vue + list.css       # 会话列表（页内标题栏 + 搜索）
+  index/index.vue + index.css    # 会话详情（自定义标题栏）
+  common/                        # WS / 上传 / 初始化 / 页面逻辑
   components/
-    chat-native-entry.vue  # 原生客服浮窗入口（可选挂载）
+    chat-*.vue + chat-*.css      # 组件样式与页面一致，独立 .css + @import
+    chat-native-entry.vue        # 原生客服浮窗入口（可选挂载）
+    u-popup/                     # 弹层（关闭按钮用全局 iconfont）
 ```
+
+样式规范与商城其它页面一致：Vue 文件末尾 `<style>@import './同名.css';</style>`，样式写在同目录 `.css` 中；平台差异用 `/* #ifdef MP */` 条件编译。组件额外加 `scoped`，避免 `styleIsolation: 'shared'` 下样式泄漏。
 
 ## 路由
 

@@ -6,7 +6,10 @@ const path = require('path');
 const DIR = path.join(__dirname, '../components');
 
 function write(file, tpl, script, style) {
-	fs.writeFileSync(file, `<template>${tpl}</template>\n\n${script}\n\n<style lang="scss" scoped>${style}</style>\n`);
+	const base = path.basename(file, '.vue');
+	const cssFile = path.join(path.dirname(file), base + '.css');
+	fs.writeFileSync(cssFile, style.trim() + '\n');
+	fs.writeFileSync(file, `<template>${tpl}</template>\n\n${script}\n\n<style scoped>\n@import './${base}.css';\n</style>\n`);
 }
 
 function convertSimple(name) {

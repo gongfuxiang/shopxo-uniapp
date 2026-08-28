@@ -497,6 +497,8 @@
 		"plugins-ask-goods-list": "Q&A section",
 		"plugins-ask-comments": "All Q&A",
 		"plugins-aichat-index": "AI Customer Service Assistant",
+		"plugins-chat-list": "Online Customer Service",
+		"plugins-chat-index": "Online Customer Service",
 		"plugins-intellectstools-goods-comments": "Product evaluation",
 		"plugins-scanpay-index": "Scan code payment",
 		"plugins-scanpay-tips": "Payment results",

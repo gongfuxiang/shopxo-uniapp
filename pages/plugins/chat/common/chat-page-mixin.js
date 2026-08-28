@@ -1,4 +1,4 @@
-import { isEmpty, showToast, page_back_prev_event, chat_back_to_list_event, get_global_data, get_config, get_default_avatar, open_web_view } from '../common/chat-host.js';
+import { isEmpty, showToast, page_back_prev_event, chat_back_to_list_event, get_global_data, get_config, get_default_avatar, open_web_view, get_chat_nav_layout_metrics, get_chat_client_type } from '../common/chat-host.js';
 import base64 from '@/common/js/lib/base64.js';
 import { ensure_chat_user_init, apply_chat_user_page_config } from '../common/chat-user-init.js';
 // #ifdef APP-PLUS
@@ -48,6 +48,7 @@ import {
 	chat_can_end,
 	chat_end_session,
 	chat_continue_session,
+	chat_session_revive_inflight,
 	chat_submit_rating,
 	chat_can_rating,
 	chat_can_show_read,
@@ -73,7 +74,32 @@ const bind_chat_push = () => {};
 const request_chat_push_auth = () => {};
 const create_chat_local_push = () => {};
 const request_chat_media_auth = () => {
+	// #ifdef MP-WEIXIN
+	try {
+		uni.getSetting({
+			success(res) {
+				const auth = (res && res.authSetting) || {};
+				if (auth['scope.record']) {
+					return;
+				}
+				uni.authorize({
+					scope: 'scope.record',
+					fail() {
+						showToast('需要麦克风权限才能发送语音');
+						setTimeout(() => {
+							try {
+								uni.openSetting({});
+							} catch (e) {}
+						}, 800);
+					},
+				});
+			},
+		});
+	} catch (e) {}
+	// #endif
+	// #ifndef MP-WEIXIN
 	try { uni.authorize && uni.authorize({ scope: 'scope.record' }); } catch (e) {}
+	// #endif
 };
 const ensure_chat_media_auth_before_pick = () => Promise.resolve(true);
 
@@ -141,6 +167,12 @@ const clear_suppress_ended_choice = () => {
 		clearTimeout(suppress_ended_choice_timer);
 		suppress_ended_choice_timer = null;
 	}
+};
+
+/** 结束态发消息进入排队续聊时，统一标记续聊中并屏蔽结束弹窗 */
+const mark_send_revive_queued = () => {
+	pending_session_revive = true;
+	arm_suppress_ended_choice(3000);
 };
 
 let flash_record_timer = null;
@@ -374,16 +406,17 @@ let msg_press_y = 0;
 export default {
 	data() {
 		const default_avatar = get_default_avatar();
+		const navInit = get_chat_nav_layout_metrics(88);
 		return {
 			page_alive: true,
 			show_agent_transfer: false,
 			chat_id: '',
 			route_chat_id: '',
 			chat_title: '会话',
-			status_bar_height: 0,
-			window_height: 667,
-			nav_content_h: 0,
-			nav_right_pad: 12,
+			status_bar_height: navInit.status_bar_height,
+			window_height: navInit.window_height,
+			nav_content_h: navInit.nav_content_h,
+			nav_right_pad: navInit.nav_right_pad,
 			input_text: '',
 			input_focus: false,
 			input_view_key: 0,
@@ -397,8 +430,9 @@ export default {
 			has_more: false,
 			history_loading: false,
 			min_record_id: 0,
-			nav_bar_h: 0,
-			nav_occupy_h: 0,
+			nav_bar_h: navInit.nav_bar_h,
+			nav_occupy_h: navInit.nav_occupy_h,
+			nav_layout_ready: false,
 			composer_occupy_h: 0,
 			input_status_text: '',
 			input_status_msg: '',
@@ -469,27 +503,30 @@ export default {
 	},
 	computed: {
 		nav_wrap_style() {
-			return ({
-	paddingTop: this.status_bar_height + 'px',
-});
+			return 'padding-top:' + (this.status_bar_height || 0) + 'px;box-sizing:border-box;';
+		},
+
+		nav_status_bar_style() {
+			return 'height:' + (this.status_bar_height || 0) + 'px;width:100%;flex-shrink:0;';
 		},
 
 		nav_bar_style() {
-	const style = {
-		paddingRight: this.nav_right_pad + 'px',
-	};
-	if (this.nav_content_h > 0) {
-		style.height = this.nav_content_h + 'px';
-	}
-	return style;
-},
+			let style = 'padding-right:' + (this.nav_right_pad || 12) + 'px;box-sizing:border-box;';
+			if (this.nav_content_h > 0) {
+				style += 'height:' + this.nav_content_h + 'px;';
+			}
+			return style;
+		},
 
 		chat_main_style() {
-	return {
-		paddingTop: this.nav_occupy_h + 'px',
-		paddingBottom: (this.composer_occupy_h + Number(this.keyboard_height || 0)) + 'px',
-	};
-},
+			const occupy = this.nav_occupy_h || this.nav_bar_h || 0;
+			const bottom = this.composer_occupy_h + Number(this.keyboard_height || 0);
+			let style = 'padding-bottom:' + bottom + 'px;box-sizing:border-box;';
+			if (occupy > 0) {
+				style = 'padding-top:' + occupy + 'px;' + style;
+			}
+			return style;
+		},
 
 		video_fs_head_h() {
 			return Number(this.status_bar_height || 0) + 56;
@@ -540,6 +577,10 @@ export default {
 	keys.sort((a, b) => b.length - a.length);
 	return keys;
 },
+
+		consult_is_trace_panel() {
+			return this.consult_popup_type === 'source';
+		},
 
 		goods_clickable() {
 			return chat_can_open_goods();
@@ -611,6 +652,10 @@ export default {
 
 		input_placeholder() {
 	if (this.ai_mode == 'ai') {
+		const client = get_chat_client_type();
+		if (['weixin', 'alipay', 'baidu', 'qq', 'kuaishou'].indexOf(client) !== -1) {
+			return this.show_float_ai_bar ? '智能客服接待中' : '点击「转人工客服」';
+		}
 		return '智能客服接待中，可点击「转人工客服」';
 	}
 	if (this.connect_status !== 1) {
@@ -626,6 +671,10 @@ export default {
 		return '您已离线';
 	}
 	return '请输入内容';
+},
+
+		input_placeholder_style() {
+	return 'font-size:24rpx;color:#b2b2b2;line-height:36rpx;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;';
 },
 
 		consult_panel_has_source_tab() {
@@ -679,7 +728,7 @@ export default {
 },
 
 		msg_search_list_h() {
-	const hd = (this.status_bar_height || 0) + this.rpx_to_px(88);
+	const hd = this.nav_occupy_h || this.nav_bar_h || ((this.status_bar_height || 0) + (this.nav_content_h || this.rpx_to_px(88)) + this.get_nav_bottom_pad());
 	const h = (this.window_height || 0) - hd;
 	return h > 0 ? h : 400;
 },
@@ -864,70 +913,142 @@ export default {
 			
 		},
 
-		init_nav_metrics() {
-			
-				try {
-					const sys = uni.getSystemInfoSync() || {};
-					this.status_bar_height = Number(sys.statusBarHeight || 0);
-					this.window_height = Number(sys.windowHeight || 667);
-					const win_w = Number(sys.windowWidth || 375);
-					// #ifdef MP
-					try {
-						const mb = typeof uni.getMenuButtonBoundingClientRect == 'function'
-							? uni.getMenuButtonBoundingClientRect()
-							: null;
-						if (mb && mb.width > 0 && mb.left > 0) {
-							// 顶距对齐胶囊 top，高度对齐胶囊，右侧留白到胶囊左侧
-							this.status_bar_height = Number(mb.top || this.status_bar_height);
-							this.nav_content_h = Number(mb.height || 0);
-							this.nav_right_pad = Math.max(12, win_w - Number(mb.left || win_w) + 6);
-						}
-					} catch (e2) {}
-					// #endif
-				} catch (e) {
-					this.status_bar_height = 0;
+		apply_nav_layout(patch = {}) {
+			const setNum = (key) => {
+				if (patch[key] == null || Number.isNaN(Number(patch[key]))) {
+					return;
 				}
-				if (!(this.nav_content_h > 0)) {
-					this.nav_content_h = this.rpx_to_px(88);
+				const next = Number(patch[key]);
+				if (Math.abs(next - Number(this[key] || 0)) >= 1) {
+					this[key] = next;
 				}
-				if (!(this.nav_bar_h > 0)) {
-					this.nav_bar_h = this.status_bar_height + this.nav_content_h;
-				}
-				if (!(this.nav_occupy_h > 0)) {
-					this.nav_occupy_h = this.nav_bar_h;
-				}
-				if (!(this.composer_occupy_h > 0)) {
-					this.composer_occupy_h = this.rpx_to_px(104);
-				}
-			
+			};
+			setNum('status_bar_height');
+			setNum('nav_content_h');
+			setNum('nav_right_pad');
+			setNum('nav_bar_h');
+			setNum('nav_occupy_h');
+			setNum('window_height');
 		},
 
-		measure_chrome() {
-			
-				this.$nextTick(() => {
-					if (!this.page_alive) {
-						return;
+		get_nav_bottom_pad() {
+			try {
+				const app = getApp();
+				const client = app && app.globalData && typeof app.globalData.application_client_type == 'function'
+					? app.globalData.application_client_type()
+					: '';
+				if (['weixin', 'alipay', 'baidu', 'qq', 'kuaishou'].indexOf(client) !== -1) {
+					return this.rpx_to_px(12);
+				}
+			} catch (e) {}
+			return 0;
+		},
+
+		init_nav_metrics(force = false) {
+			if (this.nav_layout_ready && !force) {
+				return;
+			}
+			let statusBarHeight = 0;
+			let navContentHeight = 0;
+			let navRightPad = 12;
+			let windowHeight = 667;
+			try {
+				const app = getApp();
+				let sys = {};
+				if (app && app.globalData && typeof app.globalData.get_system_info == 'function') {
+					sys = app.globalData.get_system_info(null, null, true) || {};
+				}
+				if (!sys || sys.windowWidth == null) {
+					sys = uni.getSystemInfoSync() || {};
+				}
+				statusBarHeight = Number(sys.statusBarHeight || 0);
+				windowHeight = Number(sys.windowHeight || 667);
+				const win_w = Number(sys.windowWidth || 375);
+				if (!(statusBarHeight > 0)) {
+					statusBarHeight = Number(
+						(sys.safeAreaInsets && sys.safeAreaInsets.top)
+						|| (sys.safeArea && sys.safeArea.top)
+						|| 0
+					);
+				}
+				try {
+					const mb = typeof uni.getMenuButtonBoundingClientRect == 'function'
+						? uni.getMenuButtonBoundingClientRect()
+						: null;
+					if (mb && Number(mb.width) > 0 && Number(mb.left) > 0) {
+						statusBarHeight = Number(mb.top || statusBarHeight);
+						navContentHeight = Number(mb.height || 0);
+						navRightPad = Math.max(12, win_w - Number(mb.left || win_w) + 6);
 					}
-					uni.createSelectorQuery().select('.nav-wrap').boundingClientRect().select('.header-meta').boundingClientRect().select('.composer-fixed').boundingClientRect().exec((res) => {
-						if (!this.page_alive) {
-							return;
-						}
-						const nav = res && res[0];
-						const meta = res && res[1];
-						const composer = res && res[2];
-						if (nav && nav.height > 0) {
-							this.nav_bar_h = nav.height;
-							this.nav_occupy_h = nav.height + ((meta && meta.height) || 0);
-						}
-						if (composer && composer.height > 0) {
-							this.composer_occupy_h = composer.height;
-						}
-					});
-				});
-			
+				} catch (e2) {}
+			} catch (e) {
+				statusBarHeight = 0;
+			}
+			if (!(navContentHeight > 0)) {
+				navContentHeight = this.rpx_to_px(88);
+			}
+			const bottomPad = this.get_nav_bottom_pad();
+			const navBarHeight = statusBarHeight + navContentHeight + bottomPad;
+			this.apply_nav_layout({
+				status_bar_height: statusBarHeight,
+				nav_content_h: navContentHeight,
+				nav_right_pad: navRightPad,
+				window_height: windowHeight,
+				nav_bar_h: navBarHeight,
+				nav_occupy_h: navBarHeight,
+			});
+			this.nav_layout_ready = true;
+			if (!(this.composer_occupy_h > 0)) {
+				this.composer_occupy_h = this.rpx_to_px(104);
+			}
+		},
+
+		schedule_nav_remeasure() {},
+
+		measure_chrome() {
+			this.$nextTick(() => {
+				if (!this.page_alive) {
+					return;
+				}
+				try {
+					uni.createSelectorQuery().in(this)
+						.select('.nav-wrap').boundingClientRect()
+						.select('.header-meta').boundingClientRect()
+						.select('.composer-fixed').boundingClientRect()
+						.exec((res) => {
+							if (!this.page_alive) {
+								return;
+							}
+							const nav = res && res[0];
+							const meta = res && res[1];
+							const composer = res && res[2];
+							if (nav && nav.height > 0) {
+								const navH = Math.round(nav.height);
+								const metaH = Math.round((meta && meta.height) || 0);
+								const occupyH = navH + metaH;
+								if (Math.abs(navH - Number(this.nav_bar_h || 0)) >= 1) {
+									this.nav_bar_h = navH;
+								}
+								if (Math.abs(occupyH - Number(this.nav_occupy_h || 0)) >= 1) {
+									this.nav_occupy_h = occupyH;
+								}
+							}
+							if (composer && composer.height > 0) {
+								const composerH = Math.round(composer.height);
+								if (Math.abs(composerH - Number(this.composer_occupy_h || 0)) >= 1) {
+									this.composer_occupy_h = composerH;
+								}
+							}
+						});
+				} catch (e) {}
+			});
 		},
 
 		prevent_touch_move() {
+			
+		},
+
+		prevent_default_event() {
 			
 		},
 
@@ -1579,8 +1700,10 @@ export default {
 			
 		},
 
-		open_consult_source_event(item) {
+		open_consult_track_event(e) {
 			
+				const idx = parseInt(e?.currentTarget?.dataset?.idx, 10);
+				const item = Number.isFinite(idx) ? (this.consult_filtered_list[idx] || null) : null;
 				const url = String((item && (item.value || item.url)) || '').trim();
 				if (isEmpty(url) || !/^https?:\/\//i.test(url)) {
 					return;
@@ -1618,6 +1741,9 @@ export default {
 					send_payload: payload,
 				});
 				const ok = chat_send_message(payload);
+				if (ok === 'queued') {
+					mark_send_revive_queued();
+				}
 				if (!ok) {
 					this.mark_send_fail(row.key);
 					return;
@@ -2796,6 +2922,7 @@ export default {
 					}
 					chat_upload_clear_resume(chunk_key);
 					if (ok === 'queued') {
+						mark_send_revive_queued();
 						this.patch_local_message(row_key, {
 							...patch,
 							send_status: 'sending',
@@ -2876,6 +3003,7 @@ export default {
 					if (row.send_payload && !isEmpty(row.send_payload.url)) {
 						const ok = chat_send_message(row.send_payload);
 						if (ok === 'queued') {
+							mark_send_revive_queued();
 							this.patch_local_message(key, { send_status: 'sending', upload_status: '', media_ready: true, upload_progress: 100 });
 						} else if (ok) {
 							this.mark_send_ok(key);
@@ -2921,6 +3049,7 @@ export default {
 				const payload = row.send_payload || { data_type: 'text', content: row.text || '', quote: row.quote || null };
 				const ok = chat_send_message(payload);
 				if (ok === 'queued') {
+					mark_send_revive_queued();
 					return;
 				}
 				if (ok) {
@@ -3052,6 +3181,7 @@ export default {
 							is_pure: false,
 							is_ai_summary,
 							is_mode_tip,
+							is_ai_reply,
 							is_system: is_system && !is_mode_tip && !is_ai_summary,
 							is_thinking: false,
 							show_sender: !is_mode_tip && !is_system && !is_ai_summary && !!String(sender || '').trim(),
@@ -3279,7 +3409,7 @@ export default {
 					chat_set_friend_base(payload.base);
 					this.sync_friend_base(payload.base);
 				}
-				this.sync_ai_state();
+				this.sync_ai_state(payload?.ai ? { ai: payload.ai } : undefined);
 				// 对齐 PC UserRecordView：init 后追加初始提示（含空会话）
 				if (payload?.mode == 'init') {
 					this.append_init_message();
@@ -4210,6 +4340,7 @@ export default {
 			
 				const data = payload || get_chat_state();
 				const ai = data.ai || get_chat_state().ai || {};
+				const prev_ai_mode = this.ai_mode;
 				this.ai_mode = ai.mode || 'human';
 				this.ai_enabled = parseInt(ai.is_enable || 0) == 1;
 				this.ai_switching = !!ai.switching;
@@ -4228,7 +4359,14 @@ export default {
 					if (record_init_done) {
 						allow_ended_prompt = true;
 					}
-				} else if (allow_ended_prompt && session_page_engaged && !prev_ended && !suppress_ended_choice) {
+				} else if (
+					allow_ended_prompt
+					&& session_page_engaged
+					&& !prev_ended
+					&& !suppress_ended_choice
+					&& !pending_session_revive
+					&& !chat_session_revive_inflight()
+				) {
 					// 仅本页聊天过程中变为结束才询问；进页已结束/续聊中不弹
 					this.prompt_ended_session_choice();
 				}
@@ -4237,6 +4375,9 @@ export default {
 				this.agent_online_others = Number(data.agent_online_others != null ? data.agent_online_others : get_chat_state().agent_online_others) || 0;
 				if (this.ai_mode == 'ai') {
 					this.panel_type = '';
+				}
+				if (prev_ai_mode != this.ai_mode) {
+					this.input_view_key += 1;
 				}
 			
 		},
@@ -4279,6 +4420,11 @@ export default {
 
 		on_friend_input_status(payload) {
 			
+				// 对齐 PC：AI 接待中不展示对方输入状态
+				if (this.ai_mode == 'ai') {
+					this.clear_typing_tip();
+					return;
+				}
 				if (!chat_can_input_status()) {
 					this.clear_typing_tip();
 					return;
@@ -4617,6 +4763,9 @@ export default {
 
 		push_input_status_event() {
 			
+				if (this.ai_mode == 'ai') {
+					return;
+				}
 				if (input_status_timer) {
 					clearTimeout(input_status_timer);
 				}
@@ -4835,6 +4984,13 @@ export default {
 				const msg = String((err && err.message) || err || '').toLowerCase();
 				if (msg.indexOf('mic') >= 0 || msg.indexOf('permission') >= 0 || msg.indexOf('notallowed') >= 0 || msg.indexOf('denied') >= 0) {
 					showToast('请允许使用麦克风');
+					// #ifdef MP-WEIXIN
+					setTimeout(() => {
+						try {
+							uni.openSetting({});
+						} catch (e) {}
+					}, 800);
+					// #endif
 					return;
 				}
 				showToast('录音启动失败');
@@ -4898,13 +5054,32 @@ export default {
 			
 		},
 
-		measure_voice_cancel_btn() {
+		measure_voice_cancel_btn(retry = 0) {
 			
 				if (!this.page_alive) {
 					return;
 				}
 				this.$nextTick(() => {
 					if (!this.page_alive) {
+						return;
+					}
+					const mask = this.$refs.chat_voice_mask_ref;
+					if (mask && typeof mask.measure_zones === 'function') {
+						mask.measure_zones().then(({ cancel, send }) => {
+							if (!this.page_alive) {
+								return;
+							}
+							if (cancel && cancel.width > 0) {
+								voice_cancel_rect = cancel;
+							}
+							if (send && send.width > 0) {
+								voice_send_rect = send;
+							}
+						});
+						return;
+					}
+					if (retry < 3) {
+						setTimeout(() => this.measure_voice_cancel_btn(retry + 1), 50);
 						return;
 					}
 					const scope = this;
@@ -5231,8 +5406,21 @@ export default {
 			
 		},
 
+		stop_voice_event(e) {
+			if (!e) {
+				return;
+			}
+			if (typeof e.stopPropagation === 'function') {
+				e.stopPropagation();
+			}
+			if (typeof e.preventDefault === 'function') {
+				e.preventDefault();
+			}
+		},
+
 		voice_press_start(e) {
 			
+				this.stop_voice_event(e);
 				if (this.is_dup_voice_event(e)) {
 					return;
 				}
@@ -5315,6 +5503,7 @@ export default {
 
 		voice_press_move(e) {
 			
+				this.stop_voice_event(e);
 				if (this.is_voice_mouse_event(e) && Date.now() < voice_ignore_mouse_until) {
 					return;
 				}
@@ -5408,6 +5597,7 @@ export default {
 
 		voice_press_end(e) {
 			
+				this.stop_voice_event(e);
 				if (e && ((e.type == 'touchend') || (e.type == 'touchcancel') || e.pointerType == 'touch')) {
 					voice_ignore_mouse_until = Date.now() + 700;
 				}
@@ -6387,7 +6577,12 @@ export default {
 					return;
 				}
 				try {
-					const ctx = uni.createVideoContext('chat-fs-video');
+					const popup = this.$refs.chat_video_popup_ref;
+					if (popup && typeof popup.play_video === 'function') {
+						popup.play_video();
+						return;
+					}
+					const ctx = uni.createVideoContext('chat-fs-video', this);
 					if (ctx && typeof ctx.play == 'function') {
 						ctx.play();
 					}
@@ -6398,7 +6593,12 @@ export default {
 		stop_fs_video() {
 			
 				try {
-					const ctx = uni.createVideoContext('chat-fs-video');
+					const popup = this.$refs.chat_video_popup_ref;
+					if (popup && typeof popup.stop_video === 'function') {
+						popup.stop_video();
+						return;
+					}
+					const ctx = uni.createVideoContext('chat-fs-video', this);
 					if (ctx) {
 						if (typeof ctx.pause == 'function') {
 							ctx.pause();
@@ -6932,6 +7132,55 @@ export default {
 			
 		},
 
+		on_msg_item_action(payload) {
+			const type = payload && payload.type;
+			if (!type) {
+				return;
+			}
+			const event = payload.event;
+			const data = payload.data;
+			switch (type) {
+				case 'reedit':
+					return this.reedit_recall_event(event);
+				case 'resend':
+					return this.resend_failed_message(event);
+				case 'imageLoad':
+					return this.on_send_image_load(data);
+				case 'imageError':
+					return this.on_send_image_error(data);
+				case 'previewImage':
+					return this.preview_image_event(event);
+				case 'videoPosterError':
+					return this.on_video_poster_error(event);
+				case 'openVideo':
+					return this.open_video_player_event(event);
+				case 'openGoods':
+					return this.open_goods_card_event(event);
+				case 'toggleAudio':
+					return this.toggle_audio_play_event(event);
+				case 'quote':
+					return this.quote_message_event(event);
+				case 'pressStart':
+					return this.on_msg_press_start(event);
+				case 'pressMove':
+					return this.on_msg_press_move(event);
+				case 'pressEnd':
+					return this.on_msg_press_end(event);
+				case 'mouseDown':
+					return this.on_msg_mouse_down(event);
+				case 'contextmenu':
+					return this.on_msg_contextmenu(event);
+				case 'openFile':
+					return this.open_file_link_event(event);
+				case 'openLink':
+					return this.open_msg_link_event(event);
+				case 'quoteBlockTap':
+					return this.quote_block_tap_event(data);
+				default:
+					return;
+			}
+		},
+
 		quote_message_event(e) {
 			
 				// App / 小程序走原生 longpress；H5 由下方 touch/mouse 模拟，避免重复弹出
@@ -7186,8 +7435,7 @@ export default {
 			
 				const ok = chat_send_message(payload);
 				if (ok === 'queued') {
-					pending_session_revive = true;
-					arm_suppress_ended_choice(3000);
+					mark_send_revive_queued();
 				}
 				if (!ok) {
 					this.mark_send_fail(row.key);
@@ -7296,7 +7544,7 @@ export default {
 						this.scroll_to_bottom_after_layout(true);
 					}
 				}, 1500);
-				this.init_nav_metrics();
+				this.init_nav_metrics(true);
 				bind_chat_push();
 				request_chat_push_auth();
 				this.measure_chrome();
@@ -7329,6 +7577,7 @@ export default {
 					this.page_user_inited = true;
 					this.sync_emoji_list();
 					this.sync_tool_flags();
+					apply_chat_user_page_config();
 					if (before.connect_status === 1 && before.user_type == 'user') {
 						chat_resume_connect();
 					} else {
@@ -7348,6 +7597,10 @@ export default {
 
 		chat_page_on_show() {
 			this.page_alive = true;
+				if (!(Number(this.nav_occupy_h || 0) > 0)) {
+					this.init_nav_metrics(true);
+					this.measure_chrome();
+				}
 				if (file_pick_hold) {
 					this.arm_resume_hold();
 					chat_resume_connect();

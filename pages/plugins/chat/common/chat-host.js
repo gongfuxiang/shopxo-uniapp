@@ -47,6 +47,95 @@ export const get_default_avatar = () => {
 	return src || '/static/images/common/user.png';
 };
 
+const chat_rpx_to_px = (rpx) => (typeof uni.upx2px == 'function' ? uni.upx2px(rpx) : Math.round(Number(rpx) / 2));
+
+/** 运行时客户端类型 */
+export const get_chat_client_type = () => {
+	try {
+		const app = get_app();
+		if (app && app.globalData && typeof app.globalData.application_client_type == 'function') {
+			const client = app.globalData.application_client_type();
+			if (client) {
+				return String(client);
+			}
+		}
+	} catch (e) {}
+	try {
+		const platform = String((uni.getSystemInfoSync() || {}).uniPlatform || '');
+		if (platform === 'mp-weixin') {
+			return 'weixin';
+		}
+		if (platform.indexOf('mp-') === 0) {
+			return platform.replace('mp-', '');
+		}
+		if (platform === 'web') {
+			return 'h5';
+		}
+	} catch (e2) {}
+	return '';
+};
+
+/**
+ * 自定义导航栏尺寸（对齐 shopxo-admin-app/pages/customer-service/chat.vue init_nav_metrics）
+ */
+export const get_chat_nav_layout_metrics = (nav_content_rpx = 88) => {
+	let statusBarHeight = 0;
+	let navContentHeight = 0;
+	let navRightPad = 12;
+	let windowHeight = 667;
+	let windowWidth = 375;
+
+	try {
+		const app = get_app();
+		let sys = {};
+		if (app && app.globalData && typeof app.globalData.get_system_info == 'function') {
+			sys = app.globalData.get_system_info(null, null, true) || {};
+		}
+		if (!sys || sys.windowWidth == null) {
+			sys = uni.getSystemInfoSync() || {};
+		}
+		statusBarHeight = Number(sys.statusBarHeight || 0);
+		windowHeight = Number(sys.windowHeight || 667);
+		windowWidth = Number(sys.windowWidth || 375);
+		if (!(statusBarHeight > 0)) {
+			statusBarHeight = Number(
+				(sys.safeAreaInsets && sys.safeAreaInsets.top)
+				|| (sys.safeArea && sys.safeArea.top)
+				|| 0
+			);
+		}
+
+		if (typeof uni.getMenuButtonBoundingClientRect == 'function') {
+			try {
+				const mb = uni.getMenuButtonBoundingClientRect();
+				if (mb && Number(mb.width) > 0 && Number(mb.left) > 0) {
+					statusBarHeight = Number(mb.top || statusBarHeight);
+					navContentHeight = Number(mb.height || 0);
+					navRightPad = Math.max(12, windowWidth - Number(mb.left || windowWidth) + 6);
+				}
+			} catch (e2) {}
+		}
+	} catch (e) {
+		statusBarHeight = 0;
+	}
+
+	if (!(navContentHeight > 0)) {
+		navContentHeight = chat_rpx_to_px(nav_content_rpx);
+	}
+
+	const navBarHeight = statusBarHeight + navContentHeight;
+
+	return {
+		status_bar_height: statusBarHeight,
+		nav_content_h: navContentHeight,
+		nav_bar_h: navBarHeight,
+		nav_occupy_h: navBarHeight,
+		nav_right_pad: navRightPad,
+		window_height: windowHeight,
+		window_width: windowWidth,
+	};
+};
+
 export const request_uuid = () => {
 	const app = get_app();
 	if (app && app.globalData && typeof app.globalData.request_uuid == 'function') {

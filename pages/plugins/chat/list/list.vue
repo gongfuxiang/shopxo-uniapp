@@ -1,11 +1,12 @@
 <template>
 	<view :class="theme_view + ' chat-list-page'">
-		<view class="chat-list-nav" :style="list_nav_style">
-			<view class="chat-list-nav-bar" :style="{ height: nav_content_h + 'px' }">
+		<view class="chat-list-nav">
+			<view class="chat-list-status-bar" :style="list_status_bar_style"></view>
+			<view class="chat-list-nav-bar" :style="list_nav_bar_style">
 				<view class="chat-list-nav-back" @tap.stop="list_back_event">
 					<iconfont name="icon-angle-left" size="36rpx" color="#191919"></iconfont>
 				</view>
-				<text class="chat-list-nav-title">在线客服</text>
+				<text class="chat-list-nav-title">{{ list_page_title }}</text>
 				<view class="chat-list-nav-side"></view>
 			</view>
 		</view>
@@ -45,7 +46,7 @@
 					></component-no-data>
 					<view
 						v-for="(item, index) in filtered_list"
-						:key="'chat-list-' + item.id"
+						:key="item.id"
 						class="chat-list-item"
 						:data-index="index"
 						@tap="open_chat_event"
@@ -77,6 +78,9 @@
 	import componentCommon from '@/components/common/common';
 	import componentNoData from '@/components/no-data/no-data';
 	import chatListMixin from '../common/chat-list-mixin.js';
+	import { get_chat_nav_layout_metrics } from '../common/chat-host.js';
+
+	const listNavInit = get_chat_nav_layout_metrics(88);
 
 	export default {
 		mixins: [chatListMixin],
@@ -88,6 +92,12 @@
 			return {
 				theme_view: app.globalData.get_theme_value_view(),
 				default_avatar: app.globalData.data.default_user_head_src,
+				status_bar_height: listNavInit.status_bar_height,
+				nav_content_h: listNavInit.nav_content_h,
+				nav_occupy_h: listNavInit.nav_occupy_h,
+				nav_bar_h: listNavInit.nav_bar_h,
+				nav_right_pad: listNavInit.nav_right_pad,
+				window_height: listNavInit.window_height,
 			};
 		},
 		onLoad(params) {
@@ -99,6 +109,9 @@
 			app.globalData.page_event_onshow_handle && app.globalData.page_event_onshow_handle();
 			this.$refs.common && this.$refs.common.on_show && this.$refs.common.on_show();
 			this.chat_list_on_show();
+		},
+		onReady() {
+			this.chat_list_on_ready();
 		},
 		onHide() {
 			this.chat_list_on_hide();

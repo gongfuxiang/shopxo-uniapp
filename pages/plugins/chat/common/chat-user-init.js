@@ -60,8 +60,7 @@ export const ensure_chat_user_init = (options = {}) => {
 export const apply_chat_user_page_config = (extra = {}) => {
 	const patch = {
 		goods_click_enable: 1,
-		goods_detail_path: '/pages/goods-detail/goods-detail?id={id}',
-		// 对齐 PC chat.html：data-is-chat-record-search / data-is-chat-record-search-user
+		// 商品跳转优先用接口下发的 goods_url；无链接时再靠 goods_detail_path 兜底
 		is_chat_record_search: 1,
 		is_chat_record_search_user: 1,
 		...(extra || {}),

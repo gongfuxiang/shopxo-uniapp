@@ -5,7 +5,7 @@
             <component-u-transition key="2" :propMode="ani" propName="content" :propCustomStyle="transClass" :propDuration="duration" :propShow="showTrans">
                 <view class="pr" :style="'border-radius:' + propRound + 'px'">
                     <view v-if="propCloseType == 'icon' && propCloseable" class="popup-close pa-14 box-border-box" :class="propCloseIconPos" :style="closeIconStyle" @tap="close">
-                        <component-u-icon :propName="propCloseIcon" :propType="propCloseIconType" :propSize="propCloseIconSize + 'rpx'"></component-u-icon>
+                        <iconfont :name="closeIconName" :size="propCloseIconSize + 'rpx'" :color="closeIconColor"></iconfont>
                     </view>
                     <view v-if="propTitle && propTitle !== true" class="pr">
                         <view class="popup-close pa-14 box-border-box flex-row popup-title-bar" :class="propTitleBorder ? 'br-b-e' : ''">
@@ -35,7 +35,6 @@
 
 <script>
     const app = getApp();
-    import componentUIcon from '../u-icon/u-icon';
     import componentUTransition from '../u-transition/u-transition';
     // #ifdef H5
     import keypress from './keypress.js';
@@ -61,7 +60,7 @@
      * @property {Boolean} safeArea		   是否适配底部安全区
      * @property {Boolean} closeable Boolean | 是否显示关闭图标，默认true
      * @property {String} closeIcon String | 关闭iconfont，默认‘close’ ---还有close-o，或者其他自定义icon
-     * @property {String} closeIconType String | 关闭颜色，默认‘6’ 参照组件u-icon
+     * @property {String} closeIconType String | 关闭颜色类型，默认‘6’（#666）
      * @property {String} closeIconPos = [top-left|top-right|top-center|bottom-left|bottom-right|bottom-center] String | 关闭图标位置
      * 	@value top-left 左上角
      * 	@value top-right 右上角
@@ -86,7 +85,6 @@
     export default {
         name: 'uniPopup',
         components: {
-            componentUIcon,
             componentUTransition,
             // #ifdef H5
             keypress,
@@ -324,6 +322,26 @@
                 }
 
                 return style;
+            },
+            closeIconName() {
+                const name = String(this.propCloseIcon || 'close-line').trim();
+                if (!name) {
+                    return 'icon-close-line';
+                }
+                return name.indexOf('icon-') === 0 ? name : 'icon-' + name;
+            },
+            closeIconColor() {
+                const type = String(this.propCloseIconType || '6');
+                const map = {
+                    '6': '#666666',
+                    '9': '#999999',
+                    info: '#999999',
+                    primary: '#1677ff',
+                    error: '#fa5151',
+                    warning: '#e6a23c',
+                    success: '#07c160',
+                };
+                return map[type] || '#999999';
             },
             // 关闭Icon样式
             closeIconStyle() {

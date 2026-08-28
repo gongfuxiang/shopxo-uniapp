@@ -35,9 +35,16 @@
 	border-bottom: 1rpx solid #e5e5e5;
 	z-index: 32;
 	box-sizing: border-box;
+	display: flex;
+	flex-direction: column;
 	/* #ifdef MP */
 	padding-bottom: 12rpx;
 	/* #endif */
+}
+
+.nav-status-bar {
+	width: 100%;
+	flex-shrink: 0;
 }
 
 .header-meta {
@@ -707,6 +714,15 @@
 	line-height: 1.4;
 	word-break: break-word;
 	overflow-y: auto;
+}
+
+.msg-input-placeholder {
+	font-size: 24rpx;
+	color: #b2b2b2;
+	line-height: 36rpx;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
 }
 
 .panel-box {

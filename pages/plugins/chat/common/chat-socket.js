@@ -5,8 +5,7 @@
  * 迁移到其他项目（插件式）：
  * 1. 拷贝 common/js/chat_*.js、hooks/chat_*、pages/consult（咨询端）或 pages/customer-service（工作台）、相关 components
  * 2. 改本文件顶部 chat_default_config，或运行时 chat_set_config / chat_connect
- * 3. 商品点击：本管理端默认不跳；宿主项目设 goods_click_enable=1 + goods_detail_path，
- *    或传入 on_goods_click 回调（优先）
+ * 3. 商品点击：开启 goods_click_enable=1，优先用消息里的 goods_url；或传 on_goods_click 回调
  */
 import {
 	get_user_cache_info,
@@ -108,11 +107,27 @@ export const chat_can_open_goods = () => {
 
 /**
  * 打开商品（插件迁移入口）
- * 优先级：on_goods_click > goods_detail_path > goods_url(web-view)
- * 本管理端默认 goods_click_enable=0 且无回调 → 不跳转
+ * 优先级：on_goods_click > 接口下发的 goods_url > goods_detail_path 模板兜底
  * @param {object} goods { id, goods_id, goods_url, title, ... }
  * @returns {boolean}
  */
+const open_goods_link = (url) => {
+	const link = String(url || '').trim();
+	if (isEmpty(link)) {
+		return false;
+	}
+	if (/^https?:\/\//i.test(link)) {
+		open_web_view(link);
+		return true;
+	}
+	if (link.indexOf('/pages/') === 0) {
+		url_open(link);
+		return true;
+	}
+	url_open(link);
+	return true;
+};
+
 export const chat_open_goods = (goods = {}) => {
 	const g = goods && typeof goods == 'object' ? goods : {};
 	const id = parseInt(g.id || g.goods_id || 0) || 0;
@@ -128,6 +143,10 @@ export const chat_open_goods = (goods = {}) => {
 	if (parseInt(runtime_config.goods_click_enable || 0) != 1) {
 		return false;
 	}
+	const goods_url = String(g.goods_url || g.url || '').trim();
+	if (!isEmpty(goods_url)) {
+		return open_goods_link(goods_url);
+	}
 	const path_tpl = String(runtime_config.goods_detail_path || '').trim();
 	if (path_tpl) {
 		if (!(id > 0) && path_tpl.indexOf('{id}') >= 0) {
@@ -136,11 +155,6 @@ export const chat_open_goods = (goods = {}) => {
 		}
 		const path = path_tpl.replace(/\{goods_id\}/g, String(id)).replace(/\{id\}/g, String(id));
 		url_open(path);
-		return true;
-	}
-	const url = String(g.goods_url || g.url || '').trim();
-	if (!isEmpty(url)) {
-		open_web_view(url);
 		return true;
 	}
 	return false;
@@ -1151,7 +1165,7 @@ export const is_session_end_continue_tip = (content) => {
 	if (dt && dt != 'mode_tip' && dt != 'system' && dt != 'agent_notice' && dt != 'visitor_notice') {
 		return false;
 	}
-	return /对话已结束|本次对话已结束|会话已结束|结束对话|结束本次|恢复对话|已恢复对话|已恢复会话|继续聊天/.test(text);
+	return /对话已结束|本次对话已结束|会话已结束|会话结束|结束对话|结束本次|恢复对话|已恢复对话|已恢复会话|继续聊天/.test(text);
 };
 
 export const is_recall_message = (content) => {
@@ -1286,6 +1300,18 @@ const flush_pending_send_after_continue = (contact_id) => {
 	if (wait.length > 0) {
 		emit('chat_pending_send_flush', { contact_id: vid });
 	}
+};
+
+/** 续聊请求或结束态待发消息排队中：忽略迟到的 chat-end */
+export const chat_session_revive_inflight = (contact_id) => {
+	const vid = parseInt(contact_id || 0) || active_contact_id();
+	if (!(vid > 0)) {
+		return false;
+	}
+	if (continue_inflight[vid]) {
+		return true;
+	}
+	return pending_send_after_continue.some((item) => item && item.content && (!item.contact_id || item.contact_id == vid));
 };
 
 /** 对齐 PC chat_session_rated_map：本轮是否已评价 */
@@ -1436,6 +1462,39 @@ const chat_ai_switch_lock = () => {
 const emit_ai_and_list = () => {
 	emit('ai_mode', get_chat_state());
 	emit('user_list', get_chat_state());
+};
+
+/** 咨询端：从 AI 回复或历史推断当前为智能客服接待（未明确转人工时） */
+const chat_user_infer_ai_mode = (contact_id = 0) => {
+	if (state.user_type != 'user' || state.ai_switching) {
+		return;
+	}
+	const cid = parseInt(contact_id || active_contact_id()) || 0;
+	if (!(cid > 0)) {
+		return;
+	}
+	const cached = state.ai_mode_map[cid] || {};
+	if (cached.mode == 'human') {
+		return;
+	}
+	chat_apply_ai_mode({ mode: 'ai', visitor_cuid: cid, is_enable: 1 }, '');
+};
+
+const record_has_ai_reply = (record) => {
+	const groups = record && record.data;
+	if (!Array.isArray(groups)) {
+		return false;
+	}
+	for (let i = 0; i < groups.length; i++) {
+		const group = groups[i];
+		if (!group || group.type == 'right') {
+			continue;
+		}
+		if (is_ai_bot_user(group.user)) {
+			return true;
+		}
+	}
+	return false;
 };
 
 /** 对齐 PC ChatAiApplyMode（工作台按 visitor_cuid 缓存） */
@@ -2671,6 +2730,9 @@ const handle_message = (raw) => {
 					if (is_active) {
 						emit('ai_thinking', { show: false, contact_id: list_user_id });
 					}
+					if (state.user_type == 'user' && is_active) {
+						chat_user_infer_ai_mode(list_user_id);
+					}
 				}
 				emit('chat', {
 					content: data.content,
@@ -2756,6 +2818,8 @@ const handle_message = (raw) => {
 					rec_ai.visitor_cuid = parseInt(state.receive_user.id);
 				}
 				chat_apply_ai_mode(rec_ai, '');
+			} else if (state.user_type == 'user' && record_has_ai_reply(data.data && data.data.record)) {
+				chat_user_infer_ai_mode(active_now);
 			} else if (state.user_type == 'work') {
 				emit('ai_mode', get_chat_state());
 			}
@@ -3255,6 +3319,10 @@ const handle_message = (raw) => {
 			if (state.user_type == 'user' && end_active > 0) {
 				end_id = end_active;
 			}
+			const revive_vid = end_id > 0 ? end_id : end_active;
+			if (chat_session_revive_inflight(revive_vid)) {
+				break;
+			}
 			if (end_id > 0) {
 				chat_session_ended_set(end_id, true);
 				// 对齐 PC：新一轮结束允许再次评价（按联系人清 rated）
@@ -3269,8 +3337,10 @@ const handle_message = (raw) => {
 					state.ai_mode_map[end_active].is_chat_ended = 1;
 				}
 			}
-			// 对齐 PC：当前会话展示结束提示
-			if (end_list <= 0 || end_active <= 0 || end_list == end_active || end_id == end_active) {
+			// 咨询端自动续聊：结束/恢复类提示不在聊天区重复展示
+			const show_end_tip = (end_list <= 0 || end_active <= 0 || end_list == end_active || end_id == end_active)
+				&& !(data.content != null && is_session_end_continue_tip(data.content));
+			if (show_end_tip) {
 				emit('chat', {
 					content: data.content,
 					is_mode_tip: true,
@@ -3924,7 +3994,7 @@ export const chat_send_input_status = (msg = '') => {
 	if (state.connect_status !== 1) {
 		return false;
 	}
-	if (state.user_type == 'work' && active_ai_snapshot().mode == 'ai') {
+	if (active_ai_snapshot().mode == 'ai') {
 		return false;
 	}
 	if (!state.receive_user || !state.receive_user.id) {
@@ -4410,6 +4480,7 @@ export default {
 	chat_can_end,
 	chat_end_session,
 	chat_continue_session,
+	chat_session_revive_inflight,
 	chat_can_rating,
 	chat_try_open_rating,
 	chat_submit_rating,

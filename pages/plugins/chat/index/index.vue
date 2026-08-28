@@ -1,7 +1,8 @@
 <template>
 	<view :class="[theme_view + ' chat-page page-chat', { 'is-msg-search': msg_search_open }]">
 		<!-- 自定义导航：返回 + 标题 + 搜索；右侧避开微信胶囊 -->
-		<view class="nav-wrap" :style="nav_wrap_style">
+		<view class="nav-wrap">
+			<view class="nav-status-bar" :style="nav_status_bar_style"></view>
 			<view class="nav-bar" :style="nav_bar_style">
 				<view class="nav-side nav-back" @tap.stop="back_event">
 					<iconfont name="icon-angle-left" size="36rpx" color="#191919"></iconfont>
@@ -37,24 +38,7 @@
 							:goodsClickable="goods_clickable"
 							:showReadReceipt="show_read_receipt"
 							:recallNow="recall_now"
-							@reedit="reedit_recall_event"
-							@resend="resend_failed_message"
-							@imageLoad="on_send_image_load"
-							@imageError="on_send_image_error"
-							@previewImage="preview_image_event"
-							@videoPosterError="on_video_poster_error"
-							@openVideo="open_video_player_event"
-							@openGoods="open_goods_card_event"
-							@toggleAudio="toggle_audio_play_event"
-							@quote="quote_message_event"
-							@pressStart="on_msg_press_start"
-							@pressMove="on_msg_press_move"
-							@pressEnd="on_msg_press_end"
-							@mouseDown="on_msg_mouse_down"
-							@contextmenu="on_msg_contextmenu"
-							@openFile="open_file_link_event"
-							@openLink="open_msg_link_event"
-							@quoteBlockTap="quote_block_tap_event"
+							@msgAction="on_msg_item_action"
 						/>
 					</block>
 				</view>
@@ -115,7 +99,7 @@
 						</view>
 						<textarea
 							v-if="!is_voice_input"
-							:key="'msg-input-' + input_view_key"
+							:key="input_view_key"
 							class="msg-input"
 							:focus="input_focus && !is_input_fullscreen && !input_locked"
 							:disabled="input_locked"
@@ -125,6 +109,8 @@
 							:maxlength="2000"
 							:value="input_text"
 							:placeholder="input_placeholder"
+							:placeholder-style="input_placeholder_style"
+							placeholder-class="msg-input-placeholder"
 							confirm-type="send"
 							@input="input_event"
 							@confirm="send_event"
@@ -132,6 +118,18 @@
 							@blur="input_blur_event"
 							@linechange="input_linechange_event"
 						/>
+						<!-- #ifdef MP-WEIXIN -->
+						<view
+							v-else
+							class="voice-hold-btn"
+							:class="{ 'is-recording': voice_recording }"
+							@touchstart="voice_press_start"
+							@touchmove="voice_press_move"
+							@touchend="voice_press_end"
+							@touchcancel="voice_press_end"
+						>{{ voice_recording ? (voice_will_cancel ? '松开取消' : '松开发送') : '按住说话' }}</view>
+						<!-- #endif -->
+						<!-- #ifndef MP-WEIXIN -->
 						<view
 							v-else
 							class="voice-hold-btn"
@@ -146,8 +144,9 @@
 							@pointercancel.stop.prevent="voice_press_end"
 							@mousedown.stop.prevent="voice_press_start"
 							@mouseup.stop.prevent="voice_press_end"
-							@contextmenu.prevent
+							@contextmenu.prevent="prevent_default_event"
 						>{{ voice_recording ? (voice_will_cancel ? '松开取消' : '松开发送') : '按住说话' }}</view>
+						<!-- #endif -->
 						<view v-if="!is_voice_input && show_tool_emoji" class="input-emoji-btn" @tap="toggle_emoji_event">
 							<iconfont
 								name="icon-emoji"
@@ -224,7 +223,7 @@
 						<view class="emoji-grid">
 							<view
 								v-for="(emoji, idx) in recent_emoji_list"
-								:key="'r-' + idx"
+								:key="idx"
 								class="emoji-item"
 								:data-emoji="emoji"
 								@tap="insert_emoji_event"
@@ -236,7 +235,7 @@
 						<view class="emoji-grid">
 							<view
 								v-for="(emoji, idx) in emoji_list"
-								:key="'a-' + idx"
+								:key="idx"
 								class="emoji-item"
 								:data-emoji="emoji"
 								@tap="insert_emoji_event"
@@ -254,7 +253,7 @@
 					indicator-active-color="#07c160"
 					@change="more_swiper_change_event"
 				>
-					<swiper-item v-for="(page, pidx) in more_panel_pages" :key="'more-p-' + pidx">
+					<swiper-item v-for="(page, pidx) in more_panel_pages" :key="pidx">
 						<view class="more-grid">
 							<view
 								v-for="item in page"
@@ -292,7 +291,9 @@
 					:adjust-position="false"
 					:maxlength="2000"
 					:value="input_text"
-					placeholder="请输入内容"
+					:placeholder="input_placeholder"
+					:placeholder-style="input_placeholder_style"
+					placeholder-class="msg-input-placeholder"
 					@input="input_event"
 					@focus="push_input_status_event"
 					@blur="input_blur_event"
@@ -316,7 +317,7 @@
 							<view class="emoji-grid">
 								<view
 									v-for="(emoji, idx) in recent_emoji_list"
-									:key="'fs-r-' + idx"
+									:key="idx"
 									class="emoji-item"
 									:data-emoji="emoji"
 									@tap="insert_emoji_event"
@@ -328,7 +329,7 @@
 							<view class="emoji-grid">
 								<view
 									v-for="(emoji, idx) in emoji_list"
-									:key="'fs-a-' + idx"
+									:key="idx"
 									class="emoji-item"
 									:data-emoji="emoji"
 									@tap="insert_emoji_event"
@@ -340,20 +341,34 @@
 			</view>
 		</view>
 		<!-- loading 全屏盖住内容区与底部（含输入/黄色按钮），避免加载中可操作 -->
+		<!-- #ifdef MP-WEIXIN -->
 		<view
 			v-if="show_chat_loading"
 			class="ws-loading-cover"
 			:style="{ top: nav_bar_h + 'px' }"
-			@touchmove.stop.prevent
-			@tap.stop
+			@touchmove.stop="prevent_touch_move"
+			@tap.stop="prevent_touch_move"
 		>
 			<component-no-data :propStatus="1" propLoadingLogoTop="280rpx"></component-no-data>
 		</view>
+		<!-- #endif -->
+		<!-- #ifndef MP-WEIXIN -->
+		<view
+			v-if="show_chat_loading"
+			class="ws-loading-cover"
+			:style="{ top: nav_bar_h + 'px' }"
+			@touchmove.stop.prevent="prevent_touch_move"
+			@tap.stop="prevent_touch_move"
+		>
+			<component-no-data :propStatus="1" propLoadingLogoTop="280rpx"></component-no-data>
+		</view>
+		<!-- #endif -->
 
 		<!-- 弹出框播放：列表不用 video；关掉后销毁，避免盖住输入栏 -->
 		<chat-video-popup
+			ref="chat_video_popup_ref"
 			v-if="playing_video_url"
-			:src="playing_video_url"
+			:video-url="playing_video_url"
 			:poster="playing_video_poster"
 			:headHeight="video_fs_head_h"
 			:statusBarHeight="status_bar_height"
@@ -379,7 +394,7 @@
 
 		<!-- 服务评价 -->
 		<view v-if="show_rating_modal" class="prompt-modal-mask" @tap="close_rating_modal_event">
-			<view class="rating-popup-wrap prompt-modal rating-modal" @tap.stop>
+			<view class="rating-popup-wrap prompt-modal rating-modal" @tap.stop="prevent_touch_move">
 				<view class="rating-popup-hd">
 					<text class="rating-popup-title">服务评价</text>
 					<view class="rating-popup-close" @tap.stop="close_rating_modal_event">
@@ -391,7 +406,7 @@
 					<view class="rating-stars">
 						<view
 							v-for="n in 5"
-							:key="'star-' + n"
+							:key="n"
 							class="rating-star"
 							:data-score="n"
 							@tap="select_rating_score_event"
@@ -431,7 +446,7 @@
 		>
 			<view class="consult-popup-content">
 				<view
-					v-if="consult_popup_type != 'source'"
+					v-if="!consult_is_trace_panel"
 					class="consult-search-bar"
 				>
 					<view class="consult-search-keyword search-input">
@@ -461,12 +476,13 @@
 						:propStatus="0"
 						propMsg="暂无数据"
 					></component-no-data>
-					<template v-else-if="consult_popup_type == 'source'">
+					<template v-else-if="consult_is_trace_panel">
 						<view
 							v-for="(item, idx) in consult_filtered_list"
-							:key="'src-' + idx"
+							:key="idx"
 							class="consult-source-row"
-							@tap="open_consult_source_event(item)"
+							:data-idx="idx"
+							@tap="open_consult_track_event"
 						>
 							<text class="consult-source-url">{{ item.value }}</text>
 							<text class="consult-source-time">{{ item.time }}</text>
@@ -476,7 +492,7 @@
 					<view
 						v-else
 						v-for="(item, idx) in consult_filtered_list"
-						:key="consult_popup_type + '-' + idx"
+						:key="idx"
 						class="consult-item"
 					>
 						<view class="consult-item-main">
@@ -512,6 +528,7 @@
 
 		<!-- 按住说话：松开发送 / 滑到取消松开 -->
 		<chat-voice-mask
+			ref="chat_voice_mask_ref"
 			v-if="voice_recording"
 			:willCancel="voice_will_cancel"
 			@start="voice_press_start"
@@ -527,7 +544,7 @@
 			:loading="msg_search_loading"
 			:hits="msg_search_hits"
 			:listHeight="msg_search_list_h"
-			:navWrapStyle="nav_wrap_style"
+			:navStatusBarStyle="nav_status_bar_style"
 			:navBarStyle="nav_bar_style"
 			:defaultAvatar="default_avatar"
 			@input="msg_search_input_event"
@@ -552,6 +569,9 @@
 	import ChatMsgSearch from '../components/chat-msg-search.vue';
 	import ChatVideoPopup from '../components/chat-video-popup.vue';
 	import ChatMsgMenu from '../components/chat-msg-menu.vue';
+	import { get_chat_nav_layout_metrics } from '../common/chat-host.js';
+
+	const chatNavInit = get_chat_nav_layout_metrics(88);
 
 	export default {
 		mixins: [chatPageMixin],
@@ -569,6 +589,12 @@
 			return {
 				theme_view: app.globalData.get_theme_value_view(),
 				default_avatar: app.globalData.data.default_user_head_src,
+				status_bar_height: chatNavInit.status_bar_height,
+				nav_content_h: chatNavInit.nav_content_h,
+				nav_occupy_h: chatNavInit.nav_occupy_h,
+				nav_bar_h: chatNavInit.nav_bar_h,
+				nav_right_pad: chatNavInit.nav_right_pad,
+				window_height: chatNavInit.window_height,
 			};
 		},
 		onLoad(params) {

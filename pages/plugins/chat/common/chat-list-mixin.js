@@ -1,5 +1,5 @@
 import base64 from '@/common/js/lib/base64.js';
-import { isEmpty, showToast, get_default_avatar, page_back_prev_event } from '../common/chat-host.js';
+import { isEmpty, showToast, get_default_avatar, page_back_prev_event, get_config, get_chat_nav_layout_metrics } from '../common/chat-host.js';
 import { ensure_chat_user_init, apply_chat_user_page_config } from '../common/chat-user-init.js';
 import {
 	chat_connect,
@@ -17,6 +17,7 @@ import {
 export default {
 	data() {
 		const default_avatar = get_default_avatar();
+		const navInit = get_chat_nav_layout_metrics(88);
 		return {
 			page_alive: false,
 			page_user_inited: false,
@@ -29,27 +30,42 @@ export default {
 			list_keyword: '',
 			list_search_loading: false,
 			default_avatar,
-			status_bar_height: 0,
-			nav_content_h: 0,
-			nav_bar_h: 0,
-			nav_occupy_h: 0,
-			window_height: 667,
+			status_bar_height: navInit.status_bar_height,
+			nav_content_h: navInit.nav_content_h,
+			nav_bar_h: navInit.nav_bar_h,
+			nav_occupy_h: navInit.nav_occupy_h,
+			nav_right_pad: navInit.nav_right_pad,
+			window_height: navInit.window_height,
+			list_page_title: '在线客服',
+			list_nav_layout_ready: false,
 		};
 	},
 	computed: {
-		list_nav_style() {
-			return {
-				paddingTop: (this.status_bar_height || 0) + 'px',
-			};
+		list_status_bar_style() {
+			return 'height:' + (this.status_bar_height || 0) + 'px;width:100%;flex-shrink:0;';
+		},
+		list_nav_wrap_style() {
+			return 'padding-top:' + (this.status_bar_height || 0) + 'px;box-sizing:border-box;';
+		},
+		list_nav_bar_style() {
+			let style = 'padding-right:' + (this.nav_right_pad || 12) + 'px;box-sizing:border-box;';
+			if (this.nav_content_h > 0) {
+				style += 'height:' + this.nav_content_h + 'px;';
+			}
+			return style;
 		},
 		list_main_style() {
-			return {
-				paddingTop: (this.nav_occupy_h || 0) + 'px',
-			};
+			const occupy = this.nav_occupy_h || this.nav_bar_h || 0;
+			if (!(occupy > 0)) {
+				return 'box-sizing:border-box;';
+			}
+			return 'padding-top:' + occupy + 'px;box-sizing:border-box;';
 		},
 		list_body_style() {
-			const h = Math.max(0, Number(this.window_height || 0) - Number(this.nav_occupy_h || 0));
-			return h > 0 ? { height: h + 'px' } : {};
+			return {
+				flex: '1',
+				minHeight: '0',
+			};
 		},
 		filtered_list() {
 			const rows = this.display_list;
@@ -94,35 +110,172 @@ export default {
 			return isEmpty(v);
 		},
 
-		init_list_nav() {
+		rpx_to_px(rpx) {
+			return typeof uni.upx2px == 'function' ? uni.upx2px(rpx) : Math.round(Number(rpx) / 2);
+		},
+
+		apply_list_nav_layout(patch = {}) {
+			const setNum = (key) => {
+				if (patch[key] == null || Number.isNaN(Number(patch[key]))) {
+					return;
+				}
+				const next = Number(patch[key]);
+				if (Math.abs(next - Number(this[key] || 0)) >= 1) {
+					this[key] = next;
+				}
+			};
+			setNum('status_bar_height');
+			setNum('nav_content_h');
+			setNum('nav_right_pad');
+			setNum('nav_bar_h');
+			setNum('nav_occupy_h');
+			setNum('window_height');
+		},
+
+		get_list_nav_bottom_pad() {
 			try {
-				const sys = uni.getSystemInfoSync() || {};
-				this.status_bar_height = Number(sys.statusBarHeight || 0);
-				this.window_height = Number(sys.windowHeight || 667);
+				const app = getApp();
+				const client = app && app.globalData && typeof app.globalData.application_client_type == 'function'
+					? app.globalData.application_client_type()
+					: '';
+				if (['weixin', 'alipay', 'baidu', 'qq', 'kuaishou'].indexOf(client) !== -1) {
+					return this.rpx_to_px(12);
+				}
+			} catch (e) {}
+			return 0;
+		},
+
+		init_list_nav(force = false) {
+			if (this.list_nav_layout_ready && !force) {
+				return;
+			}
+			let statusBarHeight = 0;
+			let navContentHeight = 0;
+			let navRightPad = 12;
+			let windowHeight = 667;
+			try {
+				const app = getApp();
+				let sys = {};
+				if (app && app.globalData && typeof app.globalData.get_system_info == 'function') {
+					sys = app.globalData.get_system_info(null, null, true) || {};
+				}
+				if (!sys || sys.windowWidth == null) {
+					sys = uni.getSystemInfoSync() || {};
+				}
+				statusBarHeight = Number(sys.statusBarHeight || 0);
+				windowHeight = Number(sys.windowHeight || 667);
 				const win_w = Number(sys.windowWidth || 375);
-				// #ifdef MP
+				if (!(statusBarHeight > 0)) {
+					statusBarHeight = Number(
+						(sys.safeAreaInsets && sys.safeAreaInsets.top)
+						|| (sys.safeArea && sys.safeArea.top)
+						|| 0
+					);
+				}
 				try {
 					const mb = typeof uni.getMenuButtonBoundingClientRect == 'function'
 						? uni.getMenuButtonBoundingClientRect()
 						: null;
-					if (mb && mb.width > 0 && mb.left > 0) {
-						this.status_bar_height = Number(mb.top || this.status_bar_height);
-						this.nav_content_h = Number(mb.height || 0);
+					if (mb && Number(mb.width) > 0 && Number(mb.left) > 0) {
+						statusBarHeight = Number(mb.top || statusBarHeight);
+						navContentHeight = Number(mb.height || 0);
+						navRightPad = Math.max(12, win_w - Number(mb.left || win_w) + 6);
 					}
 				} catch (e2) {}
-				// #endif
 			} catch (e) {
-				this.status_bar_height = 0;
+				statusBarHeight = 0;
 			}
-			if (!(this.nav_content_h > 0)) {
-				this.nav_content_h = typeof uni.upx2px == 'function' ? uni.upx2px(88) : 44;
+			if (!(navContentHeight > 0)) {
+				navContentHeight = this.rpx_to_px(88);
 			}
-			this.nav_bar_h = this.status_bar_height + this.nav_content_h;
-			this.nav_occupy_h = this.nav_bar_h;
+			const bottomPad = this.get_list_nav_bottom_pad();
+			const navBarHeight = statusBarHeight + navContentHeight + bottomPad;
+			this.apply_list_nav_layout({
+				status_bar_height: statusBarHeight,
+				nav_content_h: navContentHeight,
+				nav_right_pad: navRightPad,
+				window_height: windowHeight,
+				nav_bar_h: navBarHeight,
+				nav_occupy_h: navBarHeight,
+			});
+			this.list_nav_layout_ready = true;
+		},
+
+		measure_list_nav() {
+			this.$nextTick(() => {
+				if (!this.page_alive) {
+					return;
+				}
+				try {
+					uni.createSelectorQuery().in(this).select('.chat-list-nav').boundingClientRect((rect) => {
+						if (!this.page_alive || !rect || !(rect.height > 0)) {
+							return;
+						}
+						const h = Math.round(rect.height);
+						if (Math.abs(h - Number(this.nav_occupy_h || 0)) >= 1) {
+							this.nav_bar_h = h;
+							this.nav_occupy_h = h;
+						}
+					}).exec();
+				} catch (e) {}
+			});
 		},
 
 		list_back_event() {
 			page_back_prev_event();
+		},
+
+		pick_chat_page_title(source) {
+			const bags = [];
+			const push = (obj) => {
+				if (obj && typeof obj == 'object') {
+					bags.push(obj);
+				}
+			};
+			push(source);
+			push(source && source.base_data);
+			push(source && source.data);
+			try {
+				const plugins_base = get_config('plugins_base');
+				if (Array.isArray(plugins_base)) {
+					const row = plugins_base.find((item) => item && item.plugins == 'chat');
+					push(row && row.data);
+					push(row);
+				} else if (plugins_base && typeof plugins_base == 'object') {
+					const chat = plugins_base.chat;
+					push(chat && chat.data);
+					push(chat);
+				}
+			} catch (e) {}
+			for (let i = 0; i < bags.length; i++) {
+				const bag = bags[i];
+				const name = bag.application_name || bag.seo_title || bag.title || bag.name;
+				if (!isEmpty(name)) {
+					return String(name).trim();
+				}
+			}
+			return '';
+		},
+
+		default_list_page_title() {
+			if (typeof this.$t == 'function') {
+				const text = this.$t('pages.plugins-chat-list');
+				if (!isEmpty(text) && String(text).indexOf('pages.plugins-') !== 0) {
+					return String(text);
+				}
+			}
+			return '在线客服';
+		},
+
+		apply_list_page_title(source) {
+			const title = this.pick_chat_page_title(source) || this.default_list_page_title();
+			if (isEmpty(title)) {
+				return;
+			}
+			this.list_page_title = title;
+			try {
+				uni.setNavigationBarTitle({ title });
+			} catch (e) {}
 		},
 
 		sync_user_list(payload) {
@@ -188,7 +341,7 @@ export default {
 		chat_list_on_load(params) {
 			this.page_alive = true;
 			this.list_loading = true;
-			this.init_list_nav();
+			this.init_list_nav(true);
 			const entry = { ...(params || {}) };
 			if (isEmpty(entry.source)) {
 				try {
@@ -221,6 +374,8 @@ export default {
 					showToast(ret.msg || '咨询端初始化失败');
 				}
 				this.page_user_inited = true;
+				apply_chat_user_page_config();
+				this.apply_list_page_title(ret.data);
 				if (before.connect_status === 1 && before.user_type == 'user') {
 					chat_resume_connect();
 					this.sync_connect_ui();
@@ -236,8 +391,17 @@ export default {
 			});
 		},
 
+		chat_list_on_ready() {
+			this.measure_list_nav();
+		},
+
 		chat_list_on_show() {
 			this.page_alive = true;
+			if (!(Number(this.nav_occupy_h || 0) > 0)) {
+				this.init_list_nav(true);
+				this.measure_list_nav();
+			}
+			this.apply_list_page_title();
 			chat_resume_connect();
 			this.sync_connect_ui();
 			if (this.connect_status === 1) {
