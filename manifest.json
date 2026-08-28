@@ -219,6 +219,9 @@
             "startLocationUpdateBackground"
         ],
         "appid" : "wxda7779770f53e901",
+        "optimization" : {
+            "subPackages" : true
+        },
         "setting" : {
             "urlCheck" : false,
             "es6" : true,

@@ -1514,6 +1514,46 @@
             ]
         },
         {
+            "root": "pages/plugins/doc",
+            "pages": [
+                {
+                    "path": "index/index",
+                    "style": {
+                        // #ifdef MP-WEIXIN || MP-BAIDU || MP-QQ || MP-KUAISHOU || APP
+                        "navigationStyle": "custom",
+                        // #endif
+                        // #ifdef MP-ALIPAY
+                        "transparentTitle": "always",
+                        "titlePenetrate": "YES",
+                        // #endif
+                        "enablePullDownRefresh": true,
+                        "navigationBarTitleText": ""
+                    }
+                },
+                {
+                    "path": "search/search",
+                    "style": {
+                        "enablePullDownRefresh": true,
+                        "navigationBarTitleText": ""
+                    }
+                },
+                {
+                    "path": "detail/detail",
+                    "style": {
+                        "enablePullDownRefresh": false,
+                        "navigationBarTitleText": ""
+                    }
+                },
+                {
+                    "path": "user/user",
+                    "style": {
+                        "enablePullDownRefresh": true,
+                        "navigationBarTitleText": ""
+                    }
+                }
+            ]
+        },
+        {
             "root": "pages/plugins/blog",
             "pages": [
                 {

@@ -107,6 +107,7 @@
                 payment_confirm_modal_status: false,
                 // 微信app
                 weixinapp: null,
+                pay_ext_data: {},
             };
         },
         props: {
@@ -141,6 +142,13 @@
             propPayDataKey: {
                 type: String,
                 default: 'id',
+            },
+            // 支付请求额外参数
+            propPayExtData: {
+                type: Object,
+                default: () => {
+                    return {};
+                },
             },
             // 扫码轮询参数名，默认为order_no
             propQrcodeDataKey: {
@@ -199,6 +207,11 @@
                 type: Boolean,
                 default: false,
             },
+            // 支付成功后是否跳转结果页，文档等阅读场景可关闭
+            propIsToPage: {
+                type: Boolean,
+                default: true,
+            },
             // 判断错误时是否需要弹窗提示
             propIsFailAlert: {
                 type: Boolean,
@@ -240,15 +253,25 @@
                     this.setData({
                         is_show_payment_popup: new_val,
                         submit_disabled_status: bool,
+                        pay_ext_data: this.propPayExtData || {},
                     });
                 }
-            }
+            },
+            propPayExtData: {
+                handler(value) {
+                    this.setData({
+                        pay_ext_data: value || {},
+                    });
+                },
+                deep: true,
+            },
         },
         // 页面被展示
         created: function () {
             this.setData({
                 payment_list: this.propPaymentList,
                 payment_id: Number(this.propPaymentId) == 0 ? this.propDefaultPaymentId : Number(this.propPaymentId),
+                pay_ext_data: this.propPayExtData || {},
             });
 
             // #ifdef APP
@@ -366,6 +389,10 @@
                     [this.propPayDataKey]: order_id,
                     payment_id: payment_id || this.payment_id,
                 };
+                var ext_data = this.pay_ext_data || this.propPayExtData || {};
+                if ((ext_data || null) != null && typeof ext_data == 'object') {
+                    post_data = Object.assign({}, ext_data, post_data);
+                }
                 // h5自定义重定向地址
                 // #ifdef H5
                 var redirect_url = app.globalData.page_url_protocol(this.propToAppointPage || app.globalData.get_page_url(false));
@@ -402,9 +429,11 @@
                                     // 数据设置
                                     this.order_item_pay_success_handle(data, order_id, false);
                                     app.globalData.showToast(this.$t('common.pay_success'), 'success');
-                                    setTimeout(() => {
-                                        this.to_success_page_event();
-                                    }, 2000);
+                                    if (this.propIsToPage) {
+                                        setTimeout(() => {
+                                            this.to_success_page_event();
+                                        }, 2000);
+                                    }
                                 } else {
                                     // 支付方式类型
                                     let payment_type = Number(data.is_payment_type || 0);
@@ -863,7 +892,7 @@
                     is_to_page: is_to_page,
                 };
                 this.$emit('pay-success', back_data);
-                if (is_to_page) {
+                if (is_to_page && this.propIsToPage) {
                     this.to_success_page_event();
                 }
             },
