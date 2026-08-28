@@ -1,5 +1,5 @@
 import base64 from '@/common/js/lib/base64.js';
-import { isEmpty, showToast, get_default_avatar, page_back_prev_event, get_config, get_chat_nav_layout_metrics } from '../common/chat-host.js';
+import { isEmpty, showToast, get_default_avatar, page_back_prev_event, url_open, get_config, get_chat_nav_layout_metrics, get_menu_button_rect_safe } from '../common/chat-host.js';
 import { ensure_chat_user_init, apply_chat_user_page_config } from '../common/chat-user-init.js';
 import {
 	chat_connect,
@@ -173,10 +173,8 @@ export default {
 					);
 				}
 				try {
-					const mb = typeof uni.getMenuButtonBoundingClientRect == 'function'
-						? uni.getMenuButtonBoundingClientRect()
-						: null;
-					if (mb && Number(mb.width) > 0 && Number(mb.left) > 0) {
+					const mb = get_menu_button_rect_safe();
+					if (mb) {
 						statusBarHeight = Number(mb.top || statusBarHeight);
 						navContentHeight = Number(mb.height || 0);
 						navRightPad = Math.max(12, win_w - Number(mb.left || win_w) + 6);
@@ -334,8 +332,7 @@ export default {
 			}
 			const receive = row.receive_user || { id: row.id, name: row.name, avatar: row.avatar };
 			chat_set_receive_user(receive);
-			const url = chat_build_session_url(row.id, this.entry_params);
-			uni.navigateTo({ url });
+			url_open(chat_build_session_url(row.id, this.entry_params));
 		},
 
 		chat_list_on_load(params) {

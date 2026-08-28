@@ -1234,6 +1234,8 @@ const chat_session_ended_set = (contact_id, ended) => {
 let pending_send_seq = 0;
 let pending_send_after_continue = [];
 const continue_inflight = {};
+/** 续聊成功后短时间内忽略迟到 chat-end（否则刚进页/刚发消息会误弹「是否继续」） */
+const continue_end_ignore_until = {};
 
 const clone_send_content = (content) => {
 	try {
@@ -1243,10 +1245,24 @@ const clone_send_content = (content) => {
 	}
 };
 
+const arm_continue_end_ignore = (contact_id, ms = 5000) => {
+	const vid = parseInt(contact_id || 0) || active_contact_id();
+	if (!(vid > 0)) {
+		return;
+	}
+	const until = Date.now() + Math.max(0, parseInt(ms) || 0);
+	if ((continue_end_ignore_until[vid] || 0) < until) {
+		continue_end_ignore_until[vid] = until;
+	}
+};
+
 const reset_pending_send_after_continue = () => {
 	pending_send_after_continue = [];
 	Object.keys(continue_inflight).forEach((key) => {
 		delete continue_inflight[key];
+	});
+	Object.keys(continue_end_ignore_until).forEach((key) => {
+		delete continue_end_ignore_until[key];
 	});
 };
 
@@ -1277,6 +1293,8 @@ const flush_pending_send_after_continue = (contact_id) => {
 	const vid = parseInt(contact_id || 0) || active_contact_id();
 	if (vid > 0) {
 		delete continue_inflight[vid];
+		// 清 inflight 后仍忽略迟到 end，避免刚续聊/刚发出排队消息立刻弹窗
+		arm_continue_end_ignore(vid, 5000);
 	}
 	if (vid > 0 && parseInt(state.session_ended_map[vid] || 0) == 1) {
 		return;
@@ -1302,13 +1320,16 @@ const flush_pending_send_after_continue = (contact_id) => {
 	}
 };
 
-/** 续聊请求或结束态待发消息排队中：忽略迟到的 chat-end */
+/** 续聊请求、排队待发、或续聊成功后的短忽略窗：忽略迟到的 chat-end */
 export const chat_session_revive_inflight = (contact_id) => {
 	const vid = parseInt(contact_id || 0) || active_contact_id();
 	if (!(vid > 0)) {
 		return false;
 	}
 	if (continue_inflight[vid]) {
+		return true;
+	}
+	if ((continue_end_ignore_until[vid] || 0) > Date.now()) {
 		return true;
 	}
 	return pending_send_after_continue.some((item) => item && item.content && (!item.contact_id || item.contact_id == vid));
@@ -3393,6 +3414,7 @@ const handle_message = (raw) => {
 				: parseInt((data.data && data.data.agent_cuid) || 0);
 			const cont_active = active_contact_id();
 			const cont_id = cont_list > 0 ? cont_list : cont_active;
+			const cont_vid = cont_id || cont_active;
 			if (cont_id > 0) {
 				chat_session_ended_set(cont_id, false);
 				// 对齐 PC：继续聊天后本轮评价作废
@@ -3407,13 +3429,15 @@ const handle_message = (raw) => {
 					state.ai_mode_map[cont_active].is_chat_ended = 0;
 				}
 			}
+			// 进页静默续聊无排队消息时也会清 inflight；先开忽略窗挡住迟到 chat-end
+			arm_continue_end_ignore(cont_vid, 5000);
 			if (cont_list <= 0 || cont_active <= 0 || cont_list == cont_active) {
 				if (state.user_type == 'user') {
-					emit('chat_rating_close', { contact_id: cont_id || cont_active });
+					emit('chat_rating_close', { contact_id: cont_vid });
 				}
 			}
 			emit('ai_mode', get_chat_state());
-			flush_pending_send_after_continue(cont_id || cont_active);
+			flush_pending_send_after_continue(cont_vid);
 			break;
 		}
 

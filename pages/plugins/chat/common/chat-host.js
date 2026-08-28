@@ -76,6 +76,26 @@ export const get_chat_client_type = () => {
 };
 
 /**
+ * 仅有真实胶囊的小程序才读菜单按钮；App/H5 上 API 虽存在但未实现，会刷警告
+ */
+export const get_menu_button_rect_safe = () => {
+	const client = get_chat_client_type();
+	if (['weixin', 'alipay', 'qq', 'baidu', 'kuaishou', 'toutiao'].indexOf(client) === -1) {
+		return null;
+	}
+	if (typeof uni.getMenuButtonBoundingClientRect != 'function') {
+		return null;
+	}
+	try {
+		const mb = uni.getMenuButtonBoundingClientRect();
+		if (mb && Number(mb.width) > 0 && Number(mb.height) > 0 && Number(mb.top) >= 0) {
+			return mb;
+		}
+	} catch (e) {}
+	return null;
+};
+
+/**
  * 自定义导航栏尺寸（对齐 shopxo-admin-app/pages/customer-service/chat.vue init_nav_metrics）
  */
 export const get_chat_nav_layout_metrics = (nav_content_rpx = 88) => {
@@ -105,15 +125,11 @@ export const get_chat_nav_layout_metrics = (nav_content_rpx = 88) => {
 			);
 		}
 
-		if (typeof uni.getMenuButtonBoundingClientRect == 'function') {
-			try {
-				const mb = uni.getMenuButtonBoundingClientRect();
-				if (mb && Number(mb.width) > 0 && Number(mb.left) > 0) {
-					statusBarHeight = Number(mb.top || statusBarHeight);
-					navContentHeight = Number(mb.height || 0);
-					navRightPad = Math.max(12, windowWidth - Number(mb.left || windowWidth) + 6);
-				}
-			} catch (e2) {}
+		const mb = get_menu_button_rect_safe();
+		if (mb) {
+			statusBarHeight = Number(mb.top || statusBarHeight);
+			navContentHeight = Number(mb.height || 0);
+			navRightPad = Math.max(12, windowWidth - Number(mb.left || windowWidth) + 6);
 		}
 	} catch (e) {
 		statusBarHeight = 0;
@@ -197,17 +213,17 @@ export const open_web_view = (url) => {
 	url_open('/pages/web-view/web-view?url=' + encodeURIComponent(url));
 };
 
-export const page_back_prev_event = () => {
+export const page_back_prev_event = (url = null) => {
 	const app = get_app();
 	if (app && app.globalData && typeof app.globalData.page_back_prev_event == 'function') {
-		app.globalData.page_back_prev_event();
+		app.globalData.page_back_prev_event(url);
 		return;
 	}
 	const pages = getCurrentPages();
 	if (pages.length > 1) {
 		uni.navigateBack();
 	} else {
-		url_open('/pages/index/index', 3);
+		url_open(url || '/pages/index/index', url ? true : 3);
 	}
 };
 
@@ -295,18 +311,9 @@ const build_chat_list_url = (entry = {}) => {
 /** 会话列表页 URL（保留进线参数） */
 export const chat_build_list_url = build_chat_list_url;
 
-/** 评价结束 / 关闭评价后回到会话列表 */
+/** 评价结束 / 关闭评价 / 退出：有上一页则返回，无栈则进会话列表（走公共 page_back_prev_event / url_open） */
 export const chat_back_to_list_event = (entry = {}) => {
-	const pages = getCurrentPages();
-	if (pages.length > 1) {
-		const prev = pages[pages.length - 2];
-		const route = String((prev && prev.route) || '').replace(/^\//, '');
-		if (route === 'pages/plugins/chat/list/list') {
-			uni.navigateBack();
-			return;
-		}
-	}
-	uni.redirectTo({ url: build_chat_list_url(entry) });
+	page_back_prev_event(build_chat_list_url(entry));
 };
 
 const append_chat_entry_source = (entry = {}) => {
@@ -350,9 +357,9 @@ export const chat_native_entry_handle = (url_or_params) => {
 	const to_list = entry.to_list === true || entry.to_list == 1 || entry.to_list == '1';
 	if (agent_id > 0 && !to_list) {
 		const { chat_build_session_url } = require('./chat-socket.js');
-		uni.navigateTo({ url: chat_build_session_url(agent_id, entry) });
+		url_open(chat_build_session_url(agent_id, entry));
 		return true;
 	}
-	uni.navigateTo({ url: build_chat_list_url(entry) });
+	url_open(build_chat_list_url(entry));
 	return true;
 };

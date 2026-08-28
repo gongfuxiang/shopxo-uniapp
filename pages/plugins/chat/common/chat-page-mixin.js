@@ -1,4 +1,4 @@
-import { isEmpty, showToast, page_back_prev_event, chat_back_to_list_event, get_global_data, get_config, get_default_avatar, open_web_view, get_chat_nav_layout_metrics, get_chat_client_type } from '../common/chat-host.js';
+import { isEmpty, showToast, page_back_prev_event, chat_back_to_list_event, get_global_data, get_config, get_default_avatar, open_web_view, get_chat_nav_layout_metrics, get_chat_client_type, get_menu_button_rect_safe } from '../common/chat-host.js';
 import base64 from '@/common/js/lib/base64.js';
 import { ensure_chat_user_init, apply_chat_user_page_config } from '../common/chat-user-init.js';
 // #ifdef APP-PLUS
@@ -173,10 +173,29 @@ const clear_suppress_ended_choice = () => {
 	}
 };
 
+/** 续聊恢复后延迟再允许「是否继续」弹窗，避免迟到 chat-end 误弹 */
+let allow_ended_prompt_timer = null;
+const clear_allow_ended_prompt_timer = () => {
+	if (allow_ended_prompt_timer) {
+		clearTimeout(allow_ended_prompt_timer);
+		allow_ended_prompt_timer = null;
+	}
+};
+const schedule_allow_ended_prompt = (ms = 5000) => {
+	clear_allow_ended_prompt_timer();
+	allow_ended_prompt = false;
+	allow_ended_prompt_timer = setTimeout(() => {
+		allow_ended_prompt_timer = null;
+		if (record_init_done && session_page_engaged && !pending_session_revive) {
+			allow_ended_prompt = true;
+		}
+	}, ms);
+};
+
 /** 结束态发消息进入排队续聊时，统一标记续聊中并屏蔽结束弹窗 */
 const mark_send_revive_queued = () => {
 	pending_session_revive = true;
-	arm_suppress_ended_choice(3000);
+	arm_suppress_ended_choice(5000);
 };
 
 let flash_record_timer = null;
@@ -977,10 +996,8 @@ export default {
 					);
 				}
 				try {
-					const mb = typeof uni.getMenuButtonBoundingClientRect == 'function'
-						? uni.getMenuButtonBoundingClientRect()
-						: null;
-					if (mb && Number(mb.width) > 0 && Number(mb.left) > 0) {
+					const mb = get_menu_button_rect_safe();
+					if (mb) {
 						statusBarHeight = Number(mb.top || statusBarHeight);
 						navContentHeight = Number(mb.height || 0);
 						navRightPad = Math.max(12, win_w - Number(mb.left || win_w) + 6);
@@ -4359,12 +4376,13 @@ export default {
 					ended_while_page_hidden = false;
 					this.show_ended_choice_modal = false;
 					ended_choice_showing = false;
-					if (prev_ended && pending_session_revive) {
+					if (prev_ended) {
+						// 刚从结束态恢复（进页续聊 / 发消息续聊）：先别开弹窗权限
 						pending_session_revive = false;
 						session_page_engaged = true;
-						arm_suppress_ended_choice(2000);
-					}
-					if (record_init_done) {
+						arm_suppress_ended_choice(5000);
+						schedule_allow_ended_prompt(5000);
+					} else if (record_init_done && !pending_session_revive) {
 						allow_ended_prompt = true;
 					}
 				} else if (
@@ -5880,6 +5898,7 @@ export default {
 		mark_enter_ended_session() {
 			session_page_engaged = false;
 			pending_session_revive = true;
+			clear_allow_ended_prompt_timer();
 			allow_ended_prompt = false;
 		},
 
@@ -5896,15 +5915,20 @@ export default {
 				return false;
 			}
 			if (!st.ai?.ended && !this.session_ended) {
+				const was_pending = pending_session_revive;
 				pending_session_revive = false;
 				session_page_engaged = true;
-				if (record_init_done) {
+				if (was_pending) {
+					// 进页以为已结束，但状态已恢复：同样延迟开弹窗权限
+					arm_suppress_ended_choice(5000);
+					schedule_allow_ended_prompt(5000);
+				} else if (record_init_done) {
 					allow_ended_prompt = true;
 				}
 				return false;
 			}
 			this.mark_enter_ended_session();
-			arm_suppress_ended_choice(3000);
+			arm_suppress_ended_choice(5000);
 			return chat_continue_session({ silent: true });
 		},
 
@@ -5968,7 +5992,7 @@ export default {
 			this.show_ended_choice_modal = false;
 			// 走进页续聊路径：屏蔽弹窗并主动 chat-continue
 			this.mark_enter_ended_session();
-			arm_suppress_ended_choice(3000);
+			arm_suppress_ended_choice(5000);
 			chat_resume_connect();
 			this.sync_connect_ui();
 			this.$nextTick(() => {
@@ -6003,9 +6027,8 @@ export default {
 				ended_choice_showing = false;
 				this.show_ended_choice_modal = false;
 				ended_choice_handled = true;
-				setTimeout(() => {
-					chat_back_to_list_event(this.chat_entry_back_params());
-				}, 100);
+				this.page_alive = false;
+				chat_back_to_list_event(this.chat_entry_back_params());
 			
 		},
 
@@ -6025,13 +6048,17 @@ export default {
 
 		finish_end_rating_flow() {
 			
+				if (!this.page_alive && !this.show_rating_modal) {
+					return;
+				}
 				this.show_rating_modal = false;
 				this.rating_submitting = false;
 				if (rating_submit_fallback_timer) {
 					clearTimeout(rating_submit_fallback_timer);
 					rating_submit_fallback_timer = null;
 				}
-				// 发出评价 / 关闭评价后立刻回列表，不等服务端回包
+				// 先标记页已失效，避免跳转后 WS 回调再改已销毁实例 / 重复跳转
+				this.page_alive = false;
 				chat_back_to_list_event(this.chat_entry_back_params());
 			
 		},
@@ -7427,7 +7454,8 @@ export default {
 				}
 				pending_session_revive = false;
 				session_page_engaged = true;
-				arm_suppress_ended_choice(2000);
+				arm_suppress_ended_choice(5000);
+				schedule_allow_ended_prompt(5000);
 				this.message_list.forEach((row) => {
 					if (row && row.is_self && row.send_status == 'sending' && row.upload_status != 'uploading') {
 						this.schedule_mark_send_ok(row.key);
@@ -7568,6 +7596,7 @@ export default {
 				page_visible = true;
 				ended_while_page_hidden = false;
 				clear_suppress_ended_choice();
+				clear_allow_ended_prompt_timer();
 				this.show_ended_choice_modal = false;
 				this.list_ready = false;
 				history_edge_armed = false;
@@ -7744,6 +7773,7 @@ export default {
 				page_visible = false;
 				ended_while_page_hidden = false;
 				clear_suppress_ended_choice();
+				clear_allow_ended_prompt_timer();
 				try {
 					this.show_ended_choice_modal = false;
 					this.show_rating_modal = false;

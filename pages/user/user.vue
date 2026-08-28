@@ -562,7 +562,7 @@
                     app.globalData.chat_native_entry_handle({ to_list: 1 });
                     return;
                 }
-                uni.navigateTo({ url: '/pages/plugins/chat/list/list' });
+                app.globalData.url_open('/pages/plugins/chat/list/list');
             },
 
             // 客服电话
