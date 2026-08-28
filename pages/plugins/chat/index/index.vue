@@ -536,6 +536,22 @@
 			@end="voice_press_end"
 		/>
 
+		<!-- 对话已结束：页内弹窗（层级低于搜索记录，避免盖住搜索） -->
+		<view
+			v-if="show_ended_choice_modal"
+			class="ended-choice-mask"
+			@touchmove.stop.prevent="prevent_touch_move"
+		>
+			<view class="ended-choice-modal" @tap.stop="prevent_touch_move">
+				<text class="ended-choice-title">温馨提示</text>
+				<text class="ended-choice-content">当前对话已结束，是否继续聊天？</text>
+				<view class="ended-choice-actions">
+					<view class="ended-choice-btn ended-choice-cancel" @tap.stop="ended_choice_exit_event">退出</view>
+					<view class="ended-choice-btn ended-choice-confirm" @tap.stop="ended_choice_continue_event">继续聊天</view>
+				</view>
+			</view>
+		</view>
+
 		<!-- 会话内搜索：全屏蒙层，点结果跳到对应消息 -->
 		<chat-msg-search
 			v-if="msg_search_open"

@@ -151,8 +151,8 @@
                                     <text class="item-name va-m cr-base margin-left-sm text-size-sm">{{ nav_logout_data.name }}</text>
                                 </view>
                             </view>
-                            <!-- 在线客服 -->
-                            <view v-if="(nav_logout_data || null) != null" class="nav-item br-t cp padding-main" @tap="chat_nav_event">
+                            <!-- 在线客服：游客也可进入（chat 支持匿名 uuid） -->
+                            <view class="nav-item br-t cp padding-main" @tap="chat_nav_event">
                                 <view class="arrow-right">
                                     <image :src="common_static_url + 'online-service-icon.png'" class="item-icon va-m" mode="widthFix"></image>
                                     <text class="item-name va-m cr-base margin-left-sm text-size-sm">{{ $t('design.design.21kak7') }}</text>
@@ -179,8 +179,8 @@
                                 <image :src="common_static_url + nav_logout_data.icon + '-icon.png'" class="item-icon" mode="widthFix"></image>
                                 <view class="item-name single-text cr-base text-size-sm">{{ nav_logout_data.name }}</view>
                             </view>
-                            <!-- 在线客服 -->
-                            <view v-if="(nav_logout_data || null) != null" class="nav-item padding-vertical-main padding-horizontal-xs fl tc cp" @tap="chat_nav_event">
+                            <!-- 在线客服：游客也可进入（chat 支持匿名 uuid） -->
+                            <view class="nav-item padding-vertical-main padding-horizontal-xs fl tc cp" @tap="chat_nav_event">
                                 <image :src="common_static_url + 'online-service-icon.png'" class="item-icon" mode="widthFix"></image>
                                 <view class="item-name single-text cr-base text-size-sm">{{ $t('design.design.21kak7') }}</view>
                             </view>
