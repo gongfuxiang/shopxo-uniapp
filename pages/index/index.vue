@@ -757,7 +757,7 @@
 
             // 以图搜款入口
             imagesearch_event() {
-                if (this.is_imagesearch != 1) {
+                if (this.is_imagesearch == 1) {
                     app.globalData.url_open('/pages/plugins/imagesearch/index/index');
                 }
             },
