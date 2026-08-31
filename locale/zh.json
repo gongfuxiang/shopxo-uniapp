@@ -588,7 +588,6 @@
 		"cart": "购物车",
 		"user": "用户中心",
 		"diy": "",
-<<<<<<< HEAD
 		"error": "温馨提示",
 		"article-category": "所有文章",
 		"article-detail": "文章详情",
@@ -776,11 +775,9 @@
 		"plugins-groupbuy-index": "拼团",
 		"plugins-groupbuy-detail": "拼团详情",
 		"plugins-groupbuy-team": "参团",
-		"plugins-groupbuy-order": "我的拼团"
-=======
+		"plugins-groupbuy-order": "我的拼团",
 		"design": "",
 		"web-view": ""
->>>>>>> dev
 	},
 	"login": {
 		"get_phone_number": "获取手机号码",
