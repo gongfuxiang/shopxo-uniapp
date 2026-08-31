@@ -1,3 +1,5 @@
+@import '../common/chat-h5-layout.css';
+
 .page-chat {
 	min-height: 100vh;
 	background: #ededed;

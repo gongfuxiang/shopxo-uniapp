@@ -68,10 +68,8 @@ import {
 	chat_site_logged_in,
 	get_chat_config,
 } from '../common/chat-socket.js';
+import { bind_chat_push, request_chat_push_auth, create_chat_local_push } from '../common/chat-push.js';
 
-const bind_chat_push = () => {};
-const request_chat_push_auth = () => {};
-const create_chat_local_push = () => {};
 const request_chat_media_auth = () => {
 	// #ifdef MP-WEIXIN
 	try {
@@ -7598,7 +7596,6 @@ export default {
 				}, 1500);
 				this.init_nav_metrics(true);
 				bind_chat_push();
-				request_chat_push_auth();
 				this.measure_chrome();
 				apply_chat_user_page_config();
 				this.chat_title = '在线客服';
@@ -7704,6 +7701,7 @@ export default {
 				this.sync_connect_ui();
 				this.ensure_uploading_progress_and_resume();
 				setTimeout(() => {
+					request_chat_push_auth();
 					request_chat_media_auth();
 				}, 300);
 				if (this.list_ready) {

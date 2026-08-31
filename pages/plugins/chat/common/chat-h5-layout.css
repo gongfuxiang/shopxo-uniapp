@@ -1,0 +1,22 @@
+/**
+ * H5：客服页 fixed 顶栏/底栏与 page 的 1600rpx 居中宽度对齐
+ * （中间 chat-main 随 page 限宽，nav/composer 若 left:0;right:0 会铺满超宽屏）
+ */
+/* #ifdef H5 */
+.page-chat .nav-wrap,
+.page-chat .header-meta,
+.page-chat .composer-fixed,
+.page-chat .ws-loading-cover,
+.page-chat .input-fs-mask,
+.page-chat .ended-choice-mask,
+.page-chat .prompt-modal-mask,
+.chat-list-page .chat-list-nav,
+.msg-search-mask {
+	left: 50%;
+	right: auto;
+	transform: translateX(-50%);
+	width: 100%;
+	max-width: 1600rpx;
+	box-sizing: border-box;
+}
+/* #endif */

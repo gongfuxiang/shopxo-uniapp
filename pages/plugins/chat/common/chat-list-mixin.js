@@ -13,6 +13,7 @@ import {
 	chat_load_user_history,
 	chat_search_users,
 } from '../common/chat-socket.js';
+import { bind_chat_push, request_chat_push_auth } from '../common/chat-push.js';
 
 export default {
 	data() {
@@ -355,6 +356,7 @@ export default {
 			chat_apply_entry_params(entry);
 			apply_chat_user_page_config();
 			this.bind_list_events();
+			bind_chat_push();
 			this.sync_connect_ui();
 			this.page_user_inited = false;
 			const before = get_chat_state();
@@ -401,6 +403,9 @@ export default {
 			this.apply_list_page_title();
 			chat_resume_connect();
 			this.sync_connect_ui();
+			setTimeout(() => {
+				request_chat_push_auth();
+			}, 300);
 			if (this.connect_status === 1) {
 				const kw = String(this.list_keyword || '').trim();
 				if (kw) {

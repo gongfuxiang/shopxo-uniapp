@@ -18,7 +18,7 @@ import {
 	url_open,
 	open_web_view,
 } from './chat-host.js';
-import { notify_incoming_chat } from './chat-push-stub.js';
+import { notify_incoming_chat } from './chat-push.js';
 import $api from './chat-request.js';
 import { CHAT_USER_API } from './chat-request.js';
 

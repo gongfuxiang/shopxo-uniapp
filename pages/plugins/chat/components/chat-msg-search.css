@@ -1,3 +1,5 @@
+@import '../common/chat-h5-layout.css';
+
 .msg-search-mask {
 	position: fixed;
 	left: 0;
