@@ -13,7 +13,7 @@
                                     <text class="text-size-lg fw-b">{{ item.estimate_price }}</text>
                                 </view>
                                 <view v-if="(item.estimate_discount_price || 0) != 0" class="margin-top-sm single-text flex-row align-c">
-                                    <text class="discount-icon cr-white text-size-xs">{{$t('detail.detail.6026t4')}}</text>
+                                    <text class="discount-icon cr-white text-size-xs">{{$t('common.save_amount')}}</text>
                                     <view class="cr-green single-text">
                                         <text class="text-size-xs">{{ propCurrencySymbol }}</text>
                                         <text class="text-size">{{ item.estimate_discount_price }}</text>
@@ -34,7 +34,7 @@
                                             <text class="sales-price va-m text-size-xss">{{ gv.show_price_symbol }}{{ gv.price }}</text>
                                             <text class="cr-grey va-m text-size-xsss">{{ gv.show_price_unit }}</text>
                                         </view>
-                                        <view v-if="(gv.discount_price || null) != null" class="single-text cr-green text-size-xss">{{$t('detail.detail.6026t4')}}{{ gv.show_price_symbol }}{{ gv.discount_price }}</view>
+                                        <view v-if="(gv.discount_price || null) != null" class="single-text cr-green text-size-xss">{{$t('common.save_amount')}}{{ gv.show_price_symbol }}{{ gv.discount_price }}</view>
                                     </view>
                                 </view>
                             </block>

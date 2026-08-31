@@ -271,7 +271,7 @@
                 var self = this;
                 uni.showModal({
                     title: this.$t('common.warm_tips'),
-                    content: this.$t('order.order.psi67g'),
+                    content: this.$t('common.unable_recover_continue_after_deletion'),
                     success(res) {
                         if (res.confirm) {
                             var list = self.form_images_list;

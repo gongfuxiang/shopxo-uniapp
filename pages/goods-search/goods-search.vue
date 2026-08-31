@@ -6,7 +6,7 @@
                 <view class="top-search-input">
                     <component-search :propDefaultValue="post_data.wd || ''" propBrColor="#ddd" @onsearch="search_input_confirm_event" :propIsOnEvent="true" @oninput="search_input_value_event" :propIsOnInputEvent="true"
                         @onfocus="search_input_focus_event" :propIsOnFocusEvent="true" @onblur="search_input_blur_event" :propIsOnBlurEvent="true" :propIsRequired="false"
-                        :propPlaceholder="$t('customview.customview.726k7y')"></component-search>
+                        :propPlaceholder="$t('common.enter_product_name_search')"></component-search>
                 </view>
                 <view class="pa top-search-right">
                     <view v-if="top_search_right_type_status" class="pr cp" @tap="search_submit_confirm_event">
@@ -57,13 +57,13 @@
                 <view class="search-map padding-main bg-base">
                     <view class="padding-main border-radius-main bg-white">
                         <view class="map-item map-base br-b">
-                            <text>{{$t('goods-search.goods-search.j8o278')}}</text>
+                            <text>{{$t('common.filter_out')}}</text>
                             <text class="cr-main"> {{data_total}} </text>
-                            <text>{{$t('goods-search.goods-search.t9nikq')}}</text>
+                            <text>{{$t('common.piece_data')}}</text>
                             <text class="fr cr-red cp" @tap="map_remove_event">{{$t('common.clear')}}</text>
                         </view>
                         <!-- 搜索关键字 -->
-                        <input type="text" confirm-type="search" :placeholder="$t('customview.customview.726k7y')" name="wd" :value="(post_data.wd || '')" class="map-keywords wh-auto round bg-base margin-top-lg"
+                        <input type="text" confirm-type="search" :placeholder="$t('common.enter_product_name_search')" name="wd" :value="(post_data.wd || '')" class="map-keywords wh-auto round bg-base margin-top-lg"
                             placeholder-class="cr-grey">
                     </view>
 
@@ -112,7 +112,7 @@
                     <view v-if="(search_map_list.screening_price_list || null) != null && search_map_list.screening_price_list.length > 0"
                         class="map-item padding-horizontal-main padding-top-main border-radius-main bg-white spacing-mt">
                         <view class="map-nav br-b pr">
-                            <text>{{$t('goods-category.goods-category.g2u3lf')}}</text>
+                            <text>{{$t('common.price')}}</text>
                             <text class="arrow-bottom pa cr-grey cp" v-if="search_map_list.screening_price_list.length > 3" @tap="more_event" data-value="screening_price_list">{{$t('common.more')}}</text>
                         </view>
                         <view class="map-content map-text-item screening-price-container oh margin-top-lg" :style="'height:' + map_fields_list.screening_price_list.height + ';'">
@@ -159,7 +159,7 @@
                     <view v-if="(search_map_list.goods_spec_list || null) != null && search_map_list.goods_spec_list.length > 0"
                         class="map-item padding-horizontal-main padding-top-main border-radius-main bg-white spacing-mt">
                         <view class="map-nav br-b pr">
-                            <text>{{$t('goods-detail.goods-detail.u401fi')}}</text>
+                            <text>{{$t('common.spec')}}</text>
                         </view>
                         <view v-for="(group, gi) in search_map_list.goods_spec_list" :key="'spec-'+gi" class="map-group margin-top-lg">
                             <view class="map-group-title cr-grey text-size-xs">{{group.name}}</view>
@@ -196,9 +196,11 @@
     import componentGoodsList from "@/components/goods-list/goods-list";
     import componentSearch from "@/components/search/search";
     import componentBadge from "@/components/badge/badge";
+    import pluginLocale from './locale/index.js';
 
     var common_static_url = app.globalData.get_static_url('common');
     export default {
+        mixins: [pluginLocale],
         data() {
             return {
                 theme_view: app.globalData.get_theme_value_view(),
@@ -226,31 +228,31 @@
                 // 排序导航
                 search_nav_sort_index: 0,
                 search_nav_sort_list: [{
-                        name: this.$t('goods-category.goods-category.x69aow'),
+                        name: this.$t('common.goods_category_all'),
                         field: 'default',
                         sort: 'asc',
                         icon: null
                     },
                     {
-                        name: this.$t('goods-category.goods-category.at5p35'),
+                        name: this.$t('common.sales_volume'),
                         field: 'sales_count',
                         sort: 'asc',
                         icon: 'default'
                     },
                     {
-                        name: this.$t('goods-category.goods-category.283ot0'),
+                        name: this.$t('common.heat'),
                         field: 'access_count',
                         sort: 'asc',
                         icon: 'default'
                     },
                     {
-                        name: this.$t('goods-category.goods-category.g2u3lf'),
+                        name: this.$t('common.price'),
                         field: 'min_price',
                         sort: 'asc',
                         icon: 'default'
                     },
                     {
-                        name: this.$t('goods-category.goods-category.5p4ksj'),
+                        name: this.$t('common.latest'),
                         field: 'id',
                         sort: 'asc',
                         icon: 'default'

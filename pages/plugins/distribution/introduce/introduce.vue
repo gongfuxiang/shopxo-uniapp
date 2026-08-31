@@ -8,21 +8,21 @@
                         <view class="br-b padding-bottom-main fw-b text-size">{{ item.name }}</view>
                         <view class="panel-content oh padding-top-main">
                             <view class="item br-b oh padding-vertical-main">
-                                <view class="title fl padding-right-main cr-grey">{{$t('introduce.introduce.017d67')}}</view>
+                                <view class="title fl padding-right-main cr-grey">{{$t('introduce.level_certificate')}}</view>
                                 <view class="content fl br-l padding-left-main">
                                     <image :src="item.images_url" class="dis-block fl level-icon" mode="widthFix"></image>
                                 </view>
                             </view>
                             <view class="item br-b oh padding-vertical-main">
-                                <view class="title fl padding-right-main cr-grey">{{$t('introduce.introduce.el4ib2')}}</view>
+                                <view class="title fl padding-right-main cr-grey">{{$t('introduce.rebate_ratio')}}</view>
                                 <view class="content fl br-l padding-left-main">
-                                    <view>{{$t('introduce.introduce.syf66q')}}{{ item.level_rate_one }}%</view>
-                                    <view v-if="data_base.level == undefined || data_base.level > 0">{{$t('introduce.introduce.q4t9kl')}}{{ item.level_rate_two }}%</view>
-                                    <view v-if="data_base.level == undefined || data_base.level > 1">{{$t('introduce.introduce.e5os6e')}}{{ item.level_rate_three }}%</view>
+                                    <view>{{$t('introduce.first_level')}}{{ item.level_rate_one }}%</view>
+                                    <view v-if="data_base.level == undefined || data_base.level > 0">{{$t('introduce.second_level')}}{{ item.level_rate_two }}%</view>
+                                    <view v-if="data_base.level == undefined || data_base.level > 1">{{$t('introduce.level')}}{{ item.level_rate_three }}%</view>
                                 </view>
                             </view>
                             <view class="item br-b oh padding-vertical-main">
-                                <view class="title fl padding-right-main cr-grey">{{$t('introduce.introduce.d7kle4')}}</view>
+                                <view class="title fl padding-right-main cr-grey">{{$t('introduce.level_rules')}}</view>
                                 <view class="content fl br-l padding-left-main">
                                     <block v-if="(item.rules_msg_list || null) != null">
                                         <view>{{ item.rules_msg_list.name }}</view>
@@ -36,7 +36,7 @@
                                                 </block>
                                             </block>
                                             <block v-else>
-                                                <view class="cr-grey">{{$t('introduce.introduce.5t5vzi')}}</view>
+                                                <view class="cr-grey">{{$t('introduce.unconditional')}}</view>
                                             </block>
                                         </view>
                                     </block>
@@ -73,8 +73,10 @@
     import componentCommon from '@/components/common/common';
     import componentNoData from "@/components/no-data/no-data";
     import componentBottomLine from "@/components/bottom-line/bottom-line";
+    import pluginLocale from '../locale/index.js';
 
     export default {
+        mixins: [pluginLocale],
         data() {
             return {
                 theme_view: app.globalData.get_theme_value_view(),

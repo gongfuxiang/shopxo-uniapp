@@ -183,7 +183,7 @@
                 grid_btn_config: {
                     bg_color: '#D8D8D8',
                     color: '#fff',
-                    name: this.$t('goods-list.goods-list.nr77jf'),
+                    name: this.$t('goods-list.there_currently_source_goods_available'),
                     disabled: false,
                     border_radius: '24rpx',
                     padding: '6rpx 16rpx',

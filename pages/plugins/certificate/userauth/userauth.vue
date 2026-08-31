@@ -35,7 +35,7 @@
                 <!-- 去认证 -->
                 <view class="bottom-fixed" :style="bottom_fixed_style">
                     <view class="bottom-line-exclude">
-                        <button class="item round cr-main bg-white br-main text-size wh-auto" type="default" hover-class="none" data-value="/pages/plugins/certificate/userauth-saveinfo/userauth-saveinfo" @tap="url_event">{{$t('certificate-userauth.certificate-userauth.tgtwes')}}</button>
+                        <button class="item round cr-main bg-white br-main text-size wh-auto" type="default" hover-class="none" data-value="/pages/plugins/certificate/userauth-saveinfo/userauth-saveinfo" @tap="url_event">{{$t('certificate-userauth.go_authenticate')}}</button>
                     </view>
                 </view>
             </view>
@@ -51,8 +51,10 @@
     import componentNoData from '@/components/no-data/no-data';
     import componentBottomLine from '@/components/bottom-line/bottom-line';
     import componentPanelContent from "@/components/panel-content/panel-content";
+    import pluginLocale from '../locale/index.js';
 
     export default {
+        mixins: [pluginLocale],
         data() {
             return {
                 theme_view: app.globalData.get_theme_value_view(),

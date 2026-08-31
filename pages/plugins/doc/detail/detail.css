@@ -1,0 +1,129 @@
+.doc-title-switch {
+    min-width: 0;
+}
+.doc-home-entry {
+    flex-shrink: 0;
+}
+.doc-title-switch .single-text {
+    min-width: 0;
+    max-width: calc(100% - 60rpx);
+}
+.doc-switch-scroll {
+    max-height: 60vh;
+}
+.doc-switch-item {
+    padding: 24rpx 0;
+    border-bottom: 1px solid #f5f5f5;
+    font-size: 28rpx;
+}
+.doc-lock-panel {
+    margin-top: 20rpx;
+}
+.doc-content-title {
+    padding-right: 56rpx;
+}
+.doc-share-entry {
+    position: absolute;
+    top: 0;
+    right: 0;
+}
+.doc-input {
+    width: 100%;
+    height: 72rpx;
+    line-height: 72rpx;
+    padding: 0 24rpx;
+    box-sizing: border-box;
+}
+.doc-verify-img {
+    width: 100%;
+    height: 160rpx;
+    border: 1px solid #eee;
+    box-sizing: border-box;
+}
+.doc-menu-popup {
+    width: 560rpx;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    box-sizing: border-box;
+    overflow: hidden;
+}
+.doc-menu-scroll {
+    flex: 1;
+    height: 0;
+    width: 100%;
+}
+.doc-menu-cat {
+    margin: 16rpx 0 8rpx;
+    color: #333;
+}
+.doc-menu-subcat {
+    padding-left: 16rpx;
+    color: #666;
+    margin: 8rpx 0;
+    font-size: 26rpx;
+}
+.doc-menu-item {
+    padding: 18rpx 0 18rpx 40rpx;
+    border-bottom: 1px solid #f5f5f5;
+    font-size: 28rpx;
+}
+.doc-menu-item.level-root {
+    padding-left: 0;
+}
+.doc-menu-item.sub {
+    padding-left: 56rpx;
+}
+.doc-plan-list {
+    display: flex;
+    flex-wrap: wrap;
+    margin: 0 -8rpx;
+}
+.doc-plan-item {
+    width: calc(50% - 16rpx);
+    margin: 8rpx;
+    padding: 20rpx 16rpx;
+    box-sizing: border-box;
+    text-align: center;
+    border: 1px solid #eee;
+    border-radius: 12rpx;
+    overflow: hidden;
+}
+.doc-plan-item .doc-plan-check {
+    position: absolute;
+    right: -34rpx;
+    bottom: -18rpx;
+    line-height: 1;
+    z-index: 1;
+    pointer-events: none;
+}
+.doc-detail-toolbar {
+    z-index: 10;
+}
+.web-html-content {
+    z-index: 0;
+}
+.doc-protect {
+    -webkit-user-select: none;
+    user-select: none;
+}
+.doc-watermark {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+    pointer-events: none;
+    overflow: hidden;
+    display: flex;
+    flex-wrap: wrap;
+    opacity: 0.12;
+}
+.doc-watermark-item {
+    color: #000;
+    text-align: center;
+    white-space: nowrap;
+    overflow: hidden;
+    transform: rotate(-28deg);
+}

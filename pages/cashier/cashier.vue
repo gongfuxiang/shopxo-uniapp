@@ -30,7 +30,7 @@
                 <view class="padding-vertical-xxxxl">{{$t('common.payment_in_text')}}</view>
                 <view class="margin-top-lg">
                     <button type="default" size="mini" class="bg-white br-black cr-black text-size-sm round margin-right-xxxxl" data-type="0" @tap="payment_confirm_event">{{$t('common.not_have_name')}}</button>
-                    <button type="default" size="mini" class="bg-main br-main cr-white text-size-sm round margin-left-xxxxl" data-type="1" @tap="payment_confirm_event">{{$t('order.order.s8g966')}}</button>
+                    <button type="default" size="mini" class="bg-main br-main cr-white text-size-sm round margin-left-xxxxl" data-type="1" @tap="payment_confirm_event">{{$t('common.paid')}}</button>
                 </view>
             </view>
         </view>
@@ -151,7 +151,7 @@
                         this.setData({
                             is_first: 0,
                             data_list_loding_status: 0,
-                            data_list_loding_msg: self.$t('login.login.3nmrg2'),
+                            data_list_loding_msg: self.$t('common.privilege_grant_failed'),
                         });
                     },
                 });
@@ -179,7 +179,7 @@
                                 self.setData({
                                     is_first: 0,
                                     pay_status: 2,
-                                    pay_msg: self.is_first == 1 ? '' : self.$t('paytips.paytips.6y488i'),
+                                    pay_msg: self.is_first == 1 ? '' : self.$t('common.payment_failed'),
                                     pay_btn_text: self.is_first == 1 ? self.$t('common.click_pay_text') : self.$t('common.again_pay_text'),
                                 });
                             }
@@ -205,7 +205,7 @@
                             fail: (res) => {
                                 self.setData({
                                     pay_status: 2,
-                                    pay_msg: self.$t('paytips.paytips.6y488i'),
+                                    pay_msg: self.$t('common.payment_failed'),
                                 });
                             },
                         });
@@ -228,7 +228,7 @@
                 } else {
                     this.setData({
                         pay_status: 2,
-                        pay_msg: this.$t('paytips.paytips.6y488i'),
+                        pay_msg: this.$t('common.payment_failed'),
                     });
                 }
             }

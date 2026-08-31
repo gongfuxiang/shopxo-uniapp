@@ -29,8 +29,10 @@
     import componentCommon from '@/components/common/common';
     import componentNoData from "@/components/no-data/no-data";
     import componentBottomLine from "@/components/bottom-line/bottom-line";
+    import pluginLocale from '../locale/index.js';
 
     export default {
+        mixins: [pluginLocale],
         data() {
             return {
                 theme_view: app.globalData.get_theme_value_view(),
@@ -98,16 +100,16 @@
                             this.setData({
                                 detail: data.data,
                                 detail_list: [
-                                    { name: this.$t('user-cash-detail.user-cash-detail.e8a3e8'), value: data.data.cash_no || "" },
-                                    { name: this.$t('user-cash-detail.user-cash-detail.wyad6w'), value: data.data.status_name || "" },
-                                    { name: this.$t('cash-create.cash-create.qg404q'), value: data.data.money || "" },
-                                    { name: this.$t('cash-create.cash-create.9ugssd'), value: data.data.commission || "" },
-                                    { name: this.$t('cash-create.cash-create.yu2raf'), value: data.data.cash_type_name || "" },
-                                    { name: this.$t('user-cash-detail.user-cash-detail.j5s3u6'), value: data.data.bank_name || "" },
-                                    { name: this.$t('user-cash-detail.user-cash-detail.53k647'), value: data.data.bank_username || "" },
-                                    { name: this.$t('user-cash-detail.user-cash-detail.m556tl'), value: data.data.bank_accounts || "" },
-                                    { name: this.$t('user-cash-detail.user-cash-detail.i308o1'), value: data.data.pay_money <= 0 ? "" : data.data.pay_money || "" },
-                                    { name: this.$t('user-cash-detail.user-cash-detail.451xxt'), value: data.data.pay_time || "" },
+                                    { name: this.$t('user-cash-detail.withdrawal_number'), value: data.data.cash_no || "" },
+                                    { name: this.$t('user-cash-detail.withdrawal_status'), value: data.data.status_name || "" },
+                                    { name: this.$t('cash-create.withdrawal_amount'), value: data.data.money || "" },
+                                    { name: this.$t('cash-create.handling_fees'), value: data.data.commission || "" },
+                                    { name: this.$t('cash-create.withdrawal_method'), value: data.data.cash_type_name || "" },
+                                    { name: this.$t('user-cash-detail.transfer_platform'), value: data.data.bank_name || "" },
+                                    { name: this.$t('user-cash-detail.transfer_name'), value: data.data.bank_username || "" },
+                                    { name: this.$t('user-cash-detail.transfer_account'), value: data.data.bank_accounts || "" },
+                                    { name: this.$t('user-cash-detail.payment_amount'), value: data.data.pay_money <= 0 ? "" : data.data.pay_money || "" },
+                                    { name: this.$t('user-cash-detail.payment_time'), value: data.data.pay_time || "" },
                                     { name: this.$t('common.note'), value: data.data.msg || "" },
                                     { name: this.$t('common.apply_time'), value: data.data.add_time || "" },
                                     { name: this.$t('common.upd_time'), value: data.data.upd_time || "" },

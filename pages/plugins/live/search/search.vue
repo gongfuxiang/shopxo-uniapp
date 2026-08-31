@@ -104,7 +104,7 @@
                     </view>
                 </scroll-view>
                 <view class="tc padding-top-lg flex-row jc-c align-c" @tap="close_filter_popup">
-                    <text class="padding-right-sm">{{ $t('nav-more.nav-more.h9g4b1') }}</text>
+                    <text class="padding-right-sm">{{ $t('common.click_collapse') }}</text>
                     <iconfont name="icon-arrow-top" color="#ccc" propContainerDisplay="flex"></iconfont>
                 </view>
             </view>
@@ -122,6 +122,7 @@ import componentNoData from '@/components/no-data/no-data';
 import componentBottomLine from '@/components/bottom-line/bottom-line';
 import componentCommon from '@/components/common/common';
 import { live_get_top_left_padding, isEmpty } from '@/common/js/common/common.js';
+    import pluginLocale from '../locale/index.js';
 const app = getApp();
 // 状态栏高度
 var bar_height = parseInt(app.globalData.get_system_info('statusBarHeight', 0));
@@ -129,6 +130,7 @@ var bar_height = parseInt(app.globalData.get_system_info('statusBarHeight', 0));
 bar_height = 0;
 // #endif
 export default {
+        mixins: [pluginLocale],
     components: {
         componentSearch,
         componentPopup,
@@ -156,7 +158,7 @@ export default {
             current_status: '',
             /** 与 video 搜索一致：弹窗内仅「排序依据」，数据来自 search_order_by_list */
             popup_list: [
-                { title: this.$t('video-search.video-search.sdfgg4'), id: 'sort', list: [] },
+                { title: this.$t('common.sort'), id: 'sort', list: [] },
             ],
             filter_params: {
                 sort: '',
@@ -279,7 +281,7 @@ export default {
                             current_status: status_tabs.length > 0 ? status_tabs[0].index : '',
                             popup_list: [
                                 {
-                                    title: this.$t('video-search.video-search.sdfgg4'),
+                                    title: this.$t('common.sort'),
                                     id: 'sort',
                                     list: sort_options,
                                 },

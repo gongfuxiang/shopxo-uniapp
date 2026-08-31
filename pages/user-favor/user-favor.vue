@@ -50,7 +50,9 @@
     import componentBottomLine from "@/components/bottom-line/bottom-line";
     import componentBadge from '@/components/badge/badge';
     import componentGoodsBuy from '@/components/goods-buy/goods-buy';
+    import pluginLocale from './locale/index.js';
     export default {
+        mixins: [pluginLocale],
         data() {
             return {
                 theme_view: app.globalData.get_theme_value_view(),

@@ -4,7 +4,7 @@
             <block v-if="(data || null) != null">
                 <form @submit="form_submit" class="form-container">
                     <view class="border-radius-main bg-white padding-vertical-main padding-left-main flex-row" :class="is_error_msg ? '' : 'spacing-mb'">
-                        <view class="title fw-b text-size margin-right-main">{{$t('cash-create.cash-create.36756z')}}</view>
+                        <view class="title fw-b text-size margin-right-main">{{$t('cash-create.receiving_account')}}</view>
                         <view class="flex-1 flex-width padding-right-main">
                             <view class="flex-row jc-sb align-c">
                                 <!-- #ifndef H5 -->
@@ -12,7 +12,7 @@
                                     <iconfont name="icon-scan" size="28rpx" color="#999" propClass="lh-il"></iconfont>
                                 </view>
                                 <!-- #endif -->
-                                <input name="keywords" :value="input_clear_value" class="text-size-md pr top-sm flex-1 flex-width" :placeholder="$t('transfer.transfer.t53ary')" placeholder-class="cr-grey-c" @input="input_account_event" />
+                                <input name="keywords" :value="input_clear_value" class="text-size-md pr top-sm flex-1 flex-width" :placeholder="$t('transfer.enter_user_id_name_code_mobile')" placeholder-class="cr-grey-c" @input="input_account_event" />
                                 <text class="cr-main pr top-xs margin-left-sm" @tap="search_account_event">{{$t('common.confirm')}}</text>
                             </view>
                             <view v-if="(receive_user || null) != null && input_clear_value" class="br-t-e padding-top-main margin-top-main flex-row align-c">
@@ -23,13 +23,13 @@
                     </view>
                     <view v-if="is_error_msg" class="error-msg text-size-xs padding-vertical">{{ error_msg }}</view>
                     <view class="border-radius-main bg-white padding-main spacing-mb">
-                        <view class="title fw-b text-size margin-bottom-xxxl padding-bottom-xl">{{$t('transfer.transfer.2q274j')}}</view>
-                        <input name="money" type="digit" class="text-size-xl tc cr-red" :placeholder="$t('transfer.transfer.g22y5v')" placeholder-class="cr-grey-c" />
+                        <view class="title fw-b text-size margin-bottom-xxxl padding-bottom-xl">{{$t('transfer.transfer_amount')}}</view>
+                        <input name="money" type="digit" class="text-size-xl tc cr-red" :placeholder="$t('transfer.enter_transfer_amount')" placeholder-class="cr-grey-c" />
                         <view class="tc spacing-mt-10 margin-bottom-xxxl padding-bottom-main">
-                            <text class="cr-grey-9">{{$t('transfer.transfer.9xe2bl')}}</text>
+                            <text class="cr-grey-9">{{$t('common.my_balance')}}</text>
                             <text class="fw-b">{{ data.normal_money }}</text>
                         </view>
-                        <input name="note" class="text-size-md bg-grey-f9 padding-main border-radius-sm" :placeholder="$t('transfer.transfer.2bwh7h')" placeholder-class="cr-grey-c" />
+                        <input name="note" class="text-size-md bg-grey-f9 padding-main border-radius-sm" :placeholder="$t('common.enter_transfer_remarks_info')" placeholder-class="cr-grey-c" />
                     </view>
                     <view class="padding-main">
                         <button type="default" form-type="submit" hover-class="none" size="mini" class="br-main bg-main cr-white round buy-submit text-size dis-block">{{$t('common.confirm')}}</button>
@@ -50,7 +50,9 @@
     const app = getApp();
     import componentCommon from '@/components/common/common';
     import componentNoData from '@/components/no-data/no-data';
+    import pluginLocale from '../locale/index.js';
     export default {
+        mixins: [pluginLocale],
         data() {
             return {
                 theme_view: app.globalData.get_theme_value_view(),
@@ -196,9 +198,9 @@
                         receive_user_id: (this.receive_user || null) === null ? '' : this.receive_user.id,
                     };
                     var validation = [
-                        { fields: 'keywords', msg: this.$t('transfer.transfer.1aijp1') },
-                        { fields: 'receive_user_id', msg: this.$t('transfer.transfer.x4mzo9') },
-                        { fields: 'money', msg: this.$t('transfer.transfer.g22y5v') },
+                        { fields: 'keywords', msg: this.$t('common.enter_receiving_account_number') },
+                        { fields: 'receive_user_id', msg: this.$t('transfer.enter_correct_receiving_account') },
+                        { fields: 'money', msg: this.$t('transfer.enter_transfer_amount') },
                     ];
                     if (app.globalData.fields_check(new_data, validation)) {
                         uni.showLoading({

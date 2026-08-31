@@ -8,7 +8,7 @@
             <view class="staff-header-row flex-row align-c padding-horizontal-main padding-top-main padding-bottom-main bg-white spacing-mb">
                 <view class="fw-b text-size staff-title flex-shrink-0">{{ $t('pages.plugins-realstore-staff-list') }}</view>
                 <view class="flex-1 flex-width margin-left-main staff-search">
-                    <component-search @oninput="search_input_event" :propIsOnInputEvent="true" @onsearch="search_button_event" :propIsOnEvent="true" :propDefaultValue="search_keywords_value" :propIsRequired="false" :propIsBtn="true" propIconColor="#ccc" propPlaceholderClass="cr-grey-c" propBrColor="#eee" propBtnClass="bg-black cr-white text-size-xs" :propPlaceholder="$t('realstore-staff.realstore-staff.a2b3c4')"></component-search>
+                    <component-search @oninput="search_input_event" :propIsOnInputEvent="true" @onsearch="search_button_event" :propIsOnEvent="true" :propDefaultValue="search_keywords_value" :propIsRequired="false" :propIsBtn="true" propIconColor="#ccc" propPlaceholderClass="cr-grey-c" propBrColor="#eee" propBtnClass="bg-black cr-white text-size-xs" :propPlaceholder="$t('realstore-staff.search_staff_name')"></component-search>
                 </view>
             </view>
 
@@ -19,13 +19,13 @@
                         <iconfont name="icon-user" size="48rpx" color="#ccc"></iconfont>
                     </view>
                     <view class="flex-1 flex-width staff-item-content">
-                        <view v-if="(item.booking_count || 0) > 0" class="staff-booking-count cr-grey text-size-xs">{{ $t('realstore-staff.realstore-staff.3b9c2d') }}{{ item.booking_count }}</view>
+                        <view v-if="(item.booking_count || 0) > 0" class="staff-booking-count cr-grey text-size-xs">{{ $t('realstore-staff.booked') }}{{ item.booking_count }}</view>
                         <view class="flex-row align-c staff-name-row">
                             <view class="fw-b text-size staff-info-name flex-shrink-0">{{ item.alias }}</view>
                             <view v-if="(item.position_name || null) != null && item.position_name != ''" class="staff-position-tag round bg-white br-yellow cr-yellow text-size-xs flex-shrink-0">{{ item.position_name }}</view>
                         </view>
                         <view v-if="(item.realstore || null) != null && (item.realstore.name || '') != ''" class="cr-grey text-size-xs margin-top-xs single-text">{{ item.realstore.name }}</view>
-                        <button class="staff-book-btn staff-book-btn-br round text-size-xs bg-main cr-white br-main" type="default" size="mini" hover-class="none" :data-value="'/pages/plugins/realstore/staff-detail/staff-detail?id=' + item.id" @tap.stop="url_event">{{ $t('realstore-staff.realstore-staff.4c0d3e') }}</button>
+                        <button class="staff-book-btn staff-book-btn-br round text-size-xs bg-main cr-white br-main" type="default" size="mini" hover-class="none" :data-value="'/pages/plugins/realstore/staff-detail/staff-detail?id=' + item.id" @tap.stop="url_event">{{ $t('realstore-staff.book') }}</button>
                     </view>
                 </view>
             </view>
@@ -48,8 +48,10 @@
     import componentBottomLine from '@/components/bottom-line/bottom-line';
     import componentBanner from '@/components/slider/slider';
     import componentSearch from '@/components/search/search';
+    import pluginLocale from '../locale/index.js';
 
     export default {
+        mixins: [pluginLocale],
         data() {
             return {
                 theme_view: app.globalData.get_theme_value_view(),
@@ -154,7 +156,7 @@
                             this.setData({
                                 share_info: {
                                     title: this.$t('pages.plugins-realstore-staff-list'),
-                                    desc: this.$t('realstore-staff.realstore-staff.2a8b1c'),
+                                    desc: this.$t('realstore-staff.bookable_staff_across_all_stores'),
                                     path: '/pages/plugins/realstore/staff-list/staff-list',
                                 },
                             });

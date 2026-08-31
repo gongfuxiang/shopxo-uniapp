@@ -3,23 +3,23 @@
         <view v-if="user_share_qrode != null || user_share_url != null" class="padding-main">
             <!-- 二维码 -->
             <view v-if="user_share_qrode != null" class="share qrcode padding-main border-radius-main bg-white spacing-mb">
-                <view class="title border-color-main padding-left-lg text-size fw-b">{{$t('poster.poster.9y4bwq')}}</view>
-                <view class="cr-grey br-b padding-vertical-main">{{$t('poster.poster.h212v8')}}</view>
+                <view class="title border-color-main padding-left-lg text-size fw-b">{{$t('common.qr_code_sharing')}}</view>
+                <view class="cr-grey br-b padding-vertical-main">{{$t('common.after_saving_qr_code_send_wechat')}}</view>
                 <view class="margin-top-lg">
                     <image :src="user_share_qrode" class="wh-auto dis-block radius" mode="widthFix"></image>
                 </view>
                 <view class="margin-top-lg">
-                    <button class="dis-block wh-auto bg-white cr-green br-green round" type="default" size="mini" hover-class="none" @tap="images_show_event" :data-value="user_share_qrode">{{$t('poster.poster.j3qv45')}}</button>
+                    <button class="dis-block wh-auto bg-white cr-green br-green round" type="default" size="mini" hover-class="none" @tap="images_show_event" :data-value="user_share_qrode">{{$t('common.view_qr_code_long_press_save')}}</button>
                 </view>
             </view>
 
             <!-- 链接 -->
             <view v-if="user_share_url != null" class="share url padding-main border-radius-main bg-white spacing-mb">
-                <view class="title border-color-main padding-left-lg text-size fw-b">{{$t('poster.poster.r534xd')}}</view>
-                <view class="cr-grey br-b padding-vertical-main">{{$t('poster.poster.vn36y7')}}</view>
+                <view class="title border-color-main padding-left-lg text-size fw-b">{{$t('common.link_sharing')}}</view>
+                <view class="cr-grey br-b padding-vertical-main">{{$t('common.copy_following_link_send_wechat_friends')}}</view>
                 <view class="cr-main text-size margin-top-lg">{{ user_share_url }}</view>
                 <view class="margin-top-lg">
-                    <button class="dis-block wh-auto bg-white cr-green br-green round" type="default" size="mini" hover-class="none" @tap="url_event" :data-value="user_share_url">{{$t('poster.poster.673605')}}</button>
+                    <button class="dis-block wh-auto bg-white cr-green br-green round" type="default" size="mini" hover-class="none" @tap="url_event" :data-value="user_share_url">{{$t('common.click_copy_link_address')}}</button>
                 </view>
             </view>
 
@@ -40,8 +40,10 @@
     import componentCommon from '@/components/common/common';
     import componentNoData from "@/components/no-data/no-data";
     import componentBottomLine from "@/components/bottom-line/bottom-line";
+    import pluginLocale from '../locale/index.js';
 
     export default {
+        mixins: [pluginLocale],
         data() {
             return {
                 theme_view: app.globalData.get_theme_value_view(),
@@ -149,7 +151,7 @@
                         urls: [value],
                     });
                 } else {
-                    app.globalData.showToast(this.$t('poster.poster.eu3j21'));
+                    app.globalData.showToast(this.$t('common.promotional_image_address_incorrect'));
                 }
             },
 

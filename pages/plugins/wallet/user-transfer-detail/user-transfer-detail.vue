@@ -29,8 +29,10 @@
     import componentCommon from '@/components/common/common';
     import componentNoData from "@/components/no-data/no-data";
     import componentBottomLine from "@/components/bottom-line/bottom-line";
+    import pluginLocale from '../locale/index.js';
 
     export default {
+        mixins: [pluginLocale],
         data() {
             return {
                 theme_view: app.globalData.get_theme_value_view(),
@@ -99,11 +101,11 @@
                             this.setData({
                                 detail: data.data,
                                 detail_list: [
-                                    { name: this.$t('transfer.transfer.678uyg'), value: data.data.transfer_no || "" },
-                                    { name: this.$t('transfer.transfer.2q274j'), value: data.data.money || "" },
-                                    { name: this.$t('transfer.transfer.4g21cu'), value: receive_user.user_name_view || "" },
+                                    { name: this.$t('transfer.transfer_order_number'), value: data.data.transfer_no || "" },
+                                    { name: this.$t('transfer.transfer_amount'), value: data.data.money || "" },
+                                    { name: this.$t('transfer.payee'), value: receive_user.user_name_view || "" },
                                     { name: this.$t('common.note'), value: data.data.note || "" },
-                                    { name: this.$t('user-transfer-detail.user-transfer-detail.x17599'), value: data.data.add_time || "" },
+                                    { name: this.$t('common.transfer_time'), value: data.data.add_time || "" },
                                 ],
                                 data_list_loding_status: 3,
                                 data_bottom_line_status: true,

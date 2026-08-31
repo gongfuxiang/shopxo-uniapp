@@ -56,9 +56,9 @@
                 data_is_loading: 0,
                 params: null,
                 content_list: [
-                    { name: this.$t('transfer.transfer.678uyg'), field: 'transfer_no' },
-                    { name: this.$t('transfer.transfer.2q274j'), field: 'money' },
-                    { name: this.$t('transfer.transfer.t36tk2'), field: 'note' },
+                    { name: this.$t('transfer.transfer_order_number'), field: 'transfer_no' },
+                    { name: this.$t('transfer.transfer_amount'), field: 'money' },
+                    { name: this.$t('transfer.transfer_remarks'), field: 'note' },
                 ],
             };
         },

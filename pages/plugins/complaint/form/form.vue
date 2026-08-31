@@ -22,22 +22,22 @@
                         </view>
                     </view>
                     <view v-if="complaint_type_list.length > 0" class="form-gorup border-radius-main spacing-mb">
-                        <view class="form-gorup-title">{{$t('complaint-form.complaint-form.23rdfg')}}<text class="form-group-tips-must">*</text></view>
+                        <view class="form-gorup-title">{{$t('complaint-form.complaint_report_type')}}<text class="form-group-tips-must">*</text></view>
                         <view class="section">
                             <picker name="complaint_type" @change="complaint_type_event" :value="complaint_type_index" :range="complaint_type_list">
                                 <view :class="'picker name ' + (complaint_type_index === null ? 'cr-grey' : 'cr-base')">
-                                    <view v-if="complaint_type_index === null">{{$t('complaint-form.complaint-form.5434rd')}}</view>
+                                    <view v-if="complaint_type_index === null">{{$t('complaint-form.select_type_complaint_report')}}</view>
                                     <view v-else>{{ complaint_type_list[complaint_type_index] }}</view>
                                 </view>
                             </picker>
                         </view>
                     </view>
                     <view class="form-gorup border-radius-main spacing-mb">
-                        <view class="form-gorup-title padding-right-main">{{$t('user-orderaftersale-detail.user-orderaftersale-detail.87tuff')}}<text class="form-group-tips-must">*</text></view>
-                        <textarea name="describe" placeholder-class="cr-grey-9" class="cr-base" :placeholder="$t('user-orderaftersale-detail.user-orderaftersale-detail.6uygft')" maxlength="230" :value="data.describe || ''"></textarea>
+                        <view class="form-gorup-title padding-right-main">{{$t('common.describe_reason')}}<text class="form-group-tips-must">*</text></view>
+                        <textarea name="describe" placeholder-class="cr-grey-9" class="cr-base" :placeholder="$t('common.describe_reason_format_230_characters')" maxlength="230" :value="data.describe || ''"></textarea>
                     </view>
                     <view class="form-gorup border-radius-main">
-                        <view class="form-gorup-title padding-right-main">{{$t('complaint-form.complaint-form.78iudg')}}<text class="form-group-tips">{{$t('complaint-form.complaint-form.56ys33')}}</text></view>
+                        <view class="form-gorup-title padding-right-main">{{$t('complaint-form.proof_image')}}<text class="form-group-tips">{{$t('common.upload_complete_clear_images_up_maximum')}}</text></view>
                         <view class="margin-top-main">
                             <component-upload :propData="data.images" :propMaxNum="10" :propPathType="editor_path_type" @call-back="retrun_image_event"></component-upload>
                         </view>
@@ -72,7 +72,9 @@
     import componentCommon from '@/components/common/common';
     import componentUpload from '@/components/upload/upload';
     import componentNoData from '@/components/no-data/no-data';
+    import pluginLocale from '../locale/index.js';
     export default {
+        mixins: [pluginLocale],
         data() {
             return {
                 theme_view: app.globalData.get_theme_value_view(),
@@ -223,10 +225,10 @@
                 }
                 // 数据验证
                 var validation = [
-                    { fields: 'describe', msg: this.$t('user-orderaftersale-detail.user-orderaftersale-detail.6uygft') },
+                    { fields: 'describe', msg: this.$t('common.describe_reason_format_230_characters') },
                 ];
                 if(this.complaint_type_list.length > 0) {
-                    validation.push({ fields: 'complaint_type', msg: this.$t('complaint-form.complaint-form.5434rd') });
+                    validation.push({ fields: 'complaint_type', msg: this.$t('complaint-form.select_type_complaint_report') });
                 }
                 var form_data = this.data;
                     form_data['complaint_type'] = (this.complaint_type_index === null || this.complaint_type_list.length == 0) ? '' : (this.complaint_type_list[this.complaint_type_index] || '');

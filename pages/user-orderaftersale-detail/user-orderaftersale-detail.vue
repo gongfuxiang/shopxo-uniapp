@@ -27,7 +27,7 @@
             <view v-if="aftersale_data != null && is_create_aftersale == 0">
                 <!-- 退货地址 -->
                 <view v-if="aftersale_data.status == 1 && aftersale_data.type == 1 && return_goods_address != null" class="bg-white padding-main border-radius-main spacing-mb" @tap="text_event" data-event="copy" :data-value="return_goods_address.name + ' ' + return_goods_address.tel + ' ' + return_goods_address.address">
-                    <text class="cr-base fw-b">{{$t('user-orderaftersale-detail.user-orderaftersale-detail.00je4f')}}</text>
+                    <text class="cr-base fw-b">{{$t('user-orderaftersale-detail.return_address')}}</text>
                     <text class="bg-white br-green cr-green round padding-horizontal-sm text-size-xs margin-left-sm">{{$t('common.copy')}}</text>
                     <view class="cr-blue margin-top-sm">
                         <view>
@@ -45,7 +45,7 @@
                     <view v-if="(aftersale_data.tips_msg.desc || null) != null" class="cr-grey margin-top-sm">{{ aftersale_data.tips_msg.desc }}</view>
                     <view v-if="(plugins_intellectstools_data || null) != null && (plugins_intellectstools_data.service_msg || null) != null" class="cr-grey margin-top-sm">{{ plugins_intellectstools_data.service_msg }}</view>
                     <view v-if="(aftersale_data.status != 3 && aftersale_data.status != 5) || (aftersale_data.status == 1 && aftersale_data.type == 1 && return_goods_address != null) || ((plugins_intellectstools_data || null) != null) || ((plugins_shop_data || null) != null && (plugins_shop_data.status || 0) == 1 && (plugins_shop_data.dispute_data || null) == null)" class="margin-top-sm oh">
-                        <button v-if="aftersale_data.status == 1 && aftersale_data.type == 1 && return_goods_address != null" class="bg-green br-green cr-white round margin-right" type="default" size="mini" @tap="delivery_submit_event">{{$t('user-orderaftersale-detail.user-orderaftersale-detail.uuhf62')}}</button>
+                        <button v-if="aftersale_data.status == 1 && aftersale_data.type == 1 && return_goods_address != null" class="bg-green br-green cr-white round margin-right" type="default" size="mini" @tap="delivery_submit_event">{{$t('user-orderaftersale-detail.immediate_return')}}</button>
                         <button v-if="aftersale_data.status != 3 && aftersale_data.status != 5" class="bg-yellow br-yellow cr-white round margin-right" type="default" size="mini" @tap="cancel_event" hover-class="none">{{$t('common.cancel')}}</button>
                         <block v-if="(plugins_intellectstools_data || null) != null">
                             <button v-if="(plugins_intellectstools_data.base_chat || null) != null" type="default" size="mini" class="bg-green br-green cr-white round margin-right" data-value="base_chat" @tap="plugins_intellectstools_service_open_event" hover-class="none">
@@ -57,11 +57,11 @@
                                 <text class="margin-left-xs">{{plugins_intellectstools_data.platform_chat.title}}</text>
                             </button>
                         </block>
-                        <button v-if="(plugins_shop_data || null) != null && (plugins_shop_data.status || 0) == 1 && (plugins_shop_data.dispute_data || null) == null" type="default" size="mini" class="bg-main br-main cr-white round" @tap="plugins_shop_dispute_interfere_open_event" hover-class="none">{{$t('user-orderaftersale-detail.user-orderaftersale-detail.sdsfgg')}}</button>
+                        <button v-if="(plugins_shop_data || null) != null && (plugins_shop_data.status || 0) == 1 && (plugins_shop_data.dispute_data || null) == null" type="default" size="mini" class="bg-main br-main cr-white round" @tap="plugins_shop_dispute_interfere_open_event" hover-class="none">{{$t('user-orderaftersale-detail.apply_platform_intervention')}}</button>
                     </view>
                     <view v-if="(plugins_shop_data || null) != null && (plugins_shop_data.status || 0) == 1 && (plugins_shop_data.dispute_data || null) != null" class="margin-top-lg">
                         <view>
-                            <text class="cr-red">{{$t('user-orderaftersale-detail.user-orderaftersale-detail.t67iug')}}</text>
+                            <text class="cr-red">{{$t('user-orderaftersale-detail.applied_platform_intervention_mediation')}}</text>
                             <text v-if="plugins_shop_data.dispute_data.status <= 1" class="cr-blue cp margin-left-xxl" @tap="dispute_cancel_event">{{$t('common.cancel')}}</text>
                         </view>
                         <view class="margin-top-xs">
@@ -175,7 +175,7 @@
                 <view v-if="is_create_aftersale == 0">
                     <!-- 申请信息 -->
                     <view class="panel-item padding-main border-radius-main bg-white spacing-mb">
-                        <view class="br-b padding-bottom-main fw-b text-size">{{$t('invoice-detail.invoice-detail.s70kj4')}}</view>
+                        <view class="br-b padding-bottom-main fw-b text-size">{{$t('common.application_information')}}</view>
                         <view class="panel-content oh">
                             <uni-table :emptyText="$t('common.no_data')">
                                 <block v-for="(item, index) in panel_base_data_list" :key="index">
@@ -196,7 +196,7 @@
 
                     <!-- 快递信息 -->
                     <view v-if="aftersale_data.status > 1 && aftersale_data.type == 1" class="panel-item padding-main border-radius-main bg-white spacing-mb">
-                        <view class="br-b padding-bottom-main fw-b text-size">{{$t('user-order-detail.user-order-detail.0876xf')}}</view>
+                        <view class="br-b padding-bottom-main fw-b text-size">{{$t('common.express_delivery_info')}}</view>
                         <view class="panel-content oh">
                             <uni-table :emptyText="$t('common.no_data')">
                                 <block v-for="(item, index) in panel_express_data_list" :key="index">
@@ -217,7 +217,7 @@
 
                     <!-- 凭证 -->
                     <view v-if="(aftersale_data.images || null) != null && aftersale_data.images.length > 0" class="panel-item padding-main border-radius-main bg-white spacing-mb">
-                        <view class="br-b padding-bottom-main fw-b text-size">{{$t('user-orderaftersale-detail.user-orderaftersale-detail.4y2c1l')}}</view>
+                        <view class="br-b padding-bottom-main fw-b text-size">{{$t('user-orderaftersale-detail.voucher')}}</view>
                         <view class="panel-content-images oh">
                             <view v-for="(item, index) in aftersale_data.images" :key="index" class="fl item padding-sm">
                                 <image :src="item" mode="aspectFill" @tap="images_view_event" :data-index="index" class="dis-block radius"></image>
@@ -258,31 +258,31 @@
                 <view v-if="form_type != null" class="form-container spacing-mb">
                     <view class="bg-white border-radius-main oh">
                         <view class="form-gorup">
-                            <view class="form-gorup-title">{{$t('user-orderaftersale-detail.user-orderaftersale-detail.bprwq9')}}<text class="form-group-tips-must">*</text></view>
+                            <view class="form-gorup-title">{{$t('user-orderaftersale-detail.reason_refund')}}<text class="form-group-tips-must">*</text></view>
                             <picker @change="form_reason_event" :value="form_reason_index" :range="reason_data_list">
                                 <view :class="'picker ' + (form_reason_index == null ? 'cr-grey' : 'cr-base') + ' arrow-right'">
-                                    {{ form_reason_index == null ? $t("user-orderaftersale-detail.user-orderaftersale-detail.21icul") : reason_data_list[form_reason_index] }}
+                                    {{ form_reason_index == null ? $t("user-orderaftersale-detail.select_reason") : reason_data_list[form_reason_index] }}
                                 </view>
                             </picker>
                         </view>
 
                         <view v-if="form_type == 1" class="form-gorup">
-                            <view class="form-gorup-title">{{$t('user-orderaftersale-detail.user-orderaftersale-detail.85pnkf')}}<text class="form-group-tips">{{$t('user-orderaftersale-detail.user-orderaftersale-detail.84upo4')}}{{ returned_data.returned_quantity }}</text></view>
+                            <view class="form-gorup-title">{{$t('user-orderaftersale-detail.number_items')}}<text class="form-group-tips">{{$t('user-orderaftersale-detail.quantity_cannot_greater_than')}}{{ returned_data.returned_quantity }}</text></view>
                             <slider @change="form_number_event" min="0" :max="returned_data.returned_quantity" step="1" :value="returned_data.returned_quantity" show-value></slider>
                         </view>
 
                         <view class="form-gorup">
-                            <view class="form-gorup-title">{{$t('order-detail.order-detail.v52n5r')}}<text class="form-group-tips">{{$t('user-orderaftersale-detail.user-orderaftersale-detail.1252if')}}{{ returned_data.refund_price }}</text></view>
-                            <input type="digit" @input="form_price_event" placeholder-class="cr-grey" class="cr-base" :placeholder="$t('user-orderaftersale-detail.user-orderaftersale-detail.9kvu52')" :value="form_price" />
+                            <view class="form-gorup-title">{{$t('common.refund_amount')}}<text class="form-group-tips">{{$t('user-orderaftersale-detail.cannot_greater_than')}}{{ returned_data.refund_price }}</text></view>
+                            <input type="digit" @input="form_price_event" placeholder-class="cr-grey" class="cr-base" :placeholder="$t('user-orderaftersale-detail.enter_refund_amount')" :value="form_price" />
                         </view>
 
                         <view class="form-gorup">
-                            <view class="form-gorup-title">{{$t('user-orderaftersale-detail.user-orderaftersale-detail.9p6b1y')}}</view>
-                            <textarea @input="form_msg_event" placeholder-class="cr-grey" class="cr-base" :placeholder="$t('user-orderaftersale-detail.user-orderaftersale-detail.4f8u0c')" maxlength="200" :auto-height="true" :value="form_msg"></textarea>
+                            <view class="form-gorup-title">{{$t('user-orderaftersale-detail.refund_instructions')}}</view>
+                            <textarea @input="form_msg_event" placeholder-class="cr-grey" class="cr-base" :placeholder="$t('user-orderaftersale-detail.refund_instructions_up_200_characters_long')" maxlength="200" :auto-height="true" :value="form_msg"></textarea>
                         </view>
 
                         <view class="form-gorup form-container-upload oh">
-                            <view class="form-gorup-title">{{$t('user-orderaftersale-detail.user-orderaftersale-detail.4y9355')}}<text class="form-group-tips">{{$t('user-orderaftersale-detail.user-orderaftersale-detail.1l42ms')}}</text></view>
+                            <view class="form-gorup-title">{{$t('user-orderaftersale-detail.upload_credentials')}}<text class="form-group-tips">{{$t('user-orderaftersale-detail.upload_up_images')}}</text></view>
                             <component-upload :propData="form_images_list" :propMaxNum="3" :propPathType="editor_path_type" @call-back="orderaftersale_image_event"></component-upload>
                         </view>
                     </view>
@@ -313,12 +313,12 @@
                 <view class="margin-top-xxxl">
                     <view class="form-container">
                         <view class="form-gorup">
-                            <view class="form-gorup-title">{{$t('invoice-detail.invoice-detail.2000a0')}}<text class="form-group-tips-must">*</text></view>
-                            <input type="text" @input="form_express_name_event" placeholder-class="cr-grey" class="cr-base br-b" :placeholder="$t('user-orderaftersale-detail.user-orderaftersale-detail.6d14hq')" :value="form_express_name" />
+                            <view class="form-gorup-title">{{$t('invoice-detail.express_name')}}<text class="form-group-tips-must">*</text></view>
+                            <input type="text" @input="form_express_name_event" placeholder-class="cr-grey" class="cr-base br-b" :placeholder="$t('user-orderaftersale-detail.enter_courier_name')" :value="form_express_name" />
                         </view>
                         <view class="form-gorup">
-                            <view class="form-gorup-title">{{$t('user-order-detail.user-order-detail.2byl8l')}}<text class="form-group-tips-must">*</text></view>
-                            <input type="text" @input="form_express_number_event" placeholder-class="cr-grey" class="cr-base br-b" :placeholder="$t('user-orderaftersale-detail.user-orderaftersale-detail.8tt862')" :value="form_express_number" />
+                            <view class="form-gorup-title">{{$t('common.express_tracking_number')}}<text class="form-group-tips-must">*</text></view>
+                            <input type="text" @input="form_express_number_event" placeholder-class="cr-grey" class="cr-base br-b" :placeholder="$t('user-orderaftersale-detail.enter_tracking_number')" :value="form_express_number" />
                         </view>
                         <view class="form-gorup form-gorup-submit">
                             <button class="bg-main br-main cr-white round text-size" type="default" @tap="form_delivery_submit_event" hover-class="none" :disabled="form_button_disabled">{{$t('common.submit')}}</button>
@@ -342,7 +342,7 @@
                 <view class="popup-service-container">
                     <view v-if="(plugins_intellectstools_data_chat || null) != null" class="header-service">
                         <view v-if="(plugins_intellectstools_data_chat.data.chat || null) != null" class="item padding-main br-t-f9 single-text">
-                            <text class="va-m">{{$t('detail.detail.r4124d')}}</text>
+                            <text class="va-m">{{$t('common.detail_service')}}</text>
                             <view class="dis-inline-block chat-info cp" @tap="chat_event">
                                 <image class="dis-inline-block va-m" :src="plugins_intellectstools_data_chat.data.chat.icon" mode="scaleToFill"></image>
                                 <text class="margin-left-sm va-m cr-blue" :data-value="plugins_intellectstools_data_chat.data.chat.chat_url">{{ plugins_intellectstools_data_chat.data.chat.name }}</text>
@@ -353,17 +353,17 @@
                             <text class="cp" @tap="text_event" data-event="copy" :data-value="plugins_intellectstools_data_chat.data.service_qq">{{ plugins_intellectstools_data_chat.data.service_qq }}</text>
                         </view>
                         <view v-if="(plugins_intellectstools_data_chat.data.service_tel || null) != null" class="item padding-main br-t-f9 single-text">
-                            <text>{{$t('order.order.7dxbm5')}}：</text>
+                            <text>{{$t('common.order_phone')}}：</text>
                             <text class="cp" @tap="text_event" data-event="tel" :data-value="plugins_intellectstools_data_chat.data.service_tel">{{ plugins_intellectstools_data_chat.data.service_tel }}</text>
                         </view>
                         <view v-if="(plugins_intellectstools_data_chat.data.service_weixin || null) != null || (plugins_intellectstools_data_chat.data.service_line || null) != null" class="oh qrcode tc br-t-f9 padding-top-main">
                             <view v-if="(plugins_intellectstools_data_chat.data.service_weixin || null) != null" class="item padding-bottom-lg dis-inline-block">
                                 <image class="radius cp" :src="plugins_intellectstools_data_chat.data.service_weixin" mode="scaleToFill" @tap="image_show_event" :data-value="plugins_intellectstools_data_chat.data.service_weixin"></image>
-                                <view>{{$t('detail.detail.54k10s')}}</view>
+                                <view>{{$t('common.long_press_wechat_consultation')}}</view>
                             </view>
                             <view v-if="(plugins_intellectstools_data_chat.data.service_line || null) != null" class="item padding-bottom-lg dis-inline-block">
                                 <image class="radius cp" :src="plugins_intellectstools_data_chat.data.service_line" mode="scaleToFill" @tap="image_show_event" :data-value="plugins_intellectstools_data_chat.data.service_line"></image>
-                                <view>{{$t('detail.detail.vj4nom')}}</view>
+                                <view>{{$t('common.long_press_line_consult')}}</view>
                             </view>
                         </view>
                     </view>
@@ -383,8 +383,8 @@
                     <view v-if="(plugins_shop_data || null) != null" class="form-container">
                         <view class="cr-red padding-vertical padding-horizontal-lg">{{plugins_shop_data.apply_dispute_tips}}</view>
                         <view class="form-gorup">
-                            <view class="form-gorup-title">{{$t('user-orderaftersale-detail.user-orderaftersale-detail.87tuff')}}<text class="form-group-tips-must">*</text></view>
-                            <input type="text" @input="form_dispute_describe_value_event" placeholder-class="cr-grey" class="cr-base br-b" :placeholder="$t('user-orderaftersale-detail.user-orderaftersale-detail.6uygft')" :value="form_dispute_describe_value" />
+                            <view class="form-gorup-title">{{$t('common.describe_reason')}}<text class="form-group-tips-must">*</text></view>
+                            <input type="text" @input="form_dispute_describe_value_event" placeholder-class="cr-grey" class="cr-base br-b" :placeholder="$t('common.describe_reason_format_230_characters')" :value="form_dispute_describe_value" />
                         </view>
                         <view class="form-gorup form-gorup-submit">
                             <button class="bg-main br-main cr-white round text-size" type="default" @tap="form_dispute_describe_submit_event" hover-class="none" :disabled="form_dispute_describe_button_disabled">{{$t('common.submit')}}</button>
@@ -408,8 +408,10 @@
     import componentNoData from "@/components/no-data/no-data";
     import componentBottomLine from "@/components/bottom-line/bottom-line";
     import componentUpload from '@/components/upload/upload';
+    import pluginLocale from './locale/index.js';
 
     export default {
+        mixins: [pluginLocale],
         data() {
             return {
                 theme_view: app.globalData.get_theme_value_view(),
@@ -433,40 +435,40 @@
                 // 售后基础信息
                 panel_base_data_list: [
                     {
-                        name: this.$t('user-orderaftersale-detail.user-orderaftersale-detail.50cm8m'),
+                        name: this.$t('user-orderaftersale-detail.refund_type'),
                         field: "type_text",
                     },
                     {
-                        name: this.$t('user-order-detail.user-order-detail.n18sd2'),
+                        name: this.$t('common.user_order_detail_order_number'),
                         field: "order_no",
                         is_copy: 1
                     },
                     {
-                        name: this.$t('user-orderaftersale-detail.user-orderaftersale-detail.17j4cy'),
+                        name: this.$t('user-orderaftersale-detail.current_state'),
                         field: "status_text",
                     },
                     {
-                        name: this.$t('user-orderaftersale-detail.user-orderaftersale-detail.r2oy43'),
+                        name: this.$t('user-orderaftersale-detail.reason_application'),
                         field: "reason",
                     },
                     {
-                        name: this.$t('user-orderaftersale-detail.user-orderaftersale-detail.c53k23'),
+                        name: this.$t('user-orderaftersale-detail.return_quantity'),
                         field: "number",
                     },
                     {
-                        name: this.$t('order-detail.order-detail.v52n5r'),
+                        name: this.$t('common.refund_amount'),
                         field: "price",
                     },
                     {
-                        name: this.$t('user-orderaftersale-detail.user-orderaftersale-detail.9p6b1y'),
+                        name: this.$t('user-orderaftersale-detail.refund_instructions'),
                         field: "msg",
                     },
                     {
-                        name: this.$t('user-orderaftersale-detail.user-orderaftersale-detail.5t586p'),
+                        name: this.$t('user-orderaftersale-detail.refund_method'),
                         field: "refundment_text",
                     },
                     {
-                        name: this.$t('invoice-detail.invoice-detail.rpdwd3'),
+                        name: this.$t('invoice-detail.reason_rejection'),
                         field: "refuse_reason",
                     },
                     {
@@ -474,19 +476,19 @@
                         field: "apply_time",
                     },
                     {
-                        name: this.$t('user-order-detail.user-order-detail.9vivhl'),
+                        name: this.$t('common.confirmation_time'),
                         field: "confirm_time",
                     },
                     {
-                        name: this.$t('user-orderaftersale-detail.user-orderaftersale-detail.bifwmx'),
+                        name: this.$t('user-orderaftersale-detail.return_time'),
                         field: "delivery_time",
                     },
                     {
-                        name: this.$t('user-orderaftersale-detail.user-orderaftersale-detail.8n414b'),
+                        name: this.$t('user-orderaftersale-detail.review_time'),
                         field: "audit_time",
                     },
                     {
-                        name: this.$t('user-order-detail.user-order-detail.1jpv4n'),
+                        name: this.$t('common.cancel_time'),
                         field: "cancel_time",
                     },
                     {
@@ -501,16 +503,16 @@
                 // 快递信息
                 panel_express_data_list: [
                     {
-                        name: this.$t('invoice-detail.invoice-detail.2000a0'),
+                        name: this.$t('invoice-detail.express_name'),
                         field: "express_name",
                     },
                     {
-                        name: this.$t('user-order-detail.user-order-detail.2byl8l'),
+                        name: this.$t('common.express_tracking_number'),
                         field: "express_number",
                         is_copy: 1
                     },
                     {
-                        name: this.$t('user-orderaftersale-detail.user-orderaftersale-detail.bifwmx'),
+                        name: this.$t('user-orderaftersale-detail.return_time'),
                         field: "delivery_time",
                     },
                 ],
@@ -745,18 +747,18 @@
                 var validation = [
                     {
                         fields: "type",
-                        msg: this.$t('user-orderaftersale-detail.user-orderaftersale-detail.23v6rp'),
+                        msg: this.$t('user-orderaftersale-detail.select_operation_type'),
                         is_can_zero: 1,
                     },
                     {
                         fields: "reason",
-                        msg: this.$t('user-orderaftersale-detail.user-orderaftersale-detail.21icul'),
+                        msg: this.$t('user-orderaftersale-detail.select_reason'),
                     },
                 ];
                 if (form_data["type"] == 1) {
                     validation.push({
                         fields: "number",
-                        msg: this.$t('user-orderaftersale-detail.user-orderaftersale-detail.dn3423'),
+                        msg: this.$t('user-orderaftersale-detail.select_quantity_returns'),
                     });
                 }
 
@@ -829,11 +831,11 @@
                 var validation = [
                     {
                         fields: "express_name",
-                        msg: this.$t('user-orderaftersale-detail.user-orderaftersale-detail.c9e2ms'),
+                        msg: this.$t('user-orderaftersale-detail.fill_courier_name'),
                     },
                     {
                         fields: "express_number",
-                        msg: this.$t('user-orderaftersale-detail.user-orderaftersale-detail.ld10pm'),
+                        msg: this.$t('user-orderaftersale-detail.fill_courier_tracking_number'),
                     },
                 ];
 
@@ -976,7 +978,7 @@
             form_dispute_describe_submit_event(e) {
                 var value = this.form_dispute_describe_value;
                 if(value === '') {
-                    app.globalData.showToast(this.$t('user-orderaftersale-detail.user-orderaftersale-detail.6uygft'));
+                    app.globalData.showToast(this.$t('common.describe_reason_format_230_characters'));
                     return;
                 }
                 uni.showLoading({

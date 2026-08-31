@@ -45,8 +45,10 @@
     import componentCommon from '@/components/common/common';
     import componentNoData from "@/components/no-data/no-data";
     import componentBottomLine from "@/components/bottom-line/bottom-line";
+    import pluginLocale from '../locale/index.js';
 
     export default {
+        mixins: [pluginLocale],
         data() {
             return {
                 theme_view: app.globalData.get_theme_value_view(),
@@ -59,17 +61,17 @@
                 data_is_loading: 0,
                 params: null,
                 nav_type_list: [
-                    { name: this.$t('promotion-order.promotion-order.6rs63v'), value: 0 },
-                    { name: this.$t('promotion-order.promotion-order.iwa646'), value: 1 },
-                    { name: this.$t('promotion-order.promotion-order.2p5215'), value: 2 },
+                    { name: this.$t('promotion-order.total_gmv_newly_added_customers'), value: 0 },
+                    { name: this.$t('common.orders'), value: 1 },
+                    { name: this.$t('promotion-order.total_gmv_orders'), value: 2 },
                 ],
                 nav_type_index: 0,
                 content_list: [
-                    { name: this.$t('order-detail.order-detail.36op8f'), field: "order_no" },
-                    { name: this.$t('order-detail.order-detail.x3ge6c'), field: "total_price" },
-                    { name: this.$t('user-order-detail.user-order-detail.23qj7m'), field: "order_pay_status_name" },
-                    { name: this.$t('order.order.330m76'), field: "order_client_type_name" },
-                    { name: this.$t('order-detail.order-detail.9153qn'), field: "add_time" },
+                    { name: this.$t('common.order_detail_order_number'), field: "order_no" },
+                    { name: this.$t('common.order_amount'), field: "total_price" },
+                    { name: this.$t('common.payment_status'), field: "order_pay_status_name" },
+                    { name: this.$t('common.source_terminal'), field: "order_client_type_name" },
+                    { name: this.$t('common.order_time'), field: "add_time" },
                 ],
             };
         },
@@ -268,7 +270,7 @@
                         urls: [value],
                     });
                 } else {
-                    app.globalData.showToast(this.$t('order.order.p3scy0'));
+                    app.globalData.showToast(this.$t('common.avatar_address_incorrect'));
                 }
             },
 

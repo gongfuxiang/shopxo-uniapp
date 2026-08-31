@@ -30,7 +30,7 @@
                     <image :src="live_avatar" class="avatar" mode="aspectFill"></image>
                     <view class="ml-10 flex-col">
                         <text class="nickname text-line-1">{{ live_data && live_data.title ? live_data.title : $t('common.live') }}</text>
-                        <text v-if="live_feature_ready && is_live_like_on" class="level">{{ like_count }}{{ $t('live.live.like_this_session') }}</text>
+                        <text v-if="live_feature_ready && is_live_like_on" class="level">{{ like_count }}{{ $t('live.like_this_session') }}</text>
                     </view>
                 </view>
                 <view class="flex-row align-c pointer-events-auto">
@@ -53,7 +53,7 @@
                     <image :src="live_avatar" class="avatar" mode="aspectFill"></image>
                     <view class="ml-10 flex-col">
                         <text class="nickname text-line-1">{{ live_data && live_data.title ? live_data.title : $t('common.live') }}</text>
-                        <text v-if="live_feature_ready && is_live_like_on" class="level">{{ like_count }}{{ $t('live.live.like_this_session') }}</text>
+                        <text v-if="live_feature_ready && is_live_like_on" class="level">{{ like_count }}{{ $t('live.like_this_session') }}</text>
                     </view>
                 </view>
                 <view class="flex-row align-c pointer-events-auto">
@@ -143,7 +143,7 @@
                         <!-- #endif -->
                         <view v-if="!is_scroll_to_lower && message_num > 0" class="bulletin-tips flex-row align-c jc-c" :style="'width:' + (propWindowWidth - 150) + 'px;'" @tap="message_num_event">
                             <view class="bulletin-tips-content flex-row align-c">
-                                <text class="cr-10 cr-red">{{ message_num }}{{ $t('live.live.new_messages_suffix') }}</text>
+                                <text class="cr-10 cr-red">{{ message_num }}{{ $t('live.new_messages_suffix') }}</text>
                             </view>
                         </view>
                     </view>
@@ -216,7 +216,7 @@
             </view>
         </view>
         <!-- 商品弹出框 -->
-        <component-u-popup v-if="live_feature_ready && is_live_goods_buy_on" ref="popupGoodsRef" propMode="bottom" class="pointer-events-auto" :propTitle="$t('live.live.buy_goods')" :propCloseable="true">
+        <component-u-popup v-if="live_feature_ready && is_live_goods_buy_on" ref="popupGoodsRef" propMode="bottom" class="pointer-events-auto" :propTitle="$t('live.buy_goods')" :propCloseable="true">
            <component-goods propIsGoodsPopup :propWindowWidth="propWindowWidth" :propWindowHeight="propWindowHeight" :propLiveId="live_data.id"></component-goods>
         </component-u-popup>
         <!-- 分享弹窗 -->
@@ -364,7 +364,7 @@
                 socket_reconnect_timer: null,
                 // socket连接错误
                 is_socket_error: false,
-                socket_error_content: this.$t('live.live.connect_fail_retry'),
+                socket_error_content: this.$t('live.connect_fail_retry'),
                 // socket连接成功
                 is_socket_success: false,
                 // 是否展示讲解商品信息
@@ -680,12 +680,12 @@
                 if ((this.reconnect_count + 1) >= 30) {
                     this.is_socket_error = false;
                     this.reconnect_count = 0;
-                    this.socket_error_content = this.$t('live.live.connect_fail_retry');
+                    this.socket_error_content = this.$t('live.connect_fail_retry');
                     return;
                 }
                 this.is_socket_error = true;
                 this.is_socket_success = false;
-                this.socket_error_content = this.$t('live.live.socket_connect_fail_nth', [this.reconnect_count + 1]);
+                this.socket_error_content = this.$t('live.socket_connect_fail_nth', [this.reconnect_count + 1]);
                 this.socket_reconnect_timer = setTimeout(() => {
                     this.socket_reconnect_timer = null;
                     this.reconnect_count++;
@@ -735,7 +735,7 @@
                 if (this.reconnect_count == 0) {
                     this.socket_error_content = this.$t('common.connecting_in_text');
                 } else {
-                    this.socket_error_content = this.$t('live.live.socket_reconnecting_nth', [this.reconnect_count + 1]);
+                    this.socket_error_content = this.$t('live.socket_reconnecting_nth', [this.reconnect_count + 1]);
                 }
 
                 const task = uni.connectSocket({
@@ -788,7 +788,7 @@
                     if ((this.reconnect_count + 1) >= 30) {
                         this.is_socket_error = false;
                         this.reconnect_count = 0;
-                        this.socket_error_content = this.$t('live.live.connect_fail_retry');
+                        this.socket_error_content = this.$t('live.connect_fail_retry');
                     } else if (!this.is_socket_closing) {
                         this.schedule_socket_reconnect();
                     }
@@ -1009,7 +1009,7 @@
              */
             socket_send(type = 'message', content = '') {
                 if(this.task === null) {
-                    app.globalData.showToast(this.$t('live-content.live-content.l001se'));
+                    app.globalData.showToast(this.$t('live-content.socket_connection_failed'));
                     return false;
                 }
                 // 发送消息

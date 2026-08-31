@@ -80,7 +80,9 @@
     const app = getApp();
     import componentCommon from '@/components/common/common';
     import componentPopup from '@/components/popup/popup';
+    import pluginLocale from '../locale/index.js';
     export default {
+        mixins: [pluginLocale],
         data() {
             return {
                 theme_view: app.globalData.get_theme_value_view(),

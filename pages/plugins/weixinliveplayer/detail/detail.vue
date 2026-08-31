@@ -13,14 +13,14 @@
                     <view class="item padding-vertical-main flex-row jc-sb">
                         <view>
                             <image class="item-icon va-m margin-right-sm" :src="static_url + 'detail-status-icon.png'" mode="widthFix"></image>
-                            <text class="cr-grey va-m">{{$t('detail.detail.4u64dg')}}</text>
+                            <text class="cr-grey va-m">{{$t('detail.live_streaming_status')}}</text>
                         </view>
                         <view :class="'status status-' + detail.status">{{ detail.status_name }}</view>
                     </view>
                     <view class="item padding-vertical-main br-t oh flex-row jc-sb">
                         <view class="">
                             <image class="item-icon va-m margin-right-sm" :src="static_url + 'detail-time-icon.png'" mode="widthFix"></image>
-                            <text class="cr-grey va-m">{{$t('detail.detail.y2639j')}}</text>
+                            <text class="cr-grey va-m">{{$t('detail.start_time')}}</text>
                         </view>
                         <view class="flex-row flex-nowrap align-c flex-1 flex-width cr-grey-9 single-text padding-left-main"> {{ detail.start_time }} - {{ detail.end_time }} </view>
                     </view>
@@ -36,11 +36,11 @@
                     </button>
                     <button class="share-poster-submit cr-white text-size-sm round" type="default" hover-class="none" @tap="share_poster_event">
                         <image class="item-icon va-m margin-right-sm" :src="static_url + 'nav-share-poster-icon.png'" mode="widthFix"></image>
-                        <text class="va-m">{{$t('detail.detail.fa8h7j')}}</text>
+                        <text class="va-m">{{$t('detail.poster')}}</text>
                     </button>
                     <button class="player-submit cr-white text-size-sm round" type="default" hover-class="none" @tap="player_event">
                         <image class="item-icon va-m margin-right-sm" :src="static_url + 'nav-player-icon.png'" mode="widthFix"></image>
-                        <text class="va-m">{{$t('detail.detail.eg25j9')}}</text>
+                        <text class="va-m">{{$t('detail.enter_live')}}</text>
                     </button>
                 </view>
             </view>
@@ -66,9 +66,11 @@
     import componentNoData from '@/components/no-data/no-data';
     import componentBottomLine from '@/components/bottom-line/bottom-line';
     import componentSharePopup from '@/components/share-popup/share-popup';
+    import pluginLocale from '../locale/index.js';
 
     var static_url = app.globalData.get_static_url('weixinliveplayer', true);
     export default {
+        mixins: [pluginLocale],
         data() {
             return {
                 theme_view: app.globalData.get_theme_value_view(),
@@ -209,7 +211,7 @@
             // 海报分享
             share_poster_event() {
                 uni.showLoading({
-                    title: this.$t('detail.detail.6xvl35'),
+                    title: this.$t('common.generating'),
                 });
                 uni.request({
                     url: app.globalData.get_request_url('poster', 'index', 'weixinliveplayer'),

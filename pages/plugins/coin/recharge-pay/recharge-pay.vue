@@ -5,43 +5,43 @@
                 <view class="padding-lg bg-white radius-md margin-bottom-main">
                     <view class="convert-group-row">
                         <view class="margin-bottom-sm flex-row">
-                            <text class="cr-grey-9 title">{{$t('recharge-list.recharge-list.6b9399')}}</text>
+                            <text class="cr-grey-9 title">{{$t('recharge-list.recharge_order_number')}}</text>
                             <text class="fw-b">{{ accounts.recharge_no }}</text>
                         </view>
                         <view class="margin-bottom-sm flex-row">
-                            <text class="cr-grey-9 title">{{$t('cash-list.cash-list.714g2h')}}</text>
+                            <text class="cr-grey-9 title">{{$t('cash-list.recharge_address')}}</text>
                             <text class="fw-b">{{ accounts.address }}</text>
                         </view>
                         <view class="margin-bottom-sm flex-row">
-                            <text class="cr-grey-9 title">{{$t('cash-list.cash-list.23ii8s')}}</text>
+                            <text class="cr-grey-9 title">{{$t('cash-list.recharge_network')}}</text>
                             <text class="fw-b">{{ accounts.network_name }}</text>
                         </view>
                         <view class="margin-bottom-sm flex-row">
-                            <text class="cr-grey-9 title">{{$t('recharge-list.recharge-list.epd531')}}</text>
+                            <text class="cr-grey-9 title">{{$t('recharge-list.recharged_coins')}}</text>
                             <text class="fw-b">{{ accounts.coin }}</text>
                         </view>
                         <view class="margin-bottom-sm flex-row">
-                            <text class="cr-grey-9 title">{{$t('cash-list.cash-list.2w20g2')}}</text>
+                            <text class="cr-grey-9 title">{{$t('cash-list.platform')}}</text>
                             <text class="fw-b">{{ accounts.platform_name }}</text>
                         </view>
                         <view class="flex-row">
-                            <text class="cr-grey-9 title">{{$t('cash-list.cash-list.2w20g2')}}</text>
+                            <text class="cr-grey-9 title">{{$t('cash-list.platform')}}</text>
                             <text class="fw-b">{{ accounts.add_time }}</text>
                         </view>
                     </view>
                 </view>
                 <view class="padding-main bg-white radius-md margin-bottom-main">
                     <view class="flex-row align-e margin-bottom-main">
-                        <text class="fw-b">{{$t('recharge-pay.recharge-pay.lutmsv')}}</text>
-                        <text class="cr-grey-c text-size-xs">{{$t('recharge-pay.recharge-pay.1a5vqk')}}</text>
+                        <text class="fw-b">{{$t('recharge-pay.payment_voucher')}}</text>
+                        <text class="cr-grey-c text-size-xs">{{$t('recharge-pay.upload_up_10_images')}}</text>
                     </view>
                     <component-upload :propData="image_list" :propMaxNum="10" :propPathType="editor_path_type" @call-back="return_image_event"></component-upload>
                 </view>
                 <view class="padding-main bg-white radius-md margin-bottom-xxxxl">
                     <view class="flex-row align-e margin-bottom-main">
-                        <text class="fw-b">{{$t('recharge-pay.recharge-pay.wu49vk')}}</text>
+                        <text class="fw-b">{{$t('recharge-pay.payment_remarks')}}</text>
                     </view>
-                    <textarea :placeholder="$t('recharge-pay.recharge-pay.95pfkd')" name="pay_note" placeholder-class="cr-base" class="wh-auto bg-white" :value="pay_note" :maxlength="pay_note_length_max" @input="pay_note_event"></textarea>
+                    <textarea :placeholder="$t('recharge-pay.enter_note')" name="pay_note" placeholder-class="cr-base" class="wh-auto bg-white" :value="pay_note" :maxlength="pay_note_length_max" @input="pay_note_event"></textarea>
                 </view>
                 <view class="bottom-fixed" :style="bottom_fixed_style">
                     <view class="bottom-line-exclude">
@@ -64,6 +64,7 @@
     import componentNoData from '@/components/no-data/no-data';
     import componentPopup from '@/components/popup/popup';
     import componentUpload from '@/components/upload/upload';
+    import pluginLocale from '../locale/index.js';
     var wallet_static_url = app.globalData.get_static_url('coin', true) + 'app/';
     // 状态栏高度
     var bar_height = parseInt(app.globalData.get_system_info('statusBarHeight', 0, true));
@@ -71,6 +72,7 @@
     bar_height = 0;
     // #endif
     export default {
+        mixins: [pluginLocale],
         data() {
             return {
                 theme_view: app.globalData.get_theme_value_view(),
@@ -199,8 +201,8 @@
                 };
                 // 数据校验
                 var validation = [
-                    { fields: 'pay_voucher', msg: this.$t('recharge-pay.recharge-pay.v5fok8') },
-                    { fields: 'pay_note', msg: this.$t('recharge-pay.recharge-pay.95pfkd') },
+                    { fields: 'pay_voucher', msg: this.$t('recharge-pay.upload_voucher') },
+                    { fields: 'pay_note', msg: this.$t('recharge-pay.enter_note') },
                 ];
                 if (app.globalData.fields_check(new_data, validation)) {
                     uni.showLoading({

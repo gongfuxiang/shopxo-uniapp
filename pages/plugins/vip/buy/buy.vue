@@ -12,7 +12,7 @@
                 </scroll-view>
                 <!-- 分割线 -->
                 <view class="tc margin-top-xxl spacing-mb">
-                    <text class="divider pr">{{$t('buy.buy.g7dk3f')}}</text>
+                    <text class="divider pr">{{$t('buy.card_type_selection')}}</text>
                 </view>
                 <!-- 内容 -->
                 <view class="vip-content bg-white padding-vertical-main padding-horizontal-sm spacing-mb">
@@ -37,26 +37,26 @@
                                     </block>
                                     <view class="bottom-fixed" :style="bottom_fixed_style">
                                         <view class="bottom-line-exclude">
-                                            <button class="item bg-main br-main cr-white round text-size" type="default" hover-class="none" @tap="submit_event" :disabled="submit_disabled_status">{{$t('buy.buy.0s1k23')}}{{ selected_tabs_value }}</button>
+                                            <button class="item bg-main br-main cr-white round text-size" type="default" hover-class="none" @tap="submit_event" :disabled="submit_disabled_status">{{$t('buy.active')}}{{ selected_tabs_value }}</button>
                                         </view>
                                     </view>
                                 </view>
                             </block>
                             <block v-else>
                                 <!-- 提示信息 -->
-                                <component-no-data propStatus="0" :propMsg="$t('buy.buy.5lr84j')"></component-no-data>
+                                <component-no-data propStatus="0" :propMsg="$t('buy.purchase_duration_not_configured')"></component-no-data>
                             </block>
                         </block>
                     </block>
                 </view>
                 <view class="all-order flex-row jc-sb align-c padding-main bg-white spacing-mb" data-value="/pages/plugins/vip/order/order" @tap="url_event">
-                    <view> <iconfont name="icon-order-round" propClass="margin-right-sm" color="#666"></iconfont>{{$t('buy.buy.ntm2z5')}}</view>
+                    <view> <iconfont name="icon-order-round" propClass="margin-right-sm" color="#666"></iconfont>{{$t('buy.all_orders')}}</view>
                     <iconfont name="icon-arrow-right" size="24rpx" color="#666"></iconfont>
                 </view>
             </view>
             <view v-else>
                 <!-- 提示信息 -->
-                <component-no-data propStatus="0" :propMsg="$t('buy.buy.5x86n3')"></component-no-data>
+                <component-no-data propStatus="0" :propMsg="$t('buy.member_level_not_configured')"></component-no-data>
             </view>
         </block>
         <block v-else>
@@ -90,7 +90,9 @@
     import componentCommon from '@/components/common/common';
     import componentNoData from '@/components/no-data/no-data';
     import componentPayment from '@/components/payment/payment';
+    import pluginLocale from '../locale/index.js';
     export default {
+        mixins: [pluginLocale],
         data() {
             return {
                 theme_view: app.globalData.get_theme_value_view(),
@@ -237,18 +239,18 @@
             // 确认支付事件
             submit_event(e) {
                 if (this.selected_tabs_index < 0 || this.selected_content_index === null) {
-                    app.globalData.showToast(this.$t('buy.buy.bmueac'));
+                    app.globalData.showToast(this.$t('buy.select_duration_activation'));
                     return false;
                 }
                 // 请求参数
                 var item = this.data_list[this.selected_tabs_index] || null;
                 if (item == null) {
-                    app.globalData.showToast(this.$t('buy.buy.64ml60'));
+                    app.globalData.showToast(this.$t('buy.incorrect_activation_duration'));
                     return false;
                 }
                 var rules = (item['pay_period_rules'] || null) == null ? null : item['pay_period_rules'][this.selected_content_index] || null;
                 if (rules == null) {
-                    app.globalData.showToast(this.$t('buy.buy.64ml60'));
+                    app.globalData.showToast(this.$t('buy.incorrect_activation_duration'));
                     return false;
                 }
                 // 请求生成支付订单

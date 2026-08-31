@@ -44,8 +44,10 @@
     import componentCommon from '@/components/common/common';
     import componentNoData from "@/components/no-data/no-data";
     import componentBottomLine from "@/components/bottom-line/bottom-line";
+    import pluginLocale from '../locale/index.js';
 
     export default {
+        mixins: [pluginLocale],
         data() {
             return {
                 theme_view: app.globalData.get_theme_value_view(),
@@ -59,15 +61,15 @@
                 params: null,
                 nav_status_list: [
                     { name: this.$t('common.all'), value: "-1" },
-                    { name: this.$t('profit.profit.67o785'), value: "0" },
-                    { name: this.$t('profit.profit.l5knxu'), value: "1" },
-                    { name: this.$t('detail.detail.32171c'), value: "2" },
+                    { name: this.$t('common.settled'), value: "0" },
+                    { name: this.$t('common.settled_2'), value: "1" },
+                    { name: this.$t('common.invalid'), value: "2" },
                 ],
                 nav_status_index: 0,
                 content_list: [
-                    { name: this.$t('order-detail.order-detail.x3ge6c'), field: "total_price" },
-                    { name: this.$t('profit.profit.7y47sb'), field: "profit_price" },
-                    { name: this.$t('profit.profit.6a7t71'), field: "level_name" },
+                    { name: this.$t('common.order_amount'), field: "total_price" },
+                    { name: this.$t('profit.rebate_amount'), field: "profit_price" },
+                    { name: this.$t('common.current_level'), field: "level_name" },
                 ],
             };
         },

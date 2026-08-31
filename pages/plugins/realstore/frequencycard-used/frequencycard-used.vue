@@ -35,8 +35,10 @@
     import componentCommon from '@/components/common/common';
     import componentNoData from "@/components/no-data/no-data";
     import componentBottomLine from "@/components/bottom-line/bottom-line";
+    import pluginLocale from '../locale/index.js';
 
     export default {
+        mixins: [pluginLocale],
         data() {
             return {
                 theme_view: app.globalData.get_theme_value_view(),
@@ -49,9 +51,9 @@
                 data_is_loading: 0,
                 params: null,
                 content_list: [
-                    { name: this.$t('frequencycard-used.frequencycard-used.538686'), field: "dec_number", unit: this.$t('buy.buy.0pgsrm') },
-                    { name: this.$t('frequencycard-used.frequencycard-used.xjmepo'), field: "msg" },
-                    { name: this.$t('frequencycard-used.frequencycard-used.aod4pc'), field: "operate_name" },
+                    { name: this.$t('frequencycard-used.deduction_frequency'), field: "dec_number", unit: this.$t('common.buy_second') },
+                    { name: this.$t('frequencycard-used.description'), field: "msg" },
+                    { name: this.$t('frequencycard-used.operators'), field: "operate_name" },
                     { name: this.$t('common.use_time'), field: "use_time" },
                 ],
             };

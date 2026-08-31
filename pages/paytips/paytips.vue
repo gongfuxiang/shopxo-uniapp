@@ -22,7 +22,9 @@
     const app = getApp();
     import base64 from '@/common/js/lib/base64.js';
     import componentCommon from '@/components/common/common';
+    import pluginLocale from './locale/index.js';
     export default {
+        mixins: [pluginLocale],
         data() {
             return {
                 theme_view: app.globalData.get_theme_value_view(),
@@ -60,31 +62,31 @@
                     break;
                 // 正在处理中
                 case '8000':
-                    msg = this.$t('paytips.paytips.d8m853');
+                    msg = this.$t('paytips.processing');
                     break;
                 // 支付失败
                 case '4000':
-                    msg = this.$t('paytips.paytips.6y488i');
+                    msg = this.$t('common.payment_failed');
                     break;
                 // 用户中途取消
                 case '6001':
-                    msg = this.$t('paytips.paytips.e732we');
+                    msg = this.$t('paytips.payment_canceled');
                     break;
                 // 网络连接出错
                 case '6002':
-                    msg = this.$t('paytips.paytips.13v11t');
+                    msg = this.$t('paytips.network_connection_error');
                     break;
                 // 支付结果未知（有可能已经支付成功），请查询商户订单列表中订单的支付状态
                 case '6004':
-                    msg = this.$t('paytips.paytips.u1153p');
+                    msg = this.$t('paytips.payment_result_unknown');
                     break;
                 // 用户点击忘记密码导致快捷界面退出(only iOS)
                 case '99':
-                    msg = this.$t('paytips.paytips.6mpsl7');
+                    msg = this.$t('common.user_cancels_payment');
                     break;
                 // 默认错误
                 default:
-                    msg = this.$t('paytips.paytips.59u769');
+                    msg = this.$t('paytips.other_abnormal_errors');
             }
             params['msg'] = msg;
             this.setData({

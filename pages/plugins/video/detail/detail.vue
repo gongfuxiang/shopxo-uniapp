@@ -108,7 +108,7 @@
                                         </view>
                                         <template v-if="comment_item.comments_count > 0">
                                             <template v-if="!comment_item.show_sub_comment">
-                                                <commentMoreComponent :propId="comment_item.id" :propIsLevel="1" :propText="'—— '+ $t('common.expand') + (comment_item.comments_count ? comment_item.comments_count || 0 : 0) + $t('ask-comments.ask-comments.ymmd24')" @comment_more_event="open_sub_comment"></commentMoreComponent>
+                                                <commentMoreComponent :propId="comment_item.id" :propIsLevel="1" :propText="'—— '+ $t('common.expand') + (comment_item.comments_count ? comment_item.comments_count || 0 : 0) + $t('common.replies')" @comment_more_event="open_sub_comment"></commentMoreComponent>
                                             </template>
                                             <template v-else>
                                                 <template v-if="comment_item.show_sub_comment_loading">
@@ -192,14 +192,14 @@
                 <!-- 顶部按钮区域 -->
                 <view class="report-header flex-row align-c jc-sb">
                     <view class="report-btn cr-6" @tap="popup_report_close_event">{{$t('common.cancel')}}</view>
-                    <view class="report-title flex-1">{{$t('video-detail.video-detail.rfsdfg')}}</view>
+                    <view class="report-title flex-1">{{$t('video-detail.reason_reporting')}}</view>
                     <view class="report-btn cr-blue" @tap="submit_report">{{$t('common.confirm')}}</view>
                 </view>
                 <!-- 主要内容区域 -->
                 <view class="report-body">
                     <!-- 第一层：举报原因选择 -->
                     <view v-if="report_type_list.length > 0" class="report-section">
-                        <view class="report-label">{{$t('video-detail.video-detail.rfsdfg')}}<text class="ml-10">*</text></view>
+                        <view class="report-label">{{$t('video-detail.reason_reporting')}}<text class="ml-10">*</text></view>
                         <view class="flex-row align-c gap-10 flex-wrap">
                             <view v-for="(mainItem, main_index) in report_type_list" :key="main_index" class="flex-row align-c" :data-index="main_index" @tap="select_main_reason">
                                 <view class="flex-row align-c">
@@ -212,7 +212,7 @@
                     
                     <!-- 第二层：具体类型选择（当有主类别选中时显示） -->
                     <view  class="report-section mt-20" v-if="current_main_index >= 0 && report_type_list[current_main_index]">
-                        <view class="report-label">{{$t('video-detail.video-detail.fsdf33')}}<text class="ml-10">*</text></view>
+                        <view class="report-label">{{$t('video-detail.choose_specific_type')}}<text class="ml-10">*</text></view>
                         <view class="flex-row align-c gap-10 flex-wrap">
                             <view v-for="(subItem, sub_index) in report_type_list[current_main_index].data" :key="sub_index" class="flex-row align-c" :data-index="sub_index" @tap="select_sub_reason">
                                 <view class="flex-row align-c">
@@ -275,12 +275,14 @@
     import componentPopup from '@/components/popup/popup';
     import componentUpload from '@/components/upload/upload';
     import componentCommon from '@/components/common/common';
+    import pluginLocale from '../locale/index.js';
     // 状态栏高度
     var bar_height = parseInt(app.globalData.get_system_info('statusBarHeight', 0));
     // #ifdef MP-TOUTIAO || H5
     bar_height = 0;
     // #endif
     export default {
+        mixins: [pluginLocale],
         data() {
             return {
                 theme_view: app.globalData.get_theme_value_view(),
@@ -318,7 +320,7 @@
                 is_slide_start: false,
                 swiper_key: get_math(),
                 comment_scroll_top: 0, // 评论滚动距离顶部的距离
-                input_placeholder: this.$t('video-detail.video-detail.98yyuf'),
+                input_placeholder: this.$t('video-detail.enter_wonderful_comment'),
                 comment_input_value: '',
                 propMaxNum: 1,
                 form_images_list: [],
@@ -882,7 +884,7 @@
                         if (this.current_video_index <= 0) {
                             setTimeout(() => {
                                 if (!this.show_comment_modal) {
-                                    app.globalData.showToast(this.$t('video-detail.video-detail.v001fv'));
+                                    app.globalData.showToast(this.$t('video-detail.already_first_video'));
                                 } 
                             }, 0);
                         }
@@ -891,7 +893,7 @@
                         if (this.current_video_index >= this.video_data_list.length - 1) {
                             setTimeout(() => {
                                 if (!this.show_comment_modal) {
-                                    app.globalData.showToast(this.$t('video-detail.video-detail.v002lv'));
+                                    app.globalData.showToast(this.$t('video-detail.already_last_video'));
                                 } 
                             }, 0);
                         }
@@ -1210,7 +1212,7 @@
             send_comment() {
                 let comment_text = this.comment_input_value;
                 if (!comment_text.trim()) {
-                    app.globalData.showToast(this.$t('video-detail.video-detail.98yyuf'));
+                    app.globalData.showToast(this.$t('video-detail.enter_wonderful_comment'));
                 };
 
                 // video_id 视频id video_comments_id 父级评论id id 当前评论id
@@ -1284,7 +1286,7 @@
                                 form_images_list: [],
                                 comment_input_value: '',
                                 comments_reply_data: {},
-                                input_placeholder: this.$t('video-detail.video-detail.98yyuf'),
+                                input_placeholder: this.$t('video-detail.enter_wonderful_comment'),
                             });
                         } else {
                             if (app.globalData.is_login_check(res.data)) {

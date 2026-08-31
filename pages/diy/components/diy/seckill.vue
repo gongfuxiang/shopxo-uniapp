@@ -69,7 +69,7 @@
                                                                 <view class="slide-top-icon round" :style="`background: ${new_style.progress_button_color}`"><icon name="a-miaosha" :color="new_style.progress_button_icon_color" size="9"></icon></view>
                                                             </view>
                                                         </view>
-                                                        <text class="text-size-xss" :style="`color: ${new_style.progress_text_color}`">{{ $t('diy.diy.seckill_grabbed_demo') }}</text>
+                                                        <text class="text-size-xss" :style="`color: ${new_style.progress_text_color}`">{{ $t('diy.seckill_grabbed_demo') }}</text>
                                                     </view> -->
                                             </view>
                                             <view class="flex-row align-e gap-10 jc-sb">
@@ -137,7 +137,7 @@
                                                                     <view class="slide-top-icon round" :style="{ 'background': new_style.progress_button_color}"><icon name="a-miaosha" :color="new_style.progress_button_icon_color" size="9"></icon></view>
                                                                 </view>
                                                             </view>
-                                                            <text class="text-size-xss" :style="{ 'color': new_style.progress_text_color }">{{ $t('diy.diy.seckill_grabbed_demo') }}</text>
+                                                            <text class="text-size-xss" :style="{ 'color': new_style.progress_text_color }">{{ $t('diy.seckill_grabbed_demo') }}</text>
                                                         </view> -->
                                                         </view>
                                                         <view class="flex-row align-e gap-10 jc-sb">
@@ -318,9 +318,9 @@
                 }
                 // 默认数据
                 const product_style_list = [
-                    { name: this.$t('diy.diy.single_column'), value: '1', width: 110, height: 120 },
-                    { name: this.$t('diy.diy.double_column'), value: '2', width: 180, height: 180 },
-                    { name: this.$t('diy.diy.horizontal_slide'), value: '3', width: 0, height: 0 },
+                    { name: this.$t('diy.single_column'), value: '1', width: 110, height: 120 },
+                    { name: this.$t('diy.double_column'), value: '2', width: 180, height: 180 },
+                    { name: this.$t('diy.horizontal_slide'), value: '3', width: 0, height: 0 },
                 ];
                 const scale = sys_width / 390;
                 let img_style = ``;
@@ -443,7 +443,7 @@
                                 time_end_number: this.seckill_time.time_end_number,
                                 time_start_number: this.seckill_time.time_start_number,
                                 status: 1,
-                                time_first_text: this.$t('diy.diy.time_to_end'),
+                                time_first_text: this.$t('diy.time_to_end'),
                             },
                         });
                         // 先执行一次倒计时，后续的等待倒计时执行

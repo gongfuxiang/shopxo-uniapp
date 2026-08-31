@@ -14,14 +14,14 @@
                     <view v-if="(data_base.is_team || 0) == 1 && (user || null) != null && data.user_id != user.id" class="team oh flex-row" @tap="team_event">
                         <view class="content">
                             <iconfont name="icon-team-up" propClass="pr top-xs" size="34rpx"></iconfont>
-                            <text>{{$t('detail.detail.8ua11k')}}</text>
+                            <text>{{$t('detail.organize_team')}}</text>
                         </view>
                     </view>
                 </view>
                 <view class="signin-btn pa left-0 right-0 tc">
                     <view class="content cr-white" @tap="coming_event">
-                        <block v-if="is_already_coming == 1">{{$t('detail.detail.25x8ij')}}</block>
-                        <block v-else>{{$t('detail.detail.mvj266')}}<iconfont name="icon-arrow-right-long" color="#fff" size="32rpx" propClass="margin-left-sm"></iconfont>
+                        <block v-if="is_already_coming == 1">{{$t('detail.signed')}}</block>
+                        <block v-else>{{$t('detail.sign_immediately')}}<iconfont name="icon-arrow-right-long" color="#fff" size="32rpx" propClass="margin-left-sm"></iconfont>
                         </block>
                     </view>
                 </view>
@@ -34,7 +34,7 @@
                             </view>
                             <view class="title-right text-size-md">
                                 <text v-if="(data_base.is_user_menu || 0) == 1" data-value="/pages/plugins/signin/user/user" @tap="url_event" class="cp">
-                                    <iconfont name="icon-sign-in" size="32rpx" propClass="margin-right-sm pr top-sm"></iconfont>{{$t('detail.detail.31lky7')}}</text>
+                                    <iconfont name="icon-sign-in" size="32rpx" propClass="margin-right-sm pr top-sm"></iconfont>{{$t('detail.my_check')}}</text>
                             </view>
                         </view>
                         <view class="calendar-week flex-row align-c jc-sa padding-horizontal-main">
@@ -50,7 +50,7 @@
                                             <iconfont name="icon-select" color="#E22C08" size="48rpx"></iconfont>
                                         </block>
                                         <block v-else>
-                                            <text class="fw-b">{{$t('detail.detail.p07k62')}}</text>
+                                            <text class="fw-b">{{$t('detail.today')}}</text>
                                         </block>
                                     </block>
                                     <block v-else>
@@ -70,14 +70,14 @@
                             <image :src="signin_static_url + 'calendar-link.png'" mode="widthFix" class="calendar-link-right"></image>
                             <!-- 判断是组队签到还是个人签到 -->
                             <view v-if="(team_signin_data || null) != null && user.id == data.user_id" class="content bg-white flex-row jc-sb align-c">
-                                <text class="fw-b">{{$t('detail.detail.96bwp0')}}{{ team_signin_data.day }}{{$t('detail.detail.rdxjvh')}}{{ team_signin_data.total }}{{$t('user.user.rjye50')}}</text>
+                                <text class="fw-b">{{$t('detail.today_2')}}{{ team_signin_data.day }}{{$t('detail.person_sign_total')}}{{ team_signin_data.total }}{{$t('common.person_unit')}}</text>
                                 <text v-if="(data_base.is_team_show_coming_user || 0) == 1" :data-value="'/pages/plugins/signin/user-coming-list/user-coming-list?id=' + data.id" @tap="url_event" class="cp">
                                     <iconfont name="icon-arrow-right"></iconfont>
                                 </text>
                             </view>
                             <view v-else class="content bg-white flex-row jc-sb align-c">
-                                <text class="fw-b">{{$t('detail.detail.96bwp0')}}<block v-if="user_signin_data.integral">{{$t('goods-detail.goods-detail.by7052')}}</block>
-                                    <block v-else>{{$t('detail.detail.we522y')}}</block>{{$t('detail.detail.mqmxbt')}}{{ user_signin_data.integral || 0 }}{{$t('detail.detail.15i191')}}{{ user_signin_data.total || 0 }}{{$t('buy.buy.0pgsrm')}}</text>
+                                <text class="fw-b">{{$t('detail.today_2')}}<block v-if="user_signin_data.integral">{{$t('common.already')}}</block>
+                                    <block v-else>{{$t('detail.not')}}</block>{{$t('detail.sign_obtain')}}{{ user_signin_data.integral || 0 }}{{$t('detail.integral_total')}}{{ user_signin_data.total || 0 }}{{$t('common.buy_second')}}</text>
                                 <text v-if="(data_base.is_user_menu || 0) == 1" data-value="/pages/plugins/signin/user/user" @tap="url_event" class="cp">
                                     <iconfont name="icon-arrow-right"></iconfont>
                                 </text>
@@ -87,7 +87,7 @@
 
                     <!-- 公告信息 -规则说明 -->
                     <view v-if="(data_base.signin_desc || null) != null && data_base.signin_desc.length > 0" class="notice-content border-radius-main text-size-md">
-                        <view class="title fw-b">{{$t('detail.detail.sx6u43')}}</view>
+                        <view class="title fw-b">{{$t('detail.rule_description')}}</view>
                         <view class="content">
                             <view v-for="(item, index) in data_base.signin_desc" :key="index">{{ item }}</view>
                         </view>
@@ -96,7 +96,7 @@
                     <!-- 推荐商品 -->
                     <view v-if="(data.goods_list || null) != null && data.goods_list.length > 0" class="spacing-mt">
                         <view class="spacing-nav-title flex-row align-c jc-sb text-size-xs">
-                            <text class="text-wrapper title-left-border single-text flex-1 flex-width padding-right-main">{{$t('index.index.8t4j95')}}</text>
+                            <text class="text-wrapper title-left-border single-text flex-1 flex-width padding-right-main">{{$t('common.recommended_products')}}</text>
                             <text data-value="/pages/goods-search/goods-search" @tap="url_event" class="arrow-right padding-right cr-base cp">{{$t('common.more')}}</text>
                         </view>
                         <component-goods-list :propData="{ style_type: 1, goods_list: data.goods_list }" :propCurrencySymbol="currency_symbol"></component-goods-list>
@@ -108,9 +108,9 @@
                     <view class="coming-content">
                         <view class="coming-item tc pr">
                             <image :src="data.success_icon || signin_static_url + 'signin-popup-title.png'" class="pa" mode="widthFix"></image>
-                            <view class="title">{{$t('detail.detail.6qk085')}}</view>
-                            <view class="desc">{{$t('detail.detail.ndp2k3')}}<text>{{ coming_reward_type == 1 ? (currency_symbol || '') : '' }}{{ coming_integral }}</text>{{ coming_reward_type == 1 ? $t('user.user.67p34x') : $t('index.index.t26j9z') }}</view>
-                            <view class="use-btn text-size fw-b cr-white" :data-value="home_page_url" @tap="url_event">{{$t('detail.detail.7itw5w')}}</view>
+                            <view class="title">{{$t('detail.successful_check')}}</view>
+                            <view class="desc">{{$t('detail.congratulations_obtaining')}}<text>{{ coming_reward_type == 1 ? (currency_symbol || '') : '' }}{{ coming_integral }}</text>{{ coming_reward_type == 1 ? $t('common.balance') : $t('common.integral') }}</view>
+                            <view class="use-btn text-size fw-b cr-white" :data-value="home_page_url" @tap="url_event">{{$t('detail.use_now')}}</view>
                             <view class="close-sub pa cr-white" @tap="coming_success_close_event">
                                 <iconfont name="icon-close-round" size="60rpx"></iconfont>
                             </view>
@@ -136,8 +136,10 @@
     import componentNoData from '@/components/no-data/no-data';
     import componentSharePopup from '@/components/share-popup/share-popup';
     import componentGoodsList from '@/components/goods-list/goods-list';
+    import pluginLocale from '../locale/index.js';
     var signin_static_url = app.globalData.get_static_url('signin', true) + 'app/';
     export default {
+        mixins: [pluginLocale],
         data() {
             return {
                 theme_view: app.globalData.get_theme_value_view(),
@@ -162,7 +164,7 @@
                 // 自定义分享信息
                 share_info: {},
                 // 周数
-                week: [this.$t('detail.detail.6w8t3g'), this.$t('detail.detail.xtcy73'), this.$t('detail.detail.w2p2d9'), this.$t('detail.detail.xt8596'), this.$t('detail.detail.13s18l'), this.$t('detail.detail.n5rm3q'), this.$t('detail.detail.3d23mc')],
+                week: [this.$t('detail.day'), this.$t('detail.one'), this.$t('detail.two'), this.$t('detail.three'), this.$t('detail.four'), this.$t('detail.five'), this.$t('detail.six')],
                 // 年
                 year: new Date().getFullYear(),
                 // 月
@@ -170,7 +172,7 @@
                 // 日
                 date: new Date().getDate(),
                 // 日期
-                calendar: new Date().getFullYear() + this.$t('detail.detail.73rb8q') + (new Date().getMonth() + 1) + this.$t('detail.detail.zill36') + new Date().getDate() + this.$t('detail.detail.6w8t3g'),
+                calendar: new Date().getFullYear() + this.$t('detail.year') + (new Date().getMonth() + 1) + this.$t('common.month') + new Date().getDate() + this.$t('detail.day'),
                 // 本月日历总天数
                 day_count: [],
             };
@@ -306,7 +308,7 @@
                                 // 基础自定义分享
                                 this.setData({
                                     share_info: {
-                                        title: this.data.seo_title || this.$t('detail.detail.y2217b'),
+                                        title: this.data.seo_title || this.$t('detail.sign'),
                                         desc: this.data.seo_desc,
                                         path: '/pages/plugins/signin/detail/detail',
                                         query: 'id=' + this.data.id,

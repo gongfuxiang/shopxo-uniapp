@@ -10,7 +10,7 @@
                     </view>
                     <view v-if="(user || null) != null" class="search-integral cr-main" data-value="/pages/user-integral/user-integral" @tap="url_event">
                         <iconfont name="icon-points-terse" size="28rpx" :color="theme_color || '#DF7B0E'" propClass="margin-right-xs"></iconfont>
-                        <text>{{ $t('user.user.k78280') }}</text>
+                        <text>{{ $t('common.points') }}</text>
                         <text class="fw-b margin-left-xs">{{ (user_integral || null) != null ? (user_integral.integral || 0) : 0 }}</text>
                     </view>
                 </view>
@@ -69,8 +69,10 @@
     import componentGoodsList from '@/components/goods-list/goods-list';
     import componentSearch from '@/components/search/search';
     import iconfont from '@/components/iconfont/iconfont';
+    import pluginLocale from '../locale/index.js';
 
     export default {
+        mixins: [pluginLocale],
         data() {
             return {
                 theme_view: app.globalData.get_theme_value_view(),
@@ -91,7 +93,7 @@
                 currency_symbol: app.globalData.currency_symbol(),
                 isOpenGridBtnSet: true,
                 gridBtnConfig: {
-                    name: this.$t('index.index.4v5nq5'),
+                    name: this.$t('index.exchange'),
                     bg_color: app.globalData.get_theme_color(),
                     padding: '8rpx 16rpx',
                     border_radius: '8rpx',

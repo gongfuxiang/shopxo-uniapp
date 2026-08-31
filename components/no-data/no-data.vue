@@ -3,10 +3,10 @@
     <view v-show="Number(propStatus) !== 3" :class="theme_view">
         <!-- 是否有网络 -->
         <view v-if="network_type_value == 'none' && not_network_await_status == 0" class="network-type-tips wh-auto tc bs-bb padding-horizontal-main">
-            <view class="cr-base text-size">{{$t('no-data.no-data.1u202v')}}</view>
-            <view class="cr-grey margin-top-sm">{{$t('no-data.no-data.imw8f1')}}{{title}}{{$t('no-data.no-data.q87572')}}</view>
+            <view class="cr-base text-size">{{$t('no-data.temporarily_network_connection')}}</view>
+            <view class="cr-grey margin-top-sm">{{$t('no-data.check_system_settings_cellular_mobile_network')}}{{title}}{{$t('no-data.app_uses_cellular_mobile_network_wireless')}}</view>
             <view class="margin-top-lg tc">
-                <button type="default" class="br-main bg-main cr-white round padding-horizontal-xxl" size="mini" @tap="open_setting_event">{{ $t('setup.setup.377uwg') }}</button>
+                <button type="default" class="br-main bg-main cr-white round padding-horizontal-xxl" size="mini" @tap="open_setting_event">{{ $t('common.permission_settings') }}</button>
             </view>
         </view>
         <view v-else>
@@ -65,10 +65,10 @@
             <!-- 2 处理错误 -->
             <view v-else-if="propStatus == 2" class="no-data-box tc flex-col align-c">
                 <image class="image" :src="static_dir + 'error.png'" mode="widthFix"></image>
-                <text class="no-data-tips">{{propMsg || $t('form.form.bniyyt')}}</text>
+                <text class="no-data-tips">{{propMsg || $t('common.handling_errors')}}</text>
                 <view v-if="propBackBtn || is_login_required == 1" class="margin-top-xxxl tc flex-row jc-c align-c">
                     <button v-if="propBackBtn" type="default" size="mini" class="bg-grey-e br-grey cr-base round" @tap="back_event">{{$t('common.return')}}</button>
-                    <button v-if="is_login_required == 1" type="default" size="mini" :class="login_btn_class" @tap="login_event">{{$t('member-code.member-code.yj6g3a')}}</button>
+                    <button v-if="is_login_required == 1" type="default" size="mini" :class="login_btn_class" @tap="login_event">{{$t('common.go_login')}}</button>
                 </view>
             </view>
 
@@ -77,7 +77,7 @@
                 <image class="image" :src="propUrl ? propUrl : static_dir + 'empty.png'" mode="widthFix"></image>
                 <text class="no-data-tips">{{propMsg || $t('common.no_relevant_data_tips')}}</text>
                 <view v-if="is_login_required == 1" class="margin-top-xxxl tc">
-                    <button type="default" size="mini" class="bg-main br-main cr-white round" @tap="login_event">{{$t('member-code.member-code.yj6g3a')}}</button>
+                    <button type="default" size="mini" class="bg-main br-main cr-white round" @tap="login_event">{{$t('common.go_login')}}</button>
                 </view>
             </view>
         </view>
@@ -204,7 +204,19 @@
                 var flag = 0;
                 if ((msg || null) != null && msg !== '') {
                     var text = String(msg);
-                    var keywords = ['登录失效', this.$t('common.please_relogin'), '重新登录', '请先登录', '未登录', '请登录'];
+                    var keywords = [
+                        '登录失效',
+                        '重新登录',
+                        '请先登录',
+                        '未登录',
+                        '请登录',
+                        this.$t('common.login_expired'),
+                        this.$t('common.please_relogin'),
+                        this.$t('common.relogin'),
+                        this.$t('common.please_login_first'),
+                        this.$t('common.not_logged_in'),
+                        this.$t('common.please_login'),
+                    ];
                     for (var i = 0; i < keywords.length; i++) {
                         if (text.indexOf(keywords[i]) !== -1) {
                             flag = 1;

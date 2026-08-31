@@ -32,7 +32,7 @@
                         </block>
                     </view>
                     <view class="item-operation tr br-t padding-vertical-main">
-                        <button class="round bg-white cr-green br-green" type="default" size="mini" @tap="url_event" :data-value="'/pages/plugins/realstore/frequencycard-used/frequencycard-used?cuid=' + item.id" hover-class="none">{{$t('frequencycard-list.frequencycard-list.cgy327')}}</button>
+                        <button class="round bg-white cr-green br-green" type="default" size="mini" @tap="url_event" :data-value="'/pages/plugins/realstore/frequencycard-used/frequencycard-used?cuid=' + item.id" hover-class="none">{{$t('frequencycard-list.usage_records')}}</button>
                     </view>
                 </view>
             </view>
@@ -54,8 +54,10 @@
     import componentCommon from '@/components/common/common';
     import componentNoData from "@/components/no-data/no-data";
     import componentBottomLine from "@/components/bottom-line/bottom-line";
+    import pluginLocale from '../locale/index.js';
 
     export default {
+        mixins: [pluginLocale],
         data() {
             return {
                 theme_view: app.globalData.get_theme_value_view(),
@@ -69,17 +71,17 @@
                 params: null,
                 nav_status_list: [
                     { name: this.$t('common.all'), value: "-1" },
-                    { name: this.$t('frequencycard-list.frequencycard-list.954ewh'), value: "0" },
-                    { name: this.$t('frequencycard-list.frequencycard-list.8x98g7'), value: "1" },
-                    { name: this.$t('frequencycard-list.frequencycard-list.5n3ums'), value: "2" },
-                    { name: this.$t('frequencycard-list.frequencycard-list.n36x3w'), value: "3" },
+                    { name: this.$t('common.frequencycard_list_effective'), value: "0" },
+                    { name: this.$t('frequencycard-list.suspend'), value: "1" },
+                    { name: this.$t('frequencycard-list.finish'), value: "2" },
+                    { name: this.$t('common.close'), value: "3" },
                 ],
                 nav_status_index: 0,
                 content_list: [
-                    { name: this.$t('frequencycard-list.frequencycard-list.cx75t7'), field: "valid_number", unit: this.$t('buy.buy.0pgsrm') },
-                    { name: this.$t('frequencycard-list.frequencycard-list.3m1w12'), field: "use_number", unit: this.$t('buy.buy.0pgsrm') },
-                    { name: this.$t('frequencycard-list.frequencycard-list.89t8am'), field: "start_time" },
-                    { name: this.$t('team.team.iee9bp'), field: "end_time" },
+                    { name: this.$t('frequencycard-list.available_times'), field: "valid_number", unit: this.$t('common.buy_second') },
+                    { name: this.$t('frequencycard-list.used_times'), field: "use_number", unit: this.$t('common.buy_second') },
+                    { name: this.$t('frequencycard-list.starting_time'), field: "start_time" },
+                    { name: this.$t('common.end_time'), field: "end_time" },
                 ],
             };
         },

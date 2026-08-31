@@ -40,7 +40,7 @@
                 <!-- 添加发票 -->
                 <view v-if="(invoice_business_list || null) != null && invoice_business_list.length > 0" class="bottom-fixed" :style="bottom_fixed_style">
                     <view class="bottom-line-exclude flex-row gap-10">
-                        <button class="item round cr-main bg-white br-main text-size wh-auto" type="default" hover-class="none" @tap="invoice_open_event">{{$t('invoice.invoice.k8f2m1')}}</button>
+                        <button class="item round cr-main bg-white br-main text-size wh-auto" type="default" hover-class="none" @tap="invoice_open_event">{{$t('invoice.apply_invoice')}}</button>
                     </view>
                 </view>
             </view>
@@ -50,7 +50,7 @@
         <component-popup :propShow="invoice_business_popup_status" propPosition="bottom" @onclose="invoice_business_popup_close_event">
             <view class="invoice-business-popup padding-main bg-white">
                 <view class="close oh margin-bottom-main">
-                    <text class="text-size-lg fw-b">{{$t('invoice.invoice.m9n4p2')}}</text>
+                    <text class="text-size-lg fw-b">{{$t('invoice.select_invoice_type')}}</text>
                     <view class="fr" @tap.stop="invoice_business_popup_close_event">
                         <iconfont name="icon-close-line" size="28rpx" color="#999"></iconfont>
                     </view>
@@ -70,8 +70,10 @@
     import componentBottomLine from '@/components/bottom-line/bottom-line';
     import componentPanelContent from "@/components/panel-content/panel-content";
     import componentPopup from '@/components/popup/popup';
+    import pluginLocale from '../locale/index.js';
 
     export default {
+        mixins: [pluginLocale],
         data() {
             return {
                 theme_view: app.globalData.get_theme_value_view(),

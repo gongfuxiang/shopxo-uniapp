@@ -1,7 +1,7 @@
 <template>
     <view :class="theme_view">
         <view class="pr z-i-deeps">
-            <component-nav-back :propName="$t('index.index.t26j9z')"></component-nav-back>
+            <component-nav-back :propName="$t('common.integral')"></component-nav-back>
         </view>
         <view v-if="(data_base || null) != null" class="weixin-nav-padding-top">
             <view class="padding-top-xxxl">
@@ -18,8 +18,8 @@
                                     <block v-if="(user || null) == null">
                                         <image class="avatar dis-block circle" @tap="preview_event" :src="avatar_default" mode="widthFix"></image>
                                         <view class="padding-left-main">
-                                            <view class="login-submit text-size fw-b" type="default" size="mini" @tap="login_event">{{$t('login.login.zy8tc4')}}</view>
-                                            <view class="desc margin-top-sm cr-grey-9">{{$t('index.index.z88r5s')}}</view>
+                                            <view class="login-submit text-size fw-b" type="default" size="mini" @tap="login_event">{{$t('common.log_now')}}</view>
+                                            <view class="desc margin-top-sm cr-grey-9">{{$t('index.get_details_member_points')}}</view>
                                         </view>
                                     </block>
                                     <block v-else>
@@ -27,9 +27,9 @@
                                         <view class="padding-left-main">
                                             <view class="text-size fw-b">{{ user.user_name_view }}</view>
                                             <view class="desc margin-top-sm cr-grey">
-                                                <text>{{$t('index.index.b46kge')}}</text>
+                                                <text>{{$t('index.currently_available')}}</text>
                                                 <text class="cr-black fw-b padding-horizontal-xs">{{ user_integral.integral || 0 }}</text>
-                                                <text>{{$t('index.index.t26j9z')}}</text>
+                                                <text>{{$t('common.integral')}}</text>
                                             </view>
                                         </view>
                                     </block>
@@ -39,12 +39,12 @@
                             </view>
                             <block v-if="(data_base.is_home_points_record || 0) == 1 && (user || null) !== null">
                                 <view v-if="integral_list.length > 0" class="points-integral br-t-dashed">
-                                    <component-title :propTitle="$t('index.index.i73nwk')" propMoreUrl="/pages/user-integral/user-integral"></component-title>
+                                    <component-title :propTitle="$t('index.points_details')" propMoreUrl="/pages/user-integral/user-integral"></component-title>
                                     <view class="item">
                                         <view v-for="(item, index) in integral_list" class="list" :key="index">
                                             <view class="flex-row jc-sb align-c">
-                                                <view class="cr-grey-9">{{$t('index.index.srd2ch')}}<text class="cr-black fw-b padding-left-sm">{{ item.original_integral }}</text>
-                                                    <text class="padding-horizontal-sm">/</text>{{$t('goods-category.goods-category.5p4ksj')}}<text class="cr-black fw-b padding-left-sm">{{ item.new_integral }}</text>
+                                                <view class="cr-grey-9">{{$t('common.original')}}<text class="cr-black fw-b padding-left-sm">{{ item.original_integral }}</text>
+                                                    <text class="padding-horizontal-sm">/</text>{{$t('common.latest')}}<text class="cr-black fw-b padding-left-sm">{{ item.new_integral }}</text>
                                                 </view>
                                                 <view class="cr-grey-9">{{ item.add_time_time }}</view>
                                             </view>
@@ -63,11 +63,11 @@
                         </view>
 
                         <!-- 公告信息 -->
-                        <button v-if="(data_base.points_desc || null) != null && data_base.points_desc.length > 0" class="rule-btn pa right-0 tc cr-white text-size-md z-i-deep" @tap="quick_open_event">{{$t('index.index.u5642g')}}</button>
+                        <button v-if="(data_base.points_desc || null) != null && data_base.points_desc.length > 0" class="rule-btn pa right-0 tc cr-white text-size-md z-i-deep" @tap="quick_open_event">{{$t('index.integral_rule')}}</button>
 
                         <!-- 商品兑换 -->
                         <view v-if="(data_base.goods_exchange_data || null) != null && data_base.goods_exchange_data.length > 0" class="pr z-i-deep">
-                            <component-goods-list :propData="{ style_type: 1, title: $t('index.index.f3l1xt'), url: '/pages/plugins/points/search/search', goods_list: data_base.goods_exchange_data }" propMoreUrlKey="url" :propCurrencySymbol="currency_symbol" :propGridBtnConfig="gridBtnConfig" :propIsOpenGridBtnSet="isOpenGridBtnSet"></component-goods-list>
+                            <component-goods-list :propData="{ style_type: 1, title: $t('index.product_exchange'), url: '/pages/plugins/points/search/search', goods_list: data_base.goods_exchange_data }" propMoreUrlKey="url" :propCurrencySymbol="currency_symbol" :propGridBtnConfig="gridBtnConfig" :propIsOpenGridBtnSet="isOpenGridBtnSet"></component-goods-list>
                         </view>
 
                         <!-- 积分明细和商品兑换都没有的时候展示无数据提示 -->
@@ -94,11 +94,11 @@
         <!-- 积分规则弹窗 -->
         <component-popup v-if="(data_base || null) != null && (data_base.points_desc || null) != null && data_base.points_desc.length > 0" :propShow="popup_status" propPosition="bottom" @onclose="quick_close_event">
             <view class="padding-main">
-                <view class="cr-black text-size-md fw-b margin-bottom-main tc">{{$t('index.index.u5642g')}}</view>
+                <view class="cr-black text-size-md fw-b margin-bottom-main tc">{{$t('index.integral_rule')}}</view>
                 <scroll-view :scroll-y="true" class="content">
                     <view v-for="(item, index) in data_base.points_desc" :key="index" class="cr-grey text-size-md">{{ item }}</view>
                 </scroll-view>
-                <button type="default" class="bg-main cr-white round text-size-sm margin-top" @tap="quick_close_event">{{$t('index.index.qbi72m')}}</button>
+                <button type="default" class="bg-main cr-white round text-size-sm margin-top" @tap="quick_close_event">{{$t('common.got')}}</button>
             </view>
         </component-popup>
 
@@ -116,7 +116,9 @@
     import componentPopup from '@/components/popup/popup';
     import componentTitle from '@/components/title/title';
     import componentSharePopup from '@/components/share-popup/share-popup';
+    import pluginLocale from '../locale/index.js';
     export default {
+        mixins: [pluginLocale],
         data() {
             return {
                 theme_view: app.globalData.get_theme_value_view(),
@@ -135,7 +137,7 @@
                 // 配置商品列表按钮
                 isOpenGridBtnSet: true,
                 gridBtnConfig: {
-                    name: this.$t('index.index.4v5nq5'),
+                    name: this.$t('index.exchange'),
                     bg_color: app.globalData.get_theme_color(),
                     padding: '8rpx 16rpx',
                     border_radius: '8rpx',

@@ -19,7 +19,7 @@
                         @onsearch="search_submit_event"
                         :propIsOnEvent="true"
                         :propIsRequired="false"
-                        :propPlaceholder="$t('order.order.725882')"
+                        :propPlaceholder="$t('order.enter_order_number_recipient_recipient_phone')"
                         propBrColor="#eee"
                         :propIsBtn="true"
                         :propDefaultValue="search_input_keywords_value"
@@ -49,16 +49,16 @@
                         <view class="content margin-top">
                             <view class="oh margin-top-sm">
                                 <view class="single-text fl" data-event="copy" :data-value="item.main_order_no" @tap="text_event">
-                                    <text class="cr-grey">{{$t('order.order.232ygr')}}</text>
+                                    <text class="cr-grey">{{$t('order.order_number')}}</text>
                                     <text class="cr-base margin-left-sm">{{ item.main_order_no }}</text>
                                 </view>
                                 <view class="single-text fr" data-event="copy" :data-value="item.main_order_id" @tap="text_event">
-                                    <text class="cr-grey">{{$t('order.order.71n22h')}}</text>
+                                    <text class="cr-grey">{{$t('order.single_id')}}</text>
                                     <text class="cr-base margin-left-sm">{{ item.main_order_id }}</text>
                                 </view>
                             </view>
                             <view v-if="(item.warehouse_address || null) != null" class="margin-top">
-                                <view class="cr-grey-d tc">{{$t('order.order.jhgfd1')}}</view>
+                                <view class="cr-grey-d tc">{{$t('order.shipping_info')}}</view>
                                 <view class="cr-base margin-top-xs">
                                     <view>
                                         <text data-event="copy" :data-value="item.warehouse_address.name" @tap="text_event">{{item.warehouse_address.name}}</text>
@@ -76,7 +76,7 @@
                                 </view>
                             </view>
                             <view v-if="(item.user_address || null) != null" class="margin-top">
-                                <view class="cr-grey-d tc">{{$t('order.order.hbvwq4')}}</view>
+                                <view class="cr-grey-d tc">{{$t('order.receipt_info')}}</view>
                                 <view class="cr-base margin-top-xs">
                                     <view>
                                         <text data-event="copy" :data-value="item.user_address.name" @tap="text_event">{{item.user_address.name}}</text>
@@ -99,16 +99,16 @@
                             </view>
                             <view class="margin-top-lg padding-top-sm">
                                 <text>{{ item.describe }}</text>
-                                <text v-if="(item.distance || null) != null" class="fr cr-grey">{{$t('extraction-address.extraction-address.42v8tv')}}{{ item.distance }}</text>
+                                <text v-if="(item.distance || null) != null" class="fr cr-grey">{{$t('common.distance_from_you')}}{{ item.distance }}</text>
                             </view>
                         </view>
                         <view class="item-operation tr br-t padding-top-main margin-top-main">
-                            <button class="round bg-white br-base cr-base" type="default" size="mini" hover-class="none" :data-value="'/pages/plugins/delivery/order-detail/order-detail?id=' + item.id" @tap="url_event">{{$t('order.order.75ie9c')}}</button>
-                            <button v-if="item.status == 1" class="round bg-white br-blue cr-blue" type="default" size="mini" hover-class="none" :data-index="index" @tap="start_delivery_event">{{$t('order.order.021438')}}</button>
-                            <button v-if="item.status == 4" class="round bg-white br-main cr-main" type="default" size="mini" hover-class="none" :data-index="index" @tap="start_delivery_event">{{$t('order.order.ip4xo5')}}</button>
+                            <button class="round bg-white br-base cr-base" type="default" size="mini" hover-class="none" :data-value="'/pages/plugins/delivery/order-detail/order-detail?id=' + item.id" @tap="url_event">{{$t('order.details')}}</button>
+                            <button v-if="item.status == 1" class="round bg-white br-blue cr-blue" type="default" size="mini" hover-class="none" :data-index="index" @tap="start_delivery_event">{{$t('order.start_delivery')}}</button>
+                            <button v-if="item.status == 4" class="round bg-white br-main cr-main" type="default" size="mini" hover-class="none" :data-index="index" @tap="start_delivery_event">{{$t('order.redelivery')}}</button>
                             <block v-if="item.status == 2">
-                                <button class="round bg-white br-green cr-green" type="default" size="mini" hover-class="none" :data-index="index" @tap="popup_success_content_event">{{$t('order.order.51q275')}}</button>
-                                <button class="round bg-white br-red cr-red" type="default" size="mini" hover-class="none" :data-index="index" @tap="popup_abnormal_content_event">{{$t('order.order.fb6dge')}}</button>
+                                <button class="round bg-white br-green cr-green" type="default" size="mini" hover-class="none" :data-index="index" @tap="popup_success_content_event">{{$t('order.complete_delivery')}}</button>
+                                <button class="round bg-white br-red cr-red" type="default" size="mini" hover-class="none" :data-index="index" @tap="popup_abnormal_content_event">{{$t('order.abnormal')}}</button>
                             </block>
                         </view>
                     </view>
@@ -140,15 +140,15 @@
                     <block v-for="(item,index) in markers_active_data" :key="index">
                         <view :class="'pr '+(index > 0 ? 'br-t padding-top-sm margin-top-sm' : '')">
                             <view>
-                                <text>{{$t('order.order.71n22h')}}：</text>
+                                <text>{{$t('order.single_id')}}：</text>
                                 <text class="cp" data-event="copy" :data-value="item.main_order_id" @tap="text_event">{{item.main_order_id}}</text>
                             </view>
                             <view>
-                                <text>{{$t('order.order.232ygr')}}：</text>
+                                <text>{{$t('order.order_number')}}：</text>
                                 <text class="cp" data-event="copy" :data-value="item.main_order_no" @tap="text_event">{{item.main_order_no}}</text>
                             </view>
                             <view class="single-text">
-                                <text>{{$t('order.order.ra8222')}}：</text>
+                                <text>{{$t('order.address')}}：</text>
                                 <text class="cp" data-event="copy" :data-value="item.user_address.address_info" @tap="text_event">{{ item.user_address.address_info }}</text>
                             </view>
                             <view v-if="(item.user_address.lng || 0) != 0 && (item.user_address.lat || 0) != 0" class="map-send-icon bg-base circle tc cp pa" data-type="map" :data-index="index" @tap.stop="address_map_event">
@@ -175,19 +175,19 @@
                 <form @submit="form_delivery_success_submit_event" class="form-container">
                     <view class="form-container">
                         <view class="form-gorup">
-                            <view class="form-gorup-title">{{$t('form.form.xy87t8')}}</view>
+                            <view class="form-gorup-title">{{$t('common.describe')}}</view>
                             <view class="br padding-main radius margin-top">
-                                <textarea placeholder-class="cr-grey" class="cr-base margin-0" :placeholder="$t('order.order.q4c8j0')" maxlength="200" :value="form_delivery_success_msg_value" @input="form_delivery_success_msg_event"></textarea>
+                                <textarea placeholder-class="cr-grey" class="cr-base margin-0" :placeholder="$t('order.description_up_200_characters_long')" maxlength="200" :value="form_delivery_success_msg_value" @input="form_delivery_success_msg_event"></textarea>
                             </view>
                         </view>
                         <view class="form-gorup form-container-upload oh">
-                            <view class="form-gorup-title">{{$t('order.order.46q2z7')}}<text class="form-group-tips-must">*</text><text class="form-group-tips">{{$t('order.order.o11d44')}}{{form_delivery_success_images_max_count}}{{$t('buy.buy.5iuqow')}}</text></view>
+                            <view class="form-gorup-title">{{$t('order.upload_photos')}}<text class="form-group-tips-must">*</text><text class="form-group-tips">{{$t('common.up_upload')}}{{form_delivery_success_images_max_count}}{{$t('common.text')}}</text></view>
                             <view class="margin-top-sm">
                                 <component-upload :propData="form_delivery_success_images_list" :propMaxNum="form_delivery_success_images_max_count" :propPathType="editor_path_type" @call-back="upload_image_event"></component-upload>
                             </view>
                         </view>
                         <view class="form-gorup form-gorup-submit bottom-line-exclude">
-                            <button class="bg-main br-main cr-white round text-size" type="default" form-type="submit" hover-class="none">{{$t('order.order.9cvj96')}}</button>
+                            <button class="bg-main br-main cr-white round text-size" type="default" form-type="submit" hover-class="none">{{$t('order.submission_completed')}}</button>
                         </view>
                     </view>
                 </form>
@@ -205,13 +205,13 @@
                 <form @submit="form_delivery_abnormal_submit_event" class="form-container">
                     <view class="form-container">
                         <view class="form-gorup">
-                            <view class="form-gorup-title">{{$t('order.order.865029')}}<text class="form-group-tips-must">*</text></view>
+                            <view class="form-gorup-title">{{$t('order.abnormal_cause')}}<text class="form-group-tips-must">*</text></view>
                             <view class="br padding-main radius margin-top">
-                                <textarea placeholder-class="cr-grey" class="cr-base margin-0" :placeholder="$t('order.order.g23kyj')" maxlength="200" :auto-height="true" :value="form_delivery_abnormal_msg_value" @input="form_delivery_abnormal_msg_event"></textarea>
+                                <textarea placeholder-class="cr-grey" class="cr-base margin-0" :placeholder="$t('order.reason_anomaly_up_200_characters_long')" maxlength="200" :auto-height="true" :value="form_delivery_abnormal_msg_value" @input="form_delivery_abnormal_msg_event"></textarea>
                             </view>
                         </view>
                         <view class="form-gorup form-gorup-submit bottom-line-exclude">
-                            <button class="bg-red br-red cr-white round text-size" type="default" form-type="submit" hover-class="none">{{$t('order.order.eyir7g')}}</button>
+                            <button class="bg-red br-red cr-white round text-size" type="default" form-type="submit" hover-class="none">{{$t('order.submit_exception')}}</button>
                         </view>
                     </view>
                 </form>
@@ -231,9 +231,11 @@
     import componentPopup from "@/components/popup/popup";
     import componentSearch from '@/components/search/search';
     import componentUpload from '@/components/upload/upload';
+    import pluginLocale from '../locale/index.js';
 
     var plugins_static_url = app.globalData.get_static_url('delivery', true);
     export default {
+        mixins: [pluginLocale],
         data() {
             return {
                 theme_view: app.globalData.get_theme_value_view(),
@@ -551,7 +553,7 @@
                 } else {
                     var temp_data = this.data_list;
                     if ((temp_data[index] || null) == null || (temp_data[index][type] || null) == null) {
-                        app.globalData.showToast(this.$t('user-order-detail.user-order-detail.i876o3'));
+                        app.globalData.showToast(this.$t('common.incorrect_address'));
                         return false;
                     }
                     this.address_map_handle(temp_data[index][type]);
@@ -622,7 +624,7 @@
             start_delivery_event(e) {
                 uni.showModal({
                     title: this.$t('common.warm_tips'),
-                    content: this.$t('order.order.s5cpq5'),
+                    content: this.$t('order.sure_start_shipping_order'),
                     confirmText: this.$t('common.confirm'),
                     cancelText: this.$t('common.not_yet'),
                     success: (result) => {
@@ -630,7 +632,7 @@
                             this.order_status_handle({
                                 index: e.currentTarget.dataset.index,
                                 new_status: 2,
-                                status_name: this.$t('order.order.13j20t'),
+                                status_name: this.$t('order.delivery'),
                                 action: "startdelivery",
                             });
                         }
@@ -641,13 +643,13 @@
             // 完成配送表单提交
             form_delivery_success_submit_event(e) {
                 if(this.form_delivery_success_images_list.length == 0) {
-                    app.globalData.showToast(this.$t('order.order.7ltibl'));
+                    app.globalData.showToast(this.$t('order.upload_photos_2'));
                     return false;
                 }
                 this.order_status_handle({
                     index: this.popup_success_data_index,
                     new_status: 3,
-                    status_name: this.$t('order.order.c69064'),
+                    status_name: this.$t('order.delivered'),
                     action: "successdelivery",
                     msg: this.form_delivery_success_msg_value || '',
                     images: this.form_delivery_success_images_list
@@ -658,12 +660,12 @@
             form_delivery_abnormal_submit_event(e) {
                 var msg = this.form_delivery_abnormal_msg_value || null;
                 if (msg == null) {
-                    app.globalData.showToast(this.$t('order.order.hun5n3'));
+                    app.globalData.showToast(this.$t('order.fill_reason'));
                 } else {
                     this.order_status_handle({
                         index: this.popup_abnormal_data_index,
                         new_status: 4,
-                        status_name: this.$t('order.order.fb6dge'),
+                        status_name: this.$t('order.abnormal'),
                         action: "abnormaldelivery",
                         msg: msg,
                     });

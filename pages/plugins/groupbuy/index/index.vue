@@ -14,7 +14,7 @@
                                 <view class="groupbuy-goods-body">
                                     <view class="multi-text cr-black">{{ item.groupbuy_title || item.title }}</view>
                                     <view class="groupbuy-goods-meta">
-                                        <text class="groupbuy-tag br-main cr-main bg-white text-size-xs radius padding-horizontal-sm">{{ item.group_number }}{{ $t('groupbuy.groupbuy.people_team') }}</text>
+                                        <text class="groupbuy-tag br-main cr-main bg-white text-size-xs radius padding-horizontal-sm">{{ item.group_number }}{{ $t('common.people_team') }}</text>
                                         <text class="groupbuy-success-text cr-main text-size-xs">{{ item.groupbuy_success_text }}</text>
                                     </view>
                                     <view class="groupbuy-goods-price-row">
@@ -28,12 +28,12 @@
                                     </view>
                                 </view>
                             </view>
-                            <view class="groupbuy-goods-btn bg-main cr-white text-size-sm radius" :data-value="item.url" @tap="url_event">{{ $t('groupbuy.groupbuy.go_groupbuy') }}</view>
+                            <view class="groupbuy-goods-btn bg-main cr-white text-size-sm radius" :data-value="item.url" @tap="url_event">{{ $t('groupbuy.go_groupbuy') }}</view>
                         </view>
                     </view>
                 </block>
                 <block v-else>
-                    <component-no-data propStatus="0" :propMsg="$t('detail.detail.5knxg6')"></component-no-data>
+                    <component-no-data propStatus="0" :propMsg="$t('common.related_products_available')"></component-no-data>
                 </block>
 
                 <component-groupbuy-play-rules v-if="data.length > 0" :propConfig="groupbuy_config" :propPlaySideNav="play_side_nav"></component-groupbuy-play-rules>
@@ -53,7 +53,9 @@
     import componentNoData from '@/components/no-data/no-data';
     import componentBottomLine from '@/components/bottom-line/bottom-line';
     import componentGroupbuyPlayRules from '../components/groupbuy-play-rules/groupbuy-play-rules';
+    import pluginLocale from '../locale/index.js';
     export default {
+        mixins: [pluginLocale],
         data() {
             return {
                 theme_view: app.globalData.get_theme_value_view(),
@@ -130,7 +132,7 @@
                             var data_list = data.data || [];
                             var slider_list = data.slider_list || [];
                             var data_base = data.data_base || null;
-                            var nav_title = this.$t('groupbuy.groupbuy.groupbuy');
+                            var nav_title = this.$t('groupbuy.group_buy');
                             var share_img = '';
                             if (data_base != null) {
                                 nav_title = data_base.application_name || nav_title;

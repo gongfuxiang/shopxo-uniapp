@@ -14,7 +14,7 @@
                                     </view>
                                 </view>
                                 <view class="margin-top-main text-size-xs flex-row align-c">
-                                    <text class="margin-right-sm">{{$t('convert.convert.o56h58')}}</text><text class="cr-blue">{{ accounts_list[send_accounts_id_index]['platform_symbol'] }} {{ accounts_list[send_accounts_id_index]['normal_coin'] }}</text>
+                                    <text class="margin-right-sm">{{$t('convert.balance')}}</text><text class="cr-blue">{{ accounts_list[send_accounts_id_index]['platform_symbol'] }} {{ accounts_list[send_accounts_id_index]['normal_coin'] }}</text>
                                 </view>
                             </view>
                             <view class="coin-num pr flex-col">
@@ -35,7 +35,7 @@
                                     </view>
                                 </view>
                                 <view class="margin-top-main text-size-xs flex-row align-c">
-                                    <text class="margin-right-sm">{{$t('convert.convert.o56h58')}}</text><text class="cr-blue">{{ accounts_list[receive_accounts_id_index]['platform_symbol'] }} {{ accounts_list[receive_accounts_id_index]['normal_coin'] }}</text>
+                                    <text class="margin-right-sm">{{$t('convert.balance')}}</text><text class="cr-blue">{{ accounts_list[receive_accounts_id_index]['platform_symbol'] }} {{ accounts_list[receive_accounts_id_index]['normal_coin'] }}</text>
                                 </view>
                             </view>
                             <view class="coin-num pr flex-col">
@@ -53,7 +53,7 @@
                         <input type="password" :value="pay_pwd" class="text-size flex-1 flex-width" placeholder-class="text-size-md cr-grey-9" :placeholder="$t('common.please_input_pay_pwd')" />
                     </view> -->
                     <view class="padding-main radius-md margin-bottom-main">
-                        <button type="default" class="convert-btn cr-white round" @tap="convert_submit">{{$t('convert.convert.4kcix6')}}</button>
+                        <button type="default" class="convert-btn cr-white round" @tap="convert_submit">{{$t('convert.convert_now')}}</button>
                     </view>
                 </view>
             </scroll-view>
@@ -95,6 +95,7 @@
     import componentCommon from '@/components/common/common';
     import componentNoData from '@/components/no-data/no-data';
     import componentPopup from '@/components/popup/popup';
+    import pluginLocale from '../locale/index.js';
     var wallet_static_url = app.globalData.get_static_url('coin', true) + 'app/';
     // 状态栏高度
     var bar_height = parseInt(app.globalData.get_system_info('statusBarHeight', 0, true));
@@ -102,6 +103,7 @@
     bar_height = 0;
     // #endif
     export default {
+        mixins: [pluginLocale],
         data() {
             return {
                 theme_view: app.globalData.get_theme_value_view(),
@@ -231,7 +233,7 @@
                 var index = parseInt(e.currentTarget.dataset.index || 0);
                 var old_index = (this.coin_type == 1) ? this.receive_accounts_id_index : this.send_accounts_id_index;
                 if(index == old_index) {
-                    app.globalData.showToast(this.$t('convert.convert.327y2v'));
+                    app.globalData.showToast(this.$t('convert.transfer_out_receive_selection_cannot_same'));
                     return false;
                 }
                 if (this.coin_type == 1) {
@@ -288,7 +290,7 @@
                 };
 
                 // 数据校验
-                var validation = [{ fields: 'coin', msg: this.$t('convert.convert.vyjy7s') }];
+                var validation = [{ fields: 'coin', msg: this.$t('convert.enter_conversion_currency') }];
 
                 // 验证提交表单
                 if (app.globalData.fields_check(new_data, validation)) {

@@ -26,22 +26,22 @@
                                         </view>
                                         <view class="fr item-right">
                                             <view class="margin-top-sm">
-                                                <view class="name dis-inline-block single-text va-m">{{$t('certificate-userauth.certificate-userauth.678iff')}}</view>
+                                                <view class="name dis-inline-block single-text va-m">{{$t('certificate-userauth.certificate_name')}}</view>
                                                 <view class="dis-inline-block va-m">
-                                                    <input type="text" :name="item.sign+'-licence_name'" :value="(data[item.sign] || null) == null ? '' : (data[item.sign]['licence_name'] || '')" :disabled="(data[item.sign] || null) != null && (data[item.sign]['status'] || 0) == 1" placeholder-class="cr-grey" class="value radius padding-horizontal-sm" :class="(data[item.sign] || null) != null && (data[item.sign]['status'] || 0) == 1 ? 'cr-grey-c br-f5' : 'cr-base br'" :placeholder="$t('certificate-userauth.certificate-userauth.678iff')" maxlength="160" />
+                                                    <input type="text" :name="item.sign+'-licence_name'" :value="(data[item.sign] || null) == null ? '' : (data[item.sign]['licence_name'] || '')" :disabled="(data[item.sign] || null) != null && (data[item.sign]['status'] || 0) == 1" placeholder-class="cr-grey" class="value radius padding-horizontal-sm" :class="(data[item.sign] || null) != null && (data[item.sign]['status'] || 0) == 1 ? 'cr-grey-c br-f5' : 'cr-base br'" :placeholder="$t('certificate-userauth.certificate_name')" maxlength="160" />
                                                 </view>
                                             </view>
                                             <view class="margin-top-sm">
-                                                <view class="name dis-inline-block single-text">{{$t('certificate-userauth.certificate-userauth.tufg33')}}</view>
+                                                <view class="name dis-inline-block single-text">{{$t('certificate-userauth.id')}}</view>
                                                 <view class="dis-inline-block va-m">
-                                                    <input type="text" :name="item.sign+'-licence_number'" :value="(data[item.sign] || null) == null ? '' : (data[item.sign]['licence_number'] || '')" :disabled="(data[item.sign] || null) != null && (data[item.sign]['status'] || 0) == 1" placeholder-class="cr-grey" class="value radius padding-horizontal-sm" :class="(data[item.sign] || null) != null && (data[item.sign]['status'] || 0) == 1 ? 'cr-grey-c br-f5' : 'cr-base br'" :placeholder="$t('certificate-userauth.certificate-userauth.tufg33')" maxlength="160" />
+                                                    <input type="text" :name="item.sign+'-licence_number'" :value="(data[item.sign] || null) == null ? '' : (data[item.sign]['licence_number'] || '')" :disabled="(data[item.sign] || null) != null && (data[item.sign]['status'] || 0) == 1" placeholder-class="cr-grey" class="value radius padding-horizontal-sm" :class="(data[item.sign] || null) != null && (data[item.sign]['status'] || 0) == 1 ? 'cr-grey-c br-f5' : 'cr-base br'" :placeholder="$t('certificate-userauth.id')" maxlength="160" />
                                                 </view>
                                             </view>
                                             <view class="margin-top-sm">
-                                                <view class="name dis-inline-block single-text">{{$t('certificate-userauth.certificate-userauth.ftyui3')}}</view>
+                                                <view class="name dis-inline-block single-text">{{$t('certificate-userauth.expiration_date')}}</view>
                                                 <view class="dis-inline-block va-m">
                                                     <picker :name="item.sign+'-licence_expire_time'" mode="date" :disabled="(data[item.sign] || null) != null && (data[item.sign]['status'] || 0) == 1" class="wh-auto pr" :value="(data[item.sign] || null) == null ? '' : (data[item.sign]['licence_expire_time'] || '')" :data-sign="item.sign" @change="picker_time_change_event">
-                                                        <view :class="'picker value radius tl padding-horizontal-sm '+ ((data[item.sign] || null) != null && (data[item.sign]['status'] || 0) == 1 ? 'br-f5 cr-grey-c ' : 'cr-base br ') + ((data[item.sign] || null) == null || (data[item.sign]['licence_expire_time'] || null) == null ? 'cr-grey-c' : 'cr-base')">{{ (data[item.sign] || null) == null || (data[item.sign]['licence_expire_time'] || null) == null ? $t('certificate-userauth.certificate-userauth.ftyui3') : data[item.sign]['licence_expire_time'] }}</view>
+                                                        <view :class="'picker value radius tl padding-horizontal-sm '+ ((data[item.sign] || null) != null && (data[item.sign]['status'] || 0) == 1 ? 'br-f5 cr-grey-c ' : 'cr-base br ') + ((data[item.sign] || null) == null || (data[item.sign]['licence_expire_time'] || null) == null ? 'cr-grey-c' : 'cr-base')">{{ (data[item.sign] || null) == null || (data[item.sign]['licence_expire_time'] || null) == null ? $t('certificate-userauth.expiration_date') : data[item.sign]['licence_expire_time'] }}</view>
                                                         <view class="dis-inline-block pa top-xxxl right-xl">
                                                             <iconfont name="icon-arrow-right" size="28rpx" :color="(data[item.sign] || null) != null && (data[item.sign]['status'] || 0) == 1 ? '#ededed' : '#ccc'"></iconfont>
                                                         </view>
@@ -99,8 +99,10 @@
     import componentNoData from '@/components/no-data/no-data';
     import componentUpload from '@/components/upload/upload';
     import componentPopup from '@/components/popup/popup';
+    import pluginLocale from '../locale/index.js';
 
     export default {
+        mixins: [pluginLocale],
         data() {
             return {
                 theme_view: app.globalData.get_theme_value_view(),

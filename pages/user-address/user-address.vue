@@ -5,7 +5,7 @@
                 <view v-for="(item, index) in data_list" :key="index" class="item padding-vertical-xl padding-left-xl bg-white spacing-mb flex-row jc-sb align-c border-radius-main">
                     <view class="flex-1 flex-width" @tap="address_conent_event" :data-index="index">
                         <view class="flex-row align-c">
-                            <text v-if="is_default == item.id" class="default-address margin-right-sm text-size-xss border-radius-sm">{{$t('user-address.user-address.e8qg73')}}</text>
+                            <text v-if="is_default == item.id" class="default-address margin-right-sm text-size-xss border-radius-sm">{{$t('user-address.default')}}</text>
                             <text v-if="(item.alias || null) != null" class="address-alias br-main cr-main margin-right-sm text-size-xss border-radius-sm">{{ item.alias }}</text>
                             <view class="single-text flex-1 flex-width fw-b">
                                 <text>{{ item.province_name || '' }}{{ item.city_name || '' }}{{ item.county_name || '' }}{{ item.address || '' }}</text>
@@ -14,7 +14,7 @@
                         <view class="flex-row align-c flex-wrap padding-top-main">
                             <view class="padding-right-main">{{ item.name }}</view>
                             <view class="cr-grey">{{ item.tel }}</view>
-                            <view v-if="(item.distance_value || null) != null && (item.distance_unit || null) != null" class="cr-grey text-size-xs flex-1 tr">{{$t('extraction-switch.extraction-switch.w94x36')}}{{ item.distance_value }}{{ item.distance_unit }}</view>
+                            <view v-if="(item.distance_value || null) != null && (item.distance_unit || null) != null" class="cr-grey text-size-xs flex-1 tr">{{$t('common.extraction_switch_distance')}}{{ item.distance_value }}{{ item.distance_unit }}</view>
                         </view>
                     </view>
                     <view class="padding-vertical-main padding-left-main padding-right-xl" @tap="address_edit_event" :data-index="index">
@@ -36,12 +36,12 @@
             <view class="bottom-line-exclude">
                 <block v-if="common_user_address_platform_import_list.length > 0 && common_user_address_platform_import_list.indexOf(client_value) != -1">
                     <view class="flex-row jc-sb align-c gap-10">
-                        <button class="item cr-white round text-size wh-auto" type="default" hover-class="none" @tap="address_add_event" :style="btn_bg_color">{{$t('user-address.user-address.3i4x2r')}}</button>
-                        <button class="item br-main cr-main bg-white round text-size wh-auto" type="default" hover-class="none" @tap="choose_system_address_event">{{$t('user-address.user-address.1rwt3l')}}</button>
+                        <button class="item cr-white round text-size wh-auto" type="default" hover-class="none" @tap="address_add_event" :style="btn_bg_color">{{$t('user-address.add_new_address')}}</button>
+                        <button class="item br-main cr-main bg-white round text-size wh-auto" type="default" hover-class="none" @tap="choose_system_address_event">{{$t('user-address.import_system_address')}}</button>
                     </view>
                 </block>
                 <block v-else>
-                    <button class="item cr-white round text-size wh-auto" type="default" hover-class="none" @tap="address_add_event" :style="btn_bg_color">{{$t('user-address.user-address.3i4x2r')}}</button>
+                    <button class="item cr-white round text-size wh-auto" type="default" hover-class="none" @tap="address_add_event" :style="btn_bg_color">{{$t('user-address.add_new_address')}}</button>
                 </block>
             </view>
         </view>
@@ -56,10 +56,12 @@
     import componentCommon from '@/components/common/common';
     import componentNoData from '@/components/no-data/no-data';
     import componentBottomLine from '@/components/bottom-line/bottom-line';
+    import pluginLocale from './locale/index.js';
     const theme_color = app.globalData.get_theme_color();
     const theme_color_light = app.globalData.get_theme_color(null, true);
     var common_static_url = app.globalData.get_static_url('common');
     export default {
+        mixins: [pluginLocale],
         data() {
             return {
                 theme_view: app.globalData.get_theme_value_view(),
@@ -232,7 +234,7 @@
                     }
                 } else {
                     // 点击复制地址
-                    var copy_val = this.$t('user-address.user-address.7r29v8') + data.name + '\n' + this.$t('user-address.user-address.2nmsi1') + data.tel + '\n' + this.$t('user-address.user-address.s150l6') + data.province_name + data.city_name + data.county_name + data.address;
+                    var copy_val = this.$t('user-address.consignee') + data.name + '\n' + this.$t('user-address.contact_phone_number') + data.tel + '\n' + this.$t('user-address.shipping_address') + data.province_name + data.city_name + data.county_name + data.address;
                     app.globalData.text_copy_event(copy_val);
                 }
             },
@@ -320,7 +322,7 @@
                 var index = e.currentTarget.dataset.index || 0;
                 var data = this.data_list[index] || null;
                 if (data == null) {
-                    app.globalData.showToast(this.$t('user-order-detail.user-order-detail.i876o3'));
+                    app.globalData.showToast(this.$t('common.incorrect_address'));
                     return false;
                 }
 
@@ -336,7 +338,7 @@
                 var index = e.currentTarget.dataset.index || 0;
                 var data = this.data_list[index] || null;
                 if (data == null) {
-                    app.globalData.showToast(this.$t('user-order-detail.user-order-detail.i876o3'));
+                    app.globalData.showToast(this.$t('common.incorrect_address'));
                     return false;
                 }
 

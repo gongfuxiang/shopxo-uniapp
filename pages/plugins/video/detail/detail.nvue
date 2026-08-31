@@ -113,7 +113,7 @@
                                             </view>
                                             <template v-if="comment_item.comments_count > 0">
                                                 <template v-if="!comment_item.show_sub_comment">
-                                                    <commentMoreComponent :style="window_more_style" :propId="comment_item.id" :propIsLevel="1" :propText="'—— '+ $t('common.expand') + (comment_item.comments_count ? comment_item.comments_count || 0 : 0) + $t('ask-comments.ask-comments.ymmd24')" @comment_more_event="open_sub_comment"></commentMoreComponent>
+                                                    <commentMoreComponent :style="window_more_style" :propId="comment_item.id" :propIsLevel="1" :propText="'—— '+ $t('common.expand') + (comment_item.comments_count ? comment_item.comments_count || 0 : 0) + $t('common.replies')" @comment_more_event="open_sub_comment"></commentMoreComponent>
                                                 </template>
                                                 <template v-else>
                                                     <template v-if="comment_item.show_sub_comment_loading">
@@ -166,7 +166,7 @@
                         <view class="flex-row align-s pt-4" :style="window_more_style">
                             <view class="flex-1 comment-input-content flex-col jc-c">
                                 <view class="flex-row align-s pr-16 box-border-box" @tap="add_comment">
-                                    <text :class="'flex-1 comment-input text-line-1 ' + (isEmpty(comment_input_value) ? 'cr-grey' : 'cr-black')">{{ isEmpty(comment_input_value) ? $t('video-detail.video-detail.98yyuf') : comment_input_value }}</text>
+                                    <text :class="'flex-1 comment-input text-line-1 ' + (isEmpty(comment_input_value) ? 'cr-grey' : 'cr-black')">{{ isEmpty(comment_input_value) ? $t('video-detail.video-detail.enter_wonderful_comment') : comment_input_value }}</text>
                                     <view class="pt-8" @tap="upload_tap">
                                         <component-upload :propMaxNum="propMaxNum" :propPathType="editor_path_type" propSlot propSingleCall propIsAllInfo @callBack="upload_images_event">
                                             <component-u-icon propName="layout-module-single-images" propSize="40rpx" propColor="#999"></component-u-icon>
@@ -192,13 +192,13 @@
         </view>
 
         <!-- 举报弹窗 -->
-        <component-u-popup ref="popupReportRef" propMode="bottom" propCloseType="text" :propWidth="'width:' +  windowWidth + 'px;'" propTitleBorder class="pointer-events-auto" :propTitle="$t('video-detail.video-detail.rfsdfg')" :propCloseable="true" @close="popup_report_close_event" @callBack="submit_report">
+        <component-u-popup ref="popupReportRef" propMode="bottom" propCloseType="text" :propWidth="'width:' +  windowWidth + 'px;'" propTitleBorder class="pointer-events-auto" :propTitle="$t('video-detail.video-detail.reason_reporting')" :propCloseable="true" @close="popup_report_close_event" @callBack="submit_report">
             <view class="report-content">
                 <!-- 主要内容区域 -->
                 <view class="report-body">
                     <!-- 第一层：举报原因选择 -->
                     <view v-if="report_type_list && report_type_list.length > 0" class="report-section">
-                        <view class="report-label flex-row align-c">{{$t('video-detail.video-detail.rfsdfg')}}<text class="ml-10 report-required">*</text></view>
+                        <view class="report-label flex-row align-c">{{$t('video-detail.video-detail.reason_reporting')}}<text class="ml-10 report-required">*</text></view>
                         <view class="flex-row align-c flex-wrap">
                             <radio-group class="flex-row align-c flex-wrap" :style="window_more_style" @change="select_main_reason">
                                 <label v-for="(mainItem, main_index) in report_type_list" :key="main_index" class="flex-row align-c mr-10">
@@ -213,7 +213,7 @@
                     
                     <!-- 第二层：具体类型选择（当有主类别选中时显示） -->
                     <view  class="report-section mt-20" v-if="current_main_index >= 0 && report_type_list[current_main_index] && report_type_list[current_main_index].data">
-                        <view class="report-label flex-row align-c">{{$t('video-detail.video-detail.fsdf33')}}<text class="ml-10 report-required">*</text></view>
+                        <view class="report-label flex-row align-c">{{$t('video-detail.video-detail.choose_specific_type')}}<text class="ml-10 report-required">*</text></view>
                         <view class="flex-row align-c flex-wrap">
                             <radio-group class="flex-row align-c flex-wrap" :style="window_more_style" @change="select_sub_reason">
                                 <label v-for="(subItem, sub_index) in report_type_list[current_main_index].data" :key="sub_index" class="flex-row align-c mr-10">
@@ -239,7 +239,7 @@
                         </view>
                     </view>
                     <view class="flex-row align-c pr-16 box-border-box">
-                        <textarea ref="commentRef" :value="comment_input_value" :focus="is_add_comment" class="comment-input mr-10 cr-black" placeholder-class="cr-grey" auto-height maxlength="500" :show-confirm-bar="false" :adjust-position="false" :placeholder="$t('video-detail.video-detail.98yyuf')" @input="comment_input_event" @confirm="send_comment" />
+                        <textarea ref="commentRef" :value="comment_input_value" :focus="is_add_comment" class="comment-input mr-10 cr-black" placeholder-class="cr-grey" auto-height maxlength="500" :show-confirm-bar="false" :adjust-position="false" :placeholder="$t('video-detail.video-detail.enter_wonderful_comment')" @input="comment_input_event" @confirm="send_comment" />
                     </view>
                     <view v-if="form_images_list && form_images_list.length > 0" class="pr w h comment-input-img-container">
                         <view v-for="(item, index) in form_images_list" :key="index" class="comment-input-img pr">
@@ -289,6 +289,7 @@
     // nvue页面在方法中使用时的处理
     import { initVueI18n } from '@dcloudio/uni-i18n';
     import indexNvue from '@/locale/index-nvue.js';
+    import pluginLocale from '../locale/index.js';
     const { t } = initVueI18n(indexNvue)
     //#endif
     // 状态栏高度
@@ -300,7 +301,7 @@
         //#ifdef APP-NVUE
         i18n,
         //#endif
-        mixins:[scrollMixins],
+        mixins: [pluginLocale, scrollMixins],
         data() {
             return {
                 theme_view: app.globalData.get_theme_value_view(),

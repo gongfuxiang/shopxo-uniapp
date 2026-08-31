@@ -41,7 +41,7 @@
                                     >{{$t('common.goods')}}<text class="cr-black fw-b padding-left-sm">{{ item.goods_count }}</text></view
                                 >
                                 <view class="fr cr-grey-9 single-text"
-                                    >{{$t('goods-category.goods-category.at5p35')}}<text class="cr-black fw-b padding-left-sm">{{ item.goods_sales_count }}</text></view
+                                    >{{$t('common.sales_volume')}}<text class="cr-black fw-b padding-left-sm">{{ item.goods_sales_count }}</text></view
                                 >
                             </view>
                         </view>
@@ -68,12 +68,14 @@
     import componentSearch from '@/components/search/search';
     import componentNoData from '@/components/no-data/no-data';
     import componentBottomLine from '@/components/bottom-line/bottom-line';
+    import pluginLocale from '../locale/index.js';
     // 状态栏高度
     var bar_height = parseInt(app.globalData.get_system_info('statusBarHeight', 0, true));
     // #ifdef MP-TOUTIAO || H5
     bar_height = 0;
     // #endif
     export default {
+        mixins: [pluginLocale],
         data() {
             return {
                 theme_view: app.globalData.get_theme_value_view(),
@@ -200,7 +202,7 @@
                         uni.stopPullDownRefresh();
                         this.setData({
                             data_list_loding_status: 2,
-                            data_list_loding_msg: this.$t('index.index.f69r4i'),
+                            data_list_loding_msg: this.$t('index.internet_deviated_bit_00home'),
                         });
                     },
                 });

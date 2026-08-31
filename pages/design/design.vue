@@ -5,7 +5,7 @@
             <block v-if="(data.is_header || 0) == 1">
                 <!-- 搜索框 -->
                 <view class="padding-main bg-white">
-                    <component-search propClass="br" :propPlaceholder="$t('customview.customview.726k7y')"></component-search>
+                    <component-search propClass="br" :propPlaceholder="$t('common.enter_product_name_search')"></component-search>
                 </view>
             </block>
 

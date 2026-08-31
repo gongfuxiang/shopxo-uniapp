@@ -28,7 +28,7 @@
                 <view v-if="item.status == 0" class="item-operation tr margin-top-main">
                     <button class="round bg-white br-grey-9 text-size-md" type="default" size="mini" @tap="delete_event" :data-value="item.id" :data-index="index" hover-class="none">{{$t('common.del')}}</button>
                     <button class="round bg-white cr-main br-main text-size-md" type="default" size="mini" @tap="pay_event" :data-price="item.money" :data-value="item.id" :data-index="index" :data-payment="item.payment_id" hover-class="none">{{$t('common.pay')}}</button>
-                    <button v-if="(item.plugins_payvoucher_data || null) != null && (item.plugins_payvoucher_data.is_show || 0) == 1" class="round bg-white cr-blue br-blue text-size-md" type="default" size="mini" @tap="payvoucher_event" :data-value="item.id" :data-page="(item.plugins_payvoucher_data.page || '')" hover-class="none">{{ item.plugins_payvoucher_data.name || '凭证' }}</button>
+                    <button v-if="(item.plugins_payvoucher_data || null) != null && (item.plugins_payvoucher_data.is_show || 0) == 1" class="round bg-white cr-blue br-blue text-size-md" type="default" size="mini" @tap="payvoucher_event" :data-value="item.id" :data-page="(item.plugins_payvoucher_data.page || '')" hover-class="none">{{ item.plugins_payvoucher_data.name || $t('common.voucher') }}</button>
                 </view>
             </view>
         </view>
@@ -95,14 +95,14 @@
                 params: null,
                 nav_status_list: [
                     { name: this.$t('common.all'), value: '-1' },
-                    { name: this.$t('order.order.pjb15r'), value: '0' },
-                    { name: this.$t('order.order.s8g966'), value: '1' },
+                    { name: this.$t('common.unpay'), value: '0' },
+                    { name: this.$t('common.paid'), value: '1' },
                 ],
                 nav_status_index: 0,
                 content_list: [
-                    { name: this.$t('user-recharge-detail.user-recharge-detail.ch84a8'), field: 'recharge_no' },
-                    { name: this.$t('user-recharge-detail.user-recharge-detail.7272ia'), field: 'money' },
-                    { name: this.$t('user-order-detail.user-order-detail.516tlr'), field: 'pay_money' },
+                    { name: this.$t('user-recharge-detail.recharge_order_number'), field: 'recharge_no' },
+                    { name: this.$t('user-recharge-detail.recharge_amount'), field: 'money' },
+                    { name: this.$t('common.payment_amount'), field: 'pay_money' },
                 ],
 
                 // 支付弹窗参数
@@ -330,7 +330,7 @@
                     if (order_ids_arr.indexOf(temp_data_list[i]['id'].toString()) != -1) {
                         temp_data_list[i]['pay_money'] = temp_data_list[i]['money'];
                         temp_data_list[i]['status'] = 1;
-                        temp_data_list[i]['status_name'] = this.$t('order.order.s8g966');
+                        temp_data_list[i]['status_name'] = this.$t('common.paid');
                     }
                 }
                 this.setData({

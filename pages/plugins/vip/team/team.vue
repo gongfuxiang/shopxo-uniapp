@@ -37,8 +37,10 @@
     import componentCommon from '@/components/common/common';
     import componentNoData from "@/components/no-data/no-data";
     import componentBottomLine from "@/components/bottom-line/bottom-line";
+    import pluginLocale from '../locale/index.js';
 
     export default {
+        mixins: [pluginLocale],
         data() {
             return {
                 theme_view: app.globalData.get_theme_value_view(),
@@ -51,10 +53,10 @@
                 data_is_loading: 0,
                 params: null,
                 content_list: [
-                    { name: this.$t('promotion-user.promotion-user.32bf15'), field: "order_total" },
-                    { name: this.$t('promotion-user.promotion-user.8n4tr3'), field: "find_order_total" },
-                    { name: this.$t('promotion-user.promotion-user.3l1187'), field: "referrer_count" },
-                    { name: this.$t('team.team.6h2l64'), field: "add_time" },
+                    { name: this.$t('common.consumption_amount'), field: "order_total" },
+                    { name: this.$t('common.lower_level_consumption'), field: "find_order_total" },
+                    { name: this.$t('common.subordinate_users'), field: "referrer_count" },
+                    { name: this.$t('team.joined'), field: "add_time" },
                 ],
             };
         },
@@ -228,7 +230,7 @@
                         urls: [value],
                     });
                 } else {
-                    app.globalData.showToast(this.$t('order.order.p3scy0'));
+                    app.globalData.showToast(this.$t('common.avatar_address_incorrect'));
                 }
             },
         },

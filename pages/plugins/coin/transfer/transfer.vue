@@ -20,7 +20,7 @@
                         <iconfont name="icon-scan" size="40rpx" @tap="scancode_event"></iconfont>
                         <view class="padding-left-lg flex-row jc-sb align-c flex-1 flex-width">
                             <view class="flex-1 padding-right-main">
-                                <input type="text" name="receive_accounts_key" :value="receive_accounts_key" placeholder-class="text-size-md cr-grey-9" :placeholder="$t('transfer.transfer.1aijp1')" @input="receive_accounts_key_change" />
+                                <input type="text" name="receive_accounts_key" :value="receive_accounts_key" placeholder-class="text-size-md cr-grey-9" :placeholder="$t('common.enter_receiving_account_number')" @input="receive_accounts_key_change" />
                             </view>
                             <button type="default" class="accounts-btn text-size-xs cr-white round" @tap="receive_accounts_key_event">{{$t('common.confirm')}}</button>
                         </view>
@@ -28,14 +28,14 @@
                 </view>
                 <view class="bg-white padding-main radius-md margin-bottom-main">
                     <view class="padding-vertical-sm">
-                        <text class="text-size fw-b">{{$t('transfer.transfer.b4m5p3')}}</text>
+                        <text class="text-size fw-b">{{$t('transfer.transfer_currency')}}</text>
                         <view class="margin-top-xxxxl">
-                            <input type="digit" name="coin" :value="coin" class="text-size-xl tc" placeholder-class="cr-grey-9" :placeholder="$t('transfer.transfer.d15853')" @input="coin_change" />
-                            <view class="cr-grey-9 tc margin-top-main">{{$t('transfer.transfer.9xe2bl')}}<text class="cr-black fw-b">{{ accounts.platform_symbol }} {{ accounts.default_coin }}</text>
+                            <input type="digit" name="coin" :value="coin" class="text-size-xl tc" placeholder-class="cr-grey-9" :placeholder="$t('transfer.enter_transfer_currency')" @input="coin_change" />
+                            <view class="cr-grey-9 tc margin-top-main">{{$t('common.my_balance')}}<text class="cr-black fw-b">{{ accounts.platform_symbol }} {{ accounts.default_coin }}</text>
                             </view>
                         </view>
                         <view class="note padding-main radius margin-top-xxxl">
-                            <input type="text" name="note" :value="note" placeholder-class="text-size-md cr-grey-9" :placeholder="$t('transfer.transfer.2bwh7h')" @input="note_change" />
+                            <input type="text" name="note" :value="note" placeholder-class="text-size-md cr-grey-9" :placeholder="$t('common.enter_transfer_remarks_info')" @input="note_change" />
                         </view>
                     </view>
                 </view>
@@ -48,7 +48,7 @@
                     </view>
                 </view> -->
                 <view class="padding-xxxl margin-top-sm">
-                    <button type="default" class="transfer-btn cr-white round" @tap="transfer_event">{{$t('transfer.transfer.3i4h4z')}}</button>
+                    <button type="default" class="transfer-btn cr-white round" @tap="transfer_event">{{$t('transfer.transfer_immediately')}}</button>
                 </view>
             </view>
         </view>
@@ -65,6 +65,7 @@
     const app = getApp();
     import componentCommon from '@/components/common/common';
     import componentNoData from '@/components/no-data/no-data';
+    import pluginLocale from '../locale/index.js';
     var accounts_static_url = app.globalData.get_static_url('coin', true) + 'app/';
     // 状态栏高度
     var bar_height = parseInt(app.globalData.get_system_info('statusBarHeight', 0, true));
@@ -72,6 +73,7 @@
     bar_height = 0;
     // #endif
     export default {
+        mixins: [pluginLocale],
         data() {
             return {
                 theme_view: app.globalData.get_theme_value_view(),
@@ -220,8 +222,8 @@
                 };
                 // 数据校验
                 var validation = [
-                    { fields: 'receive_accounts_key', msg: this.$t('transfer.transfer.1aijp1') },
-                    { fields: 'coin', msg: this.$t('transfer.transfer.d15853') },
+                    { fields: 'receive_accounts_key', msg: this.$t('common.enter_receiving_account_number') },
+                    { fields: 'coin', msg: this.$t('transfer.enter_transfer_currency') },
                 ];
                 // 验证提交表单
                 if (app.globalData.fields_check(new_data, validation)) {

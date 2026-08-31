@@ -7,7 +7,7 @@
                     <view class="br-b padding-bottom-main fw-b text-size">{{$t('common.base_info_text')}}</view>
                     <view class="panel-content oh">
                         <view class="item br-b oh padding-vertical-main">
-                            <view class="title fl padding-right-main cr-grey">{{$t('order-detail.order-detail.pyw6xg')}}</view>
+                            <view class="title fl padding-right-main cr-grey">{{$t('order-detail.user_profile_picture')}}</view>
                             <view class="content fl br-l padding-left-main">
                                 <image :src="detail.avatar" class="avatar dis-block circle fl" mode="widthFix" @tap="avatar_event" :data-value="detail.avatar"></image>
                             </view>
@@ -21,7 +21,7 @@
 
                 <!-- 商品列表 -->
                 <view v-if="detail.items.length > 0" class="goods bg-white padding-main border-radius-main spacing-mb">
-                    <view class="br-b padding-bottom-main fw-b text-size">{{$t('user-order-detail.user-order-detail.7f8p26')}}</view>
+                    <view class="br-b padding-bottom-main fw-b text-size">{{$t('common.product_information')}}</view>
                     <view v-for="(item, index) in detail.items" :key="index" class="goods-item br-b-dashed oh padding-main">
                         <view :data-value="item.goods_url" @tap="url_event" class="cp">
                             <image class="goods-image fl radius" :src="item.images" mode="aspectFill"></image>
@@ -42,7 +42,7 @@
                         </view>
                     </view>
                     <view class="padding-top-main tr cr-base text-size">
-                        <text>{{$t('common.total')}}<text class="fw-b">{{ detail.buy_number_count }}</text>{{$t('user-order-detail.user-order-detail.41ty94')}}<text class="sales-price margin-right-xs">{{ detail.currency_data.currency_symbol }}{{ detail.total_price }}</text></text>
+                        <text>{{$t('common.total')}}<text class="fw-b">{{ detail.buy_number_count }}</text>{{$t('common.total_pieces')}}<text class="sales-price margin-right-xs">{{ detail.currency_data.currency_symbol }}{{ detail.total_price }}</text></text>
                     </view>
                 </view>
             </view>
@@ -64,9 +64,11 @@
     import componentCommon from '@/components/common/common';
     import componentNoData from "@/components/no-data/no-data";
     import componentBottomLine from "@/components/bottom-line/bottom-line";
+    import pluginLocale from '../locale/index.js';
 
     var common_static_url = app.globalData.get_static_url("common");
     export default {
+        mixins: [pluginLocale],
         data() {
             return {
                 theme_view: app.globalData.get_theme_value_view(),
@@ -138,15 +140,15 @@
                             this.setData({
                                 detail: detail,
                                 detail_list: [
-                                    { name: this.$t('order-detail.order-detail.2d766e'), value: detail.user_name_view || "" },
-                                    { name: this.$t('order-detail.order-detail.36op8f'), value: detail.order_no || "" },
-                                    { name: this.$t('order-detail.order-detail.x3ge6c'), value: detail.total_price || "" },
-                                    { name: this.$t('order-detail.order-detail.v52n5r'), value: detail.refund_price || "" },
-                                    { name: this.$t('user-order-detail.user-order-detail.yxwu8n'), value: detail.order_status_name || "" },
-                                    { name: this.$t('user-order-detail.user-order-detail.23qj7m'), value: detail.order_pay_status_name || "" },
-                                    { name: this.$t('order.order.330m76'), value: detail.order_client_type_name || "" },
-                                    { name: this.$t('order-detail.order-detail.8n1f72'), value: detail.buy_number_count || "" },
-                                    { name: this.$t('order-detail.order-detail.w78rgm'), value: detail.add_time || "" },
+                                    { name: this.$t('order-detail.user_nickname'), value: detail.user_name_view || "" },
+                                    { name: this.$t('common.order_detail_order_number'), value: detail.order_no || "" },
+                                    { name: this.$t('common.order_amount'), value: detail.total_price || "" },
+                                    { name: this.$t('common.refund_amount'), value: detail.refund_price || "" },
+                                    { name: this.$t('common.order_status'), value: detail.order_status_name || "" },
+                                    { name: this.$t('common.payment_status'), value: detail.order_pay_status_name || "" },
+                                    { name: this.$t('common.source_terminal'), value: detail.order_client_type_name || "" },
+                                    { name: this.$t('common.product_quantity'), value: detail.buy_number_count || "" },
+                                    { name: this.$t('order-detail.order_time_2'), value: detail.add_time || "" },
                                 ],
                                 data_list_loding_status: 3,
                                 data_bottom_line_status: true,
@@ -184,7 +186,7 @@
                         urls: [value],
                     });
                 } else {
-                    app.globalData.showToast(this.$t('order.order.p3scy0'));
+                    app.globalData.showToast(this.$t('common.avatar_address_incorrect'));
                 }
             },
 

@@ -29,8 +29,10 @@
     import componentCommon from '@/components/common/common';
     import componentNoData from "@/components/no-data/no-data";
     import componentBottomLine from "@/components/bottom-line/bottom-line";
+    import pluginLocale from '../locale/index.js';
 
     export default {
+        mixins: [pluginLocale],
         data() {
             return {
                 theme_view: app.globalData.get_theme_value_view(),
@@ -98,15 +100,15 @@
                             this.setData({
                                 detail: data.data,
                                 detail_list: [
-                                    { name: this.$t('order-detail.order-detail.36op8f'), value: data.data.payment_user_order_no || "" },
-                                    { name: this.$t('order.order.vjfki8'), value: data.data.period_value + " " + data.data.period_unit || "" },
-                                    { name: this.$t('user-order-detail.user-order-detail.yxwu8n'), value: data.data.status_name || "" },
-                                    { name: this.$t('profit-detail.profit-detail.kn8yye'), value: data.data.settlement_status_name || "" },
-                                    { name: this.$t('order-detail.order-detail.rn4hhi'), value: data.data.type_name || "" },
-                                    { name: this.$t('order-detail.order-detail.x3ge6c'), value: data.data.price || "" },
-                                    { name: this.$t('user-order-detail.user-order-detail.516tlr'), value: data.data.pay_price <= 0 ? "" : data.data.pay_price || "" },
-                                    { name: this.$t('user-order-detail.user-order-detail.0e1sfs'), value: data.data.payment_name || "" },
-                                    { name: this.$t('user-order-detail.user-order-detail.h2c78h'), value: data.data.add_time || "" },
+                                    { name: this.$t('common.order_detail_order_number'), value: data.data.payment_user_order_no || "" },
+                                    { name: this.$t('order.opening_duration'), value: data.data.period_value + " " + data.data.period_unit || "" },
+                                    { name: this.$t('common.order_status'), value: data.data.status_name || "" },
+                                    { name: this.$t('common.settlement_status'), value: data.data.settlement_status_name || "" },
+                                    { name: this.$t('order-detail.type'), value: data.data.type_name || "" },
+                                    { name: this.$t('common.order_amount'), value: data.data.price || "" },
+                                    { name: this.$t('common.payment_amount'), value: data.data.pay_price <= 0 ? "" : data.data.pay_price || "" },
+                                    { name: this.$t('common.payment_method'), value: data.data.payment_name || "" },
+                                    { name: this.$t('common.creation_time'), value: data.data.add_time || "" },
                                     { name: this.$t('common.upd_time'), value: data.data.upd_time || "" },
                                 ],
                                 data_list_loding_status: 3,

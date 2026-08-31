@@ -36,7 +36,7 @@
         </view>
         <view class="bottom-fixed" :style="bottom_fixed_style">
             <view class="bottom-line-exclude">
-                <button class="item bg-main br-main cr-white round text-size wh-auto" type="default" hover-class="none" data-value="/pages/plugins/hospital/patient/patient" @tap="url_event">{{ $t('hospital.hospital.add_patient') }}</button>
+                <button class="item bg-main br-main cr-white round text-size wh-auto" type="default" hover-class="none" data-value="/pages/plugins/hospital/patient/patient" @tap="url_event">{{ $t('hospital.add_patient') }}</button>
             </view>
         </view>
 
@@ -48,8 +48,10 @@
     const app = getApp();
     import componentCommon from '@/components/common/common';
     import componentNoData from '@/components/no-data/no-data';
+    import pluginLocale from '../locale/index.js';
 
     export default {
+        mixins: [pluginLocale],
         data() {
             return {
                 theme_view: app.globalData.get_theme_value_view(),

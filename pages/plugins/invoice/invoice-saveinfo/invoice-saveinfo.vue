@@ -6,7 +6,7 @@
                     <view class="padding-main oh">
                         <view class="padding-main border-radius-main bg-white spacing-mb">
                             <view>
-                                <text class="cr-base margin-right-sm">{{$t('invoice.invoice.fvuc4p')}}</text>
+                                <text class="cr-base margin-right-sm">{{$t('invoice.invoice_amount')}}</text>
                                 <text class="cr-main text-size fw-b">{{ save_base_data.total_price }}</text>
                             </view>
                             <view class="cr-base margin-top-sm">{{ save_base_data.business_desc }}</view>
@@ -56,9 +56,10 @@
     import componentNoData from '@/components/no-data/no-data';
     import componentInvoiceFormFields from '@/pages/plugins/invoice/components/invoice-form-fields/invoice-form-fields';
     import invoiceFormMixin from '@/pages/plugins/invoice/common/invoice-form-mixin.js';
+    import pluginLocale from '../locale/index.js';
 
     export default {
-        mixins: [invoiceFormMixin],
+        mixins: [pluginLocale, invoiceFormMixin],
         data() {
             return {
                 theme_view: app.globalData.get_theme_value_view(),
@@ -105,7 +106,7 @@
 
             // 标题设置
             uni.setNavigationBarTitle({
-                title: this.$t('invoice-saveinfo.invoice-saveinfo.89815t') + ((this.params.id || null) == null ? this.$t('invoice-saveinfo.invoice-saveinfo.004t56') : this.$t('common.edit')),
+                title: this.$t('invoice-saveinfo.invoicing') + ((this.params.id || null) == null ? this.$t('common.invoice_saveinfo_add') : this.$t('common.edit')),
             });
 
             // 加载数据
@@ -154,7 +155,7 @@
                                 data: default_data || {},
                                 data_list_loding_status: 0,
                                 data_bottom_line_status: true,
-                                data_list_loding_msg: data.save_base_data.total_price <= 0 ? this.$t('invoice-saveinfo.invoice-saveinfo.dl11n1') : '',
+                                data_list_loding_msg: data.save_base_data.total_price <= 0 ? this.$t('invoice-saveinfo.invoice_amount_must_greater_than') : '',
                             });
                             if (default_data != null) {
                                 this.invoice_form_init_state(default_data, {}, {
@@ -200,11 +201,11 @@
 
                 // picker 在子组件内，form 的 detail.value 往往带不上；先用本地索引回填（含类型 id=0 电子发票）
                 if ((this.can_invoice_type_list || [])[this.form_invoice_type_index] == undefined) {
-                    app.globalData.showToast(this.$t('invoice-saveinfo.invoice-saveinfo.t3i3e3'));
+                    app.globalData.showToast(this.$t('invoice-saveinfo.select_invoice_type'));
                     return;
                 }
                 if ((this.apply_type_list || [])[this.form_apply_type_index] == undefined) {
-                    app.globalData.showToast(this.$t('invoice-saveinfo.invoice-saveinfo.k31t2s'));
+                    app.globalData.showToast(this.$t('invoice-saveinfo.select_application_type'));
                     return;
                 }
                 data['invoice_type'] = this.can_invoice_type_list[this.form_invoice_type_index]['id'];
@@ -214,9 +215,9 @@
                 }
 
                 var validation = [
-                    { fields: 'invoice_type', msg: this.$t('invoice-saveinfo.invoice-saveinfo.t3i3e3'), is_can_zero: 1 },
-                    { fields: 'apply_type', msg: this.$t('invoice-saveinfo.invoice-saveinfo.k31t2s'), is_can_zero: 1 },
-                    { fields: 'invoice_title', msg: this.$t('invoice-saveinfo.invoice-saveinfo.r13p43') },
+                    { fields: 'invoice_type', msg: this.$t('invoice-saveinfo.select_invoice_type'), is_can_zero: 1 },
+                    { fields: 'apply_type', msg: this.$t('invoice-saveinfo.select_application_type'), is_can_zero: 1 },
+                    { fields: 'invoice_title', msg: this.$t('invoice-saveinfo.fill_invoice_header_maximum_200_characters') },
                 ];
                 if (app.globalData.fields_check(data, validation)) {
                     if (!this.invoice_form_validate(data)) {

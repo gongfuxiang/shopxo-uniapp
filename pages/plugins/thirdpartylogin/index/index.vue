@@ -5,21 +5,21 @@
             <view class="margin-top-xs">{{user.user_name_view}}</view>
             <block v-if="data.status == 1">
                 <view class="margin-top-xxl">
-                    <view class="fw-b">{{$t('index.index.slf50q')}}{{application_title}}</view>
-                    <view class="cr-grey margin-top-sm">{{$t('index.index.rmv185')}}</view>
+                    <view class="fw-b">{{$t('index.authorized_login')}}{{application_title}}</view>
+                    <view class="cr-grey margin-top-sm">{{$t('index.my_own_operation_ignore_application')}}</view>
                 </view>
                 <view class="margin-top-xxxl padding-top-xl">
-                    <button type="default" class="bg-main br-main cr-white round text-size" @tap="status_record(2)">{{$t('login.login.i1deai')}}</button>
+                    <button type="default" class="bg-main br-main cr-white round text-size" @tap="status_record(2)">{{$t('common.confirm_login')}}</button>
                     <button type="default" class="bg-yellow br-yellow cr-white round text-size margin-top-lg" @tap="exit_event">{{$t('common.cancel')}}</button>
                 </view>
             </block>
             <block v-else>
                 <view class="margin-top-xxl">
                     <iconfont name="icon-select" size="28rpx" propClass="cr-green circle"></iconfont>
-                    <text class="margin-left-xs">{{$t('index.index.n0vnl6')}}</text>
+                    <text class="margin-left-xs">{{$t('index.successfully_logged')}}</text>
                 </view>
                 <view class="margin-top-xxxl padding-top-xl">
-                    <button type="default" class="bg-yellow br-yellow cr-white round text-size margin-top-lg" @tap="exit_event">{{$t('frequencycard-list.frequencycard-list.n36x3w')}}</button>
+                    <button type="default" class="bg-yellow br-yellow cr-white round text-size margin-top-lg" @tap="exit_event">{{$t('common.close')}}</button>
                 </view>
             </block>
         </view>
@@ -37,7 +37,9 @@
     const app = getApp();
     import componentCommon from '@/components/common/common';
     import componentNoData from '@/components/no-data/no-data';
+    import pluginLocale from '../locale/index.js';
     export default {
+        mixins: [pluginLocale],
         data() {
             return {
                 theme_view: app.globalData.get_theme_value_view(),

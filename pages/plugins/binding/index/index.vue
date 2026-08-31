@@ -19,7 +19,7 @@
             <!-- 回到店铺 -->
             <view v-if="(shop || null) != null" class="bottom-fixed" :style="bottom_fixed_style">
                 <view class="bottom-line-exclude">
-                    <button class="item bg-white cr-main br-main round dis-block text-size" type="default" hover-class="none" @tap="shop_event" :data-value="shop.url">{{$t('index.index.i78v36')}}</button>
+                    <button class="item bg-white cr-main br-main round dis-block text-size" type="default" hover-class="none" @tap="shop_event" :data-value="shop.url">{{$t('common.returning_store')}}</button>
                 </view>
             </view>
         </scroll-view>
@@ -34,8 +34,10 @@
     import componentNoData from '@/components/no-data/no-data';
     import componentBottomLine from '@/components/bottom-line/bottom-line';
     import componentBindingList from '@/pages/plugins/binding/components/binding-list/binding-list';
+    import pluginLocale from '../locale/index.js';
 
     export default {
+        mixins: [pluginLocale],
         data() {
             return {
                 theme_view: app.globalData.get_theme_value_view(),

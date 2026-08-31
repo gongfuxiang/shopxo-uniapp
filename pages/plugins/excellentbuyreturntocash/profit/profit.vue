@@ -25,8 +25,8 @@
                         </view>
                     </view>
                     <view class="item-operation tr br-t padding-top-main margin-top-main">
-                        <button class="round bg-white br cr-base br" type="default" size="mini" hover-class="none" :data-oid="item.order_id" @tap="list_submit_order_event">{{$t('profit.profit.19a8l6')}}</button>
-                        <button v-if="item.status == 2" class="round bg-white br-green cr-green" type="default" size="mini" hover-class="none" :data-index="index" @tap="list_submit_settlement_event">{{$t('profit.profit.4r88cp')}}</button>
+                        <button class="round bg-white br cr-base br" type="default" size="mini" hover-class="none" :data-oid="item.order_id" @tap="list_submit_order_event">{{$t('profit.order_details')}}</button>
+                        <button v-if="item.status == 2" class="round bg-white br-green cr-green" type="default" size="mini" hover-class="none" :data-index="index" @tap="list_submit_settlement_event">{{$t('profit.immediate_settlement')}}</button>
                     </view>
                 </view>
             </view>
@@ -48,8 +48,10 @@
     import componentCommon from '@/components/common/common';
     import componentNoData from "@/components/no-data/no-data";
     import componentBottomLine from "@/components/bottom-line/bottom-line";
+    import pluginLocale from '../locale/index.js';
 
     export default {
+        mixins: [pluginLocale],
         data() {
             return {
                 theme_view: app.globalData.get_theme_value_view(),
@@ -64,18 +66,18 @@
                 params: null,
                 nav_status_list: [
                     { name: this.$t('common.all'), value: "-1" },
-                    { name: this.$t('profit.profit.3c7zmg'), value: "0" },
-                    { name: this.$t('profit.profit.8jqr78'), value: "1" },
-                    { name: this.$t('profit.profit.67o785'), value: "2" },
-                    { name: this.$t('profit.profit.l5knxu'), value: "3" },
-                    { name: this.$t('detail.detail.32171c'), value: "4" },
+                    { name: this.$t('common.profit_effective'), value: "0" },
+                    { name: this.$t('profit.effect'), value: "1" },
+                    { name: this.$t('common.settled'), value: "2" },
+                    { name: this.$t('common.settled_2'), value: "3" },
+                    { name: this.$t('common.invalid'), value: "4" },
                 ],
                 nav_status_index: 0,
                 content_list: [
-                    { name: this.$t('order-detail.order-detail.x3ge6c'), field: "total_price" },
-                    { name: this.$t('order-detail.order-detail.v52n5r'), field: "refund_price" },
-                    { name: this.$t('profit.profit.nk58v6'), field: "valid_price" },
-                    { name: this.$t('profit.profit.vuvz6g'), field: "profit_price" },
+                    { name: this.$t('common.order_amount'), field: "total_price" },
+                    { name: this.$t('common.refund_amount'), field: "refund_price" },
+                    { name: this.$t('profit.effective_amount'), field: "valid_price" },
+                    { name: this.$t('profit.refund_amount'), field: "profit_price" },
                 ],
             };
         },
@@ -256,7 +258,7 @@
                 if (oid != null) {
                     app.globalData.url_open('/pages/user-order-detail/user-order-detail?id=' + oid);
                 } else {
-                    app.globalData.showToast(this.$t('profit.profit.5c7sof'));
+                    app.globalData.showToast(this.$t('profit.order_id_incorrect'));
                 }
             },
 
@@ -278,7 +280,7 @@
                         if (res.data.code == 0) {
                             var temp_data_list = this.data_list;
                             temp_data_list[index]["status"] = 3;
-                            temp_data_list[index]["status_name"] = this.$t('profit.profit.l5knxu');
+                            temp_data_list[index]["status_name"] = this.$t('common.settled_2');
                             this.setData({
                                 data_list: temp_data_list,
                             });

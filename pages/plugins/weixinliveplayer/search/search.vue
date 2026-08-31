@@ -67,8 +67,10 @@
     import componentCommon from '@/components/common/common';
     import componentNoData from "@/components/no-data/no-data";
     import componentBottomLine from "@/components/bottom-line/bottom-line";
+    import pluginLocale from '../locale/index.js';
 
     export default {
+        mixins: [pluginLocale],
         data() {
             return {
                 theme_view: app.globalData.get_theme_value_view(),
@@ -88,19 +90,19 @@
                         value: "-1",
                     },
                     {
-                        name: this.$t('search.search.e415ir'),
+                        name: this.$t('search.not_started'),
                         value: "0",
                     },
                     {
-                        name: this.$t('search.search.46g3i2'),
+                        name: this.$t('search.living'),
                         value: "1",
                     },
                     {
-                        name: this.$t('search.search.v60305'),
+                        name: this.$t('search.paused'),
                         value: "2",
                     },
                     {
-                        name: this.$t('index.index.443683'),
+                        name: this.$t('common.ended'),
                         value: "3",
                     },
                 ],

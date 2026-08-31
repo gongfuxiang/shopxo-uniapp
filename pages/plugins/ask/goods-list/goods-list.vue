@@ -4,12 +4,12 @@
             <scroll-view :scroll-y="true" class="scroll-box padding-main bs-bb" @scrolltolower="scroll_lower" lower-threshold="60">
                 <view v-for="(item, index) in data_list" :key="index" class="bg-white border-radius-main padding-main oh" :class="data_list.length > index + 1 ? 'spacing-mb' : ''">
                     <view class="title flex-row jc-sb align-c wh-auto">
-                        <view class="name flex-1 flex-width cr-base">{{ item.name }}{{$t('goods-list.goods-list.27nkjm')}}</view>
+                        <view class="name flex-1 flex-width cr-base">{{ item.name }}{{$t('goods-list.questions')}}</view>
                         <view class="date cr-grey-9">{{ item.add_time_date }}</view>
                     </view>
                     <view class="question spacing-mt">
                         <view :data-value="item.url" @tap="url_event" class="flex-row cp">
-                            <view class="title cr-white tc margin-right-sm">{{$t('goods-list.goods-list.00n7i3')}}</view>
+                            <view class="title cr-white tc margin-right-sm">{{$t('goods-list.ask')}}</view>
                             <view class="flex-1 flex-width">
                                 <mp-html :content="item.content" />
                                 <view v-if="(item.images || null) != null && item.images.length > 0" class="avatar spacing-mt-10 radius margin-right-sm oh">
@@ -22,7 +22,7 @@
                     </view>
                     <block v-if="item.is_reply == 1 || (item.reply || null) != null">
                         <view class="ask flex-row spacing-mt">
-                            <view class="title cr-white tc margin-right-sm">{{$t('goods-list.goods-list.rw12i7')}}</view>
+                            <view class="title cr-white tc margin-right-sm">{{$t('goods-list.answer')}}</view>
                             <view class="flex-1 flex-width">
                                 <view class="padding-bottom-main">
                                     <mp-html :content="item.reply" />
@@ -43,11 +43,11 @@
                     <view v-if="item.comments_count > 0" class="more flex-row jc-e align-c br-t-f9 padding-top-main">
                         <view v-if="(item.hide_more || false) === false && ((item.hide_comments_list_num === 0 && !item.bool_more) || (item.hide_comments_list_num == undefined || item.hide_comments_list_num > 0))" class="cr-red text-size-xs" @tap="open_more(item.id, index)">
                             <text v-if="item.hide_comments_list_num === 0 && !item.bool_more">{{$t('common.view_more')}}</text>
-                            <text v-if="item.hide_comments_list_num == undefined || item.hide_comments_list_num > 0">{{$t('goods-list.goods-list.278qr1')}}{{ item.hide_comments_list_num || item.comments_count }}{{$t('goods-list.goods-list.8y3cc7')}}</text>
+                            <text v-if="item.hide_comments_list_num == undefined || item.hide_comments_list_num > 0">{{$t('common.view_all')}}{{ item.hide_comments_list_num || item.comments_count }}{{$t('goods-list.answers')}}</text>
                             <iconfont :name="item.bool_more ? 'icon-arrow-bottom' : 'icon-arrow-top'" size="24rpx" propClass="pr top-xs"></iconfont>
                         </view>
                         <view v-if="item.bool_more" class="cr-red text-size-xs margin-left-main" @tap="close_more(index)">
-                            <text>{{$t('goods-list.goods-list.aem3e6')}}</text>
+                            <text>{{$t('goods-list.put_away_answer')}}</text>
                             <iconfont name="icon-arrow-top" size="24rpx" propClass="pr top-xs"></iconfont>
                         </view>
                     </view>
@@ -71,7 +71,9 @@
     import componentCommon from '@/components/common/common';
     import componentNoData from '@/components/no-data/no-data';
     import componentBottomLine from '@/components/bottom-line/bottom-line';
+    import pluginLocale from '../locale/index.js';
     export default {
+        mixins: [pluginLocale],
         data() {
             return {
                 theme_view: app.globalData.get_theme_value_view(),

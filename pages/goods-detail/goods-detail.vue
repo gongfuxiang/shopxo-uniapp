@@ -285,11 +285,11 @@
                                 <text class="cr-main padding-left-sm">{{ goods.inventory }}</text>
                             </view>
                             <view>
-                                <text class="cr-grey">{{$t('goods-category.goods-category.283ot0')}}</text>
+                                <text class="cr-grey">{{$t('common.heat')}}</text>
                                 <text class="cr-main padding-left-sm">{{ goods.access_count }}</text>
                             </view>
                             <view v-if="(goods.show_sales_number_status || 0) == 1">
-                                <text class="cr-grey">{{$t('goods-category.goods-category.at5p35')}}</text>
+                                <text class="cr-grey">{{$t('common.sales_volume')}}</text>
                                 <text class="cr-main padding-left-sm">{{ goods.sales_count }}</text>
                             </view>
                         </view>
@@ -321,7 +321,7 @@
 
                 <!-- 规格选择 -->
                 <view v-if="!plugins_realstore_cart_nav_status && goods.is_exist_many_spec == 1 && (buy_button || null) != null && (buy_button.is_buy || 0) + (buy_button.is_cart || 0) + (buy_button.is_show || 0) > 0" class="spec-container-view oh padding-horizontal-main padding-main border-radius-main bg-white text-size-xs spacing-mb">
-                    <view class="fl item-title">{{$t('goods-detail.goods-detail.u401fi')}}</view>
+                    <view class="fl item-title">{{$t('common.spec')}}</view>
                     <view class="fr column-right-view border-radius-main single-text cp" @tap="nav_buy_submit_event" :data-type="(buy_button.is_buy || 0) == 1 ? 'buy' : (buy_button.is_cart || 0) == 1 ? 'cart' : 'spec-show'">
                         <text class="text-size-xs cr-grey-9">{{ goods_spec_selected_text }}</text>
                         <iconfont name="icon-arrow-right" color="#999" propClass="va-m"></iconfont>
@@ -367,7 +367,7 @@
                 <!-- 门店 -->
                 <view v-if="plugins_realstore_data != null && ((plugins_realstore_data.data || null) != null) && plugins_realstore_data.data.length > 0" class="plugins-realstore-container">
                     <view class="spacing-nav-title flex-row align-c jc-sb text-size-xs">
-                        <text class="text-wrapper title-left-border single-text flex-1 flex-width padding-right-main">{{$t('goods-detail.goods-detail.317jp2')}}</text>
+                        <text class="text-wrapper title-left-border single-text flex-1 flex-width padding-right-main">{{$t('goods-detail.related_stores')}}</text>
                         <text :data-value="'/pages/plugins/realstore/search/search?goods_id='+goods.id" @tap="url_event" class="arrow-right padding-right cr-grey cp">{{$t('common.more')}}</text>
                     </view>
                     <component-realstore-list :propData="{...{data: plugins_realstore_data.data}, ...{random: random_value}}" :propRealstoreDetailQuery="'&source_goods_id='+goods.id" :propIsFavor="false"></component-realstore-list>
@@ -382,10 +382,10 @@
                 <view v-if="common_is_goods_detail_show_comments == 1" class="goods-comment spacing-mb">
                     <view class="spacing-nav-title flex-row align-c jc-sb text-size-xs">
                         <view class="title-left">
-                            <text class="text-wrapper title-left-border">{{$t('goods-detail.goods-detail.znz76d')}}</text>
+                            <text class="text-wrapper title-left-border">{{$t('goods-detail.evaluation')}}</text>
                             <text class="vice-name cr-grey">({{ goods.comments_count || 0 }})</text>
                         </view>
-                        <text :data-value="'/pages/goods-comment/goods-comment?goods_id=' + goods.id" @tap="url_event" class="arrow-right padding-right cr-grey cp">{{$t('goods-detail.goods-detail.1rqkjt')}}{{ (goods.comments_score || null) == null ? 0 : (goods.comments_score.rate || 0) }}%</text>
+                        <text :data-value="'/pages/goods-comment/goods-comment?goods_id=' + goods.id" @tap="url_event" class="arrow-right padding-right cr-grey cp">{{$t('goods-detail.positive_review_rate')}}{{ (goods.comments_score || null) == null ? 0 : (goods.comments_score.rate || 0) }}%</text>
                     </view>
                     <view class="border-radius-main padding-main bg-white">
                         <!-- 商品数据 -->
@@ -393,7 +393,7 @@
                         <!-- 是否开启评论入口 -->
                         <view v-if="(plugins_intellectstools_data || null) !== null && (plugins_intellectstools_data.is_comments_add || 0) == 1">
                             <view :data-value="'/pages/plugins/intellectstools/goods-comments/goods-comments?goods_id=' + goods.id" @tap="url_event" class="cp">
-                                <view class="br-t-e padding-top-main cr-base flex-row jc-c align-c">{{$t('goods-detail.goods-detail.6k7808')}}<iconfont name="icon-arrow-right" color="#666" propClass="margin-left-sm pr top-xs"></iconfont>
+                                <view class="br-t-e padding-top-main cr-base flex-row jc-c align-c">{{$t('goods-detail.want_evaluate')}}<iconfont name="icon-arrow-right" color="#666" propClass="margin-left-sm pr top-xs"></iconfont>
                                 </view>
                             </view>
                         </view>
@@ -406,12 +406,12 @@
                             <text class="text-wrapper title-left-border">{{$t('common.qa')}}</text>
                             <text class="vice-name cr-grey">({{ plugins_ask_data.ask_total }})</text>
                         </view>
-                        <text :data-value="'/pages/plugins/ask/goods-list/goods-list?goods_id=' + goods.id" @tap="url_event" class="arrow-right padding-right cr-grey cp">{{$t('goods-detail.goods-detail.q8e577')}}</text>
+                        <text :data-value="'/pages/plugins/ask/goods-list/goods-list?goods_id=' + goods.id" @tap="url_event" class="arrow-right padding-right cr-grey cp">{{$t('goods-detail.view_all_answers')}}</text>
                     </view>
                     <view class="border-radius-main padding-main bg-white">
                         <component-ask-comments-goods :propData="plugins_ask_data.ask_data"></component-ask-comments-goods>
                         <view :data-value="'/pages/plugins/ask/form/form?goods_id='+goods.id" @tap="url_event" class="cp">
-                            <view class="br-t-e padding-top-main cr-base flex-row jc-c align-c">{{$t('goods-detail.goods-detail.7ulh8b')}}<iconfont name="icon-arrow-right" color="#666" propClass="pr top-sm margin-left-sm"></iconfont>
+                            <view class="br-t-e padding-top-main cr-base flex-row jc-c align-c">{{$t('common.ask_question')}}<iconfont name="icon-arrow-right" color="#666" propClass="pr top-sm margin-left-sm"></iconfont>
                             </view>
                         </view>
                     </view>
@@ -435,7 +435,7 @@
                 <!-- 商品详情 -->
                 <view class="goods-detail">
                     <view class="spacing-nav-title flex-row align-c jc-sb text-size-xs">
-                        <text class="text-wrapper title-left-border">{{$t('goods-detail.goods-detail.2j44o2')}}</text>
+                        <text class="text-wrapper title-left-border">{{$t('goods-detail.product_details')}}</text>
                     </view>
                     <view class="border-radius-main oh bg-white">
                         <!-- 商品基础数据 -->
@@ -483,7 +483,7 @@
                             </block>
                         </block>
                         <block v-else>
-                            <view class="cr-grey tc padding-top-xxl padding-bottom-xxl">{{$t('goods-detail.goods-detail.27wudx')}}</view>
+                            <view class="cr-grey tc padding-top-xxl padding-bottom-xxl">{{$t('goods-detail.detailed_data_available_moment')}}</view>
                         </block>
                     </view>
                 </view>
@@ -491,7 +491,7 @@
                 <!-- 猜你喜欢 -->
                 <view v-if="guess_you_like.length > 0" class="margin-top-main">
                     <view class="tc spacing-mb">
-                        <view class="guess-like fw-b text-size-md">{{$t('goods-detail.goods-detail.v2974w')}}</view>
+                        <view class="guess-like fw-b text-size-md">{{$t('common.guess_like')}}</view>
                     </view>
                     <div class="spacing-mt">
                         <component-goods-list :propData="{ style_type: 1, goods_list: guess_you_like }"  :propCurrencySymbol="currency_symbol"></component-goods-list>
@@ -637,7 +637,7 @@
                     <scroll-view :scroll-y="true" class="max-h-8h">
                         <!-- 优惠券 -->
                         <view v-if="(plugins_coupon_data || null) != null && plugins_coupon_data.data.length > 0" class="plugins-coupon-container spacing-mb">
-                            <view class="fw-b tc text-size-lg padding-bottom">{{$t('goods-detail.goods-detail.w3jma9')}}</view>
+                            <view class="fw-b tc text-size-lg padding-bottom">{{$t('goods-detail.coupon')}}</view>
                             <block v-for="(item, index) in plugins_coupon_data.data" :key="index">
                                 <component-coupon-card :propData="item" :propStatusType="item.status_type" :propStatusOperableName="item.status_operable_name" :propIndex="index" propIsProgress @call-back="coupon_receive_back_event"></component-coupon-card>
                             </block>
@@ -767,7 +767,7 @@
                         <block v-if="(plugins_realstore_data || null) != null && ((plugins_realstore_data.data || null) != null) && plugins_realstore_data.data.length > 0">
                             <component-realstore-list :propData="{...{data: plugins_realstore_data.data}, ...{random: random_value}}" :propRealstoreDetailQuery="'&source_goods_id='+goods.id" :propIsFavor="false"></component-realstore-list>
                             <view class="tc margin-top-sm margin-bottom-lg">
-                                <text :data-value="'/pages/plugins/realstore/search/search?goods_id='+goods.id" @tap="url_event" class="arrow-right padding-right cr-grey cp">{{$t('common.more')}}{{$t('goods-detail.goods-detail.317jp2')}}</text>
+                                <text :data-value="'/pages/plugins/realstore/search/search?goods_id='+goods.id" @tap="url_event" class="arrow-right padding-right cr-grey cp">{{$t('common.more')}}{{$t('goods-detail.related_stores')}}</text>
                             </view>
                         </block>
                         <block v-else>
@@ -867,6 +867,7 @@
     import componentCouponCard from '@/pages/plugins/coupon/components/coupon-card/coupon-card';
     import componentGoodsCompare from '@/pages/plugins/goodscompare/components/goods-compare/goods-compare';
     import componentFormInputBase from '@/pages/form-input/components/form-input/form-input-base';
+    import pluginLocale from './locale/index.js';
 
     var common_static_url = app.globalData.get_static_url('common');
     var system_info = app.globalData.get_system_info() || {};
@@ -875,6 +876,7 @@
     var win_height = parseInt(system_info.windowHeight || system_info.screenHeight || 0);
     var photo_height = (win_width <= 0) ? '55vh' : app.globalData.window_width_handle(win_width) + 'px';
     export default {
+        mixins: [pluginLocale],
         data() {
             return {
                 theme_view: app.globalData.get_theme_value_view(),
@@ -908,7 +910,7 @@
                 exhibition_price_chat_url: '',
                 goods_spec_base_price: 0,
                 goods_spec_base_original_price: 0,
-                goods_spec_selected_text: this.$t('goods-detail.goods-detail.6brk57'),
+                goods_spec_selected_text: this.$t('common.please_select_spec'),
                 show_field_price_text: null,
                 goods_show_price_unit: '',
                 goods_show_original_price_unit: '',
@@ -1326,7 +1328,7 @@
             // 初始化数据处理
             init_result_data_handle(goods) {
                 // 价格字段
-                var price_text_arr = [this.$t('common.sale_price'), this.$t('goods-category.goods-category.g2u3lf'), this.$t('common.selling_price')];
+                var price_text_arr = [this.$t('common.sale_price'), this.$t('common.price'), this.$t('common.selling_price')];
                 // 相册处理
                 var photo = goods.photo || [];
                 if(photo.length == 0 && (goods.images || null) != null) {
@@ -1341,7 +1343,7 @@
                     goods_photo: photo,
                     goods_content_app: goods.content_app || [],
                     nav_favor_button_info: {
-                        text: (goods.user_is_favor == 1 ? this.$t('goods-detail.goods-detail.by7052') : '') + this.$t('common.favor'),
+                        text: (goods.user_is_favor == 1 ? this.$t('common.already') : '') + this.$t('common.favor'),
                         status: goods.user_is_favor,
                     },
                     goods_spec_base_price: goods.price,
@@ -1482,7 +1484,7 @@
                     // 在线客服
                     case 'chat':
                         if ((value || null) == null) {
-                            app.globalData.showToast(this.$t('goods-detail.goods-detail.tq1976'));
+                            app.globalData.showToast(this.$t('goods-detail.url_value_empty'));
                             return false;
                         }
                         app.globalData.chat_entry_handle(value);
@@ -1501,7 +1503,7 @@
                     case 'url':
                     case 'link':
                         if (value == null) {
-                            app.globalData.showToast(this.$t('goods-detail.goods-detail.tq1976'));
+                            app.globalData.showToast(this.$t('goods-detail.url_value_empty'));
                             return false;
                         }
                         app.globalData.url_open(value);
@@ -1509,7 +1511,7 @@
                     // 复制事件
                     case 'copy':
                         if (value == null) {
-                            app.globalData.showToast(this.$t('goods-detail.goods-detail.uyghj2'));
+                            app.globalData.showToast(this.$t('goods-detail.copy_value_empty'));
                             return false;
                         }
                         app.globalData.text_copy_event(value);
@@ -1517,7 +1519,7 @@
                     // 门店
                     case 'plugins-realstore':
                         if((this.plugins_realstore_data || null) == null || (this.plugins_realstore_data.data || null) == null) {
-                            app.globalData.showToast(this.$t('goods-detail.goods-detail.98v424'));
+                            app.globalData.showToast(this.$t('goods-detail.store_data_incorrect'));
                             return false;
                         }
                         var temp_data_list = this.plugins_realstore_data.data || [];
@@ -1538,7 +1540,7 @@
                         break;
                     // 默认
                     default:
-                        app.globalData.showToast(this.$t('goods-detail.goods-detail.721e2h')+type+')');
+                        app.globalData.showToast(this.$t('goods-detail.event_not_processed')+type+')');
                 }
             },
 

@@ -28,9 +28,9 @@
                         </block>
                     </view>
                     <view class="item-operation tr br-t padding-top-main margin-top-main">
-                        <button v-if="(item.email || null) != null" class="round bg-white br cr-base" type="default" size="mini" hover-class="none" @tap="text_event" data-event="copy" :data-value="item.email">{{$t('login.login.p54kf1')}}</button>
-                        <button v-if="(item.mobile || null) != null" class="round bg-white br cr-base" type="default" size="mini" hover-class="none" @tap="text_event" data-event="tel" :data-value="item.mobile">{{$t('promotion-user.promotion-user.62c8m1')}}</button>
-                        <button class="round bg-white br cr-base" type="default" size="mini" hover-class="none" @tap="user_order_event" :data-value="item.id">{{$t('promotion-user.promotion-user.i2rf31')}}</button>
+                        <button v-if="(item.email || null) != null" class="round bg-white br cr-base" type="default" size="mini" hover-class="none" @tap="text_event" data-event="copy" :data-value="item.email">{{$t('common.mailbox')}}</button>
+                        <button v-if="(item.mobile || null) != null" class="round bg-white br cr-base" type="default" size="mini" hover-class="none" @tap="text_event" data-event="tel" :data-value="item.mobile">{{$t('common.order_phone')}}</button>
+                        <button class="round bg-white br cr-base" type="default" size="mini" hover-class="none" @tap="user_order_event" :data-value="item.id">{{$t('promotion-user.user_orders')}}</button>
                     </view>
                 </view>
             </view>
@@ -52,8 +52,10 @@
     import componentCommon from '@/components/common/common';
     import componentNoData from "@/components/no-data/no-data";
     import componentBottomLine from "@/components/bottom-line/bottom-line";
+    import pluginLocale from '../locale/index.js';
 
     export default {
+        mixins: [pluginLocale],
         data() {
             return {
                 theme_view: app.globalData.get_theme_value_view(),
@@ -66,28 +68,28 @@
                 data_is_loading: 0,
                 params: null,
                 nav_type_list: [
-                    { name: this.$t('promotion-user.promotion-user.o6qi74'), value: 0 },
-                    { name: this.$t('promotion-user.promotion-user.kx7595'), value: 1 },
-                    { name: this.$t('promotion-user.promotion-user.2ey5t1'), value: 2 },
-                    { name: this.$t('promotion-user.promotion-user.852zib'), value: 3 },
-                    { name: this.$t('promotion-user.promotion-user.h8mx3e'), value: 4 },
-                    { name: this.$t('promotion-user.promotion-user.fvbq25'), value: 5 },
+                    { name: this.$t('promotion-user.promote_users'), value: 0 },
+                    { name: this.$t('promotion-user.consumed_users'), value: 1 },
+                    { name: this.$t('promotion-user.unconsumed_users'), value: 2 },
+                    { name: this.$t('promotion-user.new_customers_added'), value: 3 },
+                    { name: this.$t('promotion-user.new_customers_valid'), value: 4 },
+                    { name: this.$t('promotion-user.new_customers_need_repurchase'), value: 5 },
                 ],
                 // 导航下标
                 nav_type_index: 0,
                 content_list: [
-                    { name: this.$t('promotion-user.promotion-user.2g7enc'), field: "order_count", unit: "", default: 0 },
-                    { name: this.$t('promotion-user.promotion-user.32bf15'), field: "order_total", unit: "", default: 0 },
-                    { name: this.$t('promotion-user.promotion-user.76748p'), field: "order_last_time", default: "" },
-                    { name: this.$t('promotion-user.promotion-user.u43380'), field: "find_order_count", unit: "", default: 0 },
-                    { name: this.$t('promotion-user.promotion-user.8n4tr3'), field: "find_order_total", unit: "", default: 0 },
-                    { name: this.$t('promotion-user.promotion-user.1gc3ny'), field: "find_order_last_time", default: "" },
-                    { name: this.$t('promotion-user.promotion-user.3l1187'), field: "referrer_count", unit: "", default: 0 },
+                    { name: this.$t('promotion-user.consumer_orders'), field: "order_count", unit: "", default: 0 },
+                    { name: this.$t('common.consumption_amount'), field: "order_total", unit: "", default: 0 },
+                    { name: this.$t('promotion-user.last_order_time'), field: "order_last_time", default: "" },
+                    { name: this.$t('promotion-user.subordinate_orders'), field: "find_order_count", unit: "", default: 0 },
+                    { name: this.$t('common.lower_level_consumption'), field: "find_order_total", unit: "", default: 0 },
+                    { name: this.$t('promotion-user.last_order_time_subordinates'), field: "find_order_last_time", default: "" },
+                    { name: this.$t('common.subordinate_users'), field: "referrer_count", unit: "", default: 0 },
                 ],
                 nav_search_buy_type_list: [
                     { value: -1, name: this.$t('common.all') },
-                    { value: 0, name: this.$t('promotion-user.promotion-user.g5332w') },
-                    { value: 1, name: this.$t('promotion-user.promotion-user.8i641g') },
+                    { value: 0, name: this.$t('promotion-user.not_placed_order') },
+                    { value: 1, name: this.$t('promotion-user.ordered') },
                 ],
                 nav_search_value: {
                     team_search_user_time_start: "",
@@ -284,7 +286,7 @@
                         urls: [value],
                     });
                 } else {
-                    app.globalData.showToast(this.$t('order.order.p3scy0'));
+                    app.globalData.showToast(this.$t('common.avatar_address_incorrect'));
                 }
             },
 

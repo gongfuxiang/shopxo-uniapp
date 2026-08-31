@@ -15,17 +15,17 @@
                 </view>
 
                 <!-- 提示信息 -->
-                <view class="cr-grey tc margin-top-xxxl padding-horizontal-sm">{{$t('member-code.member-code.oc4x18')}}</view>
+                <view class="cr-grey tc margin-top-xxxl padding-horizontal-sm">{{$t('common.encounter_scan_failure_turn_screen_brightest')}}</view>
 
                 <!-- 倒计时 -->
-                <view class="margin-top-xxxl cr-yellow tc">({{ scheduled_value }}{{$t('payment-code.payment-code.b74qxe')}}</view>
+                <view class="margin-top-xxxl cr-yellow tc">({{ scheduled_value }}{{$t('payment-code.automatically_refresh_payment_code_seconds')}}</view>
 
                 <!-- 导航 -->
                 <view v-if="(plugins_vip || null) != null" class="bottom-fixed" :style="bottom_fixed_style">
                     <view class="bottom-line-exclude">
                         <view class="bg-white br-grey-d round oh">
-                            <button type="default" class="btn bg-white round text-size fl br-0" size="mini" :data-value="'/pages/plugins/vip/member-code/member-code?screen_brightness_value=' + screen_brightness_value" data-redirect="1" @tap="url_event">{{$t('member-code.member-code.26bu38')}}</button>
-                            <button type="default" class="btn bg-main cr-white round text-size fr br-0" size="mini">{{$t('member-code.member-code.x58gqu')}}</button>
+                            <button type="default" class="btn bg-white round text-size fl br-0" size="mini" :data-value="'/pages/plugins/vip/member-code/member-code?screen_brightness_value=' + screen_brightness_value" data-redirect="1" @tap="url_event">{{$t('common.member_code')}}</button>
+                            <button type="default" class="btn bg-main cr-white round text-size fr br-0" size="mini">{{$t('common.payment_code')}}</button>
                         </view>
                     </view>
                 </view>
@@ -43,8 +43,10 @@
     const app = getApp();
     import componentCommon from '@/components/common/common';
     import componentNoData from '@/components/no-data/no-data';
+    import pluginLocale from '../locale/index.js';
 
     export default {
+        mixins: [pluginLocale],
         data() {
             return {
                 theme_view: app.globalData.get_theme_value_view(),
@@ -144,7 +146,7 @@
                 } else {
                     this.setData({
                         data_list_loding_status: 0,
-                        data_list_loding_msg: this.$t('setup.setup.nwt4o1'),
+                        data_list_loding_msg: this.$t('common.please_login_first'),
                     });
                 }
             },

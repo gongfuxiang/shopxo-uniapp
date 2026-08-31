@@ -54,7 +54,9 @@
     import componentPanelContent from "@/components/panel-content/panel-content";
     import componentNoData from '@/components/no-data/no-data';
     import componentBottomLine from '@/components/bottom-line/bottom-line';
+    import pluginLocale from '../locale/index.js';
     export default {
+        mixins: [pluginLocale],
         data() {
             return {
                 theme_view: app.globalData.get_theme_value_view(),
@@ -330,7 +332,7 @@
                                     if (res.data.code == 0) {
                                         var temp_data_list = this.data_list;
                                         temp_data_list[index]['status'] = 3;
-                                        temp_data_list[index]['status_name'] = this.$t('order.order.1k98tk');
+                                        temp_data_list[index]['status_name'] = this.$t('common.canceled');
                                         this.setData({
                                             data_list: temp_data_list,
                                         });

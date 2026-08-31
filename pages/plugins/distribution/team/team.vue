@@ -3,76 +3,76 @@
         <!-- 搜索条件 -->
         <view class="form-container nav-search bg-white br-b oh padding-horizontal-main padding-bottom-main text-size-xs cr-base pr">
             <view class="margin-top oh">
-                <view class="fl margin-top">{{$t('team.team.784249')}}</view>
+                <view class="fl margin-top">{{$t('team.binding_time')}}</view>
                 <view class="multiple-picker fl tc">
                     <view class="item br dis-inline-block pr radius tl fl">
-                        <uni-datetime-picker v-model="nav_search_value.team_search_user_time_start" :border="false" :showFirstIcon="false" :hide-second="true" type="datetime" :placeholder="$t('team.team.pcaom3')" placeholder-class="cr-grey" />
+                        <uni-datetime-picker v-model="nav_search_value.team_search_user_time_start" :border="false" :showFirstIcon="false" :hide-second="true" type="datetime" :placeholder="$t('team.start_time')" placeholder-class="cr-grey" />
                     </view>
                     <view class="dis-inline-block cr-grey-white margin-top-sm">-</view>
                     <view class="item br dis-inline-block pr radius tl fr">
-                        <uni-datetime-picker v-model="nav_search_value.team_search_user_time_end" :border="false" :showFirstIcon="false" :hide-second="true" type="datetime" :placeholder="$t('team.team.iee9bp')" placeholder-class="cr-grey" />
+                        <uni-datetime-picker v-model="nav_search_value.team_search_user_time_end" :border="false" :showFirstIcon="false" :hide-second="true" type="datetime" :placeholder="$t('common.end_time')" placeholder-class="cr-grey" />
                     </view>
                 </view>
                 <checkbox-group class="dis-inline-block fr margin-top-xs" data-value="team_search_user_time_reverse" @change="search_cholce_event">
-                    <label> <checkbox value="1" :checked="nav_search_value.team_search_user_time_reverse.indexOf('1') != -1" style="transform: scale(0.7)" />{{$t('team.team.i040fg')}}</label>
+                    <label> <checkbox value="1" :checked="nav_search_value.team_search_user_time_reverse.indexOf('1') != -1" style="transform: scale(0.7)" />{{$t('team.reverse')}}</label>
                 </checkbox-group>
             </view>
             <block v-if="is_invite_bind_period == 1">
                 <view class="margin-top oh">
-                    <view class="fl margin-top">{{$t('team.team.x7p2k9')}}</view>
+                    <view class="fl margin-top">{{$t('team.expiration_time')}}</view>
                     <view class="multiple-picker fl tc">
                         <view class="item br dis-inline-block pr radius tl fl">
-                            <uni-datetime-picker v-model="nav_search_value.team_search_expire_time_start" :border="false" :showFirstIcon="false" :hide-second="true" type="datetime" :placeholder="$t('team.team.pcaom3')" placeholder-class="cr-grey" />
+                            <uni-datetime-picker v-model="nav_search_value.team_search_expire_time_start" :border="false" :showFirstIcon="false" :hide-second="true" type="datetime" :placeholder="$t('team.start_time')" placeholder-class="cr-grey" />
                         </view>
                         <view class="dis-inline-block cr-grey-white margin-top-sm">-</view>
                         <view class="item br dis-inline-block pr radius tl fr">
-                            <uni-datetime-picker v-model="nav_search_value.team_search_expire_time_end" :border="false" :showFirstIcon="false" :hide-second="true" type="datetime" :placeholder="$t('team.team.iee9bp')" placeholder-class="cr-grey" />
+                            <uni-datetime-picker v-model="nav_search_value.team_search_expire_time_end" :border="false" :showFirstIcon="false" :hide-second="true" type="datetime" :placeholder="$t('common.end_time')" placeholder-class="cr-grey" />
                         </view>
                     </view>
                     <checkbox-group class="dis-inline-block fr margin-top-xs" data-value="team_search_expire_time_reverse" @change="search_cholce_event">
-                        <label> <checkbox value="1" :checked="nav_search_value.team_search_expire_time_reverse.indexOf('1') != -1" style="transform: scale(0.7)" />{{$t('team.team.i040fg')}}</label>
+                        <label> <checkbox value="1" :checked="nav_search_value.team_search_expire_time_reverse.indexOf('1') != -1" style="transform: scale(0.7)" />{{$t('team.reverse')}}</label>
                     </checkbox-group>
                 </view>
                 <view class="margin-top oh">
-                    <view class="fl margin-top">{{$t('team.team.q4m8n1')}}</view>
+                    <view class="fl margin-top">{{$t('team.release_time')}}</view>
                     <view class="multiple-picker fl tc">
                         <view class="item br dis-inline-block pr radius tl fl">
-                            <uni-datetime-picker v-model="nav_search_value.team_search_release_time_start" :border="false" :showFirstIcon="false" :hide-second="true" type="datetime" :placeholder="$t('team.team.pcaom3')" placeholder-class="cr-grey" />
+                            <uni-datetime-picker v-model="nav_search_value.team_search_release_time_start" :border="false" :showFirstIcon="false" :hide-second="true" type="datetime" :placeholder="$t('team.start_time')" placeholder-class="cr-grey" />
                         </view>
                         <view class="dis-inline-block cr-grey-white margin-top-sm">-</view>
                         <view class="item br dis-inline-block pr radius tl fr">
-                            <uni-datetime-picker v-model="nav_search_value.team_search_release_time_end" :border="false" :showFirstIcon="false" :hide-second="true" type="datetime" :placeholder="$t('team.team.iee9bp')" placeholder-class="cr-grey" />
+                            <uni-datetime-picker v-model="nav_search_value.team_search_release_time_end" :border="false" :showFirstIcon="false" :hide-second="true" type="datetime" :placeholder="$t('common.end_time')" placeholder-class="cr-grey" />
                         </view>
                     </view>
                     <checkbox-group class="dis-inline-block fr margin-top-xs" data-value="team_search_release_time_reverse" @change="search_cholce_event">
-                        <label> <checkbox value="1" :checked="nav_search_value.team_search_release_time_reverse.indexOf('1') != -1" style="transform: scale(0.7)" />{{$t('team.team.i040fg')}}</label>
+                        <label> <checkbox value="1" :checked="nav_search_value.team_search_release_time_reverse.indexOf('1') != -1" style="transform: scale(0.7)" />{{$t('team.reverse')}}</label>
                     </checkbox-group>
                 </view>
             </block>
             <view class="margin-top oh">
-                <view class="fl margin-top">{{$t('team.team.2ny6k1')}}</view>
+                <view class="fl margin-top">{{$t('team.order_placement_time')}}</view>
                 <view class="multiple-picker fl tc">
                     <view class="item br dis-inline-block pr radius tl fl">
-                        <uni-datetime-picker v-model="nav_search_value.team_search_order_time_start" :border="false" :showFirstIcon="false" :hide-second="true" type="datetime" :placeholder="$t('team.team.pcaom3')" placeholder-class="cr-grey" />
+                        <uni-datetime-picker v-model="nav_search_value.team_search_order_time_start" :border="false" :showFirstIcon="false" :hide-second="true" type="datetime" :placeholder="$t('team.start_time')" placeholder-class="cr-grey" />
                     </view>
                     <view class="dis-inline-block cr-grey-white margin-top-sm">-</view>
                     <view class="item br dis-inline-block pr radius tl fr">
-                        <uni-datetime-picker v-model="nav_search_value.team_search_order_time_end" :border="false" :showFirstIcon="false" :hide-second="true" type="datetime" :placeholder="$t('team.team.iee9bp')" placeholder-class="cr-grey" />
+                        <uni-datetime-picker v-model="nav_search_value.team_search_order_time_end" :border="false" :showFirstIcon="false" :hide-second="true" type="datetime" :placeholder="$t('common.end_time')" placeholder-class="cr-grey" />
                     </view>
                 </view>
                 <checkbox-group class="dis-inline-block fr margin-top-xs" data-value="team_search_order_time_reverse" @change="search_cholce_event">
-                    <label> <checkbox value="1" :checked="nav_search_value.team_search_order_time_reverse.indexOf('1') != -1" style="transform: scale(0.7)" />{{$t('team.team.i040fg')}}</label>
+                    <label> <checkbox value="1" :checked="nav_search_value.team_search_order_time_reverse.indexOf('1') != -1" style="transform: scale(0.7)" />{{$t('team.reverse')}}</label>
                 </checkbox-group>
             </view>
             <view class="margin-top oh">
-                <view class="fl">{{$t('team.team.2i4k79')}}</view>
+                <view class="fl">{{$t('team.whether_place_order')}}</view>
                 <checkbox-group data-value="team_search_buy_type" @change="search_cholce_event">
-                    <label> <checkbox value="0" :checked="nav_search_value.team_search_buy_type.indexOf('0') != -1" style="transform: scale(0.7)" />{{$t('promotion-user.promotion-user.g5332w')}}</label>
-                    <label class="margin-left-xxl"> <checkbox value="1" :checked="nav_search_value.team_search_buy_type.indexOf('1') != -1" style="transform: scale(0.7)" />{{$t('promotion-user.promotion-user.8i641g')}}</label>
+                    <label> <checkbox value="0" :checked="nav_search_value.team_search_buy_type.indexOf('0') != -1" style="transform: scale(0.7)" />{{$t('promotion-user.not_placed_order')}}</label>
+                    <label class="margin-left-xxl"> <checkbox value="1" :checked="nav_search_value.team_search_buy_type.indexOf('1') != -1" style="transform: scale(0.7)" />{{$t('promotion-user.ordered')}}</label>
                 </checkbox-group>
             </view>
             <view class="search-submit-list pa">
-                <button type="default" size="mini" class="bg-grey br-grey cr-base text-size-xs round margin-right-main" @tap="search_reset_event">{{$t('team.team.3l538c')}}</button>
+                <button type="default" size="mini" class="bg-grey br-grey cr-base text-size-xs round margin-right-main" @tap="search_reset_event">{{$t('team.reset')}}</button>
                 <button type="default" size="mini" class="bg-main br-main cr-white text-size-xs round" @tap="search_submit_event">{{$t('common.search')}}</button>
             </view>
         </view>
@@ -96,9 +96,9 @@
                         ></component-panel-content>
                     </view>
                     <view class="item-operation tr br-t padding-top-main margin-top-main">
-                        <button v-if="(item.email || null) != null" class="round bg-white br cr-base" type="default" size="mini" hover-class="none" @tap="text_event" data-event="copy" :data-value="item.email">{{$t('login.login.p54kf1')}}</button>
-                        <button v-if="(item.mobile || null) != null" class="round bg-white br cr-base" type="default" size="mini" hover-class="none" @tap="text_event" data-event="tel" :data-value="item.mobile">{{$t('promotion-user.promotion-user.62c8m1')}}</button>
-                        <button class="round bg-white br cr-base" type="default" size="mini" hover-class="none" @tap="user_order_event" :data-value="item.number_code">{{$t('promotion-user.promotion-user.i2rf31')}}</button>
+                        <button v-if="(item.email || null) != null" class="round bg-white br cr-base" type="default" size="mini" hover-class="none" @tap="text_event" data-event="copy" :data-value="item.email">{{$t('common.mailbox')}}</button>
+                        <button v-if="(item.mobile || null) != null" class="round bg-white br cr-base" type="default" size="mini" hover-class="none" @tap="text_event" data-event="tel" :data-value="item.mobile">{{$t('common.order_phone')}}</button>
+                        <button class="round bg-white br cr-base" type="default" size="mini" hover-class="none" @tap="user_order_event" :data-value="item.number_code">{{$t('promotion-user.user_orders')}}</button>
                     </view>
                 </view>
             </view>
@@ -121,8 +121,10 @@
     import componentNoData from "@/components/no-data/no-data";
     import componentBottomLine from "@/components/bottom-line/bottom-line";
     import componentPanelContent from '@/components/panel-content/panel-content';
+    import pluginLocale from '../locale/index.js';
 
     export default {
+        mixins: [pluginLocale],
         data() {
             return {
                 theme_view: app.globalData.get_theme_value_view(),
@@ -138,8 +140,8 @@
                 is_invite_bind_period: 0,
                 nav_search_buy_type_list: [
                     { value: -1, name: this.$t('common.all') },
-                    { value: 0, name: this.$t('promotion-user.promotion-user.g5332w') },
-                    { value: 1, name: this.$t('promotion-user.promotion-user.8i641g') },
+                    { value: 0, name: this.$t('promotion-user.not_placed_order') },
+                    { value: 1, name: this.$t('promotion-user.ordered') },
                 ],
                 nav_search_value: {
                     team_search_user_time_start: "",
@@ -382,7 +384,7 @@
                         urls: [value],
                     });
                 } else {
-                    app.globalData.showToast(this.$t('order.order.p3scy0'));
+                    app.globalData.showToast(this.$t('common.avatar_address_incorrect'));
                 }
             },
 

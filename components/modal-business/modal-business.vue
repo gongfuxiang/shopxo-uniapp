@@ -8,15 +8,15 @@
                     <view class="cr-base fw-b text-size-lg">{{ title }}{{$t('common.warm_tips')}}</view>
                 </view>
                 <view class="margin-top-lg text-size-sm cr-base content-desc">
-                    <block v-if="(privacy_content || null) == null">{{$t('agreement.agreement.w38e3v')}}{{ title }}{{$t('agreement.agreement.hjn568')}}</block>
+                    <block v-if="(privacy_content || null) == null">{{$t('agreement.dear_user_order_provide_better_service')}}{{ title }}{{$t('agreement.before_using_mini_program_need_click')}}</block>
                     <block v-else>{{ privacy_content }}</block>
                 </view>
                 <view class="cr-blue margin-top-lg">
                     <view>
-                        <text @tap="agreement_event" data-value="userregister">《{{ title }}{{$t('agreement.agreement.iy7863')}}</text>
+                        <text @tap="agreement_event" data-value="userregister">《{{ title }}{{$t('agreement.service_user_agreement')}}</text>
                     </view>
                     <view class="margin-top-sm">
-                        <text @tap="agreement_event" data-value="userprivacy">《{{ title }}{{$t('agreement.agreement.jwi8n1')}}</text>
+                        <text @tap="agreement_event" data-value="userprivacy">《{{ title }}{{$t('agreement.privacy_policy')}}</text>
                     </view>
                 </view>
                 <view class="buttom tc margin-top-xxxl padding-top-lg">
@@ -164,14 +164,14 @@
             agreement_event(e) {
                 var value = e.currentTarget.dataset.value || null;
                 if (value == null) {
-                    app.globalData.showToast(this.$t('login.login.4wc3hr'));
+                    app.globalData.showToast(this.$t('common.incorrect_protocol_type'));
                     return false;
                 }
                 // 是否存在协议 url 地址
                 var key = 'agreement_' + value + '_url';
                 var url = app.globalData.get_config('config.' + key) || null;
                 if (url == null) {
-                    app.globalData.showToast(this.$t('login.login.x0nxxf'));
+                    app.globalData.showToast(this.$t('common.protocol_url_address_incorrect'));
                     return false;
                 }
                 // 打开 webview

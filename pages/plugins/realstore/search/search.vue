@@ -9,7 +9,7 @@
                 </view>
                 <!-- 搜索 -->
                 <view class="nav-search" :class="show_type_mode == 1 ? 'map' : ''">
-                    <component-search @oninput="search_input_event" :propIsOnInputEvent="true" @onsearch="search_button_event" :propIsOnEvent="true" :propIsRequired="false" :propDefaultValue="search_keywords_value" :propPlaceholder="$t('index.index.c5273j')" propPlaceholderClass="cr-grey-c" propBgColor="#f5f5f5"></component-search>
+                    <component-search @oninput="search_input_event" :propIsOnInputEvent="true" @onsearch="search_button_event" :propIsOnEvent="true" :propIsRequired="false" :propDefaultValue="search_keywords_value" :propPlaceholder="$t('index.enter_store_name')" propPlaceholderClass="cr-grey-c" propBgColor="#f5f5f5"></component-search>
                 </view>
                 <view v-if="is_search_map == 1" class="dis-inline-block margin-left" @tap="show_event">
                     <iconfont :name="show_type_mode == 1 ? 'icon-list-dot' : 'icon-map-location'" color="#666" size="38rpx"></iconfont>
@@ -67,8 +67,10 @@
     import componentSearch from "@/components/search/search";
     import componentRealstoreList from "@/pages/plugins/realstore/components/realstore-list/realstore-list";
     import componentChoiceLocation from '@/components/choice-location/choice-location';
+    import pluginLocale from '../locale/index.js';
     var plugins_static_url = app.globalData.get_static_url('realstore', true);
     export default {
+        mixins: [pluginLocale],
         data() {
             return {
                 theme_view: app.globalData.get_theme_value_view(),
@@ -161,7 +163,7 @@
             // 标题设置
             if(this.is_choice_mode == 1) {
                 uni.setNavigationBarTitle({
-                    title: this.$t('realstore-cart.realstore-cart.87tty2')
+                    title: this.$t('realstore-cart.choice_store')
                 });
             }
         },

@@ -6,9 +6,9 @@
                 <view class="padding-main">
                     <view v-if="(info.title || null) != null" class="fw-b text-size-xl spacing-mb">{{ info.title }}</view>
                     <view class="cr-grey-9 text-size-xs margin-bottom-sm flex-row">
-                        {{ $t('detail.detail.kt41ki') }}{{ info.add_time_date }}
+                        {{ $t('detail.message_time') }}{{ info.add_time_date }}
                         <view class="fw-b padding-horizontal-xs">·</view>
-                        {{ info.access_count || '0' }}{{ $t('detail.detail.e6ga1y') }}
+                        {{ info.access_count || '0' }}{{ $t('common.total_views_suffix') }}
                     </view>
                     <view v-if="info.title != info.content">
                         <mp-html :content="info.content" />
@@ -39,9 +39,9 @@
                     <view class="flex-row jc-sb align-c">
                         <view class="flex-row align-c">
                             <image v-if="(logo_square || null) != null" :src="logo_square" mode="widthFix" class="admin-img circle br-f5 margin-right-sm"></image>
-                            <text>{{ $t('detail.detail.ng628i') }}</text>
+                            <text>{{ $t('detail.administrator_reply') }}</text>
                         </view>
-                        <view v-if="(info.reply_time_date || null) != null" class="cr-grey-9 text-size-xs">{{ $t('detail.detail.7rg4bb') }}{{ info.reply_time_date }}</view>
+                        <view v-if="(info.reply_time_date || null) != null" class="cr-grey-9 text-size-xs">{{ $t('detail.reply_time') }}{{ info.reply_time_date }}</view>
                     </view>
                     <view class="padding-top-main">
                         <mp-html :content="info.reply" />
@@ -55,7 +55,7 @@
             <!-- 猜你喜欢 -->
             <view v-if="goods_list.length > 0" class="padding-horizontal-main padding-top-sm">
                 <view class="tc spacing-mb">
-                    <view class="guess-like fw-b text-size-md">{{ $t('goods-detail.goods-detail.v2974w') }}</view>
+                    <view class="guess-like fw-b text-size-md">{{ $t('common.guess_like') }}</view>
                 </view>
                 <component-goods-list :propData="{ style_type: 1, goods_list: goods_list, random: random_value }" :propLabel="plugins_label_data" :propCurrencySymbol="currency_symbol" propSource="detail" @CartSuccessEvent="cart_success_event"></component-goods-list>
                 <!-- 结尾 -->
@@ -65,10 +65,10 @@
                 <view class="bottom-line-exclude">
                     <view class="item flex-row jc-sa align-c text-size fw-b br bg-white round padding-vertical">
                         <view data-value="/pages/plugins/ask/form/form" @tap="url_event" class="flex-1 tc flex-col jc-c align-c cp">
-                            <view class="divider-r-d wh-auto"> <iconfont name="icon-edit-below-line" size="30rpx" color="#333" propClass="margin-right-sm"></iconfont>{{ $t('goods-detail.goods-detail.7ulh8b') }}</view>
+                            <view class="divider-r-d wh-auto"> <iconfont name="icon-edit-below-line" size="30rpx" color="#333" propClass="margin-right-sm"></iconfont>{{ $t('common.ask_question') }}</view>
                         </view>
                         <view data-value="/pages/plugins/ask/user-list/user-list" @tap="url_event" class="flex-1 tc flex-col jc-c align-c cp">
-                            <view class="wh-auto"> <iconfont name="icon-list-dot" size="32rpx" color="#333" propClass="margin-right-sm pr top-xs"></iconfont>{{ $t('detail.detail.p7o522') }}</view>
+                            <view class="wh-auto"> <iconfont name="icon-list-dot" size="32rpx" color="#333" propClass="margin-right-sm pr top-xs"></iconfont>{{ $t('detail.my_question') }}</view>
                         </view>
                     </view>
                 </view>
@@ -89,8 +89,10 @@
     import componentBottomLine from '@/components/bottom-line/bottom-line';
     import componentGoodsList from '@/components/goods-list/goods-list';
     import componentAskComments from '../components/ask-comments/ask-comments';
+    import pluginLocale from '../locale/index.js';
 
     export default {
+        mixins: [pluginLocale],
         data() {
             return {
                 theme_view: app.globalData.get_theme_value_view(),

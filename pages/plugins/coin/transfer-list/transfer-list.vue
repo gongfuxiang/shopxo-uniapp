@@ -12,24 +12,24 @@
                     <view v-if="data_list.length > 0">
                         <view v-for="(item, index) in data_list" :key="index" class="padding-main bg-white radius-md margin-bottom-main">
                             <view class="br-b-dashed padding-bottom-main margin-bottom-main flex-row jc-sb align-c">
-                                <view>{{$t('user-transfer-detail.user-transfer-detail.x17599')}}</view>
+                                <view>{{$t('common.transfer_time')}}</view>
                                 <view class="cr-grey-9">{{ item.add_time }}</view>
                             </view>
                             <view class="convert-group-row">
                                 <view class="margin-bottom-sm flex-row">
-                                    <text class="cr-grey-9 title">{{$t('transfer-list.transfer-list.69rnx6')}}</text>
+                                    <text class="cr-grey-9 title">{{$t('transfer-list.transfer_order_number')}}</text>
                                     <text class="fw-b warp">{{ item.transfer_no }}</text>
                                 </view>
                                 <view class="margin-bottom-sm flex-row">
-                                    <text class="cr-grey-9 title">{{$t('transfer-list.transfer-list.4aj248')}}</text>
+                                    <text class="cr-grey-9 title">{{$t('transfer-list.payee')}}</text>
                                     <text class="fw-b warp">{{ item.receive_user.username }}</text>
                                 </view>
                                 <view class="margin-bottom-sm flex-row">
-                                    <text class="cr-grey-9 title">{{$t('transfer-list.transfer-list.m2r55k')}}</text>
+                                    <text class="cr-grey-9 title">{{$t('transfer-list.transfer_currency')}}</text>
                                     <text class="fw-b warp">{{ item.coin }}</text>
                                 </view>
                                 <view class="flex-row">
-                                    <text class="cr-grey-9 title">{{$t('transfer-list.transfer-list.9g8lyb')}}</text>
+                                    <text class="cr-grey-9 title">{{$t('transfer-list.transfer_remarks')}}</text>
                                     <text class="fw-b warp">{{ item.note }}</text>
                                 </view>
                             </view>
@@ -46,7 +46,7 @@
             <!-- 账户 -->
             <component-popup :propShow="popup_accounts_status" propPosition="top" :propTop="popup_top_height + 'px'" @onclose="popup_accounts_close_event">
                 <view class="padding-vertical-lg">
-                    <view class="padding-horizontal-main text-size-xs">{{$t('cash-list.cash-list.s7l616')}}</view>
+                    <view class="padding-horizontal-main text-size-xs">{{$t('cash-list.account_type')}}</view>
                     <view class="popup_accounts_container padding-sm flex-row flex-wrap align-c tc text-size-md">
                         <view class="flex-width-half-half">
                             <view class="item margin-sm padding-vertical-sm" :class="accounts_list_index == null ? 'cr-main bg-main-light' : ''" :data-name="$t('common.all')" :data-value="null" :data-index="null" @tap="accounts_list_event">{{$t('common.all')}}</view>
@@ -56,7 +56,7 @@
                         </view>
                     </view>
                     <view class="tc padding-top-lg br-t" @tap="popup_accounts_close_event">
-                        <text class="padding-right-sm">{{ $t('nav-more.nav-more.h9g4b1') }}</text>
+                        <text class="padding-right-sm">{{ $t('common.click_collapse') }}</text>
                         <iconfont name="icon-arrow-top" color="#ccc"></iconfont>
                     </view>
                 </view>
@@ -73,6 +73,7 @@
     import componentNoData from '@/components/no-data/no-data';
     import componentPopup from '@/components/popup/popup';
     import componentBottomLine from '@/components/bottom-line/bottom-line';
+    import pluginLocale from '../locale/index.js';
     var accounts_static_url = app.globalData.get_static_url('coin', true) + 'app/';
     // 状态栏高度
     var bar_height = parseInt(app.globalData.get_system_info('statusBarHeight', 0, true));
@@ -80,6 +81,7 @@
     bar_height = 0;
     // #endif
     export default {
+        mixins: [pluginLocale],
         data() {
             return {
                 theme_view: app.globalData.get_theme_value_view(),

@@ -42,7 +42,7 @@
                     <view v-if="(data || null) != null && data.length > 0" class="wh-auto">
                         <view class="padding-main">
                             <component-goods-list :propData="{ style_type: 1, goods_list: data }" :propCurrencySymbol="currency_symbol"></component-goods-list>
-                            <button class="bg-main br-main cr-white round dis-block margin-top-xl margin-bottom-xl margin-horizontal-main" @tap="url_event" :data-value="'/pages/plugins/shop/search/search?shop_id=' + shop.id" size="mini">{{ $t('diy.diy.view_more_goods') }}</button>
+                            <button class="bg-main br-main cr-white round dis-block margin-top-xl margin-bottom-xl margin-horizontal-main" @tap="url_event" :data-value="'/pages/plugins/shop/search/search?shop_id=' + shop.id" size="mini">{{ $t('diy.view_more_goods') }}</button>
                         </view>
 
                         <!-- 结尾 -->
@@ -113,8 +113,10 @@
     import componentShopHeader from '@/pages/plugins/shop/components/shop-header/shop-header';
     import componentNavBack from '@/components/nav-back/nav-back';
     import componentDiy from '@/pages/diy/components/diy/diy';
+    import pluginLocale from '../locale/index.js';
     var common_static_url = app.globalData.get_static_url('common');
     export default {
+        mixins: [pluginLocale],
         data() {
             return {
                 theme_view: app.globalData.get_theme_value_view(),

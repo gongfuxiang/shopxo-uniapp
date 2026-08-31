@@ -21,9 +21,9 @@
                     </view>
                     <view v-if="((item.distance_value || null) != null && (item.distance_unit || null) != null) || ((item.lng || 0) != 0 && (item.lat || 0) != 0)" class="item-operation br-t oh padding-top-main margin-top-main">
                         <view v-if="(item.distance_value || null) != null && (item.distance_unit || null) != null" class="fl margin-top-sm">
-                            <text class="cr-grey text-size-xs">{{$t('extraction-address.extraction-address.42v8tv')}}{{ item.distance_value }}{{ item.distance_unit }}</text>
+                            <text class="cr-grey text-size-xs">{{$t('common.distance_from_you')}}{{ item.distance_value }}{{ item.distance_unit }}</text>
                         </view>
-                        <button v-if="(item.lng || 0) != 0 && (item.lat || 0) != 0" class="fr round bg-white cr-base br" type="default" size="mini" @tap="address_map_event" :data-index="index" hover-class="none">{{$t('buy.buy.o7722q')}}</button>
+                        <button v-if="(item.lng || 0) != 0 && (item.lat || 0) != 0" class="fr round bg-white cr-base br" type="default" size="mini" @tap="address_map_event" :data-index="index" hover-class="none">{{$t('common.consult_map')}}</button>
                     </view>
                 </view>
             </view>
@@ -46,9 +46,11 @@ const app = getApp();
     import componentCommon from '@/components/common/common';
     import componentNoData from "@/components/no-data/no-data";
     import componentBottomLine from "@/components/bottom-line/bottom-line";
+    import pluginLocale from './locale/index.js';
 
     var common_static_url = app.globalData.get_static_url("common");
     export default {
+        mixins: [pluginLocale],
         data() {
             return {
                 theme_view: app.globalData.get_theme_value_view(),
@@ -228,7 +230,7 @@ const app = getApp();
                 var index = e.currentTarget.dataset.index || 0;
                 var data = this.data_list[index] || null;
                 if (data == null) {
-                    app.globalData.showToast(this.$t('user-order-detail.user-order-detail.i876o3'));
+                    app.globalData.showToast(this.$t('common.incorrect_address'));
                     return false;
                 }
 

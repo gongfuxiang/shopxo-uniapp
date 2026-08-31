@@ -27,7 +27,7 @@
                                         </text>
                                         <text class="cr-grey text-size-xs va-m">{{ item.show_price_unit }}</text>
                                     </view>
-                                    <view v-if="(item.discount_price || 0) != 0" class="cr-green text-size-xs">{{$t('detail.detail.6026t4')}}<text class="text-size-xs">{{ currency_symbol }}</text>
+                                    <view v-if="(item.discount_price || 0) != 0" class="cr-green text-size-xs">{{$t('common.save_amount')}}<text class="text-size-xs">{{ currency_symbol }}</text>
                                         {{ item.discount_price }}
                                     </view>
                                 </view>
@@ -37,7 +37,7 @@
                                             <text class="cr-grey-9 text-size-xs">{{ item.inventory }}{{ item.inventory_unit }}</text>
                                         </view>
                                         <view v-if="(item.is_exist_many_spec || 0) == 1" class="bg-grey-e cr-grey round single-text text-size-xss spec-choice" :data-index="index" @tap="spec_choice_event">
-                                            {{ item.spec_choice_text || $t('detail.detail.9624hp') }}
+                                            {{ item.spec_choice_text || $t('detail.select_specifications') }}
                                             <iconfont name="icon-arrow-bottom" size="14rpx" color="#666" class="pa"></iconfont>
                                         </view>
                                     </view>
@@ -47,7 +47,7 @@
                             <view v-if="item.is_error !== 0" class="pa left-0 right-0 top-0 bottom-0 lose-efficacy flex-row jc-c align-c">
                                 <view class="rotate pr">
                                     <image :src="binding_static_url + 'lapse-icon.png'" mode="widthFix" class="dis-block rotate-img"></image>
-                                    <text class="rotate-text pa cr-red text-size">{{$t('detail.detail.32171c')}}</text>
+                                    <text class="rotate-text pa cr-red text-size">{{$t('common.invalid')}}</text>
                                 </view>
                             </view>
                         </view>
@@ -66,7 +66,7 @@
                                     </text>
                                 </view>
                                 <view v-if="data.estimate_discount_price != 0" class="single-text estimate-discount-price margin-top-sm">
-                                    <text class="discount-icon cr-white text-size-xs">{{$t('detail.detail.6026t4')}}</text>
+                                    <text class="discount-icon cr-white text-size-xs">{{$t('common.save_amount')}}</text>
                                     <text class="cr-green text-size-md">
                                         <text class="text-size-xss">
                                             {{ currency_symbol }}
@@ -76,14 +76,14 @@
                                 </view>
                             </view>
                             <view class="right-button">
-                                <button type="default" size="mini" class="btn bg-main br-main cr-white round text-size fw-b wh-auto" @tap="buy_event">{{$t('detail.detail.27pmj3')}}</button>
+                                <button type="default" size="mini" class="btn bg-main br-main cr-white round text-size fw-b wh-auto" @tap="buy_event">{{$t('common.buy_now')}}</button>
                             </view>
                         </view>
                     </view>
                 </view>
                 <view v-else>
                     <!-- 提示信息 -->
-                    <component-no-data propStatus="0" :propMsg="$t('detail.detail.5knxg6')"></component-no-data>
+                    <component-no-data propStatus="0" :propMsg="$t('common.related_products_available')"></component-no-data>
                 </view>
             </view>
 
@@ -109,9 +109,11 @@
     import componentNoData from '@/components/no-data/no-data';
     import componentBottomLine from '@/components/bottom-line/bottom-line';
     import componentGoodsSpecChoice from '@/components/goods-spec-choice/goods-spec-choice';
+    import pluginLocale from '../locale/index.js';
     let binding_static_url = app.globalData.get_static_url('binding', true);
 
     export default {
+        mixins: [pluginLocale],
         data() {
             return {
                 theme_view: app.globalData.get_theme_value_view(),
@@ -349,7 +351,7 @@
                         if (goods_id !== null) {
                             // 是否存在多规格
                             if ((temp_goods[i]['is_exist_many_spec'] || 0) == 1 && (temp_goods[i]['spec_choice_data'] || null) == null) {
-                                app.globalData.showToast(this.$t('detail.detail.8618mj') + (parseInt(i) + 1) + this.$t('detail.detail.09e3bx'));
+                                app.globalData.showToast(this.$t('detail.select_number') + (parseInt(i) + 1) + this.$t('detail.product_specifications'));
                                 return false;
                             }
                             goods_data.push({
@@ -361,14 +363,14 @@
                     } else {
                         // 组合搭配则每一个商品都需要正确状态
                         if (type == 0) {
-                            app.globalData.showToast(this.$t('detail.detail.40298g') + (parseInt(i) + 1) + this.$t('detail.detail.5kbjoy'));
+                            app.globalData.showToast(this.$t('detail.section') + (parseInt(i) + 1) + this.$t('detail.item_unavailable'));
                             return false;
                         }
                     }
                 }
                 var buy_min_number = parseInt(this.data.buy_min_number || 1);
                 if (goods_data.length < buy_min_number) {
-                    app.globalData.showToast(this.$t('detail.detail.jsj3u8') + buy_min_number + this.$t('detail.detail.jksm81'));
+                    app.globalData.showToast(this.$t('common.select_least') + buy_min_number + this.$t('common.detail_items'));
                     return false;
                 }
 

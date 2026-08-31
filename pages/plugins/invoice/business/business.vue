@@ -20,7 +20,7 @@
                             <component-panel-content :propData="item" :propDataField="field_list" :propExcludeField="business_exclude_field" :propIsTerse="true"></component-panel-content>
                         </view>
                         <view class="item-operation tr margin-top-main">
-                            <button class="round bg-white br-grey-9 text-size-md" type="default" size="mini" hover-class="none" :data-ids="item.id" data-type="item" @tap="invoice_event">{{$t('invoice-saveinfo.invoice-saveinfo.89815t')}}</button>
+                            <button class="round bg-white br-grey-9 text-size-md" type="default" size="mini" hover-class="none" :data-ids="item.id" data-type="item" @tap="invoice_event">{{$t('invoice-saveinfo.invoicing')}}</button>
                         </view>
                     </view>
                     <!-- 结尾 -->
@@ -30,7 +30,7 @@
             <!-- 合并开票 -->
             <view v-if="select_ids.length > 0" class="bottom-fixed" :style="bottom_fixed_style">
                 <view class="bottom-line-exclude">
-                    <button class="item bg-white cr-main br-main round wh-auto" type="default" hover-class="none" data-type="all" @tap="invoice_event">{{$t('order.order.o411h6')}}</button>
+                    <button class="item bg-white cr-main br-main round wh-auto" type="default" hover-class="none" data-type="all" @tap="invoice_event">{{$t('order.merge_invoicing')}}</button>
                 </view>
             </view>
         </view>
@@ -49,8 +49,10 @@
     import componentNoData from '@/components/no-data/no-data';
     import componentBottomLine from '@/components/bottom-line/bottom-line';
     import componentPanelContent from "@/components/panel-content/panel-content";
+    import pluginLocale from '../locale/index.js';
 
     export default {
+        mixins: [pluginLocale],
         data() {
             return {
                 theme_view: app.globalData.get_theme_value_view(),
@@ -146,11 +148,11 @@
                 }
                 if(temp == null) {
                     var type_map = {
-                        1: { control: 'recharge', no_field: 'recharge_no', price_field: 'pay_money', detail_page: '/pages/plugins/wallet/user-recharge-detail/user-recharge-detail?id=', name: this.$t('invoice.invoice.bh8yt3') },
-                        2: { control: 'givegift', no_field: 'order_no', price_field: 'pay_price', detail_page: '', name: '送礼开票' },
-                        3: { control: 'presale', no_field: 'order_no', price_field: 'pay_price', detail_page: '', name: '预售开票' },
-                        4: { control: 'vip', no_field: 'payment_user_order_no', price_field: 'pay_price', detail_page: '', name: '超级会员开票' },
-                        5: { control: 'scanpay', no_field: 'order_no', price_field: 'pay_price', detail_page: '', name: '扫码收款开票' },
+                        1: { control: 'recharge', no_field: 'recharge_no', price_field: 'pay_money', detail_page: '/pages/plugins/wallet/user-recharge-detail/user-recharge-detail?id=', name: this.$t('invoice.recharge_invoice') },
+                        2: { control: 'givegift', no_field: 'order_no', price_field: 'pay_price', detail_page: '', name: this.$t('invoice.gift_invoice') },
+                        3: { control: 'presale', no_field: 'order_no', price_field: 'pay_price', detail_page: '', name: this.$t('invoice.presale_invoice') },
+                        4: { control: 'vip', no_field: 'payment_user_order_no', price_field: 'pay_price', detail_page: '', name: this.$t('invoice.vip_invoice') },
+                        5: { control: 'scanpay', no_field: 'order_no', price_field: 'pay_price', detail_page: '', name: this.$t('invoice.scanpay_invoice') },
                     };
                     temp = type_map[business_type] || null;
                 }
@@ -166,7 +168,7 @@
                     business_exclude_field: (temp.no_field || 'order_no') + ',' + (temp.price_field || 'pay_price'),
                 });
                 uni.setNavigationBarTitle({
-                    title: temp.name || this.$t('invoice-saveinfo.invoice-saveinfo.89815t'),
+                    title: temp.name || this.$t('invoice-saveinfo.invoicing'),
                 });
             },
 
@@ -309,14 +311,14 @@
                 var ids = e.currentTarget.dataset.ids || null;
                 if (type == 'all') {
                     if (this.select_ids.length <= 0) {
-                        app.globalData.showToast(this.$t('order.order.15k32o'));
+                        app.globalData.showToast(this.$t('common.select_data_first'));
                         return false;
                     } else {
                         ids = this.select_ids.join(',');
                     }
                 } else {
                     if (ids === null) {
-                        app.globalData.showToast(this.$t('order.order.3fr155'));
+                        app.globalData.showToast(this.$t('order.element_parameter_id_incorrect'));
                         return false;
                     }
                 }

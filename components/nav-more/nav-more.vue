@@ -7,12 +7,12 @@
         <!-- 弹窗 -->
         <component-popup :propShow="popup_status" :propIsBar="propIsBar" propPosition="top" :propMask="true" :propTop="propTop" @onclose="quick_close_event">
             <view class="padding-top-lg">
-                <view class="padding-left-main padding-bottom-main">{{ $t('recommend-form.recommend-form.7gc30l') }}</view>
+                <view class="padding-left-main padding-bottom-main">{{ $t('common.classify_all') }}</view>
                 <view class="divider-b">
                     <slot></slot>
                 </view>
                 <view class="tc padding-vertical-lg" @tap="quick_close_event">
-                    <text class="padding-right-sm">{{ $t('nav-more.nav-more.h9g4b1') }}</text>
+                    <text class="padding-right-sm">{{ $t('common.click_collapse') }}</text>
                     <iconfont name="icon-arrow-top" color="#ccc"></iconfont>
                 </view>
             </view>

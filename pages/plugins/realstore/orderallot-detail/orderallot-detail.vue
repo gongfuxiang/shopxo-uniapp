@@ -4,7 +4,7 @@
             <view class="padding-horizontal-main padding-top-main">
                 <!-- 取货信息 -->
                 <view v-if="(detail.extraction_data || null) != null" class="extraction-take panel-item padding-main border-radius-main bg-white spacing-mb">
-                    <view class="br-b padding-bottom-main fw-b text-size">{{$t('user-order-detail.user-order-detail.take_info_title')}}</view>
+                    <view class="br-b padding-bottom-main fw-b text-size">{{$t('common.take_info_title')}}</view>
                     <view class="padding-top-main">
                         <view v-if="(detail.extraction_data.items || null) != null && detail.extraction_data.items.length > 0" class="extraction-take-switch">
                             <view v-if="detail.extraction_data.items.length > 1" class="extraction-take-arrow extraction-take-prev" @tap="extraction_take_prev_event">
@@ -22,10 +22,10 @@
                                 <view class="extraction-take-code tc">
                                     <image v-if="(detail.extraction_data.items[extraction_take_index].images || null) != null" class="qrcode br radius" :src="detail.extraction_data.items[extraction_take_index].images" mode="aspectFill"></image>
                                     <view class="extraction-take-meta margin-top-sm">
-                                        <text class="extraction-take-meta-label cr-grey">{{$t('user-order-detail.user-order-detail.take_code_label')}}</text>
+                                        <text class="extraction-take-meta-label cr-grey">{{$t('common.take_code_label')}}</text>
                                         <view class="extraction-take-meta-value">
                                             <block v-if="(detail.extraction_data.items[extraction_take_index].code || null) == null || detail.extraction_data.items[extraction_take_index].code == ''">
-                                                <text class="cr-red">{{$t('user-order-detail.user-order-detail.hpq62x')}}</text>
+                                                <text class="cr-red">{{$t('common.pickup_code_does_exist_contact_administrator')}}</text>
                                             </block>
                                             <block v-else>
                                                 <view class="dis-inline-block" :data-value="detail.extraction_data.items[extraction_take_index].code" @tap="text_copy_event">
@@ -36,7 +36,7 @@
                                         </view>
                                     </view>
                                     <view class="extraction-take-meta margin-top-xs">
-                                        <text class="extraction-take-meta-label cr-grey">{{$t('user-order-detail.user-order-detail.take_verify_label')}}</text>
+                                        <text class="extraction-take-meta-label cr-grey">{{$t('common.take_verify_label')}}</text>
                                         <view class="extraction-take-meta-value">
                                             <text class="cr-green">{{ detail.extraction_data.items[extraction_take_index].verify_number || 0 }}</text>
                                             <text class="cr-grey">/</text>
@@ -52,7 +52,7 @@
                         <view v-else class="extraction-take-code tc">
                             <image v-if="(detail.extraction_data.images || null) != null" class="qrcode br radius" :src="detail.extraction_data.images" mode="aspectFill"></image>
                             <view class="margin-top-sm" :data-value="detail.extraction_data.code" @tap="text_copy_event">
-                                <text class="fw-b cr-blue text-size-xl va-m">{{ detail.extraction_data.code || $t('user-order-detail.user-order-detail.hpq62x') }}</text>
+                                <text class="fw-b cr-blue text-size-xl va-m">{{ detail.extraction_data.code || $t('common.pickup_code_does_exist_contact_administrator') }}</text>
                                 <text v-if="(detail.extraction_data.code || null) != null" class="bg-white br-green cr-green round padding-horizontal-sm text-size-xs va-m margin-left">{{$t('common.copy')}}</text>
                             </view>
                         </view>
@@ -70,7 +70,7 @@
                         <image class="icon fl" :src="common_static_url + 'map-icon.png'" mode="widthFix"></image>
                         <view class="text fr">
                             <text>{{ detail.address_data.province_name }}{{ detail.address_data.city_name }}{{ detail.address_data.county_name }}{{ detail.address_data.address }}</text>
-                            <text v-if="detail.order_model == 2 && (detail.address_data.lng || 0) != 0 && (detail.address_data.lat || (0 && detail.address_data.lng != 0 && detail.address_data.lat != 0)) != 0" class="address-map-submit cr-base br round bg-white margin-left-sm text-size-xs" @tap="address_map_event">{{$t('user-order-detail.user-order-detail.7lp6gw')}}</text>
+                            <text v-if="detail.order_model == 2 && (detail.address_data.lng || 0) != 0 && (detail.address_data.lat || (0 && detail.address_data.lng != 0 && detail.address_data.lat != 0)) != 0" class="address-map-submit cr-base br round bg-white margin-left-sm text-size-xs" @tap="address_map_event">{{$t('common.view_location')}}</text>
                         </view>
                     </view>
                     <view class="address-divider spacing-mb"></view>
@@ -78,7 +78,7 @@
 
                 <!-- 商品列表 -->
                 <view class="goods bg-white padding-main border-radius-main spacing-mb">
-                    <view class="br-b padding-bottom-main fw-b text-size">{{$t('user-order-detail.user-order-detail.7f8p26')}}</view>
+                    <view class="br-b padding-bottom-main fw-b text-size">{{$t('common.product_information')}}</view>
                     <view v-for="(item, index) in detail.items" :key="index" class="goods-item br-b-dashed oh padding-main">
                         <view :data-value="item.goods_url" @tap="url_event" class="cp">
                             <image class="goods-image fl radius" :src="item.images" mode="aspectFill"></image>
@@ -98,13 +98,13 @@
                         </view>
                     </view>
                     <view class="padding-top-main tr cr-base text-size">
-                        <text>{{$t('common.total')}}<text class="fw-b">{{ detail.buy_number_count }}</text>{{$t('user-order-detail.user-order-detail.41ty94')}}<text class="sales-price margin-right-xs">{{ detail.currency_data.currency_symbol }}{{ detail.total_price }}</text></text>
+                        <text>{{$t('common.total')}}<text class="fw-b">{{ detail.buy_number_count }}</text>{{$t('common.total_pieces')}}<text class="sales-price margin-right-xs">{{ detail.currency_data.currency_symbol }}{{ detail.total_price }}</text></text>
                     </view>
                 </view>
 
                 <!-- 预约数据 -->
                 <view v-if="(detail.staff_booking_data || null) != null && detail.staff_booking_data.length > 0" class="staff-booking bg-white padding-main border-radius-main spacing-mb">
-                    <view class="br-b padding-bottom-main fw-b text-size">{{$t('orderallot-detail.orderallot-detail.9c3d7e')}}</view>
+                    <view class="br-b padding-bottom-main fw-b text-size">{{$t('orderallot-detail.booking_data')}}</view>
                     <view v-for="(group, gindex) in detail.staff_booking_data" :key="gindex" :class="'staff-booking-item oh ' + (gindex + 1 >= detail.staff_booking_data.length ? 'padding-main padding-bottom-0' : 'br-b-dashed padding-main')">
                         <view class="flex-row">
                             <view v-if="(group.goods_url || null) != null && group.goods_url != ''" :data-value="group.goods_url" @tap="url_event" class="cp">
@@ -123,12 +123,12 @@
                         </view>
                         <view v-for="(booking, bindex) in group.bookings" :key="bindex" :class="bindex > 0 ? 'staff-booking-unit margin-top-sm padding-top-sm br-t-dashed' : 'margin-top-sm'">
                             <view v-if="(booking.staff_alias || null) != null && booking.staff_alias != ''" class="staff-booking-info-row">
-                                <text class="cr-grey">{{$t('orderallot-detail.orderallot-detail.0f4g8h')}}</text>
+                                <text class="cr-grey">{{$t('common.staff')}}</text>
                                 <image v-if="(booking.staff_avatar || null) != null" class="staff-booking-staff-avatar radius margin-right-xs" :src="booking.staff_avatar" mode="aspectFill"></image>
                                 <text>{{ booking.staff_alias }}</text>
                             </view>
                             <view v-if="((booking.period_text || null) != null && booking.period_text != '') || ((booking.ymd_text || null) != null && booking.ymd_text != '')" class="staff-booking-info-row margin-top-xs">
-                                <text class="cr-grey">{{$t('orderallot-detail.orderallot-detail.1i5j9k')}}</text>
+                                <text class="cr-grey">{{$t('common.booking_time')}}</text>
                                 <text v-if="(booking.ymd_text || null) != null && booking.ymd_text != ''">{{ booking.ymd_text }}</text>
                                 <text v-if="(booking.period_text || null) != null && booking.period_text != ''" :class="(booking.ymd_text || null) != null && booking.ymd_text != '' ? 'margin-left' : ''">{{ booking.period_text }}</text>
                             </view>
@@ -148,7 +148,7 @@
                             <view class="right-value fr">
                                 <view v-if="(item.spec_text || null) != null" class="text-grey padding-bottom-xs margin-bottom-xs br-b-f9 text-size-xs">{{item.spec_text}}</view>
                                 <mp-html v-if="(item.fictitious_goods_value || null) != null" :content="item.fictitious_goods_value" />
-                                <text v-else class="cr-grey">{{$t('user-order-detail.user-order-detail.7xtnjt')}}</text>
+                                <text v-else class="cr-grey">{{$t('common.unconfigured_data')}}</text>
                             </view>
                         </view>
                     </view>
@@ -156,7 +156,7 @@
 
                 <!-- 订单基础数据 -->
                 <view v-if="detail_list.length > 0" class="panel-item padding-main border-radius-main bg-white spacing-mb">
-                    <view class="br-b padding-bottom-main fw-b text-size">{{$t('user-order-detail.user-order-detail.0f26j2')}}</view>
+                    <view class="br-b padding-bottom-main fw-b text-size">{{$t('common.order_information')}}</view>
                     <view class="panel-content oh">
                         <view v-for="(item, index) in detail_list" :key="index" class="item br-b-dashed oh padding-vertical-main">
                             <view class="title fl padding-right-main cr-grey">{{ item.name }}</view>
@@ -171,15 +171,15 @@
 
                 <!-- 快递信息 -->
                 <view v-if="(detail.express_data || null) != null && detail.express_data.length > 0" class="express-data panel-item padding-main border-radius-main bg-white spacing-mb">
-                    <view class="br-b padding-bottom-main fw-b text-size">{{$t('user-order-detail.user-order-detail.0876xf')}}</view>
+                    <view class="br-b padding-bottom-main fw-b text-size">{{$t('common.express_delivery_info')}}</view>
                     <view class="panel-content">
                         <view v-for="(item, index) in detail.express_data" :key="index" class="item br-b-dashed oh padding-vertical-main">
                             <view class="item oh padding-vertical-main">
-                                <view class="title fl padding-right-main cr-grey">{{$t('user-order-detail.user-order-detail.12d445')}}</view>
+                                <view class="title fl padding-right-main cr-grey">{{$t('common.express_delivery_company')}}</view>
                                 <view class="content fl br-l padding-left-main" :data-value="item.express_name" @tap="text_copy_event">{{item.express_name}}</view>
                             </view>
                             <view class="item oh padding-vertical-main">
-                                <view class="title fl padding-right-main cr-grey">{{$t('user-order-detail.user-order-detail.2byl8l')}}</view>
+                                <view class="title fl padding-right-main cr-grey">{{$t('common.express_tracking_number')}}</view>
                                 <view class="content fl br-l padding-left-main" :data-value="item.express_number" @tap="text_copy_event">
                                     <text>{{item.express_number}}</text>
                                     <text class="bg-white br-green cr-green round padding-horizontal-sm text-size-xs margin-left-sm">{{$t('common.copy')}}</text>
@@ -207,9 +207,11 @@
     import componentCommon from '@/components/common/common';
     import componentNoData from "@/components/no-data/no-data";
     import componentBottomLine from "@/components/bottom-line/bottom-line";
+    import pluginLocale from '../locale/index.js';
 
     var common_static_url = app.globalData.get_static_url("common");
     export default {
+        mixins: [pluginLocale],
         data() {
             return {
                 theme_view: app.globalData.get_theme_value_view(),
@@ -285,16 +287,16 @@
                                     detail: data.data,
                                     extraction_take_index: 0,
                                     detail_list: [
-                                        { name: this.$t('orderallot-detail.orderallot-detail.81jvw1'), value: data.data.order_type_name || '' },
-                                        { name: this.$t('user-order-detail.user-order-detail.n18sd2'), value: data.data.order_allot_no || '', is_copy: 1 },
-                                        { name: this.$t('user-order-detail.user-order-detail.yxwu8n'), value: data.data.status_name || '' },
-                                        { name: this.$t('user-order-detail.user-order-detail.2y7l13'), value: data.data.total_price || '' },
-                                        { name: this.$t('user-order-detail.user-order-detail.h2c78h'), value: data.data.add_time || '' },
+                                        { name: this.$t('orderallot-detail.order_type'), value: data.data.order_type_name || '' },
+                                        { name: this.$t('common.user_order_detail_order_number'), value: data.data.order_allot_no || '', is_copy: 1 },
+                                        { name: this.$t('common.order_status'), value: data.data.status_name || '' },
+                                        { name: this.$t('common.total_order_price'), value: data.data.total_price || '' },
+                                        { name: this.$t('common.creation_time'), value: data.data.add_time || '' },
                                         { name: this.$t('common.add_time'), value: data.data.add_time || '' },
                                         { name: this.$t('common.receive_time'), value: data.data.receive_time || '' },
                                         { name: this.$t('common.service_time'), value: data.data.service_time || '' },
-                                        { name: this.$t('order-detail.order-detail.2dw4gd'), value: data.data.success_time || '' },
-                                        { name: this.$t('user-order-detail.user-order-detail.1jpv4n'), value: data.data.cancel_time || '' },
+                                        { name: this.$t('common.completion_time'), value: data.data.success_time || '' },
+                                        { name: this.$t('common.cancel_time'), value: data.data.cancel_time || '' },
                                     ],
                                     site_fictitious: data.site_fictitious || null,
                                     data_list_loding_status: 3,
@@ -333,7 +335,7 @@
             // 地图查看
             address_map_event(e) {
                 if ((this.detail.address_data || null) == null) {
-                    app.globalData.showToast(this.$t('user-order-detail.user-order-detail.i876o3'));
+                    app.globalData.showToast(this.$t('common.incorrect_address'));
                     return false;
                 }
 

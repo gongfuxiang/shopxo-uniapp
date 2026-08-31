@@ -26,7 +26,7 @@
                     </view>
                 </view>
                 <block v-if="(goods.is_exist_many_spec || 0) == 1 && goods_spec_choose.length == 0">
-                    <view class="padding-top-xxxl padding-bottom-xxxl tc cr-red">{{ $t('goods-buy.goods-buy.ufdm25') }}</view>
+                    <view class="padding-top-xxxl padding-bottom-xxxl tc cr-red">{{ $t('goods-buy.incorrect_specification_data') }}</view>
                 </block>
                 <block v-else>
                     <scroll-view :scroll-y="true" class="goods-spec-choice-content">
@@ -47,7 +47,7 @@
 
                         <!-- 购买数量 -->
                         <view class="goods-buy-number oh pr margin-top-xl margin-bottom-xxl">
-                            <view class="fl margin-top">{{ $t('goods-buy.goods-buy.737wzz') }}</view>
+                            <view class="fl margin-top">{{ $t('goods-buy.purchase_quantity') }}</view>
                             <view class="number-content tc oh round">
                                 <view @tap="goods_buy_number_event" class="number-submit tc cr-grey fl va-m" data-type="0">-</view>
                                 <input @blur="goods_buy_number_blur" class="number-input tc cr-grey bg-white fl va-m radius-0" type="number" :value="buy_number" />
@@ -794,21 +794,21 @@
                 // 最小起购数量
                 if (min > 0 && number < min) {
                     number = (min > max) ? max : min;
-                    app.globalData.showToast(this.$t('recommend-detail.recommend-detail.265vyu') + min + inventory_unit);
+                    app.globalData.showToast(this.$t('common.starting_purchase') + min + inventory_unit);
                     return false;
                 }
 
                 // 最大购买数量
                 if (max > 0 && number > max) {
                     number = max;
-                    app.globalData.showToast(this.$t('goods-category.goods-category.z1eh3v') + max + inventory_unit);
+                    app.globalData.showToast(this.$t('common.purchase_limit') + max + inventory_unit);
                     return false;
                 }
 
                 // 是否超过库存数量
                 if (number > inventory) {
                     number = inventory;
-                    app.globalData.showToast(this.$t('recommend-detail.recommend-detail.2sis3v') + inventory + inventory_unit);
+                    app.globalData.showToast(this.$t('common.inventory_quantity') + inventory + inventory_unit);
                     return false;
                 }
 
@@ -881,7 +881,7 @@
                             }
                         }
                         if (active_count < sku_count) {
-                            app.globalData.showToast(this.$t('goods-detail.goods-detail.6brk57'));
+                            app.globalData.showToast(this.$t('common.please_select_spec'));
                             return false;
                         }
                     }
@@ -949,7 +949,7 @@
                             break;
 
                         default:
-                            app.globalData.showToast(this.$t('goods-buy.goods-buy.4maexq') + type + ')');
+                            app.globalData.showToast(this.$t('goods-buy.incorrect_operation_event_type') + type + ')');
                     }
                 }
             },

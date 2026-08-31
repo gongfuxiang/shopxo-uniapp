@@ -9,15 +9,15 @@
                 <view class="search flex-row jc-sb align-c round border-color-main bg-white">
                     <view class="flex-row align-c flex-1 wh-auto padding-left-main">
                         <iconfont name="icon-search-max" size="28rpx" color="#ccc"></iconfont>
-                        <input class="text-size-xs flex-1 wh-auto padding-left-sm" type="done" :placeholder="$t('detail.detail.8q6345')" :value="search_keywords_value || ''" placeholder-class="cr-grey-c" @input="search_keywords_event" />
+                        <input class="text-size-xs flex-1 wh-auto padding-left-sm" type="done" :placeholder="$t('detail.product_keywords')" :value="search_keywords_value || ''" placeholder-class="cr-grey-c" @input="search_keywords_event" />
                     </view>
                     <button class="bg-main br-main cr-white round text-size-xs" type="default" size="mini" hover-class="none" @tap="search_button_event" :data-value="'/pages/plugins/shop/search/search?shop_id=' + propShop.id + '&'">
-                        {{ is_shop_search_all_search_button == 1 ? $t('design.design.i7725u') : $t('common.search') }}
+                        {{ is_shop_search_all_search_button == 1 ? $t('design.search') : $t('common.search') }}
                     </button>
                 </view>
             </view>
             <view v-if="is_shop_search_all_search_button == 1" class="search-btn padding-left-sm flex-row align-c">
-                <button class="bg-main-pair br-main-pair cr-white round text-size-xs" type="default" size="mini" hover-class="none" @tap="search_button_event" data-value="/pages/goods-search/goods-search?">{{$t('design.design.ay7m42')}}</button>
+                <button class="bg-main-pair br-main-pair cr-white round text-size-xs" type="default" size="mini" hover-class="none" @tap="search_button_event" data-value="/pages/goods-search/goods-search?">{{$t('design.search_all')}}</button>
             </view>
         </view>
         <view class="search-content-seat" :style="'margin-top:' + (status_bar_height > 0 ? status_bar_height + 5 : 0)+'px;'"></view>
@@ -39,7 +39,7 @@
                     <!-- 在线客服 -->
                     <view v-if="(propBase.is_service_info || 0) == 1" class="fl margin-right-xxl cp" @tap="popup_service_event">
                         <image class="va-m margin-right-sm" :src="common_static_url + 'customer-service-icon.png'" mode="scaleToFill"></image>
-                        <text class="va-m cr-base">{{$t('design.design.21kak7')}}</text>
+                        <text class="va-m cr-base">{{$t('design.online_service')}}</text>
                     </view>
                     <!-- 收藏 -->
                     <view class="fl single-text cp" @tap="shop_favor_event">
@@ -51,7 +51,7 @@
                         <view class="dis-inline-block va-m">
                             <uni-rate :value="propShop.score_data.value" :readonly="true" :is-fill="false" :size="14" />
                         </view>
-                        <text class="va-m cr-red">{{ propShop.score_data.value }}{{$t('design.design.745kx2')}}</text>
+                        <text class="va-m cr-red">{{ propShop.score_data.value }}{{$t('design.branch')}}</text>
                     </view>
                 </view>
             </view>
@@ -59,7 +59,7 @@
         
         <!-- 导航 -->
         <view v-if="((propShopGoodsCategory || null) != null && propShopGoodsCategory.length > 0) || ((shop_navigation || null) != null && shop_navigation.length > 0)" class="nav bg-white padding-sm flex-row">
-            <view v-if="propShopGoodsCategory.length > 0" class="item padding-main arrow-bottom nav-shop-category dis-inline-block cp" @tap="popup_all_goods_category_event">{{$t('recommend-form.recommend-form.203itn')}}</view>
+            <view v-if="propShopGoodsCategory.length > 0" class="item padding-main arrow-bottom nav-shop-category dis-inline-block cp" @tap="popup_all_goods_category_event">{{$t('common.recommend_form_category')}}</view>
             <scroll-view scroll-x class="nav-scroll" :class="propShopGoodsCategory.length > 0 ? 'category-all' : ''">
                 <view class="pr flex-row">
                     <block v-if="(shop_navigation || null) != null && shop_navigation.length > 0">
@@ -102,7 +102,7 @@
             <view class="padding-top-main bg-white">
                 <view class="padding-horizontal-main padding-bottom-main">
                     <view class="close oh">
-                        <text class="fw-b">{{$t('recommend-form.recommend-form.203itn')}}</text>
+                        <text class="fw-b">{{$t('common.recommend_form_category')}}</text>
                         <view class="fr" @tap.stop="popup_all_goods_category_event">
                             <iconfont name="icon-close-line" size="28rpx" color="#999"></iconfont>
                         </view>
@@ -141,7 +141,7 @@
                 <view class="popup-service-container">
                     <view v-if="(propShop || null) != null && (propBase || null) != null && (propBase.is_service_info || 0) == 1" class="header-service">
                         <view v-if="(propShop.chat_info || null) != null" class="item padding-main single-text">
-                            <text class="va-m">{{$t('detail.detail.r4124d')}}</text>
+                            <text class="va-m">{{$t('common.detail_service')}}</text>
                             <view class="dis-inline-block chat-info cp" @tap="chat_event">
                                 <image class="dis-inline-block va-m" :src="propShop.chat_info.icon" mode="scaleToFill"></image>
                                 <text class="margin-left-sm va-m cr-blue" :data-value="propShop.chat_info.chat_url">{{ propShop.chat_info.name }}</text>
@@ -152,21 +152,21 @@
                             <text class="cp" @tap="text_copy_event" :data-value="propShop.service_qq">{{ propShop.service_qq }}</text>
                         </view>
                         <view v-if="(propShop.service_tel || null) != null" class="item padding-main br-t-f9 single-text">
-                            <text>{{$t('order.order.7dxbm5')}}：</text>
+                            <text>{{$t('common.order_phone')}}：</text>
                             <text class="cp" @tap="tel_event" :data-value="propShop.service_tel">{{ propShop.service_tel }}</text>
                         </view>
                         <view v-if="(propShop.open_week_name || null) != null && (propShop.close_week_name || null) != null" class="item padding-main br-t-f9 single-text">
-                            <text>{{$t('article-detail.article-detail.728374')}}</text>
-                            <text class="cp" @tap="text_copy_event" :data-value="propShop.open_week_name + $t('design.design.gv16tj') + propShop.close_week_name + '，' + propShop.open_time + '-' + propShop.close_time">{{ propShop.open_week_name }}{{$t('detail.detail.324777')}}{{ propShop.close_week_name }}，{{ propShop.open_time }}-{{ propShop.close_time }}</text>
+                            <text>{{$t('common.article_detail_time')}}</text>
+                            <text class="cp" @tap="text_copy_event" :data-value="propShop.open_week_name + $t('design.to') + propShop.close_week_name + '，' + propShop.open_time + '-' + propShop.close_time">{{ propShop.open_week_name }}{{$t('detail.to')}}{{ propShop.close_week_name }}，{{ propShop.open_time }}-{{ propShop.close_time }}</text>
                         </view>
                         <view v-if="(propShop.service_weixin_qrcode || null) != null || (propShop.service_line_qrcode || null) != null" class="oh qrcode tc br-t-f9 padding-top-main">
                             <view v-if="(propShop.service_weixin_qrcode || null) != null" class="item padding-bottom-lg dis-inline-block">
                                 <image class="radius cp" :src="propShop.service_weixin_qrcode" mode="scaleToFill" @tap="image_show_event" :data-value="propShop.service_weixin_qrcode"></image>
-                                <view>{{$t('detail.detail.54k10s')}}</view>
+                                <view>{{$t('common.long_press_wechat_consultation')}}</view>
                             </view>
                             <view v-if="(propShop.service_line_qrcode || null) != null" class="item padding-bottom-lg dis-inline-block">
                                 <image class="radius cp" :src="propShop.service_line_qrcode" mode="scaleToFill" @tap="image_show_event" :data-value="propShop.service_line_qrcode"></image>
-                                <view>{{$t('detail.detail.vj4nom')}}</view>
+                                <view>{{$t('common.long_press_line_consult')}}</view>
                             </view>
                         </view>
                     </view>
@@ -262,7 +262,7 @@
                     upd_data['shop_favor_info'] = {
                         count: this.propShop.shop_favor_count || 0,
                         status: status,
-                        text: (status == 1 ? this.$t('goods-detail.goods-detail.by7052') : '') + this.$t('common.favor')
+                        text: (status == 1 ? this.$t('common.already') : '') + this.$t('common.favor')
                     };
                 }
                 this.setData(upd_data);

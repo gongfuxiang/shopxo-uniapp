@@ -37,7 +37,7 @@
                         <button v-if="item.status == 0" class="btn round br-green cr-green bg-white text-size-md" type="default" size="mini" @tap="deposit_pay_event" :data-value="item.id" :data-price="item.total_deposit_price" :data-index="index" :data-payment="item.payment_id" hover-class="none">{{$t('common.pay')}}</button>
                         <button v-if="item.is_buy == 1" class="btn round br-green cr-green bg-white text-size-md" type="default" size="mini" @tap="last_pay_event" :data-value="item.id" :data-index="index" hover-class="none">{{$t('common.last_pay')}}</button>
                         <button v-if="item.is_aftersale == 1" class="btn round br-red cr-red bg-white text-size-md" type="default" size="mini" @tap="aftersale_event" :data-value="item.id" :data-index="index" hover-class="none">{{$t('common.refund')}}</button>
-                        <button v-if="item.status == 0 && (item.plugins_payvoucher_data || null) != null && (item.plugins_payvoucher_data.is_show || 0) == 1" class="btn round br-blue cr-blue bg-white text-size-md" type="default" size="mini" @tap="payvoucher_event" :data-value="item.id" :data-page="(item.plugins_payvoucher_data.page || '')" hover-class="none">{{ item.plugins_payvoucher_data.name || '凭证' }}</button>
+                        <button v-if="item.status == 0 && (item.plugins_payvoucher_data || null) != null && (item.plugins_payvoucher_data.is_show || 0) == 1" class="btn round br-blue cr-blue bg-white text-size-md" type="default" size="mini" @tap="payvoucher_event" :data-value="item.id" :data-page="(item.plugins_payvoucher_data.page || '')" hover-class="none">{{ item.plugins_payvoucher_data.name || $t('common.voucher') }}</button>
                         <button v-if="item.status == 0" class="btn round br-grey-9 bg-white text-size-md" type="default" size="mini" @tap="cancel_event" :data-value="item.id" :data-index="index" hover-class="none">{{$t('common.cancel')}}</button>
                         <button v-if="item.status == 3 || item.status == 4" class="btn round br-red cr-red bg-white text-size-md" type="default" size="mini" @tap="delete_event" :data-value="item.id" :data-index="index" hover-class="none">{{$t('common.del')}}</button>
                     </view>
@@ -81,8 +81,10 @@
     import componentBottomLine from '@/components/bottom-line/bottom-line';
     import componentPanelContent from "@/components/panel-content/panel-content";
     import componentPayment from '@/components/payment/payment';
+    import pluginLocale from '../locale/index.js';
 
     export default {
+        mixins: [pluginLocale],
         data() {
             return {
                 theme_view: app.globalData.get_theme_value_view(),
@@ -354,7 +356,7 @@
                 for (var i in temp_data_list) {
                     if (order_ids_arr.indexOf(temp_data_list[i]['id'].toString()) != -1) {
                         temp_data_list[i]['status'] = 1;
-                        temp_data_list[i]['status_name'] = this.$t('order.order.s8g966');
+                        temp_data_list[i]['status_name'] = this.$t('common.paid');
                     }
                 }
                 this.setData({
@@ -475,7 +477,7 @@
                                     if (res.data.code == 0) {
                                         var temp_data_list = this.data_list;
                                         temp_data_list[index]['status'] = 3;
-                                        temp_data_list[index]['status_name'] = this.$t('order.order.1k98tk');
+                                        temp_data_list[index]['status_name'] = this.$t('common.canceled');
                                         this.setData({
                                             data_list: temp_data_list,
                                         });

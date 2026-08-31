@@ -6,6 +6,13 @@
   "description": "1. diy, form, 小程序仅base64, TIF，（web端也可以使用这个方式）；2. web端 Base64, WOFF2, WOFF, TEF, SVG, EOT",
   "glyphs": [
     {
+      "icon_id": "10060843",
+      "name": "解锁",
+      "font_class": "unlock",
+      "unicode": "e629",
+      "unicode_decimal": 58921
+    },
+    {
       "icon_id": "47433111",
       "name": "引用",
       "font_class": "quote",

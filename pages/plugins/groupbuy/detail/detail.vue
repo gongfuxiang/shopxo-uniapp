@@ -21,7 +21,7 @@
                         <view class="groupbuy-detail-price-header" :style="detail_header_bg_style">
                             <view class="groupbuy-detail-price-main flex-row jc-sb align-c">
                                 <view class="groupbuy-detail-price-left">
-                                    <view class="cr-white text-size-xs">{{ $t('groupbuy.groupbuy.group_price') }}</view>
+                                    <view class="cr-white text-size-xs">{{ $t('groupbuy.group_price') }}</view>
                                     <view class="groupbuy-detail-price-value cr-white fw-b margin-top-xs">
                                         <text class="text-size-xs">{{ currency_symbol }}</text>
                                         <text class="text-size-xl">{{ display_price }}</text>
@@ -29,7 +29,7 @@
                                     </view>
                                 </view>
                                 <view class="groupbuy-detail-team-tag bg-white cr-main text-size-xs padding-horizontal-main padding-vertical-xs">
-                                    {{ groupbuy.group_number }}{{ $t('groupbuy.groupbuy.people_team') }}
+                                    {{ groupbuy.group_number }}{{ $t('common.people_team') }}
                                 </view>
                             </view>
                         </view>
@@ -37,11 +37,11 @@
                             <view class="multi-text text-size-md">{{ groupbuy.title || goods.title }}</view>
                             <view class="groupbuy-detail-status-bar margin-top-main">
                                 <view class="groupbuy-detail-status-item flex-row jc-c align-c">
-                                    <text class="groupbuy-detail-status-label text-size-xs cr-grey">{{ $t('groupbuy.groupbuy.group_formed') }}</text>
+                                    <text class="groupbuy-detail-status-label text-size-xs cr-grey">{{ $t('groupbuy.group_formed') }}</text>
                                     <text class="groupbuy-detail-status-value text-size-sm cr-black margin-left-xs">{{ groupbuy.group_number }}{{ $t('common.person_unit') }}</text>
                                 </view>
                                 <view class="groupbuy-detail-status-item flex-row jc-c align-c">
-                                    <text class="groupbuy-detail-status-label text-size-xs cr-grey">{{ $t('groupbuy.groupbuy.group_count') }}</text>
+                                    <text class="groupbuy-detail-status-label text-size-xs cr-grey">{{ $t('groupbuy.group_count') }}</text>
                                     <text class="groupbuy-detail-status-value text-size-sm cr-black margin-left-xs">{{ groupbuy.team_success_count || 0 }}</text>
                                 </view>
                                 <view class="groupbuy-detail-status-item flex-row jc-c align-c">
@@ -116,7 +116,9 @@
     import componentGroupbuyPlayRules from '../components/groupbuy-play-rules/groupbuy-play-rules';
     import componentBottomLine from '@/components/bottom-line/bottom-line';
     import componentSharePopup from '@/components/share-popup/share-popup';
+    import pluginLocale from '../locale/index.js';
     export default {
+        mixins: [pluginLocale],
         data() {
             return {
                 theme_view: app.globalData.get_theme_value_view(),
@@ -135,7 +137,7 @@
                 display_price: '0.00',
                 spec_selected_text: '',
                 buy_disabled: false,
-                buy_button_text: this.$t('groupbuy.groupbuy.open_now'),
+                buy_button_text: this.$t('groupbuy.open_now'),
                 show_original_price: false,
                 share_info: {},
                 photo_swiper_current: 0,
@@ -272,7 +274,7 @@
                             }
                             var buy_display = result.detail_buy_display || {};
                             var inventory = parseInt(goods.inventory || 0);
-                            var buy_button_text = buy_display.buy_button_text || (join_team_id > 0 ? this.$t('groupbuy.groupbuy.join_now') : this.$t('groupbuy.groupbuy.open_now'));
+                            var buy_button_text = buy_display.buy_button_text || (join_team_id > 0 ? this.$t('groupbuy.join_now') : this.$t('groupbuy.open_now'));
                             var buy_disabled = buy_display.buy_disabled == 1;
                             if (inventory <= 0 && !buy_display.buy_button_text) {
                                 buy_button_text = this.$t('common.no_stock');
@@ -286,11 +288,11 @@
                             if (join_team_id > 0) {
                                 share_query += '&team_id=' + join_team_id;
                             }
-                            var share_desc = (groupbuy.group_number || 0) + this.$t('groupbuy.groupbuy.people_team');
+                            var share_desc = (groupbuy.group_number || 0) + this.$t('common.people_team');
                             if (join_team_id > 0) {
-                                share_desc += this.$t('groupbuy.groupbuy.invite_join');
+                                share_desc += this.$t('groupbuy.invite_join');
                             } else {
-                                share_desc += this.$t('groupbuy.groupbuy.invite_group');
+                                share_desc += this.$t('groupbuy.invite_group');
                             }
                             this.setData({
                                 goods: goods,
@@ -365,7 +367,7 @@
                 if (user == false) {
                     return false;
                 }
-                var buy_name = this.join_team_id > 0 ? this.$t('groupbuy.groupbuy.join_now') : this.$t('groupbuy.groupbuy.open_now');
+                var buy_name = this.join_team_id > 0 ? this.$t('groupbuy.join_now') : this.$t('groupbuy.open_now');
                 this.$refs.goods_buy.init(
                     Object.assign({}, this.goods, { goods_id: this.goods.id, id: this.groupbuy.id }),
                     {

@@ -26,7 +26,7 @@
                     </view>
                     <view v-if="item.status == 0 || item.status == 2 || item.status == 3" class="item-operation tr br-t padding-top-main margin-top-main">
                         <button v-if="item.status == 0" class="round bg-white cr-green br-green" type="default" size="mini" @tap="pay_event" :data-value="item.id" :data-price="item.price" :data-index="index" :data-payment="item.payment_id" hover-class="none">{{$t('common.pay')}}</button>
-                        <button v-if="item.status == 0 && (item.plugins_payvoucher_data || null) != null && (item.plugins_payvoucher_data.is_show || 0) == 1" class="round bg-white cr-blue br-blue" type="default" size="mini" @tap="payvoucher_event" :data-value="item.id" :data-page="(item.plugins_payvoucher_data.page || '')" hover-class="none">{{ item.plugins_payvoucher_data.name || '凭证' }}</button>
+                        <button v-if="item.status == 0 && (item.plugins_payvoucher_data || null) != null && (item.plugins_payvoucher_data.is_show || 0) == 1" class="round bg-white cr-blue br-blue" type="default" size="mini" @tap="payvoucher_event" :data-value="item.id" :data-page="(item.plugins_payvoucher_data.page || '')" hover-class="none">{{ item.plugins_payvoucher_data.name || $t('common.voucher') }}</button>
                         <button v-if="item.status == 0" class="round bg-white cr-yellow br-yellow" type="default" size="mini" @tap="cancel_event" :data-value="item.id" :data-index="index" hover-class="none">{{$t('common.cancel')}}</button>
                         <button v-if="item.status == 2 || item.status == 3" class="round bg-white cr-red br-red" type="default" size="mini" @tap="delete_event" :data-value="item.id" :data-index="index" hover-class="none">{{$t('common.del')}}</button>
                     </view>
@@ -68,7 +68,9 @@
     import componentNoData from '@/components/no-data/no-data';
     import componentBottomLine from '@/components/bottom-line/bottom-line';
     import componentPayment from '@/components/payment/payment';
+    import pluginLocale from '../locale/index.js';
     export default {
+        mixins: [pluginLocale],
         data() {
             return {
                 theme_view: app.globalData.get_theme_value_view(),
@@ -96,39 +98,39 @@
                         value: '-1',
                     },
                     {
-                        name: this.$t('order.order.pjb15r'),
+                        name: this.$t('common.unpay'),
                         value: '0',
                     },
                     {
-                        name: this.$t('order.order.s8g966'),
+                        name: this.$t('common.paid'),
                         value: '1',
                     },
                     {
-                        name: this.$t('order.order.1k98tk'),
+                        name: this.$t('common.canceled'),
                         value: '2',
                     },
                     {
-                        name: this.$t('order.order.6390gk'),
+                        name: this.$t('common.closed'),
                         value: '3',
                     },
                 ],
                 nav_status_index: 0,
                 content_list: [
                     {
-                        name: this.$t('order.order.vvxct1'),
+                        name: this.$t('order.opening_order_number'),
                         field: 'payment_user_order_no',
                     },
                     {
-                        name: this.$t('order.order.vjfki8'),
+                        name: this.$t('order.opening_duration'),
                         field: 'period_value',
                         unit_field: 'period_unit',
                     },
                     {
-                        name: this.$t('order-detail.order-detail.x3ge6c'),
+                        name: this.$t('common.order_amount'),
                         field: 'price',
                     },
                     {
-                        name: this.$t('user-order-detail.user-order-detail.516tlr'),
+                        name: this.$t('common.payment_amount'),
                         field: 'pay_price',
                     },
                 ],
@@ -359,7 +361,7 @@
                     if (order_ids_arr.indexOf(temp_data_list[i]['id'].toString()) != -1) {
                         temp_data_list[i]['pay_price'] = temp_data_list[i]['price'];
                         temp_data_list[i]['status'] = 1;
-                        temp_data_list[i]['status_name'] = this.$t('order.order.s8g966');
+                        temp_data_list[i]['status_name'] = this.$t('common.paid');
                     }
                 }
                 this.setData({
@@ -395,7 +397,7 @@
                                     if (res.data.code == 0) {
                                         var temp_data_list = this.data_list;
                                         temp_data_list[index]['status'] = 2;
-                                        temp_data_list[index]['status_name'] = this.$t('order.order.1k98tk');
+                                        temp_data_list[index]['status_name'] = this.$t('common.canceled');
                                         this.setData({
                                             data_list: temp_data_list,
                                         });

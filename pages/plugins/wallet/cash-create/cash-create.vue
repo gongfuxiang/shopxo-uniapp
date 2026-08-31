@@ -4,34 +4,34 @@
             <form v-if="check_status == 1 && is_cash_available && user_cash_type_list.length > 0" @submit="form_submit" class="form-container">
                 <view class="padding-main oh">
                     <view class="form-gorup margin-bottom radius-md">
-                        <view class="form-gorup-title">{{$t('cash-create.cash-create.qg404q')}}<text class="form-group-tips-must">*</text></view>
-                        <input type="digit" name="money" :value="default_data.money || ''" placeholder-class="cr-grey" class="cr-base" :placeholder="$t('cash-create.cash-create.cymbdz') + ((data_base.cash_minimum_amount || 0) <= 0 ? 0.01 : data_base.cash_minimum_amount) + $t('cash-create.cash-create.27ky42') + cash_input_max_money_value" @input="cash_money_event" />
+                        <view class="form-gorup-title">{{$t('cash-create.withdrawal_amount')}}<text class="form-group-tips-must">*</text></view>
+                        <input type="digit" name="money" :value="default_data.money || ''" placeholder-class="cr-grey" class="cr-base" :placeholder="$t('cash-create.withdrawal_amount_minimum') + ((data_base.cash_minimum_amount || 0) <= 0 ? 0.01 : data_base.cash_minimum_amount) + $t('cash-create.highest') + cash_input_max_money_value" @input="cash_money_event" />
                         <view class="text-size-xs">
                             <view v-if="cash_limit_tips_status" class="cr-red margin-bottom-xs">
                                 <text>{{ cash_limit_tips_text }}</text>
                             </view>
                             <view>
-                                <text>{{$t('cash-create.cash-create.iaw845')}}</text>
+                                <text>{{$t('cash-create.withdrawable_amount')}}</text>
                                 <text class="cr-main fw-b margin-left-sm">{{ can_cash_max_money }}</text>
                             </view>
                             <view>
-                                <text>{{$t('cash-create.cash-create.1dbkw2')}}</text>
+                                <text>{{$t('cash-create.available_amount')}}</text>
                                 <text class="cr-green fw-b margin-left-sm">{{ user_wallet.normal_money }}</text>
                             </view>
                             <view>
-                                <text>{{$t('cash-create.cash-create.162f7o')}}</text>
+                                <text>{{$t('cash-create.total_amount_gifts')}}</text>
                                 <text class="cr-base fw-b margin-left-sm">{{ user_wallet.give_money }}</text>
-                                <text v-if="(data_base || null) == null || data_base.is_cash_retain_give != 0" class="cr-red margin-left-lg">{{$t('cash-create.cash-create.5o1q52')}}</text>
+                                <text v-if="(data_base || null) == null || data_base.is_cash_retain_give != 0" class="cr-red margin-left-lg">{{$t('cash-create.gift_amount_cannot_withdrawn')}}</text>
                             </view>
                             <view v-if="(data_base || null) == null || data_base.cash_commission_rate != 0" class="margin-top-sm cr-red">
-                                <text>{{$t('cash-create.cash-create.678iu2')}}</text>
+                                <text>{{$t('cash-create.estimated_handling_fee')}}</text>
                                 <text class="fw-b margin-left-sm">{{cash_commission_value}}</text>
                             </view>
                         </view>
                     </view>
 
                     <view class="form-gorup margin-bottom radius-md">
-                        <view class="form-gorup-title">{{$t('cash-create.cash-create.yu2raf')}}<text class="form-group-tips-must">*</text></view>
+                        <view class="form-gorup-title">{{$t('cash-create.withdrawal_method')}}<text class="form-group-tips-must">*</text></view>
                         <radio-group name="cash_type" @change="cash_type_event">
                             <block v-for="(item, index) in user_cash_type_list" :key="index">
                                 <label class="margin-right">
@@ -42,21 +42,21 @@
                     </view>
 
                     <view v-if="cash_type_0_status" class="form-gorup margin-bottom radius-md">
-                        <view class="form-gorup-title">{{$t('cash-create.cash-create.5mmir5')}}<text class="form-group-tips-must">*</text></view>
-                        <input type="text" name="bank_name" :value="default_data.bank_name || ''" placeholder-class="cr-grey" class="cr-base" maxlength="60" :placeholder="$t('cash-create.cash-create.u2rnlw')" />
-                        <view class="cr-grey-c text-size-xs">{{$t('cash-create.cash-create.14n20v')}}</view>
+                        <view class="form-gorup-title">{{$t('cash-create.payment_platform')}}<text class="form-group-tips-must">*</text></view>
+                        <input type="text" name="bank_name" :value="default_data.bank_name || ''" placeholder-class="cr-grey" class="cr-base" maxlength="60" :placeholder="$t('cash-create.format_payment_platform_between_60_characters')" />
+                        <view class="cr-grey-c text-size-xs">{{$t('cash-create.strongly_recommended_give_priority_filling_names')}}</view>
                     </view>
 
                     <view v-if="cash_type_0_status || cash_type_2_status" class="form-gorup margin-bottom radius-md">
-                        <view class="form-gorup-title">{{$t('cash-create.cash-create.36756z')}}<text class="form-group-tips-must">*</text></view>
-                        <input type="text" name="bank_accounts" :value="default_data.bank_accounts || ''" placeholder-class="cr-grey" class="cr-base" maxlength="60" :placeholder="$t('cash-create.cash-create.s72t44')" />
-                        <view class="cr-grey-c text-size-xs">{{$t('cash-create.cash-create.748r3i')}}</view>
+                        <view class="form-gorup-title">{{$t('cash-create.receiving_account')}}<text class="form-group-tips-must">*</text></view>
+                        <input type="text" name="bank_accounts" :value="default_data.bank_accounts || ''" placeholder-class="cr-grey" class="cr-base" maxlength="60" :placeholder="$t('cash-create.format_receiving_account_should_between_60')" />
+                        <view class="cr-grey-c text-size-xs">{{$t('cash-create.bank_account_virtual_account_alipay_tenpay')}}</view>
                     </view>
 
                     <view class="form-gorup margin-bottom radius-md">
-                        <view class="form-gorup-title">{{$t('cash-create.cash-create.1xtff6')}}<text class="form-group-tips-must">*</text></view>
-                        <input type="text" name="bank_username" :value="default_data.bank_username || ''" placeholder-class="cr-grey" class="cr-base" maxlength="30" :placeholder="$t('cash-create.cash-create.f4605e')" />
-                        <view class="cr-grey-c text-size-xs">{{$t('cash-create.cash-create.445m7n')}}</view>
+                        <view class="form-gorup-title">{{$t('cash-create.name_account_holder')}}<text class="form-group-tips-must">*</text></view>
+                        <input type="text" name="bank_username" :value="default_data.bank_username || ''" placeholder-class="cr-grey" class="cr-base" maxlength="30" :placeholder="$t('cash-create.format_account_holder_name_between_30')" />
+                        <view class="cr-grey-c text-size-xs">{{$t('cash-create.real_name_account_holder_receiving_account')}}</view>
                     </view>
 
                     <view v-if="cash_desc_list.length > 0" class="cash-desc-alert margin-top-main">
@@ -80,14 +80,14 @@
 
             <!-- 未配置提现方式 -->
             <view v-else-if="check_status == 1 && is_cash_available && user_cash_type_list.length == 0" class="padding-main">
-                <component-no-data propStatus="0" :propMsg="$t('cash-create.cash-create.9k2m4x')"></component-no-data>
+                <component-no-data propStatus="0" :propMsg="$t('cash-create.administrator_configured_withdrawal_methods_cont')"></component-no-data>
             </view>
 
             <!-- 已过期 -->
             <view v-else-if="check_status === 0" class="overdue tc">
                 <view class="padding-main">
-                    <view class="cr-red margin-top-xxxl">{{$t('cash-create.cash-create.858o54')}}</view>
-                    <button class="round bg-main cr-white cr-white text-size margin-top-xl" size="mini" type="default" hover-class="none" data-value="/pages/plugins/wallet/cash-auth/cash-auth" data-redirect="1" @tap="url_event">{{$t('cash-create.cash-create.ke15x5')}}</button>
+                    <view class="cr-red margin-top-xxxl">{{$t('cash-create.security_verification_timed_out_verify_again')}}</view>
+                    <button class="round bg-main cr-white cr-white text-size margin-top-xl" size="mini" type="default" hover-class="none" data-value="/pages/plugins/wallet/cash-auth/cash-auth" data-redirect="1" @tap="url_event">{{$t('cash-create.return_reapply_cash')}}</button>
                 </view>
             </view>
             <view v-else-if="data_list_loding_status != 3">
@@ -106,8 +106,10 @@
     import componentNoData from '@/components/no-data/no-data';
     import componentCashUnavailable from '@/pages/plugins/wallet/components/cash-unavailable/cash-unavailable';
     import { BuildCashApplyAvailable, IsCashApplyAvailable } from '@/pages/plugins/wallet/common/cash-apply-available';
+    import pluginLocale from '../locale/index.js';
 
     export default {
+        mixins: [pluginLocale],
         data() {
             return {
                 theme_view: app.globalData.get_theme_value_view(),
@@ -171,12 +173,12 @@
             cash_limit_tips_text() {
                 var tips = [];
                 if (this.cash_minimum_limit > 0) {
-                    tips.push(this.$t('cash-auth.cash-auth.27b4w5') + ' ' + this.cash_minimum_limit + this.$t('cash-create.cash-create.m9x2p1'));
+                    tips.push(this.$t('cash-auth.minimum_cash_amount') + ' ' + this.cash_minimum_limit + this.$t('cash-create.minimum'));
                 }
                 if (this.cash_maximum_limit > 0) {
-                    tips.push(this.$t('cash-create.cash-create.8fm3k1') + ' ' + this.cash_maximum_limit);
+                    tips.push(this.$t('cash-create.maximum_withdrawal_amount') + ' ' + this.cash_maximum_limit);
                 }
-                return tips.join(this.$t('cash-create.cash-create.p4k8n2'));
+                return tips.join(this.$t('cash-create.text'));
             },
             cash_input_max_money_value() {
                 var val = parseFloat(this.cash_input_max_money);
@@ -232,7 +234,7 @@
                 } else {
                     this.setData({
                         data_list_loding_status: 2,
-                        data_list_loding_msg: this.$t('extraction-apply.extraction-apply.m3xdif'),
+                        data_list_loding_msg: this.$t('common.authorize_user_info_first'),
                     });
                 }
             },
@@ -334,31 +336,31 @@
 
                 // 数据校验
                 var validation = [
-                    { fields: 'money', msg: this.$t('cash-create.cash-create.6t7x9u') },
-                    { fields: 'cash_type', msg: this.$t('cash-create.cash-create.thjid2'), is_can_zero: 1 }
+                    { fields: 'money', msg: this.$t('cash-create.fill_cash_amount') },
+                    { fields: 'cash_type', msg: this.$t('cash-create.choose_withdrawal_method'), is_can_zero: 1 }
                 ];
                 var cash_type = parseInt(form_data.cash_type);
                 if(cash_type == 0) {
-                    validation.push({ fields: 'bank_name', msg: this.$t('cash-create.cash-create.vbr59h') });
+                    validation.push({ fields: 'bank_name', msg: this.$t('cash-create.fill_payment_platform') });
                 }
                 if(cash_type == 0 || cash_type == 2) {
-                    validation.push({ fields: 'bank_accounts', msg: this.$t('cash-create.cash-create.0mn186') });
+                    validation.push({ fields: 'bank_accounts', msg: this.$t('cash-create.fill_receiving_account_number') });
                 }
-                validation.push({ fields: 'bank_username', msg: this.$t('cash-create.cash-create.c7h4mu') });
+                validation.push({ fields: 'bank_username', msg: this.$t('cash-create.fill_name_account_holder') });
 
                 // 验证提交表单
                 if (app.globalData.fields_check(form_data, validation)) {
                     // 提现金额不能小于最低金额、不能大于最大可提现金额
                     if (this.cash_minimum_limit > 0 && parseFloat(form_data.money) < this.cash_minimum_limit) {
-                        app.globalData.showToast(this.$t('cash-create.cash-create.724kn8') + this.cash_minimum_limit);
+                        app.globalData.showToast(this.$t('cash-create.withdrawals_cannot_lower_than') + this.cash_minimum_limit);
                         return false;
                     }
                     if (this.cash_maximum_limit > 0 && parseFloat(form_data.money) > this.cash_maximum_limit) {
-                        app.globalData.showToast(this.$t('cash-create.cash-create.3xk8m2') + this.cash_maximum_limit);
+                        app.globalData.showToast(this.$t('cash-create.single_withdrawal_cannot_exceed') + this.cash_maximum_limit);
                         return false;
                     }
                     if (parseFloat(form_data.money) > this.cash_input_max_money_value) {
-                        app.globalData.showToast(this.$t('cash-create.cash-create.duo0ts') + this.cash_input_max_money_value);
+                        app.globalData.showToast(this.$t('cash-create.withdrawal_cannot_greater_than') + this.cash_input_max_money_value);
                         return false;
                     }
 

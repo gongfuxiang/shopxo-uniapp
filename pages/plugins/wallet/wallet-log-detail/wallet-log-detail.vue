@@ -29,8 +29,10 @@
     import componentCommon from '@/components/common/common';
     import componentNoData from '@/components/no-data/no-data';
     import componentBottomLine from '@/components/bottom-line/bottom-line';
+    import pluginLocale from '../locale/index.js';
 
     export default {
+        mixins: [pluginLocale],
         data() {
             return {
                 theme_view: app.globalData.get_theme_value_view(),
@@ -98,14 +100,14 @@
                             this.setData({
                                 detail: data.data,
                                 detail_list: [
-                                    { name: this.$t('invoice.invoice.l3832z'), value: data.data.business_type_name || '' },
-                                    { name: this.$t('wallet-log-detail.wallet-log-detail.tdf3wo'), value: data.data.operation_type_name || '' },
-                                    { name: this.$t('wallet-log-detail.wallet-log-detail.744os7'), value: data.data.money_type_name || '' },
-                                    { name: this.$t('wallet-log-detail.wallet-log-detail.ruq60b'), value: data.data.operation_money || '' },
-                                    { name: this.$t('wallet-log-detail.wallet-log-detail.4q7pfq'), value: data.data.original_money || '' },
-                                    { name: this.$t('wallet-log-detail.wallet-log-detail.r814ne'), value: data.data.latest_money || '' },
-                                    { name: this.$t('wallet-log-detail.wallet-log-detail.0ghn6g'), value: data.data.msg || '' },
-                                    { name: this.$t('wallet-log-detail.wallet-log-detail.i2kze7'), value: data.data.add_time || '' },
+                                    { name: this.$t('common.business_type'), value: data.data.business_type_name || '' },
+                                    { name: this.$t('common.operation_type'), value: data.data.operation_type_name || '' },
+                                    { name: this.$t('wallet-log-detail.amount_type'), value: data.data.money_type_name || '' },
+                                    { name: this.$t('wallet-log-detail.operation_amount'), value: data.data.operation_money || '' },
+                                    { name: this.$t('wallet-log-detail.original_amount'), value: data.data.original_money || '' },
+                                    { name: this.$t('wallet-log-detail.latest_amount'), value: data.data.latest_money || '' },
+                                    { name: this.$t('wallet-log-detail.change_description'), value: data.data.msg || '' },
+                                    { name: this.$t('wallet-log-detail.operation_time'), value: data.data.add_time || '' },
                                 ],
                                 data_list_loding_status: 3,
                                 data_bottom_line_status: true,

@@ -3,13 +3,13 @@
         <block v-if="data_list_loding_status != 1 && data.length != 0">
             <component-panel-content :propData="data" :propDataField="field_list" propExcludeField="content" :propTitle="$t('common.detail_text')"></component-panel-content>
 
-            <component-panel-content :propTitle="$t('ask.ask.question_content')">
+            <component-panel-content :propTitle="$t('ask.question_content')">
                 <view class="item br-b-f5 oh padding-vertical-main">
                     <mp-html :content="data.content"></mp-html>
                 </view>
             </component-panel-content>
 
-            <component-panel-content :propTitle="$t('ask.ask.reply_content')">
+            <component-panel-content :propTitle="$t('ask.reply_content')">
                 <view class="item br-b-f5 oh padding-vertical-main">
                     <mp-html :content="data.reply"></mp-html>
                 </view>
@@ -30,8 +30,10 @@
     import componentNavBack from '@/components/nav-back/nav-back';
     import componentNoData from '@/components/no-data/no-data';
     import componentPanelContent from '@/components/panel-content/panel-content';
+    import pluginLocale from '../locale/index.js';
 
     export default {
+        mixins: [pluginLocale],
         data() {
             return {
                 theme_view: app.globalData.get_theme_value_view(),

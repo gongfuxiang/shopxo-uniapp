@@ -10,15 +10,15 @@
                         <view class="text-size margin-top-sm">{{ data.scanpay_info.name }}</view>
                     </view>
                     <view class="flex-row jc-sb align-c spacing-mb">
-                        <view class="cr-base">{{$t('user-order-detail.user-order-detail.yxwu8n')}}</view>
-                        <view class="flex-1 flex-width tr" :class="data.order_info.status == 1 ? 'cr-green' : 'cr-red'">{{ data.order_info.status == 1 ? $t('common.pay_success') : $t('paytips.paytips.6y488i')+pay_fail_msg }}</view>
+                        <view class="cr-base">{{$t('common.order_status')}}</view>
+                        <view class="flex-1 flex-width tr" :class="data.order_info.status == 1 ? 'cr-green' : 'cr-red'">{{ data.order_info.status == 1 ? $t('common.pay_success') : $t('common.payment_failed')+pay_fail_msg }}</view>
                     </view>
                     <view class="flex-row jc-sb align-c spacing-mb">
-                        <view class="cr-base">{{$t('user-order-detail.user-order-detail.n18sd2')}}</view>
+                        <view class="cr-base">{{$t('common.user_order_detail_order_number')}}</view>
                         <view class="flex-1 flex-width tr">{{ data.order_info.order_no }}</view>
                     </view>
                     <view class="flex-row jc-sb align-c spacing-mb">
-                        <view class="cr-base">{{$t('tips.tips.0azfc3')}}</view>
+                        <view class="cr-base">{{$t('tips.total_payment_amount')}}</view>
                         <view class="flex-1 flex-width tr fw-b cr-red">{{ currency_symbol }}{{ data.order_info.pay_price }}</view>
                     </view>
                 </block>
@@ -27,7 +27,7 @@
                         <view class="cr-grey-c">
                             <iconfont name="icon-payment-fail" size="120rpx"></iconfont>
                         </view>
-                        <view class="margin-top-lg">{{$t('paytips.paytips.6y488i')}}{{ pay_fail_msg }}</view>
+                        <view class="margin-top-lg">{{$t('common.payment_failed')}}{{ pay_fail_msg }}</view>
                     </view>
                 </block>
             </view>
@@ -38,7 +38,7 @@
             </view>
             <view class="bottom-fixed" :style="bottom_fixed_style">
                 <view class="bottom-line-exclude">
-                    <button class="item bg-red br-red cr-white round text-size" type="default" hover-class="none" @tap="exit_event">{{$t('tips.tips.579u02')}}</button>
+                    <button class="item bg-red br-red cr-white round text-size" type="default" hover-class="none" @tap="exit_event">{{$t('tips.end_page')}}</button>
                 </view>
             </view>
         </view>
@@ -55,7 +55,9 @@
     const app = getApp();
     import componentCommon from '@/components/common/common';
     import componentNoData from '@/components/no-data/no-data';
+    import pluginLocale from '../locale/index.js';
     export default {
+        mixins: [pluginLocale],
         data() {
             return {
                 theme_view: app.globalData.get_theme_value_view(),

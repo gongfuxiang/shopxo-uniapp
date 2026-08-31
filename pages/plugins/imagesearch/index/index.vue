@@ -9,13 +9,13 @@
                 </view>
                 <view class="query-add flex-col align-c jc-c" @tap="choose_image_event">
                     <iconfont name="icon-camera" size="32rpx" color="#666"></iconfont>
-                    <text class="text-size-xs cr-grey margin-top-xs">{{ $t('imagesearch.imagesearch.change_image') }}</text>
+                    <text class="text-size-xs cr-grey margin-top-xs">{{ $t('imagesearch.change_image') }}</text>
                 </view>
             </view>
             <view class="result-hd flex-row align-c padding-horizontal-main padding-vertical-sm br-t">
                 <view class="flex-row align-c flex-1">
-                    <text class="text-size fw-b">{{ $t('imagesearch.imagesearch.similar_goods') }}</text>
-                    <text v-if="data_total > 0" class="cr-grey text-size-sm margin-left-sm">{{ $t('imagesearch.imagesearch.total_prefix') }}{{ data_total }}{{ $t('imagesearch.imagesearch.total_suffix') }}</text>
+                    <text class="text-size fw-b">{{ $t('imagesearch.similar_goods') }}</text>
+                    <text v-if="data_total > 0" class="cr-grey text-size-sm margin-left-sm">{{ $t('imagesearch.total_prefix') }}{{ data_total }}{{ $t('imagesearch.total_suffix') }}</text>
                 </view>
                 <text class="result-clear cr-red text-size-sm" @tap="clear_result_event">{{ $t('common.clear') }}</text>
             </view>
@@ -39,21 +39,21 @@
                 <view class="boot-icon flex-row align-c jc-c bg-main-light margin-bottom" @tap="choose_image_event">
                     <iconfont name="icon-camera" size="56rpx" propClass="cr-main"></iconfont>
                 </view>
-                <view class="text-size-lg fw-b">{{ $t('imagesearch.imagesearch.boot_title') }}</view>
-                <view class="cr-grey text-size-sm margin-top-sm">{{ $t('imagesearch.imagesearch.boot_desc') }}</view>
-                <button type="default" class="boot-btn bg-main cr-white round margin-top-xl" @tap="choose_image_event">{{ $t('imagesearch.imagesearch.upload_search') }}</button>
+                <view class="text-size-lg fw-b">{{ $t('imagesearch.boot_title') }}</view>
+                <view class="cr-grey text-size-sm margin-top-sm">{{ $t('imagesearch.boot_desc') }}</view>
+                <button type="default" class="boot-btn bg-main cr-white round margin-top-xl" @tap="choose_image_event">{{ $t('imagesearch.upload_search') }}</button>
                 <view class="boot-steps flex-row flex-wrap align-c jc-c">
                     <view class="boot-step flex-row align-c">
                         <text class="boot-step-num">1</text>
-                        <text class="boot-step-text">{{ $t('imagesearch.imagesearch.boot_step1') }}</text>
+                        <text class="boot-step-text">{{ $t('imagesearch.boot_step1') }}</text>
                     </view>
                     <view class="boot-step flex-row align-c">
                         <text class="boot-step-num">2</text>
-                        <text class="boot-step-text">{{ $t('imagesearch.imagesearch.boot_step2') }}</text>
+                        <text class="boot-step-text">{{ $t('imagesearch.boot_step2') }}</text>
                     </view>
                     <view class="boot-step flex-row align-c">
                         <text class="boot-step-num">3</text>
-                        <text class="boot-step-text">{{ $t('imagesearch.imagesearch.boot_step3') }}</text>
+                        <text class="boot-step-text">{{ $t('imagesearch.boot_step3') }}</text>
                     </view>
                 </view>
             </view>
@@ -82,7 +82,7 @@
             <view class="confirm-mask"></view>
             <view class="confirm-dialog">
                 <view class="confirm-hd flex-row align-c">
-                    <text class="confirm-title flex-1">{{ confirm_mode === 'recognizing' ? $t('imagesearch.imagesearch.recognizing_title') : $t('imagesearch.imagesearch.confirm_title') }}</text>
+                    <text class="confirm-title flex-1">{{ confirm_mode === 'recognizing' ? $t('imagesearch.recognizing_title') : $t('imagesearch.confirm_title') }}</text>
                     <text class="confirm-close" @tap="confirm_popup_close_event">×</text>
                 </view>
                 <view class="confirm-bd">
@@ -111,7 +111,7 @@
                         @tap="confirm_search_event"
                     >
                         <view v-if="confirm_mode === 'recognizing'" class="confirm-btn-spinner"></view>
-                        <text>{{ confirm_mode === 'recognizing' ? $t('imagesearch.imagesearch.recognizing_btn') : $t('common.search') }}</text>
+                        <text>{{ confirm_mode === 'recognizing' ? $t('imagesearch.recognizing_btn') : $t('common.search') }}</text>
                     </button>
                 </view>
             </view>
@@ -128,6 +128,7 @@
     import componentNoData from '@/components/no-data/no-data';
     import componentBottomLine from '@/components/bottom-line/bottom-line';
     import componentGoodsList from '@/components/goods-list/goods-list';
+    import pluginLocale from '../locale/index.js';
 
     // 识别点位（独立闪烁节奏，对齐 PC）
     function build_scan_dots() {
@@ -159,6 +160,7 @@
     }
 
     export default {
+        mixins: [pluginLocale],
         data() {
             return {
                 theme_view: app.globalData.get_theme_value_view(),
@@ -191,11 +193,11 @@
                 // 排序导航
                 search_nav_sort_index: 0,
                 search_nav_sort_list: [
-                    { name: this.$t('goods-category.goods-category.x69aow'), field: 'default', sort: 'asc', icon: null, ov: '' },
-                    { name: this.$t('goods-category.goods-category.at5p35'), field: 'sales', sort: 'desc', icon: 'default', ov: 'sales' },
-                    { name: this.$t('goods-category.goods-category.283ot0'), field: 'access', sort: 'desc', icon: 'default', ov: 'access' },
-                    { name: this.$t('goods-category.goods-category.g2u3lf'), field: 'price', sort: 'desc', icon: 'default', ov: 'price' },
-                    { name: this.$t('goods-category.goods-category.5p4ksj'), field: 'new', sort: 'desc', icon: 'default', ov: 'new' },
+                    { name: this.$t('common.goods_category_all'), field: 'default', sort: 'asc', icon: null, ov: '' },
+                    { name: this.$t('common.sales_volume'), field: 'sales', sort: 'desc', icon: 'default', ov: 'sales' },
+                    { name: this.$t('common.heat'), field: 'access', sort: 'desc', icon: 'default', ov: 'access' },
+                    { name: this.$t('common.price'), field: 'price', sort: 'desc', icon: 'default', ov: 'price' },
+                    { name: this.$t('common.latest'), field: 'new', sort: 'desc', icon: 'default', ov: 'new' },
                 ],
             };
         },
@@ -441,7 +443,7 @@
                             data_total: parseInt(data.total || 0) || 0,
                             data_page_total: parseInt(data.page_total || 0) || 0,
                             data_list_loding_status: temp_data_list.length > 0 ? 3 : 0,
-                            data_list_loding_msg: temp_data_list.length > 0 ? '' : self.$t('imagesearch.imagesearch.empty_tips'),
+                            data_list_loding_msg: temp_data_list.length > 0 ? '' : self.$t('imagesearch.empty_tips'),
                             data_page: self.data_page + 1,
                             data_is_loading: 0,
                             image_hash: data.image_hash || self.image_hash || '',

@@ -11,7 +11,7 @@
 				<view class="spacing-nav-title flex-row jc-sb align-c">
 					<view class="flex-row align-c">
 						<image :src="weixinliveplayer_static_url + 'player-title-icon.png'" mode="scaleToFill" class="player-title-icon margin-right-xs"></image>
-						<text class="text-wrapper">{{$t('index.index.63g4m1')}}</text>
+						<text class="text-wrapper">{{$t('index.new_live')}}</text>
 					</view>
 					<text data-value="/pages/plugins/weixinliveplayer/search/search" @tap="url_event" class="arrow-right padding-right cr-grey text-size-xs cp">{{$t('common.more')}}</text>
 				</view>
@@ -80,9 +80,11 @@
 	import componentNoData from "@/components/no-data/no-data";
 	import componentBanner from "@/components/slider/slider";
 	import componentBottomLine from "@/components/bottom-line/bottom-line";
+    import pluginLocale from '../locale/index.js';
 	var weixinliveplayer_static_url = app.globalData.get_static_url('weixinliveplayer', true);
 
 	export default {
+        mixins: [pluginLocale],
 		data() {
 			return {
 				theme_view: app.globalData.get_theme_value_view(),

@@ -17,8 +17,10 @@
 <script>
     const app = getApp();
     import base64 from '@/common/js/lib/base64.js';
+    import pluginLocale from './locale/index.js';
 
     export default {
+        mixins: [pluginLocale],
         data() {
             return {
                 theme_view: app.globalData.get_theme_value_view(),

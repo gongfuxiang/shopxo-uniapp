@@ -6,29 +6,29 @@
                     <view class="padding-main">
                         <view class="bg-white oh border-radius-main">
                             <view class="form-gorup">
-                                <view class="form-gorup-title">{{$t('recommend-form.recommend-form.57zrl5')}}<text class="form-group-tips">{{$t('recommend-form.recommend-form.3vk50b')}}</text></view>
+                                <view class="form-gorup-title">{{$t('recommend-form.icon')}}<text class="form-group-tips">{{$t('recommend-form.suggest_100_100px')}}</text></view>
                                 <view class="margin-top-sm">
                                     <component-upload :propData="(recommend_data.icon || null) != null ? [recommend_data.icon] : []" :propMaxNum="1" :propPathType="editor_path_type" @call-back="upload_image_event"></component-upload>
                                 </view>
                             </view>
 
                             <view class="form-gorup">
-                                <view class="form-gorup-title">{{$t('user-detail.user-detail.uy6lrz')}}<text class="form-group-tips-must">*</text></view>
-                                <input type="text" name="title" :value="recommend_data.title || ''" placeholder-class="cr-grey" class="cr-base" :placeholder="$t('recommend-form.recommend-form.q4qr64')" />
+                                <view class="form-gorup-title">{{$t('common.title')}}<text class="form-group-tips-must">*</text></view>
+                                <input type="text" name="title" :value="recommend_data.title || ''" placeholder-class="cr-grey" class="cr-base" :placeholder="$t('recommend-form.title_format_60_characters')" />
                             </view>
 
                             <view class="form-gorup">
-                                <view class="form-gorup-title">{{$t('form.form.xy87t8')}}</view>
-                                <input type="text" name="describe" :value="recommend_data.describe || ''" placeholder-class="cr-grey" class="cr-base" :placeholder="$t('recommend-form.recommend-form.29au77')" />
+                                <view class="form-gorup-title">{{$t('common.describe')}}</view>
+                                <input type="text" name="describe" :value="recommend_data.describe || ''" placeholder-class="cr-grey" class="cr-base" :placeholder="$t('recommend-form.description_format_up_200_characters_long')" />
                             </view>
 
                             <view class="form-gorup anonymous">
-                                <view class="form-gorup-title">{{$t('form.form.043a10')}}</view>
+                                <view class="form-gorup-title">{{$t('common.enabled')}}</view>
                                 <switch name="is_enable" style="transform: scale(0.9)" class="margin-top-sm" :checked="recommend_data.is_enable == 1"></switch>
                             </view>
 
                             <view class="form-gorup">
-                                <view class="form-gorup-title">{{$t('recommend-form.recommend-form.5ws7m3')}}<text class="form-group-tips-must">*</text></view>
+                                <view class="form-gorup-title">{{$t('recommend-form.related_products')}}<text class="form-group-tips-must">*</text></view>
                                 <view v-if="(recommend_data.detail_list || null) != null && recommend_data.detail_list.length > 0" class="margin-top-lg view-goods-list">
                                     <block v-for="(item, index) in recommend_data.detail_list" :key="index">
                                         <view v-if="(item.goods || null) != null" :class="'item oh pr ' + (index > 0 ? 'br-t-dashed padding-top-lg margin-top-lg' : '')">
@@ -48,7 +48,7 @@
                                     </block>
                                 </view>
                                 <view class="margin-top-sm padding-vertical-main">
-                                    <text class="br-dashed-grey cr-base text-size-sm padding-horizontal-main padding-top-xs padding-bottom-xs round cp" @tap="goods_add_event">{{$t('recommend-form.recommend-form.27goz3')}}</text>
+                                    <text class="br-dashed-grey cr-base text-size-sm padding-horizontal-main padding-top-xs padding-bottom-xs round cp" @tap="goods_add_event">{{$t('recommend-form.select_product')}}</text>
                                 </view>
                             </view>
                         </view>
@@ -75,10 +75,10 @@
                             <view class="nav-search oh br-b margin-top-sm padding-horizontal-main">
                                 <picker class="item br round fl padding-horizontal-main" @change="popup_goods_category_event" :value="popup_goods_cetagory_index" :range="goods_category_list" range-key="name">
                                     <view :class="'picker ' + (popup_goods_cetagory_index == 0 ? 'cr-grey' : 'cr-base') + ' arrow-bottom'">
-                                        {{ popup_goods_cetagory_index == 0 ? $t('recommend-form.recommend-form.203itn') : goods_category_list[popup_goods_cetagory_index]['name'] }}
+                                        {{ popup_goods_cetagory_index == 0 ? $t('common.recommend_form_category') : goods_category_list[popup_goods_cetagory_index]['name'] }}
                                     </view>
                                 </picker>
-                                <input type="search" :value="popup_keywords_value" placeholder-class="cr-grey" class="cr-base item br round fl padding-horizontal-main margin-left-main" :placeholder="$t('recommend-form.recommend-form.h5v45f')" @input="popup_keywords_value_event" @confirm="popup_goods_search_event" />
+                                <input type="search" :value="popup_keywords_value" placeholder-class="cr-grey" class="cr-base item br round fl padding-horizontal-main margin-left-main" :placeholder="$t('recommend-form.enter_product_name')" @input="popup_keywords_value_event" @confirm="popup_goods_search_event" />
                                 <button type="default" size="mini" class="bg-main br-main cr-white text-size-xs round fr" @tap="popup_goods_search_event">{{$t('common.search')}}</button>
                             </view>
                             <view class="view-goods-list padding-horizontal-main">
@@ -96,7 +96,7 @@
                                             </view>
                                         </view>
                                     </block>
-                                    <view class="tc br-t-dashed padding-vertical-main margin-top-main cr-grey text-size-xs">{{$t('recommend-form.recommend-form.6rlju7')}}{{ popup_search_goods_list.length }}{{$t('goods-search.goods-search.t9nikq')}}</view>
+                                    <view class="tc br-t-dashed padding-vertical-main margin-top-main cr-grey text-size-xs">{{$t('recommend-form.current_display')}}{{ popup_search_goods_list.length }}{{$t('common.piece_data')}}</view>
                                 </block>
                                 <block v-else>
                                     <component-no-data :propStatus="search_data_list_loding_status" :propMsg="search_data_list_loding_msg"></component-no-data>
@@ -127,8 +127,10 @@
     import componentPopup from '@/components/popup/popup';
     import componentGoodsSpecChoice from '@/components/goods-spec-choice/goods-spec-choice';
     import componentUpload from '@/components/upload/upload';
+    import pluginLocale from '../locale/index.js';
 
     export default {
+        mixins: [pluginLocale],
         data() {
             return {
                 theme_view: app.globalData.get_theme_value_view(),
@@ -146,7 +148,7 @@
                 popup_keywords_value: '',
                 popup_search_goods_list: [],
                 search_data_list_loding_status: 1,
-                search_data_list_loding_msg: this.$t('recommend-form.recommend-form.20m5gj'),
+                search_data_list_loding_msg: this.$t('recommend-form.search_data_first'),
             };
         },
 
@@ -199,7 +201,7 @@
                     uni.stopPullDownRefresh();
                     this.setData({
                         data_list_loding_status: 2,
-                        data_list_loding_msg: this.$t('extraction-apply.extraction-apply.m3xdif'),
+                        data_list_loding_msg: this.$t('common.authorize_user_info_first'),
                     });
                 }
             },
@@ -218,7 +220,7 @@
                             // 如果存在分类则在最前面增加全部分类选项
                             var goods_category_list = data.goods_category_list || [];
                             if (goods_category_list.length > 0) {
-                                goods_category_list.unshift({ id: null, name: this.$t('recommend-form.recommend-form.7gc30l') });
+                                goods_category_list.unshift({ id: null, name: this.$t('common.classify_all') });
                             }
                             this.setData({
                                 data_list_loding_status: 3,
@@ -237,7 +239,7 @@
                         uni.stopPullDownRefresh();
                         this.setData({
                             data_list_loding_status: 0,
-                            data_list_loding_msg: this.$t('extraction-apply.extraction-apply.h8f437'),
+                            data_list_loding_msg: this.$t('extraction-apply.data_acquisition_failed'),
                         });
                     },
                 });
@@ -270,8 +272,8 @@
 
                 // 校验参数并提交
                 var validation = [
-                    { fields: 'title', msg: this.$t('recommend-form.recommend-form.yd3833') },
-                    { fields: 'goods_data', msg: this.$t('recommend-form.recommend-form.31k41l') },
+                    { fields: 'title', msg: this.$t('recommend-form.fill_title') },
+                    { fields: 'goods_data', msg: this.$t('recommend-form.select_product_2') },
                 ];
                 if (app.globalData.fields_check(form_data, validation)) {
                     this.setData({
@@ -380,7 +382,7 @@
                 });
                 this.setData({
                     search_data_list_loding_status: 1,
-                    search_data_list_loding_msg: this.$t('recommend-form.recommend-form.e5k407'),
+                    search_data_list_loding_msg: this.$t('recommend-form.searching'),
                 });
                 uni.request({
                     url: app.globalData.get_request_url('goodssearch', 'recommend', 'distribution'),
@@ -394,7 +396,7 @@
                             this.setData({
                                 popup_search_goods_list: list,
                                 search_data_list_loding_status: list.length > 0 ? 3 : 0,
-                                search_data_list_loding_msg: list.length > 0 ? '' : this.$t('detail.detail.5knxg6'),
+                                search_data_list_loding_msg: list.length > 0 ? '' : this.$t('common.related_products_available'),
                             });
                         } else {
                             this.setData({
@@ -447,9 +449,9 @@
                         this.setData({
                             recommend_data: temp_data,
                         });
-                        app.globalData.showToast(this.$t('recommend-form.recommend-form.145ci4'), 'success');
+                        app.globalData.showToast(this.$t('common.selection_successful'), 'success');
                     } else {
-                        app.globalData.showToast(this.$t('recommend-form.recommend-form.ocg49p'));
+                        app.globalData.showToast(this.$t('recommend-form.selection_list_already_exists'));
                     }
                 }
             },
@@ -488,9 +490,9 @@
                     this.setData({
                         recommend_data: temp_data,
                     });
-                    app.globalData.showToast(this.$t('recommend-form.recommend-form.145ci4'), 'success');
+                    app.globalData.showToast(this.$t('common.selection_successful'), 'success');
                 } else {
-                    app.globalData.showToast(this.$t('recommend-form.recommend-form.ocg49p'));
+                    app.globalData.showToast(this.$t('recommend-form.selection_list_already_exists'));
                 }
             },
         },

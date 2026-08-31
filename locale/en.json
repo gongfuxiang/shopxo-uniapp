@@ -13,6 +13,7 @@
 		"not_yet": "Not yet",
 		"submit": "Submit",
 		"save": "Preserve",
+		"save_amount": "Save",
 		"send": "Send",
 		"add": "Add",
 		"copy": "Copy",
@@ -83,6 +84,10 @@
 		"agree": "Agree",
 		"error_abnormal": "Abnormal error",
 		"go_settlement": "Checkout",
+		"go_pay": "Go pay",
+		"go_login": "Go log in",
+		"login": "Login",
+		"latest_purchase": "Latest purchase",
 		"stock": "Stock",
 		"favor": "Favorite",
 		"sale_price": "Sale price",
@@ -317,6 +322,8 @@
 		"please_login_first": "Please log in first",
 		"not_logged_in": "Not logged in",
 		"please_login": "Please log in",
+		"voucher": "Voucher",
+		"operate_fail": "Operation failed",
 		"please_input_address": "Please enter detailed address",
 		"please_input_age": "Please enter age",
 		"please_input_weight": "Please enter weight",
@@ -334,7 +341,236 @@
 		"please_correct_action_field": "Please correctly {0} \"{1}\"",
 		"please_check_section_fill": "Please check entries in {0}",
 		"select_file_upload_limit": "Select files, up to {0}",
-		"claim_limit": "Limit {0}"
+		"claim_limit": "Limit {0}",
+		"user": "user",
+		"login_phone": "phone",
+		"mailbox": "mailbox",
+		"service_agreement": "《Service Agreement》",
+		"privacy_policy": "《Privacy Policy》",
+		"confirm_login": "Confirm login",
+		"other_login_methods": "Other login methods",
+		"log_now": "Log in now",
+		"mobile_phone_number": "Mobile phone number",
+		"verification_code": "Verification code",
+		"mail": "E-mail",
+		"login_register": "login/register",
+		"obtain_verification_code": "Obtain verification code",
+		"authorized_user_information": "Authorized User Information",
+		"bind_phone": "Bind phone",
+		"bind_email": "Bind email",
+		"privilege_grant_failed": "privilege grant failed",
+		"enter_password": "Please enter the password",
+		"incorrect_protocol_type": "Incorrect protocol type",
+		"protocol_url_address_incorrect": "Protocol URL address is incorrect",
+		"take_info_title": "Pickup Info",
+		"take_code_label": "Pickup code:",
+		"take_verify_label": "Verified:",
+		"view_location": "View Location",
+		"product_information": "Product Information",
+		"total_pieces": "Total pieces",
+		"unconfigured_data": "Unconfigured data",
+		"express_delivery_info": "Express delivery info",
+		"order_information": "Order Information",
+		"pickup_code_does_exist_contact_administrator": "The pickup code does not exist. Please contact the administrator",
+		"user_order_detail_order_number": "Order number",
+		"order_goods": "Order Goods",
+		"order_status": "Order Status",
+		"payment_status": "Payment status",
+		"total_order_price": "Total order price",
+		"payment_amount": "Payment amount",
+		"payment_method": "Payment method",
+		"express_delivery_company": "Express delivery company",
+		"express_tracking_number": "Express tracking number",
+		"creation_time": "Creation time",
+		"confirmation_time": "Confirmation time",
+		"payment_time": "Payment time",
+		"cancel_time": "Cancel time",
+		"parameter_error": "Parameter error",
+		"incorrect_address": "Incorrect address",
+		"permission_settings": "Permission settings",
+		"service_phone_2": "Service phone",
+		"article_detail_time": "Time:",
+		"browsing": "Browsing:",
+		"previous_article": "Previous article:",
+		"next_article": "Next article:",
+		"consult_map": "consult a map",
+		"apply": "apply",
+		"buy_total": "Total:",
+		"place_order": "place order",
+		"buy_second": "second",
+		"enter_my_order": "Enter my order",
+		"incorrect_product_info": "Incorrect product info",
+		"select_time_2": "Please select a time",
+		"text": "",
+		"select_payment_method": "Please select payment method",
+		"enter_product_name_search": "Enter product name to search for",
+		"selected_product": "Selected product",
+		"goods_category_all": "All",
+		"sales_volume": "sales volume",
+		"heat": "heat",
+		"price": "price",
+		"products_different_specifications_need_reduced_s": "Products of different specifications need to be reduced in the shopping cart",
+		"cart_id_incorrect": "The cart ID is incorrect",
+		"quantity_unchanged": "Quantity unchanged",
+		"after_picking_so_long_really_want": "After picking for so long, do you really want to clear it?",
+		"ask_question": "Ask question",
+		"guess_like": "Guess you like it",
+		"already": "Already ",
+		"filter_out": "Filter out",
+		"piece_data": "Piece of data",
+		"activity_rules": "Activity rules",
+		"returning_store": "Returning to the store",
+		"recommended_products": "Recommended products",
+		"integral": "integral",
+		"original": "original",
+		"got": "Got it",
+		"payment_failed": "Payment failed",
+		"user_cancels_payment": "User cancels payment",
+		"avatar": "Avatar",
+		"nickname": "nickname",
+		"detailed_address": "Detailed address",
+		"related_products_available": "No related products available",
+		"invalid": "Invalid",
+		"buy_now": "Buy Now",
+		"select_least": "Please select at least",
+		"detail_items": "Items",
+		"detail_service": "Service:",
+		"long_press_wechat_consultation": "Long press WeChat for consultation",
+		"long_press_line_consult": "Long press line to consult",
+		"generating": "Generating",
+		"anonymous_publishing": "Anonymous publishing",
+		"handling_errors": "Handling errors",
+		"enabled": "Is it enabled",
+		"describe": "describe",
+		"uploading_wait_moment": "Uploading, please wait a moment",
+		"user_not_logged": "User not logged in",
+		"view_all": "View All",
+		"actually_searching_very_simple": "Actually, searching is very simple ^ _ ^!",
+		"enter_search_keywords": "Please enter search keywords",
+		"expired": "Expired",
+		"modify": "modify",
+		"sure_continue_renewal_based_original_duration": "Are you sure to continue with the renewal based on the original duration and fees?",
+		"points": "Points",
+		"user_pay": "Pay",
+		"shipping": "Shipping",
+		"balance": "balance",
+		"order_phone": "Phone",
+		"up_upload": "Up to upload",
+		"unable_recover_continue_after_deletion": "Unable to recover or continue after deletion?",
+		"unpay": "Unpay",
+		"paid": "Paid",
+		"receive": "receive",
+		"completed": "Completed",
+		"source_terminal": "Source terminal",
+		"avatar_address_incorrect": "The avatar address is incorrect",
+		"select_data_first": "Please select data first",
+		"canceled": "Canceled",
+		"closed": "Closed",
+		"order_detail_order_number": "Order number",
+		"order_amount": "Order amount",
+		"refund_amount": "refund amount",
+		"product_quantity": "Product quantity",
+		"completion_time": "Completion time",
+		"order_time": "Order time",
+		"pending": "Pending",
+		"provinces_cities_districts": "Provinces cities and districts",
+		"geographical_position": "geographical position",
+		"select_geographical_location": "Please select a geographical location",
+		"authorize_user_info_first": "Please authorize user info first",
+		"province_acquisition_failed": "Province acquisition failed",
+		"city_acquisition_failed": "City acquisition failed",
+		"district_county_acquisition_failed": "District/County acquisition failed",
+		"fill_contact_person": "Please fill in the contact person",
+		"fill_contact_phone_number": "Please fill in the contact phone number",
+		"select_province_2": "Please select a province",
+		"select_city_2": "Please select a city",
+		"provide_detailed_address": "Please provide detailed address",
+		"extraction_switch_distance": "distance",
+		"extraction_switch_data_error": "Data error",
+		"click_copy_link_address": "Click to copy the link address",
+		"qr_code_sharing": "QR code sharing",
+		"after_saving_qr_code_send_wechat": "After saving the QR code, send it to WeChat friends/groups, QQ friends/groups, share it on social media, Weibo, etc. for promotion, and easily earn rebates!",
+		"view_qr_code_long_press_save": "View QR code, long press save",
+		"link_sharing": "Link sharing",
+		"copy_following_link_send_wechat_friends": "Copy the following link, send it to WeChat friends/groups, QQ friends/groups, share it on social media, Weibo, etc. for promotion, and easily earn rebates!",
+		"promotional_image_address_incorrect": "The promotional image address is incorrect",
+		"profit_effective": "To be effective",
+		"settled": "To be settled",
+		"settled_2": "Settled",
+		"current_level": "Current level",
+		"settlement_status": "Settlement status",
+		"order_payment_status": "Order payment status",
+		"orders": "Orders",
+		"consumption_amount": "Consumption amount",
+		"lower_level_consumption": "Lower level consumption",
+		"subordinate_users": "Subordinate users",
+		"starting_purchase": "Starting purchase",
+		"inventory_quantity": "Inventory quantity",
+		"recommend_form_category": "Category",
+		"classify_all": "Classify All",
+		"selection_successful": "Selection successful",
+		"end_time": "End time",
+		"product_rating": "Product rating",
+		"enter_review": "Please enter your review",
+		"select_rating": "Please select a rating",
+		"enter_review_2": "Please enter a review",
+		"business_type": "Business type",
+		"application_information": "Application Information",
+		"remarks_up_230_characters_long": "Remarks can be up to 230 characters long",
+		"invoice_saveinfo_add": "Add",
+		"encounter_scan_failure_turn_screen_brightest": "If you encounter a scan failure, please turn the screen to the brightest position and scan the code again",
+		"member_code": "Member Code",
+		"payment_code": "Payment Code",
+		"frequencycard_list_effective": "Effective",
+		"close": "close",
+		"staff": "Staff:",
+		"booking_time": "Booking time:",
+		"receiving_goods": "Receiving goods",
+		"batch": "batch",
+		"secondary_card": "Secondary card",
+		"logistics": "logistics",
+		"confirm_goods_been_received_completed_cannot": "Please confirm that the goods have been received or completed, and cannot be restored after operation. Are you sure to continue?",
+		"recharge_now": "Recharge Now",
+		"recharge": "Recharge",
+		"my_balance": "My balance:",
+		"enter_transfer_remarks_info": "Please enter transfer remarks info",
+		"enter_receiving_account_number": "Please enter the receiving account number",
+		"transfer_time": "Transfer time",
+		"operation_type": "Operation type",
+		"name": "name",
+		"landline_mobile_phone": "Landline or mobile phone",
+		"fill_comment_content": "Please fill in the comment content",
+		"describe_reason": "Describe the reason",
+		"describe_reason_format_230_characters": "Describe the reason in a format of 1-230 characters",
+		"word": "word",
+		"replies": "Replies",
+		"view_more_replies": "View more replies",
+		"comments": "Comments",
+		"view_more_comments": "View more comments",
+		"looking_forward_speech": "Looking forward to your speech",
+		"maximum_input_character_limit_been_exceeded": "The maximum input character limit has been exceeded",
+		"nearby_stores": "Nearby stores",
+		"store_info_available": "No store info available",
+		"amount_details": "Amount details",
+		"cart_items": "Items",
+		"cart_empty": "The cart is empty",
+		"after_choosing_so_long_really_want": "After choosing for so long, do you really want to delete it?",
+		"slide_data_want_operate_first": "Please slide the data you want to operate on first",
+		"click_collapse": "Click to collapse",
+		"payment_details": "Payment details",
+		"payment_pay": "Pay",
+		"payment_method_available": "No payment method available",
+		"one_click_sharing_friends_group_chat": "One click sharing with friends and group chat",
+		"one_click_sharing_wechat_friends_group": "One click sharing with WeChat friends and group chat",
+		"one_click_sharing_wechat_moments": "One click sharing to WeChat Moments",
+		"one_click_share_wechat_favorites": "One click share to WeChat favorites",
+		"one_click_sharing_qq_friends_spaces": "One click sharing to QQ friends and spaces",
+		"click_copy_address_share_friends_group": "Click to copy the address and share it with friends or group chat",
+		"generate_posters_share_them_social_media": "Generate posters and share them on social media, friends, and group chats",
+		"upload_complete_clear_images_up_maximum": "Please upload complete and clear images, up to a maximum of 10",
+		"sort": "Sort by",
+		"people_team": "people group",
+		"create_link": "Create pay link"
 	},
 	"client": {
 		"weixin": "WeChat",
@@ -348,2158 +584,197 @@
 		"goods-category": "Product classification",
 		"cart": "shopping cart",
 		"user": "User Center",
-		"cart-page": "shopping cart",
-		"buy": "acknowledgement of order",
-		"web-view": "",
-		"login": "Login",
-		"form-input": "Form input",
-		"form-input-data": "Form input data",
-		"form-input-data-detail": "Form input data detail",
-		"paytips": "Secure payment",
-		"paylog-list": "Payment Order list",
-		"paylog-detail": "Payment Order Details",
-		"goods-search": "Product search",
-		"goods-search-start": "Data search",
-		"goods-detail": "Product details",
-		"goods-comment": "Product evaluation",
-		"user-address": "My address",
-		"user-address-save": "Address editing",
-		"user-order": "My order",
-		"user-order-detail": "Order details",
-		"user-order-comments": "Order evaluation",
-		"user-favor": "Product Collection",
-		"user-goods-comments": "Product reviews",
-		"user-goods-comments-form": "Product Editing",
-		"message": "news",
-		"user-integral": "Points details",
-		"user-goods-browse": "My Tracks",
-		"user-orderaftersale": "Refund/After sales",
-		"user-orderaftersale-detail": "After sales of orders",
-		"extraction-address": "Self pickup address",
-		"customview-customview": "Custom Page",
-		"design": "",
 		"diy": "",
-		"error": "Kind reminder",
-		"article-category": "All articles",
-		"article-detail": "Article details",
-		"setup": "set up",
-		"password": "password modify",
-		"personal": "personal data",
-		"logout": "Account cancellation",
-		"about": "About Us",
-		"plugins-seckill-index": "Limited time flash sale",
-		"plugins-coupon-index": "Coupon Collection Center",
-		"plugins-coupon-detail": "Coupon",
-		"plugins-coupon-shop": "Shop Coupon Collection Center",
-		"plugins-coupon-user": "My coupons",
-		"plugins-vip-index": "Member VIP",
-		"plugins-vip-buy": "Activate membership",
-		"plugins-vip-user": "My Members",
-		"plugins-vip-order": "Open an order",
-		"plugins-vip-order-detail": "Order details",
-		"plugins-vip-profit": "Revenue details",
-		"plugins-vip-profit-detail": "Revenue details",
-		"plugins-vip-poster": "Promotion rewards",
-		"plugins-vip-team": "My team",
-		"plugins-vip-member-code": "Member Code",
-		"plugins-distribution-user": "My Distribution",
-		"plugins-distribution-order": "Distribution orders",
-		"plugins-distribution-order-detail": "Order details",
-		"plugins-distribution-profit": "Revenue details",
-		"plugins-distribution-profit-detail": "Revenue details",
-		"plugins-distribution-team": "My team",
-		"plugins-distribution-map": "Customer distribution",
-		"plugins-distribution-recommend-list": "My Recommended Treasure",
-		"plugins-distribution-recommend-detail": "Recommended Treasure Details",
-		"plugins-distribution-recommend-form": "Recommended Treasure Add/Edit",
-		"plugins-distribution-poster": "Promotion rewards",
-		"plugins-distribution-extraction": "Pickup point",
-		"plugins-distribution-extraction-apply": "Pickup point info",
-		"plugins-distribution-extraction-order": "Pickup order",
-		"plugins-distribution-extraction-switch": "Pickup point switching",
-		"plugins-distribution-introduce": "Level Introduction",
-		"plugins-distribution-promotion-user": "Promote users",
-		"plugins-distribution-promotion-order": "Promote orders",
-		"plugins-distribution-visit-list": "Customer visits",
-		"plugins-distribution-visit-form": "Customer visit addition/editing",
-		"plugins-distribution-apply": "Apply for distribution",
-		"plugins-distribution-apply-form": "Fill in application",
-		"plugins-wallet-user": "My wallet",
-		"plugins-wallet-recharge": "Recharge",
-		"plugins-wallet-cash-auth": "Withdrawal of balance",
-		"plugins-wallet-cash-create": "Withdrawal of balance",
-		"plugins-wallet-wallet-log-detail": "Details",
-		"plugins-wallet-user-recharge-detail": "Recharge details",
-		"plugins-wallet-user-cash-detail": "Withdrawal details",
-		"plugins-wallet-user-transfer-detail": "Transfer details",
-		"plugins-wallet-payment-code": "Payment Code",
-		"plugins-wallet-integral-to-balance": "Points to balance",
-		"plugins-wallet-transfer": "Transfer",
-		"plugins-excellentbuyreturntocash-profit": "Details of Yougou cashback",
-		"plugins-excellentbuyreturntocash-profit-detail": "Details of Yougou cashback",
-		"plugins-weixinliveplayer-index": "direct seeding",
-		"plugins-weixinliveplayer-search": "Live streaming list",
-		"plugins-weixinliveplayer-detail": "Live streaming details",
-		"plugins-exchangerate-currency": "Currency switching",
-		"plugins-invoice-invoice": "Invoice List",
-		"plugins-invoice-invoice-detail": "Invoice details",
-		"plugins-invoice-invoice-saveinfo": "Invoice editing",
-		"plugins-invoice-order": "Order invoicing",
-		"plugins-invoice-business": "Business invoice",
-		"plugins-signin-user": "Sign in",
-		"plugins-signin-detail": "Sign in",
-		"plugins-signin-user-qrcode-detail": "Sign in code details",
-		"plugins-signin-user-qrcode-saveinfo": "Sign in code editing",
-		"plugins-signin-user-coming-list": "User check-in",
-		"plugins-points-index": "Points Mall",
-		"plugins-points-search": "Exchange goods search",
-		"plugins-points-scan": "Scan the QR code to claim points",
-		"plugins-brand-index": "brand",
-		"plugins-imagesearch-index": "Image Search",
-		"plugins-shop-index": "All stores",
-		"plugins-shop-detail": "Store homepage",
-		"plugins-shop-search": "Store Product Search",
-		"plugins-shop-favor": "Store favorites",
-		"plugins-shop-license": "Business qualifications",
-		"plugins-shop-check": "Order verification",
-		"plugins-activity-index": "All activities",
-		"plugins-activity-detail": "Event details",
-		"plugins-label-detail": "Label details",
-		"plugins-blog-index": "Blog",
-		"plugins-blog-search": "Blog search",
-		"plugins-blog-detail": "Blog details",
-		"plugins-blog-comments": "Comment List",
-		"plugins-blog-user-list": "My post",
-		"plugins-blog-form": "Posting a blog post",
-		"plugins-express-detail": "Logistics details",
-		"plugins-realstore-index": "store",
-		"plugins-realstore-search": "Store Search",
-		"plugins-realstore-detail": "Store details",
-		"plugins-realstore-favor": "Store Collection",
-		"plugins-realstore-orderallot-list": "Store orders",
-		"plugins-realstore-orderallot-detail": "Store Order Details",
-		"plugins-realstore-batchorder-list": "Batch orders",
-		"plugins-realstore-frequencycard-list": "Secondary card",
-		"plugins-realstore-frequencycard-used": "Secondary Card Usage Record",
-		"plugins-realstore-check": "Order verification",
-		"plugins-realstore-staff-list": "Service Staff",
-		"plugins-realstore-staff-detail": "Book Service",
-		"plugins-binding-index": "Combination and matching",
-		"plugins-binding-detail": "Combination and matching details",
-		"plugins-delivery-order": "Delivery order",
-		"plugins-delivery-order-detail": "Order details",
-		"plugins-delivery-logistics": "Logistics info",
-		"plugins-ask-index": "Q&A",
-		"plugins-ask-detail": "Q&A details",
-		"plugins-ask-form": "I need to ask a question",
-		"plugins-ask-user-detail": "Question details",
-		"plugins-ask-user-list": "My question",
-		"plugins-ask-goods-list": "Q&A section",
-		"plugins-ask-comments": "All Q&A",
-		"plugins-aichat-index": "AI Customer Service Assistant",
-		"plugins-chat-list": "Online Customer Service",
-		"plugins-chat-index": "Online Customer Service",
-		"plugins-intellectstools-goods-comments": "Product evaluation",
-		"plugins-scanpay-index": "Scan code payment",
-		"plugins-scanpay-tips": "Payment results",
-		"plugins-thirdpartylogin-index": "Authorized login",
-		"plugins-magic-detail": "details",
-		"plugins-ordergoodsform-order": "Product Form",
-		"plugins-coin-user": "Virtual currency",
-		"plugins-coin-recharge": "Recharge",
-		"plugins-coin-convert": "conversion",
-		"plugins-coin-cash": "Withdrawal",
-		"plugins-coin-detail": "detail",
-		"plugins-coin-transfer-accounts-detail": "Transfer details",
-		"plugins-coin-transaction-detail": "Transaction details",
-		"plugins-coin-cash-detail": "Withdrawal details",
-		"plugins-coin-convert-detail": "Conversion details",
-		"plugins-coin-collection": "Collection",
-		"plugins-coin-recharge-pay": "Recharge payment",
-		"plugins-coin-recharge-detail": "Recharge details",
-		"plugins-coin-transfer": "Transfer",
-		"plugins-coin-transfer-list": "Transfer details",
-		"plugins-coin-transaction-list": "Transaction details",
-		"plugins-coin-cash-list": "Withdrawal details",
-		"plugins-coin-convert-list": "Conversion details",
-		"plugins-coin-recharge-list": "Recharge details",
-		"plugins-antifakecode-index": "Authentic inquiry",
-		"plugins-giftcard-index": "My gift card",
-		"plugins-giftcard-form": "Gift card redemption",
-		"plugins-givegift-goods": "Buying Gifts",
-		"plugins-givegift-receive": "Gift collection",
-		"plugins-givegift-gift": "My gift",
-		"plugins-givegift-gift-detail": "gift details",
-		"plugins-givegift-code": "Gift Link",
-		"plugins-friendpay-share": "Friend Pay Invite",
-		"plugins-friendpay-list": "Friend Pay Records",
-		"plugins-friendpay-pay": "Friend Pay",
-		"plugins-friendpay-success": "Pay Success",
-		"plugins-lottery-grid": "Lucky Draw",
-		"plugins-lottery-turn": "Wheel Lottery",
-		"plugins-lottery-egg": "Golden Egg",
-		"plugins-lottery-egg-chances-label": "Chances today",
-		"plugins-lottery-turn-draw": "Spin Now",
-		"plugins-lottery-turn-chances-label": "Chances",
-		"plugins-lottery-record": "My Winnings",
-		"plugins-orderresources-orderannex": "Order Resources",
-		"plugins-hospital-patient": "Add/Edit Patient",
-		"plugins-hospital-patient-list": "Patient List",
-		"plugins-hospital-prescription": "Consultation and prescription",
-		"plugins-certificate-userauth": "Certificate",
-		"plugins-certificate-userauth-saveinfo": "Certificate editor",
-		"plugins-certificate-userauth-detail": "Certificate detail",
-		"plugins-goodscompare-index": "Goods Compare",
-		"plugins-video-index": "Short Video List",
-		"plugins-video-detail": "Short video details",
-		"plugins-video-search": "Short video search",
-		"plugins-video-search-record": "Short video searchrecord",
-		"plugins-live-pull": "Live Details",
-		"plugins-complaint-user": "Complaint/Report List",
-		"plugins-complaint-form": "Complaint/Report",
-		"plugins-orderfeed-user": "Feed List",
-		"plugins-orderfeed-form": "Feed Data",
-		"plugins-presale-index": "Presale",
-		"plugins-presale-buy": "Order Confirmation",
-		"plugins-presale-order": "Presale order",
-		"plugins-payvoucher-form": "Upload payment voucher",
-		"plugins-bargain-index": "Bargain",
-		"plugins-bargain-detail": "Bargain details",
-		"plugins-bargain-team": "Help cut",
-		"plugins-bargain-order": "My bargain",
-		"plugins-groupbuy-index": "Group buy",
-		"plugins-groupbuy-detail": "Group buy details",
-		"plugins-groupbuy-team": "Join group",
-		"plugins-groupbuy-order": "My group buy"
+		"design": "",
+		"web-view": ""
 	},
 	"login": {
-		"login": {
-			"725312": "Account password login",
-			"tfl656": "Confirm Binding",
-			"483nho": "Return to previous page",
-			"31r6p2": "Mobile verification code",
-			"8fghjs": "Get your phone number",
-			"p3kxy2": "Get your phone number and log in with one click",
-			"54l805": "Bind existing account",
-			"q11t73": "Register an account and bind it",
-			"s51ed9": "Successfully logged in, please click to return to the previous page",
-			"e77788": "Login account will be automatically bound",
-			"1i4o86": "user",
-			"su75o5": "cancel",
-			"n2pv70": "Account",
-			"1p7843": "phone",
-			"p54kf1": "mailbox",
-			"3i05ly": "Temporarily closed login",
-			"nddg2x": "Read and agree",
-			"2v11we": "《Service Agreement》",
-			"l3r4vr": "And",
-			"myno2x": "《Privacy Policy》",
-			"i1deai": "Confirm login",
-			"t75ee8": "New User Registration",
-			"9d8gqi": "Retrieve password",
-			"tvl242": "Authorization to automatically log in",
-			"9q27d8": "Other login methods",
-			"t59dho": "Temporarily closed registration",
-			"hvunf8": "Confirm Registration",
-			"zy8tc4": "Log in now",
-			"7z29x2": "Confirm submission",
-			"b347k4": "Register Now",
-			"836o8e": "Confirm login authorization to provide you with better service",
-			"pgyv78": "There is an error in the basic data. If it is not automatically loaded, please manually click to load!",
-			"6fe6ra": "Load basic data",
-			"28k91h": "Mobile phone number",
-			"t3951j": "Verification code",
-			"rihgdf": "User name",
-			"qe8a37": "User name/phone/email",
-			"08fchn": "Login password",
-			"db1rf4": "E-mail",
-			"6yfr9g": "login/register",
-			"d178m0": "Mobile/email",
-			"9wx3ch": "Set login password",
-			"s665h5": "Obtain verification code",
-			"jw378f": "Authorized User Information",
-			"d2ng16": "Bind mobile phone number",
-			"8ytyuf": "Bind email address",
-			"np9177": "Bind phone",
-			"tgsa4d": "Bind email",
-			"876tdf": "Bind account",
-			"87yui2": "Bind successful",
-			"158yg2": "Login with mobile verification code",
-			"r329eu": "Email verification code login",
-			"39hn6v": "Account password registration",
-			"z13km0": "Mobile verification code registration",
-			"jc0w0o": "Email verification code registration",
-			"8tmyuc": "Password retrieval",
-			"5p23c6": "Login successful",
-			"btu2c1": "Please agree to the agreement first",
-			"no8ts6": "Used to improve member info",
-			"3nmrg2": "privilege grant failed",
-			"tghjer": "Please obtain a mobile phone number",
-			"4c5n8o": "Please fill in your phone number",
-			"xak8g1": "Please fill in the email address",
-			"ku05ty": "Please fill in your phone or email address",
-			"7r5h37": "Please enter a valid verification code",
-			"24mvbh": "Please fill in the account number",
-			"s36mk5": "Sending",
-			"6881q7": "Sending",
-			"n24i5u": "surplus",
-			"4306xr": "second",
-			"6gojnd": "The internet has wandered off~",
-			"01xmab": "Please fill in the verification code",
-			"prqvf1": "Authorization ID cannot be empty",
-			"4ci850": "Processing",
-			"yvj88j": "Please enter your phone number",
-			"yo6x3p": "Please enter an email address",
-			"n7vh75": "Please enter an account",
-			"277w03": "Please enter the password",
-			"cesl5d": "Please enter the verification code",
-			"c5wa4u": "Logging in",
-			"g30ew7": "Registering",
-			"h0515x": "Please enter your phone or email address",
-			"wysg7k": "Please set password",
-			"4wc3hr": "Incorrect protocol type",
-			"x0nxxf": "Protocol URL address is incorrect",
-			"05h35f": "Loading",
-			"d76tgh": "If it is not automatically loaded, please manually click load!",
-			"li9573": "Login method not processed"
-		}
-	},
-	"user-order-detail": {
-		"user-order-detail": {
-			"346376": "Shipping Services",
-			"7lp6gw": "View Location",
-			"7f8p26": "Product Information",
-			"41ty94": "Total pieces",
-			"xcj552": "element",
-			"7xtnjt": "Unconfigured data",
-			"0876xf": "Express delivery info",
-			"yhjffg": "Traceability info",
-			"o38952": "Pickup code",
-			"take_info_title": "Pickup Info",
-			"take_code_label": "Pickup code:",
-			"take_verify_label": "Verified:",
-			"0f26j2": "Order Information",
-			"ct34n5": "Extended Data",
-			"y9woor": "Key Information",
-			"hpq62x": "The pickup code does not exist. Please contact the administrator",
-			"io6p5k": "Order Mode",
-			"n18sd2": "Order number",
-			"yghjkf": "Order Goods",
-			"yxwu8n": "Order Status",
-			"23qj7m": "Payment status",
-			"vg4jb1": "Order unit price",
-			"2y7l13": "Total order price",
-			"6ub2j0": "Discount amount",
-			"8b18q8": "Increase amount",
-			"516tlr": "Payment amount",
-			"0e1sfs": "Payment method",
-			"12d445": "Express delivery company",
-			"2byl8l": "Express tracking number",
-			"2b5fc8": "guest book ",
-			"h2c78h": "Creation time",
-			"9vivhl": "Confirmation time",
-			"wn83rn": "Payment time",
-			"1674dc": "Delivery time",
-			"0i938r": "Receiving time",
-			"1jpv4n": "Cancel time",
-			"8o2of3": "Closing time",
-			"5k6k56": "Parameter error",
-			"i876o3": "Incorrect address",
-			"567ygf": "service information",
-			"67ujfr": "Service duration",
-			"gsfw4d": "Service Name",
-			"6ygfew": "Service Mobile",
-			"3erwer": "traceability code",
-			"dyt44f": "Batch Number",
-			"sdf432": "Batch Expiry Date"
-		}
-	},
-	"setup": {
-		"setup": {
-			"x81v6d": "Replace phone",
-			"j6skqh": "Click to replace",
-			"dfg4wf": "Click to bind",
-			"r7jz13": "update language",
-			"42mba7": "Address",
-			"5eltza": "Click to manage",
-			"t60222": "Invoices",
-			"izg78g": "Click to go",
-			"377uwg": "Permission settings",
-			"5493ui": "Clear cache",
-			"f53166": "Click to clear",
-			"656fv1": "Service phone",
-			"f25wcx": "Click to call",
-			"11k15d": "Account cancel",
-			"48r261": "Logout and can't recover.",
-			"tghrf2": "About Us",
-			"07o10b": "Please bind your phone first",
-			"nwt4o1": "Please log in first",
-			"utnr7g": "Service phone",
-			"87ytgh": "Unbind",
-			"5u59b1": "Change email",
-			"v8438r": "Change password"
-		}
-	},
-	"article-category": {
-		"article-category": {
-			"gxra15": "View volume"
-		}
-	},
-	"article-detail": {
-		"article-detail": {
-			"728374": "Time:",
-			"j92ru0": "Browsing:",
-			"281s4a": "Previous article:",
-			"uq5814": "Next article:"
-		}
-	},
-	"buy": {
-		"buy": {
-			"70u2vy": "to",
-			"o7722q": "consult a map",
-			"876tgh": "shipping method",
-			"45ovhs": "Coupons",
-			"58rs1a": "Store Secondary Card",
-			"33fugm": "apply",
-			"4di4i2": "Points",
-			"q7jq76": "Quick input",
-			"wx78ju": "Total:",
-			"4884hk": "place order",
-			"2c3i88": "Do not use coupons",
-			"8vqfp3": "Do not use secondary cards",
-			"0pgsrm": "second",
-			"l1c8q6": "Display type does not allow submission of orders",
-			"6rk813": "Please select a shipping address",
-			"wq7gnb": "Please select a pickup address",
-			"553mxo": "Please select a coupon",
-			"718tux": "Enter my order",
-			"p7e91u": "Incorrect product info",
-			"4is2ak": "Enter store order",
-			"1fi842": "Select time",
-			"q8u066": "Please select a time",
-			"df3raf": "My Name",
-			"hjwerf": "My Phone",
-			"8fghje": "Please fill in your name and phone number",
-			"hw4l5m": "Optional coupons",
-			"5iuqow": "",
-			"4rb08b": "There are currently no available coupons available",
-			"3740ur": "Please select an address",
-			"71kidy": "Please select payment method",
-			"31616e": "The current mode does not allow the use of addresses",
-			"g7dk3f": "Card type selection",
-			"0s1k23": "Active",
-			"ntm2z5": "All orders",
-			"5lr84j": "Purchase duration not configured",
-			"5x86n3": "Member level not configured",
-			"bmueac": "Please select the duration of activation",
-			"64ml60": "Incorrect activation duration"
-		}
+		"get_phone_number": "Get your phone number",
+		"obtain_mobile_phone_number": "Please obtain a mobile phone number"
 	},
 	"agreement": {
-		"agreement": {
-			"w38e3v": "Dear user, in order to provide you with better service, we would like to offer you",
-			"hjn568": "Before using the mini program, you need to click on [Agree] and read the following agreement content to indicate that you fully understand, agree to, and understand the rules of the relevant agreement in this warm reminder. This includes providing a page display, product or service that better suits your needs in the location info you open, such as recommending products or related store and ranking info to you on the homepage.",
-			"iy7863": "Service User Agreement",
-			"jwi8n1": "Privacy Policy"
-		}
-	},
-	"open-setting-location": {
-		"open-setting-location": {
-			"407106": "]Permissions",
-			"61wezw": "Enable corresponding permission services",
-			"6vev38": "Get[",
-			"lult41": "position info",
-			"65q4b3": "Open the settings page",
-			"hwn386": "Location selection failed"
-		}
-	},
-	"customview": {
-		"customview": {
-			"726k7y": "Enter product name to search for"
-		}
-	},
-	"extraction-address": {
-		"extraction-address": {
-			"42v8tv": "Distance from you"
-		}
+		"dear_user_order_provide_better_service": "Dear user, in order to provide you with better service, we would like to offer you",
+		"before_using_mini_program_need_click": "Before using the mini program, you need to click on [Agree] and read the following agreement content to indicate that you fully understand, agree to, and understand the rules of the relevant agreement in this warm reminder. This includes providing a page display, product or service that better suits your needs in the location info you open, such as recommending products or related store and ranking info to you on the homepage.",
+		"service_user_agreement": "Service User Agreement",
+		"privacy_policy": "Privacy Policy"
 	},
 	"goods-category": {
-		"goods-category": {
-			"ico62g": "Selected product",
-			"7e4m68": "No subcategory data",
-			"5pj8ip": "Please select the product first",
-			"x69aow": "All",
-			"at5p35": "sales volume",
-			"283ot0": "heat",
-			"g2u3lf": "price",
-			"5p4ksj": "new",
-			"gy7y0w": "Products of different specifications need to be reduced in the shopping cart",
-			"x46kbv": "The cart ID is incorrect",
-			"z1eh3v": "Restricted purchase",
-			"1ox23z": "Quantity unchanged",
-			"o6i1w2": "After picking for so long, do you really want to clear it?"
-		}
-	},
-	"goods-comment": {
-		"goods-comment": {
-			"dfmjxd": "Rate",
-			"1qh8s8": "There is currently no rating available"
-		}
-	},
-	"goods-detail": {
-		"goods-detail": {
-			"w3jma9": "coupon",
-			"u401fi": "specifications",
-			"317jp2": "Related stores",
-			"dfge45": "Store Introduction",
-			"567uhg": "Store products",
-			"znz76d": "Evaluation",
-			"1rqkjt": "Positive review rate",
-			"6k7808": "I want to evaluate",
-			"q8e577": "View all answers",
-			"7ulh8b": "Ask question",
-			"l7dzv2": "Product parameters",
-			"2j44o2": "Product details",
-			"27wudx": "No detailed data available at the moment",
-			"v2974w": "Guess you like it",
-			"35f378": "Suspend sales",
-			"6brk57": "Please select a specification",
-			"by7052": "Already ",
-			"tq1976": "The URL value is empty",
-			"uyghj2": "Copy value is empty",
-			"98v424": "Store data is incorrect",
-			"721e2h": "Event not processed（"
-		}
-	},
-	"goods-search": {
-		"goods-search": {
-			"j8o278": "Filter out",
-			"t9nikq": "Piece of data"
-		}
-	},
-	"points": {
-		"search": {
-			"title": "Exchange goods search",
-			"placeholder": "Search redeemable goods",
-			"all_goods": "All redeemable goods",
-			"clear_where": "Clear search"
-		}
-	},
-	"index": {
-		"index": {
-			"443683": "Ended",
-			"516559": "Activity rules",
-			"s5r784": "Latest purchase",
-			"1c17n3": "Returned",
-			"75l3l2": "Unreturned",
-			"17vy72": "Missing tab data!",
-			"i78v36": "Returning to the store",
-			"8t4j95": "Recommended products",
-			"lk0i6c": "My coupon",
-			"tbo22p": "Join",
-			"z88r5s": "Get details of member points",
-			"b46kge": "Currently available",
-			"t26j9z": "integral",
-			"srd2ch": "original",
-			"u5642g": "Integral rule",
-			"qbi72m": "Got it",
-			"i73nwk": "Points details",
-			"f3l1xt": "Product exchange",
-			"4v5nq5": "exchange",
-			"t3d917": "Select location",
-			"c5273j": "Enter store name",
-			"1vf378": "Latest stores",
-			"1e582h": "Add notes",
-			"t1o84g": "Please enter the consumption amount",
-			"872w3v": "We are about to start a robbery",
-			"399f6c": "Second price reduction",
-			"f69r4i": "The internet has deviated a bit~00home",
-			"slf50q": "Authorized login",
-			"rmv185": "If it is not my own operation, please ignore the application",
-			"n0vnl6": "Successfully logged in",
-			"63g4m1": "New Live"
-		}
-	},
-	"logout": {
-		"logout": {
-			"u10002": "Confirm cancellation",
-			"9vfzz4": "After account cancellation, it cannot be restored. Are you sure to continue?"
-		}
-	},
-	"paytips": {
-		"paytips": {
-			"d8m853": "Processing",
-			"6y488i": "Payment failed",
-			"e732we": "Payment canceled",
-			"13v11t": "Network connection error",
-			"u1153p": "Payment result unknown",
-			"6mpsl7": "User cancels payment",
-			"59u769": "Other abnormal errors"
-		}
-	},
-	"personal": {
-		"personal": {
-			"cw1d8p": "Avatar",
-			"gw8br3": "nickname",
-			"jibx42": "birthday",
-			"6m33c4": "Detailed address",
-			"x2fofv": "Gender",
-			"44112i": "Nickname of 1-16",
-			"85404s": "Please select your birthday",
-			"re674n": "Address can be up to 30 long"
-		}
-	},
-	"detail": {
-		"detail": {
-			"324777": "To",
-			"455787": "recommendation",
-			"b4f3nw": "Activity products",
-			"ans2p4": "More activities",
-			"5knxg6": "No related products available",
-			"kt41ki": "Message time:",
-			"e6ga1y": "browse",
-			"ng628i": "Administrator's reply",
-			"7rg4bb": "Reply time:",
-			"p7o522": "My question",
-			"6026t4": "save",
-			"32171c": "Invalid",
-			"27pmj3": "Buy Now",
-			"9624hp": "Select specifications",
-			"8618mj": "Please select the number",
-			"09e3bx": "Product specifications",
-			"40298g": "Section",
-			"5kbjoy": "Item unavailable",
-			"jsj3u8": "Please select at least",
-			"jksm81": "Items",
-			"1j6yxy": "Related products",
-			"e439j9": "Bowen",
-			"j5owf1": "There is currently no logistics info available",
-			"025362": "Co owned",
-			"0av5r9": "Related products",
-			"53m44k": "The label data does not exist",
-			"dor2v9": "Business hours:",
-			"688i26": "Map",
-			"r4124d": "Service:",
-			"54k10s": "Long press WeChat for consultation",
-			"vj4nom": "Long press line to consult",
-			"q42ger": "Product search",
-			"8q6345": "Product keywords",
-			"rdxjvh": "Person sign in, total",
-			"15i191": "Integral, total",
-			"8ua11k": "organize a team",
-			"25x8ij": "Signed in",
-			"mvj266": "Sign in immediately",
-			"31lky7": "My check-in",
-			"p07k62": "today",
-			"96bwp0": "today",
-			"we522y": "not",
-			"mqmxbt": "Sign in and obtain",
-			"sx6u43": "Rule Description",
-			"6qk085": "Successful check-in",
-			"ndp2k3": "Congratulations on obtaining",
-			"7itw5w": "Use Now",
-			"6w8t3g": "day",
-			"xtcy73": "one",
-			"w2p2d9": "two",
-			"xt8596": "three",
-			"13s18l": "four",
-			"n5rm3q": "five",
-			"3d23mc": "six",
-			"73rb8q": "year",
-			"zill36": "month",
-			"y2217b": "Sign in",
-			"4u64dg": "Live streaming status",
-			"y2639j": "Start time",
-			"fa8h7j": "poster",
-			"eg25j9": "Enter live",
-			"567uyh": "WeChat original ID is not configured in the background",
-			"86g7e1": "No WeChat app installed",
-			"9d3o6w": "Please open it in the WeChat mini program",
-			"6xvl35": "Generating",
-			"fn3w01": "release",
-			"4w20tq": "Operation type:",
-			"s101d1": "Number of operations:",
-			"e30wj1": "Original quantity:",
-			"jdour8": "Latest quantity:",
-			"7fhy2u": "View more details",
-			"yvmu0z": "account details "
-		}
-	},
-	"form": {
-		"form": {
-			"s14osm": "Add image（",
-			"2f52v3": "Anonymous publishing",
-			"qt0q5u": "Please provide a detailed description of the problem, and we will answer it as soon as possible!",
-			"bniyyt": "Handling errors",
-			"8l3ul5": "User not logged in",
-			"5v5bjs": "Please fill in the content",
-			"043a10": "Is it enabled",
-			"5hn8k3": "cover photo",
-			"xy87t8": "describe",
-			"kvr2i3": "SEO Title",
-			"l87ju1": "SEO keywords",
-			"5487bt": "SEO Description",
-			"4vku7u": "Post classification",
-			"4cbom4": "Please select",
-			"4h814w": "Pack up more",
-			"lfwj0g": "Expand more",
-			"2e5rv3": "Uploading, please wait a moment",
-			"v19gg8": "Please enter a title",
-			"gu3x97": "Please select a category",
-			"adiq70": "Please enter the content"
-		}
+		"subcategory_data": "No subcategory data",
+		"select_product_first": "Please select the product first"
 	},
 	"goods-list": {
-		"goods-list": {
-			"27nkjm": "Questions from",
-			"00n7i3": "ask",
-			"rw12i7": "answer",
-			"278qr1": "View All",
-			"8y3cc7": "Answers",
-			"aem3e6": "Put away the answer",
-			"nr77jf": "There is currently no source of goods available"
-		}
-	},
-	"user-detail": {
-		"user-detail": {
-			"o92ral": "Question details",
-			"k5867n": "contacts",
-			"gfe703": "Contact phone number",
-			"uy6lrz": "title",
-			"7cufw6": "content",
-			"u411r2": "Reply content",
-			"teo6qd": "Reply time"
-		}
+		"there_currently_source_goods_available": "There is currently no source of goods available",
+		"ask": "ask"
 	},
 	"search": {
-		"search": {
-			"723rbx": "Actually, searching is very simple ^ _ ^!",
-			"e415ir": "not begin",
-			"46g3i2": "Living",
-			"v60305": "Paused",
-			"660us5": "Actually, searching is very simple ^ _ ^!",
-			"ic9b89": "Please enter search keywords"
-		}
-	},
-	"user-list": {
-		"user-list": {
-			"yhvl2q": "Are you sure you want to delete this post?"
-		}
-	},
-	"shop": {
-		"shop": {
-			"4q9oe2": "Received"
-		}
+		"actually_searching_very_simple_2": "Actually, searching is very simple ^ _ ^!"
 	},
 	"user": {
-		"user": {
-			"981200": "Rebate Overview",
-			"s3y4ji": "not used",
-			"pggs6s": "Used",
-			"528t26": "Expired",
-			"3ks1wi": "You currently do not have any coupons~",
-			"b5cnj1": "Pickup point",
-			"4rj120": "Superior user",
-			"567lwz": "modify",
-			"67y36w": "Basic statistics",
-			"rjye50": "people",
-			"q822fj": "Rebate statistics",
-			"xjxb2v": "Go promote",
-			"25f97u": "query",
-			"iynkpl": "Please enter user info to search first!",
-			"2344s8": "application",
-			"nk3cpq": "Enter user ID/first name/nickname/member code/mobile phone/email",
-			"dcbt21": "custom",
-			"4141u2": "Searching",
-			"f5rny5": "Please search for users first",
-			"n4orgk": "Activate membership",
-			"k614v7": "Renewal of membership",
-			"65cc6z": "Continuous activation",
-			"76dcx6": "Promote customers",
-			"95s1ez": "Are you sure to continue with the renewal based on the original duration and fees?",
-			"91h03v": "Payment Code",
-			"2k0227": "Exit",
-			"3q4p8k": "Collection",
-			"57xw84": "Tracks",
-			"k78280": "Points",
-			"9u8e61": "Pay",
-			"66714e": "Shipping",
-			"aa1ri3": "Sales",
-			"67p34x": "balance",
-			"a8dapply": "Apply for distribution"
-		}
-	},
-	"logistics": {
-		"logistics": {
-			"dxu6ql": "Delivery time:",
-			"5542tq": "Delivery has not started yet",
-			"895ug2": "Delivery time:",
-			"76q0ii": "Not yet delivered"
-		}
-	},
-	"order": {
-		"order": {
-			"725882": "Enter order number/recipient/recipient phone number",
-			"865029": "Abnormal cause",
-			"jhgfd1": "Shipping info",
-			"hbvwq4": "Receipt info",
-			"71n22h": "Single ID",
-			"232ygr": "Order number",
-			"7dxbm5": "Phone",
-			"ra8222": "Address",
-			"75ie9c": "details",
-			"021438": "Start delivery",
-			"ip4xo5": "Redelivery",
-			"51q275": "Complete delivery",
-			"fb6dge": "abnormal",
-			"46q2z7": "Upload photos",
-			"o11d44": "Up to upload",
-			"9cvj96": "Submission completed",
-			"eyir7g": "Submit exception",
-			"q4c8j0": "Description can be up to 200 characters long",
-			"g23kyj": "The reason for the anomaly can be up to 200 characters long",
-			"psi67g": "Unable to recover or continue after deletion?",
-			"s5cpq5": "Are you sure to start shipping the order?",
-			"13j20t": "In delivery",
-			"7ltibl": "Please upload photos",
-			"c69064": "Delivered",
-			"hun5n3": "Please fill in the reason",
-			"pjb15r": "Unpay",
-			"s8g966": "Paid",
-			"q820hx": "receive",
-			"15lr5l": "Completed",
-			"330m76": "Source terminal",
-			"p3scy0": "The avatar address is incorrect",
-			"o411h6": "Merge invoicing",
-			"15k32o": "Please select data first",
-			"3fr155": "The element parameter ID is incorrect",
-			"1k98tk": "Canceled",
-			"6390gk": "Closed",
-			"vvxct1": "Opening order number",
-			"vjfki8": "Opening duration",
-			"93j3zq": "No form data"
-		}
-	},
-	"order-detail": {
-		"order-detail": {
-			"36op8f": "Order number",
-			"ygvc34": "Merchant name",
-			"x3ge6c": "Order amount",
-			"v52n5r": "refund amount",
-			"8n1f72": "Product quantity",
-			"2443o1": "Delivery status",
-			"342sfz": "Delivery time",
-			"2dw4gd": "Completion time",
-			"r3bg45": "Complete description",
-			"521pp4": "Complete photos",
-			"u745i8": "Abnormal time",
-			"5fq8pr": "Dispatch time",
-			"21ift9": "Update time",
-			"9153qn": "Order time",
-			"pyw6xg": "User profile picture",
-			"2d766e": "User nickname",
-			"w78rgm": "Order time",
-			"rn4hhi": "type"
-		}
-	},
-	"extraction": {
-		"extraction": {
-			"suna53": "Apply Now",
-			"j0o47u": "The application info is currently under review",
-			"60601g": "Pickup point info",
-			"48rp75": "Edit Information",
-			"641gp7": "Pickup order statistics",
-			"wcv68q": "View pickup orders",
-			"53h4fj": "Pending",
-			"wq25fk": "Processed",
-			"864dtt": "The current status has also been terminated, and the data can be re edited and submitted for review.",
-			"11825x": "Application info review failed",
-			"w6hg74": "Reason:"
-		}
-	},
-	"extraction-apply": {
-		"extraction-apply": {
-			"u439pg": "Logo image",
-			"bflosr": "Suggest 300*300px",
-			"9t81k8": "alias",
-			"cy87k6": "Provinces cities and districts",
-			"liqbru": "Please select a province first",
-			"r4q86m": "Please select a city first",
-			"47v7m0": "geographical position",
-			"8831v6": "Please select a geographical location",
-			"5y2yzu": "Attention: Editing info will be re reviewed before it can take effect",
-			"wt1w0m": "The alias format can be up to 16 characters long",
-			"73efnt": "Contact format between 2-16 characters",
-			"qixk24": "Landline or mobile phone",
-			"gxo73a": "Detailed address format between 1 and 80 characters",
-			"s3h5o3": "Please select a province",
-			"4s4s15": "Please select a city",
-			"fk4gw5": "Please select district/county",
-			"4s229b": "Please bind your phone number first",
-			"m3xdif": "Please authorize user info first",
-			"h8f437": "Data acquisition failed",
-			"fo7y6c": "Province acquisition failed",
-			"b6qg7b": "City acquisition failed",
-			"5s5734": "District/County acquisition failed",
-			"q15b4n": "Please fill in the contact person",
-			"3or25c": "Please fill in the contact phone number",
-			"m99d2g": "Please select a province",
-			"03587o": "Please select a city",
-			"pt8436": "Please select a district or county",
-			"v1g617": "Please provide detailed address",
-			"rm14pu": "The data needs to be re reviewed before it can take effect"
-		}
-	},
-	"apply": {
-		"apply": {
-			"p8ssed": "Your distribution application has been approved",
-			"l3vnel": ", level: ",
-			"a9time": "Review time: ",
-			"a4time": "Application time: ",
-			"i5nfo": "Application info",
-			"w6ait": "Your distribution application is under review. Please wait patiently.",
-			"f7ail": "The previous application was not approved",
-			"r8etry": "You can modify the info and submit again",
-			"g9uide": "Please tap \"Go fill in\" to fill in the application info and submit for review",
-			"g0ofill": "Go fill in",
-			"r1eapp": "Reapply",
-			"c1nfirm": "Fill in the application form now?"
-		}
-	},
-	"apply-form": {
-		"apply-form": {
-			"e2dit": "Modifications will be resubmitted for review. Please confirm the info is correct.",
-			"e3mpty": "The application form is not configured yet. Please contact the administrator",
-			"s4ubmit": "Submit application",
-			"s5ave": "Save changes"
-		}
-	},
-	"extraction-order": {
-		"extraction-order": {
-			"2y7lq1": "Picking up goods",
-			"suo4oz": "Please enter the pickup code",
-			"kuqvlv": "Order number/pickup code",
-			"znufs8": "Please enter the pickup code",
-			"hbj4y7": "Incorrect operation data"
-		}
-	},
-	"extraction-switch": {
-		"extraction-switch": {
-			"w94x36": "distance",
-			"613b58": "Data error"
-		}
-	},
-	"introduce": {
-		"introduce": {
-			"017d67": "Level certificate",
-			"el4ib2": "Rebate ratio",
-			"syf66q": "First level",
-			"q4t9kl": "second level",
-			"e5os6e": "Level 3",
-			"d7kle4": "Level rules",
-			"5t5vzi": "Unconditional"
-		}
-	},
-	"map": {
-		"map": {
-			"ivy154": "Total number of orders placed",
-			"557z8x": "View orders"
-		}
-	},
-	"poster": {
-		"poster": {
-			"673605": "Click to copy the link address",
-			"rbdj4b": "Poster sharing",
-			"m54q3e": "After saving the poster, send it to WeChat friends/groups, QQ friends/groups, share it on social media, Weibo, etc. for promotion, and easily earn rebates!",
-			"b5i123": "View long press save",
-			"hk8c9p": "Regenerate",
-			"9y4bwq": "QR code sharing",
-			"h212v8": "After saving the QR code, send it to WeChat friends/groups, QQ friends/groups, share it on social media, Weibo, etc. for promotion, and easily earn rebates!",
-			"j3qv45": "View QR code, long press save",
-			"r534xd": "Link sharing",
-			"vn36y7": "Copy the following link, send it to WeChat friends/groups, QQ friends/groups, share it on social media, Weibo, etc. for promotion, and easily earn rebates!",
-			"eu3j21": "The promotional image address is incorrect"
-		}
-	},
-	"profit": {
-		"profit": {
-			"3c7zmg": "To be effective",
-			"67o785": "To be settled",
-			"l5knxu": "Settled",
-			"utg512": "Revenue amount",
-			"6a7t71": "Current level",
-			"19a8l6": "Order details",
-			"4r88cp": "Immediate settlement",
-			"8jqr78": "In effect",
-			"nk58v6": "Effective amount",
-			"vuvz6g": "Refund amount",
-			"5c7sof": "Order ID is incorrect",
-			"7y47sb": "Rebate amount"
-		}
-	},
-	"profit-detail": {
-		"profit-detail": {
-			"kn8yye": "Settlement status",
-			"x28rw5": "Order payment status",
-			"b7v892": "Add time",
-			"jkrvf3": "Settlement time",
-			"3jg81h": "Rebate rules"
-		}
-	},
-	"promotion-order": {
-		"promotion-order": {
-			"6rs63v": "Total GMV of newly added customers",
-			"iwa646": "Orders",
-			"2p5215": "Total GMV of orders"
-		}
-	},
-	"promotion-user": {
-		"promotion-user": {
-			"62c8m1": "mobile",
-			"i2rf31": "User orders",
-			"o6qi74": "Promote users",
-			"kx7595": "Consumed users",
-			"2ey5t1": "Unconsumed users",
-			"852zib": "New customers added",
-			"h8mx3e": "New customers (valid)",
-			"fvbq25": "New customers (need to repurchase)",
-			"2g7enc": "Consumer orders",
-			"32bf15": "Consumption amount",
-			"76748p": "Last order time",
-			"u43380": "Subordinate orders",
-			"8n4tr3": "Lower level consumption",
-			"1gc3ny": "Last order time for subordinates",
-			"3l1187": "Subordinate users",
-			"g5332w": "No order placed",
-			"8i641g": "Ordered"
-		}
-	},
-	"recommend-detail": {
-		"recommend-detail": {
-			"265vyu": "Starting purchase",
-			"2sis3v": "Inventory quantity"
-		}
-	},
-	"recommend-form": {
-		"recommend-form": {
-			"57zrl5": "icon",
-			"3vk50b": "Suggest 100 * 100px",
-			"5ws7m3": "Related products",
-			"27goz3": "+Select product",
-			"6rlju7": "Current Display",
-			"q4qr64": "Title format: 1~60 characters",
-			"29au77": "Description format can be up to 200 characters long",
-			"203itn": "Category",
-			"h5v45f": "Please enter the product name",
-			"20m5gj": "Please search for data first!",
-			"7gc30l": "Classify All",
-			"yd3833": "Please fill in the title",
-			"31k41l": "Please select the product",
-			"e5k407": "Searching",
-			"145ci4": "Selection successful",
-			"ocg49p": "Selection list already exists"
-		}
-	},
-	"team": {
-		"team": {
-			"784249": "Binding time:",
-			"x7p2k9": "Expiration time:",
-			"q4m8n1": "Release time:",
-			"i040fg": "reverse",
-			"2ny6k1": "Order placement time:",
-			"2i4k79": "Whether to place an order:",
-			"3l538c": "Reset",
-			"pcaom3": "start time",
-			"iee9bp": "End time",
-			"6h2l64": "Joined at"
-		}
-	},
-	"visit-form": {
-		"visit-form": {
-			"0su017": "Visit content",
-			"6l81lz": "Visiting photos",
-			"e9r65a": "Visit content, up to 230 characters long",
-			"6f63it": "Please select a customer",
-			"5k455y": "Please fill in the visit details",
-			"56vk4m": "Please upload visit photos"
-		}
-	},
-	"visit-list": {
-		"visit-list": {
-			"q76du4": "Visit description",
-			"4z367h": "Visiting pictures"
-		}
-	},
-	"goods-comments": {
-		"goods-comments": {
-			"31ees6": "Product rating",
-			"6p942c": "Please enter your review",
-			"pe5p52": "Please select a rating",
-			"1wut9j": "Please enter a review",
-			"s65197": "Administrator's reply:",
-			"1p1r2e": "This product has not been reviewed yet~"
-		}
-	},
-	"invoice": {
-		"invoice": {
-			"p3dmd2": "Order invoicing",
-			"bh8yt3": "Recharge invoice",
-			"k8f2m1": "Apply invoice",
-			"m9n4p2": "Select invoice type",
-			"l3832z": "Business type",
-			"hoenw8": "Application type",
-			"j04kjc": "Invoice type",
-			"fvuc4p": "Invoice amount",
-			"y724c7": "Invoice header"
-		}
-	},
-	"invoice-detail": {
-		"invoice-detail": {
-			"s70kj4": "Application Information",
-			"1s2f0g": "Electronic invoice",
-			"4tu3v3": "You can click on the invoice name and copy it, then go to the browser to open the address and download the invoice.",
-			"p73963": "Invoice content",
-			"41qbu6": "Name of the bank where the enterprise opens the account",
-			"3a9459": "Enterprise account opening",
-			"2g7t23": "Enterprise contact phone number",
-			"6k6sov": "Registered address of the enterprise",
-			"7159m0": "Recipient Name",
-			"f2222p": "Recipient's phone number",
-			"q8l3zj": "Recipient address",
-			"rpdwd3": "Reason for rejection",
-			"2000a0": "Express name"
-		}
-	},
-	"invoice-saveinfo": {
-		"invoice-saveinfo": {
-			"x8hhiv": "Unified social credit code or tax identification number for enterprises",
-			"t3i3e3": "Please select invoice type",
-			"k31t2s": "Please select the application type",
-			"i73t3c": "Please select invoice content",
-			"x461e0": "Invoice header, up to 200 characters long",
-			"924cag": "Unified social credit code or tax identification number for enterprises, with a maximum of 160 characters",
-			"ymvw6b": "Enterprise account opening bank name, up to 200 characters",
-			"664qc7": "Enterprise account opening, with a maximum of 160 characters",
-			"bbseo1": "Enterprise contact phone number 6-15 characters",
-			"85735j": "Registered address of the enterprise, with a maximum of 230 characters",
-			"gsc7dy": "The recipient's name format should be between 2 and 30 characters",
-			"bp8822": "Recipient's phone number is 6-15 characters long",
-			"u7h724": "Recipient address, up to 230 characters",
-			"d3qbe1": "Email, up to 60 characters",
-			"vaw647": "Remarks can be up to 230 characters long",
-			"89815t": "Invoicing",
-			"004t56": "Add",
-			"dl11n1": "The invoice amount must be greater than 0",
-			"r13p43": "Please fill in the invoice header, with a maximum of 200 characters",
-			"ws4wbb": "Please fill in the unified social credit code or tax identification number of the enterprise, with a maximum of 160 characters",
-			"87itn8": "Please fill in the name of the company's account opening bank, with a maximum of 200 characters",
-			"01lw93": "Please fill in the enterprise account number, with a maximum of 160 characters",
-			"414ihr": "Please fill in the company's contact phone number, which is 6-15 characters long",
-			"g3yh32": "Please fill in the registered address of the company, with a maximum of 230 characters",
-			"4xy6xi": "Please fill in the recipient's name format between 2 and 30 characters",
-			"quhnk0": "Please fill in the recipient's phone number, which should be 6-15 characters long",
-			"kq77u3": "Please provide the recipient's address, with a maximum of 230 characters"
-		}
-	},
-	"member-code": {
-		"member-code": {
-			"oc4x18": "If you encounter a scan failure, please turn the screen to the brightest position and scan the code again",
-			"26bu38": "Member Code",
-			"x58gqu": "Payment Code",
-			"yj6g3a": "Go log in",
-			"kx4yk8": "The member code is empty"
-		}
-	},
-	"batchorder-list": {
-		"batchorder-list": {
-			"25sh5e": "In progress"
-		}
-	},
-	"frequencycard-list": {
-		"frequencycard-list": {
-			"cgy327": "Usage records",
-			"954ewh": "Effective",
-			"8x98g7": "suspend",
-			"5n3ums": "finish",
-			"n36x3w": "close",
-			"cx75t7": "Available times",
-			"3m1w12": "Used times",
-			"89t8am": "Starting time"
-		}
-	},
-	"frequencycard-used": {
-		"frequencycard-used": {
-			"538686": "Deduction frequency",
-			"xjmepo": "Description",
-			"aod4pc": "Operators"
-		}
-	},
-	"orderallot-detail": {
-		"orderallot-detail": {
-			"81jvw1": "Order type",
-			"9c3d7e": "Booking data",
-			"0f4g8h": "Staff:",
-			"1i5j9k": "Booking time:"
-		}
-	},
-	"orderallot-list": {
-		"orderallot-list": {
-			"w2w2w4": "Receiving goods",
-			"6m73j2": "batch",
-			"b13k5r": "Secondary card",
-			"w2t242": "logistics",
-			"285ir2": "In service",
-			"x5l17j": "Received",
-			"o3ouqv": "Please confirm that the goods have been received or completed, and cannot be restored after operation. Are you sure to continue?"
-		}
-	},
-	"tips": {
-		"tips": {
-			"0azfc3": "Total payment amount",
-			"579u02": "end page"
-		}
-	},
-	"design": {
-		"design": {
-			"882220": "To {shop. close_weekname}, {shop. open-time}}-",
-			"ay7m42": "Search All",
-			"21kak7": "Online Service",
-			"745kx2": "branch",
-			"wtx1l8": "View product categories",
-			"ses9m2": "Please enter the keywords of the product you are searching for",
-			"i7725u": "Search",
-			"gv16tj": "to"
-		}
-	},
-	"user-coming-list": {
-		"user-coming-list": {
-			"xkwnl8": "Reward points",
-			"sq4379": "Sign in time"
-		}
-	},
-	"user-qrcode-detail": {
-		"user-qrcode-detail": {
-			"b5ilz3": "Heaven, flip",
-			"22zc5y": "-{detail. specificed_time_reward. timeend}}, additional reward",
-			"18680z": "Double the reward for consecutive attendance",
-			"dupsnc": "continuity",
-			"c8e5of": "times",
-			"37bh73": "Additional rewards during designated time periods",
-			"6l7r99": "time interval",
-			"mjfygy": "Inviter Rewards",
-			"pb2e32": "Invitee rewards",
-			"do23j6": "Contact Name",
-			"5k2ibd": "Contact phone number",
-			"911a61": "Contact address",
-			"share_block": "Promotion",
-			"specified_time_incomplete_tip": "(Incomplete: no extra reward at check-in)",
-			"share_link_label": "Share link"
-		}
-	},
-	"user-qrcode-saveinfo": {
-		"user-qrcode-saveinfo": {
-			"xa2k42": "Contact name format between 2 and 30 characters",
-			"e9ko33": "Contact phone number 6-15 characters",
-			"bbxaw6": "Contact address, up to 230 characters",
-			"jw2h8l": "Sign in code",
-			"84g5t6": "Please fill in the contact name format between 2 and 30 characters",
-			"1tilke": "Please fill in the contact phone number, which should be 6-15 characters long",
-			"5m2752": "Please fill in the contact address, with a maximum of 230 characters"
-		}
-	},
-	"cash-auth": {
-		"cash-auth": {
-			"b39a25": "Choose identity authentication method",
-			"582q6x": "Please select an authentication account",
-			"d318op": "Please enter the security verification code",
-			"0j8388": "Operation prompt",
-			"59iipw": "1. Please select“",
-			"t8y3r7": "'Or'",
-			"5wbuuy": "One way is to obtain the security verification code and input it correctly.",
-			"r569wz": "2. If you have not bound your phone or your email has expired, you can bind your phone and complete the verification by receiving SMS from your phone.",
-			"35837l": "3. If you have not bound your email or it has expired, you can bind your email and complete the verification by receiving the email.",
-			"q2a553": "4. Please input the verification code correctly below. If you cannot see it clearly, you can click on the image to replace it. After completing the input, proceed to the next step.",
-			"lh6bjr": "5. After receiving the security verification code, please complete the verification within 10 minutes.",
-			"ob4gn0": "6. After successful security verification, please complete the cash application within 30 minutes.",
-			"l2i4s8": "Current effective amount",
-			"27b4w5": "Minimum cash amount",
-			"2hc312": "Verification code format with 4 digits",
-			"5dcsbd": "Please choose the authentication method"
-		}
-	},
-	"cash-create": {
-		"cash-create": {
-			"qg404q": "Withdrawal amount",
-			"9ugssd": "Handling fees",
-			"5o1q52": "Gift amount cannot be withdrawn",
-			"iaw845": "Withdrawable amount",
-			"1dbkw2": "Available amount",
-			"162f7o": "Total amount of gifts",
-			"yu2raf": "Withdrawal method",
-			"5mmir5": "Payment platform",
-			"14n20v": "It is strongly recommended to give priority to filling in the names of the four state-owned banks (Bank of China, China Construction Bank, Industrial and Commercial Bank of China and Agricultural Bank of China). Please fill in the detailed names of the branches of the deposit banks. For virtual accounts such as Alipay, Tenpay and WeChat, you can fill in the corresponding names directly.",
-			"36756z": "Receiving account",
-			"748r3i": "Bank account or virtual account (Alipay, Tenpay, WeChat, etc.)",
-			"1xtff6": "Name of account holder",
-			"445m7n": "The real name of the account holder of the receiving account",
-			"858o54": "Security verification has timed out. Please verify again before proceeding",
-			"ke15x5": "Return to reapply for cash",
-			"9k2m4x": "The administrator has not configured withdrawal methods. Please contact the administrator.",
-			"cymbdz": "Withdrawal amount, minimum",
-			"27ky42": ", highest",
-			"u2rnlw": "The format of the payment platform is between 1 and 60 characters",
-			"s72t44": "The format of the receiving account should be between 1 and 60 characters",
-			"f4605e": "The format of the account holder's name is between 1 to 30 characters",
-			"6t7x9u": "Please fill in the cash amount",
-			"thjid2": "Please choose a withdrawal method",
-			"vbr59h": "Please fill in the payment platform",
-			"0mn186": "Please fill in the receiving account number",
-			"c7h4mu": "Please fill in the name of the account holder",
-			"724kn8": "Withdrawals cannot be lower than",
-			"duo0ts": "Withdrawal cannot be greater than",
-			"678iu2": "Estimated handling fee",
-			"8fm3k1": "Maximum withdrawal amount",
-			"m9x2p1": " minimum",
-			"p4k8n2": ", ",
-			"3xk8m2": "Single withdrawal cannot exceed "
-		}
-	},
-	"payment-code": {
-		"payment-code": {
-			"b74qxe": "）Automatically refresh payment code in seconds"
-		}
-	},
-	"recharge": {
-		"recharge": {
-			"3shyx4": "Account balance",
-			"60k2v3": "Select recharge amount",
-			"qbw1x2": "money",
-			"x27b25": "Recharge Now",
-			"4fm61g": "Recharge instructions",
-			"otwkjn": "Recharge",
-			"23zwpz": "other",
-			"73f4v9": "Please enter the recharge amount",
-			"lh6k86": "Recharge address",
-			"e5rblc": "Coin charging network",
-			"eb6722": "Choose recharge coins",
-			"k1e7hs": "Other quantities",
-			"e8n7ul": "Recharge instructions:",
-			"0i541i": "Please enter the recharge quantity",
-			"5q02ar": "Please select or enter the recharge quantity"
-		}
-	},
-	"transfer": {
-		"transfer": {
-			"2q274j": "Transfer amount",
-			"9xe2bl": "My balance:",
-			"t53ary": "Please enter user ID/name/code/mobile phone/email",
-			"g22y5v": "Please enter the transfer amount",
-			"2bwh7h": "Please enter transfer remarks info",
-			"1aijp1": "Please enter the receiving account number",
-			"x4mzo9": "Please enter the correct receiving account",
-			"678uyg": "Transfer order number",
-			"4g21cu": "Payee",
-			"t36tk2": "Transfer remarks",
-			"b4m5p3": "Transfer currency",
-			"3i4h4z": "Transfer immediately",
-			"d15853": "Please enter the transfer currency"
-		}
-	},
-	"user-cash-detail": {
-		"user-cash-detail": {
-			"e8a3e8": "Withdrawal number",
-			"wyad6w": "Withdrawal status",
-			"j5s3u6": "Transfer platform",
-			"53k647": "Transfer Name",
-			"m556tl": "Transfer account",
-			"i308o1": "Payment amount",
-			"451xxt": "Payment time"
-		}
-	},
-	"user-recharge-detail": {
-		"user-recharge-detail": {
-			"ch84a8": "Recharge order number",
-			"dq5v2u": "Recharge status",
-			"7272ia": "Recharge amount"
-		}
-	},
-	"user-transfer-detail": {
-		"user-transfer-detail": {
-			"x17599": "Transfer time"
-		}
-	},
-	"wallet-log-detail": {
-		"wallet-log-detail": {
-			"tdf3wo": "Operation type",
-			"744os7": "Amount type",
-			"ruq60b": "Operation amount",
-			"4q7pfq": "Original amount",
-			"r814ne": "Latest amount",
-			"0ghn6g": "Change Description",
-			"i2kze7": "Operation time"
-		}
-	},
-	"user-address": {
-		"user-address": {
-			"e8qg73": "default",
-			"3i4x2r": "Add new address",
-			"1rwt3l": "Import System Address",
-			"7r29v8": "Consignee:",
-			"2nmsi1": "Contact phone number:",
-			"s150l6": "Shipping address:"
-		}
-	},
-	"user-address-save": {
-		"user-address-save": {
-			"231435": "label",
-			"620370": "The address ID is incorrect",
-			"5yhgps": "name",
-			"h8f148": "region",
-			"13rpdw": "Click to select geographical location",
-			"mb7cjx": "retrieval",
-			"4rc269": "address",
-			"s3o1p5": "Scan",
-			"42l857": "Address Pasting Board",
-			"g43klm": "default address",
-			"3w7r14": "ID card name",
-			"0y1vl6": "ID No",
-			"761ek6": "ID card photo",
-			"c811s5": "Please fill in the original ID card for shooting, with clear images",
-			"wii4sp": "Contact person 2~16",
-			"65507o": "Landline or mobile phone",
-			"he685s": "Number",
-			"vdkv32": "Detailed address of 1-80",
-			"b32r6v": "Paste the entire address segment, automatically split the name, phone number, and address",
-			"l6vjlm": "Please enter the label name",
-			"c73v42": "Please fill in your real name",
-			"c742c8": "Please fill in the ID number number",
-			"t1loj5": "home",
-			"6t396c": "company",
-			"34rqp8": "school",
-			"2pey0m": "Province info failed",
-			"7w01kd": "The form name type is incorrect",
-			"z687lv": "Please enter the address info first",
-			"lrlmxf": "Please fill in your ID card name",
-			"0x8i97": "Please fill in the ID card number",
-			"224l36": "Please upload a photo of the front of your ID card",
-			"glf52g": "Please upload a photo of the back of your ID card",
-			"wkfi45": "Please enter data"
-		}
-	},
-	"user-order-comments": {
-		"user-order-comments": {
-			"uboc44": "anonymous",
-			"r9r3h0": "Does the baby meet your expectations? Let's talk about its advantages and shortcomings in beauty",
-			"si255j": "Very poor",
-			"42b0x1": "difference",
-			"72mov3": "commonly",
-			"16cmv6": "good",
-			"e4i88f": "Very good",
-			"021i2d": "Your comment will be presented anonymously",
-			"h2ci83": "Your comment will be presented in the form of a nickname",
-			"34ne4c": "Please rate first",
-			"x6fwbf": "There are still no ratings left",
-			"8f303u": "Please fill in the comment content",
-			"39y6ym": "Comment content should be between 6 and 230 characters long",
-			"488j15": "Each comment image cannot exceed 3 images"
-		}
-	},
-	"user-orderaftersale": {
-		"user-orderaftersale": {
-			"3wggcu": "To be confirmed",
-			"1kcn16": "To be returned",
-			"2kzi0t": "Pending review",
-			"1p5456": "Rejected"
-		}
-	},
-	"user-orderaftersale-detail": {
-		"user-orderaftersale-detail": {
-			"uuhf62": "Immediate return",
-			"00je4f": "Return address",
-			"4y2c1l": "voucher",
-			"bprwq9": "Reason for refund",
-			"85pnkf": "Number of items",
-			"84upo4": "Quantity cannot be greater than",
-			"1252if": "Cannot be greater than",
-			"9p6b1y": "Refund instructions",
-			"4y9355": "Upload credentials",
-			"1l42ms": "Upload up to 3 images",
-			"21icul": "Please select the reason",
-			"9kvu52": "Please enter the refund amount",
-			"4f8u0c": "Refund instructions can be up to 200 characters long",
-			"6d14hq": "Please enter the courier name",
-			"8tt862": "Please enter the tracking number",
-			"50cm8m": "Refund type",
-			"17j4cy": "current state",
-			"r2oy43": "Reason for application",
-			"c53k23": "Return quantity",
-			"5t586p": "Refund method",
-			"bifwmx": "Return time",
-			"8n414b": "Review time",
-			"23v6rp": "Please select the operation type",
-			"dn3423": "Please select the quantity of returns",
-			"c9e2ms": "Please fill in the courier name",
-			"ld10pm": "Please fill in the courier tracking number",
-			"87tuff": "Describe the reason",
-			"6uygft": "Describe the reason in a format of 1-230 characters",
-			"t67iug": "You have applied for platform intervention in mediation!",
-			"sdsfgg": "Apply for platform intervention"
-		}
-	},
-	"ask-comments": {
-		"ask-comments": {
-			"6l6vz7": "word",
-			"ymmd24": "Replies",
-			"dfhg54": "View more replies",
-			"5401r1": "Comments",
-			"4l77wt": "View more comments",
-			"m67961": "Looking forward to your speech",
-			"3o1rq6": "The maximum input character limit has been exceeded"
-		}
-	},
-	"ask-comments-goods": {
-		"ask-comments-goods": {
-			"xl51n6": "Answers",
-			"g6mc44": "If you have any questions, please ask other classmates~"
-		}
+		"payment_code": "Payment Code",
+		"exit": "Exit",
+		"collection": "Collection",
+		"tracks": "Tracks",
+		"sales": "Sales"
 	},
 	"bottom-line": {
-		"bottom-line": {
-			"44bct2": "I have a bottom line"
-		}
-	},
-	"cart": {
-		"cart": {
-			"7gdej1": "Nearby stores",
-			"h63814": "No store info available",
-			"t41i4x": "Amount details",
-			"miti3i": "Items",
-			"j8on74": "The cart is empty",
-			"2wfu7o": "Please bind your phone number",
-			"3v6ulk": "After choosing for so long, do you really want to delete it?",
-			"8q2yej": "Please slide the data you want to operate on first"
-		}
-	},
-	"copyright": {
-		"copyright": {
-			"5g8tdz": "Powered by Xiaotao Chinese Store"
-		}
-	},
-	"coupon-card": {
-		"coupon-card": {
-			"j318xx": "There is currently no type parameter available",
-			"m9316y": "Go ahead and use it"
-		}
+		"bottom_line": "I have a bottom line"
 	},
 	"goods-batch-buy": {
-		"goods-batch-buy": {
-			"9ectyf": "species",
-			"geq82x": "Amount:",
-			"ypby1k": "No relevant info available",
-			"7tp1tc": "Incorrect operation event type",
-			"dsfd98": "Out of stock"
-		}
+		"species": "species",
+		"amount": "Amount:",
+		"relevant_info_available": "No relevant info available",
+		"incorrect_operation_event_type": "Incorrect operation event type",
+		"out_stock": "Out of stock"
 	},
 	"goods-buy": {
-		"goods-buy": {
-			"ufdm25": "Incorrect specification data",
-			"737wzz": "Purchase quantity",
-			"4maexq": "Incorrect operation event type（"
-		}
-	},
-	"nav-more": {
-		"nav-more": {
-			"h9g4b1": "Click to collapse"
-		}
+		"incorrect_specification_data": "Incorrect specification data",
+		"purchase_quantity": "Purchase quantity",
+		"incorrect_operation_event_type": "Incorrect operation event type（"
 	},
 	"no-data": {
-		"no-data": {
-			"1u202v": "Temporarily no network connection",
-			"imw8f1": "Please check if the system settings ->cellular mobile network allow it【",
-			"q87572": "】APP uses cellular mobile network or wireless local area network"
-		}
-	},
-	"online-service": {
-		"online-service": {}
+		"temporarily_network_connection": "Temporarily no network connection",
+		"check_system_settings_cellular_mobile_network": "Please check if the system settings ->cellular mobile network allow it【",
+		"app_uses_cellular_mobile_network_wireless": "】APP uses cellular mobile network or wireless local area network"
 	},
 	"payment": {
-		"payment": {
-			"973g2e": "No payment info",
-			"z3y296": "Try clicking to pay",
-			"iu792d": "Payment details",
-			"25r53g": "Pay",
-			"058a46": "No payment method available",
-			"x6d585": "Please select the payment method first",
-			"011cj4": "Will the payment fee be deducted immediately after the operation, confirm to continue?",
-			"7ihx9u": "Incorrect payment method",
-			"e1f54e": "Requesting",
-			"vhx5dv": "Wrong payment type",
-			"597s8b": "The payment component interface cannot be empty",
-			"t4d687": "Payment service not configured",
-			"bv637f": "Payment undefined",
-			"4dszme": "Please use real machine operation, or the basic version of the mini program is too low!",
-			"k2i010": "After successful payment, please do not make duplicate payments. If the order status is not successful, please contact customer service for assistance",
-			"2rw3qh": "The payment method has not been adapted yet",
-			"sdfs31": "Has the payment been completed?"
-		}
-	},
-	"realstore-staff": {
-		"realstore-staff": {
-			"1a7b2c": "Book Service Staff",
-			"1b8c3d": "Store: ",
-			"8i9j0k": "Position: ",
-			"2a8b1c": "Bookable staff across all stores",
-			"2c9d4e": "Select",
-			"3b9c2d": "Booked",
-			"4c0d3e": "Book",
-			"5d1e4f": "Invalid parameters",
-			"6e2f5g": "ID: ",
-			"7f3g6h": "Phone: ",
-			"8g4h7i": "Bookable Services",
-			"9h5i8j": "Selected",
-			"0i6j9k": "No bookable services",
-			"a2b3c4": "Search staff name"
-		}
-	},
-	"realstore-cart": {
-		"realstore-cart": {
-			"v437n6": "Do you have any purchased items?",
-			"d1kk7x": "Please select the order type",
-			"2dc65q": "Please add the product first",
-			"b27ln3": "Add cart",
-			"47h2a0": "Request failed, please try again!",
-			"miv944": "start",
-			"20epzm": "Product data incorrect",
-			"8tzr7l": "Incorrect store info",
-			"87tty2": "Choice store",
-			"76rfgh": "Choose another store",
-			"r67uyg": "Enter store",
-			"3k8m2p": "Select staff and time slot",
-			"8s3t6u": "Please select time slot",
-			"8r2w5t": "Select date",
-			"1h6y9u": "Select time slot",
-			"4f3x7v": "No available time slots for this date",
-			"2p5q8r": "Booked",
-			"6t1w4x": "Taken",
-			"9y3z7a": "Confirm and checkout",
-			"0b4c8d": "This time slot is occupied, please select again",
-			"1e5f9g": "This date is not available",
-			"2h6i0j": "Please select staff first",
-			"3k7l1m": "Please select date first",
-			"4n8o2p": "This time slot is occupied",
-			"5q9r3s": "Cart is empty",
-			"6t0u4v": "Please select staff, date and time slot for each quantity",
-			"7w1x5y": "Selected time slot is occupied, please select again"
-		}
-	},
-	"share-popup": {
-		"share-popup": {
-			"h04xiy": "One click sharing with friends and group chat",
-			"rhs2c5": "One click sharing with WeChat friends and group chat",
-			"mv9l10": "One click sharing to WeChat Moments",
-			"f08y38": "One click share to WeChat favorites",
-			"1242w9": "One click sharing to QQ friends and spaces",
-			"1oh013": "Click to copy the address and share it with friends or group chat",
-			"dcp2qu": "Generate posters and share them on social media, friends, and group chats"
-		}
-	},
-	"user-qrcode": {
-		"user-qrcode": {
-			"8p57v3": "Team up check-in"
-		}
+		"payment_info": "No payment info",
+		"try_clicking_pay": "Try clicking to pay",
+		"select_payment_method_first": "Please select the payment method first",
+		"payment_fee_deducted_immediately_after_operation": "Will the payment fee be deducted immediately after the operation, confirm to continue?",
+		"incorrect_payment_method": "Incorrect payment method",
+		"requesting": "Requesting",
+		"wrong_payment_type": "Wrong payment type",
+		"payment_component_interface_cannot_empty": "The payment component interface cannot be empty",
+		"payment_undefined": "Payment undefined",
+		"use_real_machine_operation_basic_version": "Please use real machine operation, or the basic version of the mini program is too low!",
+		"after_successful_payment_make_duplicate_payments": "After successful payment, please do not make duplicate payments. If the order status is not successful, please contact customer service for assistance",
+		"payment_method_been_adapted_yet": "The payment method has not been adapted yet",
+		"payment_been_completed": "Has the payment been completed?"
 	},
 	"switch": {
-		"switch": {
-			"8w5ok6": "Are you sure you want to adjust it to {0}?"
-		}
+		"sure_want_adjust": "Are you sure you want to adjust it to {0}?"
 	},
 	"time-select": {
-		"time-select": {
-			"8k5rr7": "Sunday",
-			"17353c": "Monday",
-			"40rmq4": "Tuesday",
-			"q35g41": "Wednesday",
-			"v213l8": "Thursday",
-			"8q3q2x": "Friday",
-			"9605m5": "Saturday",
-			"h7l2xj": "Daily（",
-			"cq522p": "Today（",
-			"ub264m": "Tomorrow（"
-		}
-	},
-	"upload": {
-		"upload": {}
+		"sunday": "Sunday",
+		"monday": "Monday",
+		"tuesday": "Tuesday",
+		"wednesday": "Wednesday",
+		"thursday": "Thursday",
+		"friday": "Friday",
+		"saturday": "Saturday",
+		"daily": "Daily（",
+		"today": "Today（",
+		"tomorrow": "Tomorrow（"
 	},
 	"user-base": {
-		"user-base": {
-			"g5663y": "Get your",
-			"913g4e": "Get users",
-			"yujeaf": "Improve personal information, mainly used to provide users with a recognizable user center interface",
-			"o19lj3": "Enter a nickname of 1-16 characters",
-			"8u9on2": "Alipay users",
-			"t8i9l4": "Baidu users",
-			"0imw74": "Headline users",
-			"27q5af": "QQ users",
-			"211pk4": "Kwai users",
-			"5x8o43": "WeChat users",
-			"gzc3y4": "Please upload your profile picture",
-			"lro9u7": "Please fill in your nickname"
-		}
+		"get": "Get your",
+		"get_users": "Get users",
+		"improve_personal_information_mainly_used_provide": "Improve personal information, mainly used to provide users with a recognizable user center interface",
+		"enter_nickname_16_characters": "Enter a nickname of 1-16 characters",
+		"alipay_users": "Alipay users",
+		"baidu_users": "Baidu users",
+		"headline_users": "Headline users",
+		"qq_users": "QQ users",
+		"kwai_users": "Kwai users",
+		"wechat_users": "WeChat users",
+		"upload_profile_picture": "Please upload your profile picture",
+		"fill_nickname": "Please fill in your nickname"
 	},
-	"user-cash": {
-		"user-cash": {
-			"3v1gzc": "Unpay",
-			"678iuy": "Receive Pay",
-			"t7gtu0": "Paid",
-			"x47iu3": "Fail Pay"
-		}
-	},
-	"user-recharge": {
-		"user-recharge": {
-			"8y9dki": "Go pay"
-		}
-	},
-	"wallet-log": {
-		"wallet-log": {}
-	},
-	"shopxo-uniapp": {
-		"app": {
-			"47b5d1": "Xiaotao Chinese Store",
-			"5a7r0v": "One click login with local phone number",
-			"33k281": "I have read and agree",
-			"8l688n": "And log in with your local phone number",
-			"28r5dr": "Service Agreement",
-			"lb493k": "Privacy Policy",
-			"ch1pd2": "Failed to call up the local phone number component",
-			"5y1c52": "The event value format is incorrect",
-			"t754n6": "Prompt message is empty alert",
-			"iq66pg": "Please copy the address to the webpage map for viewing!",
-			"v2j475": "Incorrect coordinates",
-			"3m1gbe": "Uuid cache failed",
-			"1244fe": "Unknown data",
-			"r539kf": "Copy content is empty",
-			"qm8548": "The image address is empty",
-			"gbiac6": "Please open authorization",
-			"3eqv71": "Please go to the mini program to use the complete service",
-			"08cg8y": "The customer service address is incorrect",
-			"0gwt7z": "Clear successful",
-			"87yghj": "Logout successful",
-			"di6v5t": "Please obtain authorization first",
-			"nu5058": "Geographic location selection is not supported!",
-			"4v6q86": "No location selected",
-			"tghyu3": "current location",
-			"8z2a6b": "Staff booking failed to load, please try again later"
-		}
-	},
-	"password": {
-		"password": {
-			"338433": "Please confirm the new password",
-			"xyekjf": "Confirm modifications",
-			"4e24j1": "Please enter the current password",
-			"1lwiaz": "Please enter a new password",
-			"3pp6t7": "Confirm new password"
-		}
-	},
-	"cash": {
-		"cash": {
-			"zmhf3n": "Withdrawable currency",
-			"f6p4hm": "Withdrawal quantity",
-			"6oc6e7": "All withdrawals",
-			"ucg8e2": "Withdrawal address",
-			"h9i16y": "Withdrawal network",
-			"1g49wo": "No network data",
-			"42b37m": "Apply for withdrawal",
-			"i1f373": "Please enter the withdrawal address",
-			"g05p4g": "Please enter withdrawal note info",
-			"en6vsa": "Network data is empty, please contact customer service!",
-			"w01qjc": "Please enter the withdrawal quantity"
-		}
-	},
-	"cash-list": {
-		"cash-list": {
-			"e6pffe": "Withdrawal number:",
-			"2w20g2": "Platform:",
-			"23ii8s": "Recharge network:",
-			"714g2h": "Recharge address:",
-			"1o8838": "Withdrawal currency:",
-			"s7l616": "Account type",
-			"t66tu3": "Withdrawal type",
-			"311tt2": "Network type",
-			"8hrc73": "Are you sure to delete this withdrawal order"
-		}
-	},
-	"collection": {
-		"collection": {
-			"9p43lu": "Scan to initiate a transfer to the other party. Please verify your account carefully before confirming the transfer!"
-		}
-	},
-	"convert": {
-		"convert": {
-			"o56h58": "Balance:",
-			"4kcix6": "convert now",
-			"327y2v": "Transfer out and receive selection cannot be the same",
-			"vyjy7s": "Please enter the conversion currency"
-		}
-	},
-	"convert-list": {
-		"convert-list": {
-			"733518": "Transfer to account:",
-			"8813rd": "Conversion order number:",
-			"c374ec": "Transfer out balance:",
-			"6mxu85": "Transfer out account:",
-			"6347mw": "Latest Currency:",
-			"9oy325": "Remarks:",
-			"q48666": "Initiate account",
-			"47646p": "Receiving account"
-		}
-	},
-	"recharge-list": {
-		"recharge-list": {
-			"6b9399": "Recharge order number:",
-			"epd531": "Recharged coins:",
-			"l5g8m1": "Are you sure to delete this recharge order"
-		}
-	},
-	"recharge-pay": {
-		"recharge-pay": {
-			"lutmsv": "Payment voucher",
-			"1a5vqk": "(Upload up to 10 images)",
-			"wu49vk": "Payment remarks",
-			"95pfkd": "Please enter a note",
-			"v5fok8": "Please upload the voucher"
-		}
-	},
-	"transaction-list": {
-		"transaction-list": {
-			"1mf6wj": "Currency type:",
-			"2w1o1l": "Operation currency:",
-			"jgx0cf": "Original currency:",
-			"7cv11k": "Description:",
-			"cu39n5": "Currency type"
-		}
-	},
-	"transfer-list": {
-		"transfer-list": {
-			"69rnx6": "Transfer order number:",
-			"4aj248": "Payee:",
-			"m2r55k": "Transfer currency:",
-			"9g8lyb": "Transfer remarks:"
-		}
-	},
-	"user-goods-comments": {
-		"user-goods-comments": {
-			"58804r": "Is it displayed",
-			"jnk6da": "Do you want to reply",
-			"yyjemb": "Anonymous or not",
-			"0nhrj0": "Comment content"
-		}
-	},
-	"giftcard-index": {
-		"giftcard-index": {
-			"87ytyh": "Card type",
-			"hfg2fg": "Cami key",
-			"fyjnsd": "Card security data",
-			"87yyj3": "Redemption time",
-			"8tfgh2": "Card exchange",
-			"6redfg": "Use data",
-			"fu3rf1": "Please enter the card password key"
-		}
-	},
-	"givegift-gift": {
-		"givegift-gift": {
-			"8yghjd": "Unlimited collection",
-			"567uye": "Message reminder",
-			"rtyu33": "Message prompt, maximum format of 200 characters",
-			"34rrr3": "Leave a message for Ta to express gratitude!"
-		}
-	},
-	"certificate-userauth": {
-		"certificate-userauth": {
-			"tgtwes": "Go authenticate",
-			"678iff": "Certificate Name",
-			"tufg33": "ID NO",
-			"ftyui3": "Expiration date"
-		}
-	},
-	"complaint-form": {
-		"complaint-form": {
-			"23rdfg": "Complaint/Report Type",
-			"5434rd": "Please select the type of complaint/report",
-			"78iudg": "proof image",
-			"56ys33": "Please upload complete and clear images, up to a maximum of 10"
-		}
-	},
-	"orderfeed-form": {
-		"orderfeed-form": {
-			"54rttr": "Choose other products",
-			"fsdft3": "Feedback on this product"
-		}
-	},
-	"video-search": {
-		"video-search": {
-			"sdfgg4": "Sort by",
-			"gf3212": "Release time",
-			"iuyt42": "video duration"
-		}
-	},
-	"video-detail": {
-		"video-detail": {
-			"rfsdfg": "Reason for reporting",
-			"fsdf33": "Please choose a specific type",
-			"98yyuf": "Please enter your wonderful comment",
-			"v001fv": "This is already the first video",
-			"v002lv": "This is already the last video"
-		}
-	},
-	"plugins-bargain-order": {
-		"order": {
-			"gbo001": "Enter bargain order no."
-		}
-	},
-	"plugins-groupbuy-order": {
-		"order": {
-			"gbo001": "Enter group buy order no."
-		}
-	},
-	"hospital-patient": {
-		"hospital-patient": {
-			"h001ah": "Please fill in allergy history",
-			"h002dh": "Please fill in disease history"
-		}
-	},
-	"live-content": {
-		"live-content": {
-			"l001se": "Socket connection failed!"
-		}
+	"run": {
+		"one_click_login_local_number": "One click login with local phone number",
+		"have_read_and_agree": "I have read and agree",
+		"login_with_local_number": "And log in with your local phone number",
+		"service_agreement": "Service Agreement",
+		"privacy_policy": "Privacy Policy",
+		"local_number_component_failed": "Failed to call up the local phone number component",
+		"event_value_format_error": "The event value format is incorrect",
+		"alert_message_empty": "Prompt message is empty alert",
+		"copy_address_to_web_map": "Please copy the address to the webpage map for viewing!",
+		"invalid_coordinates": "Incorrect coordinates",
+		"uuid_cache_failed": "Uuid cache failed",
+		"copy_content_empty": "Copy content is empty",
+		"image_url_empty": "The image address is empty",
+		"please_open_authorization": "Please open authorization",
+		"please_use_miniprogram_full_service": "Please go to the mini program to use the complete service",
+		"customer_service_url_error": "The customer service address is incorrect",
+		"clear_success": "Clear successful",
+		"logout_success": "Logout successful",
+		"please_get_authorization_first": "Please obtain authorization first",
+		"location_select_not_supported": "Geographic location selection is not supported!",
+		"location_not_selected": "No location selected",
+		"current_location": "current location",
+		"staff_booking_load_failed": "Staff booking failed to load, please try again later",
+		"wechat_original_id_configured_background": "WeChat original ID is not configured in the background",
+		"open_wechat_mini_program": "Please open it in the WeChat mini program",
+		"wechat_app_not_installed": "No WeChat app installed"
 	},
 	"diy": {
-		"diy": {
-			"single_column_display": "Single column",
-			"large_image_display": "Large image",
-			"horizontal_slide_display": "Horizontal slide",
-			"two_column_vertical": "Two columns (vertical)",
-			"two_column_vertical_alt": "Two columns (vertical)",
-			"two_column_horizontal": "Two columns (horizontal)",
-			"two_column_horizontal_full": "Two columns (horizontal)",
-			"three_column": "Three columns",
-			"no_image_mode": "No image mode",
-			"single_column": "Single column",
-			"double_column": "Double column",
-			"horizontal_slide": "Horizontal slide",
-			"left_image_right_text": "Image left, text right",
-			"top_image_bottom_text": "Image top, text bottom",
-			"large_image_show": "Large image display",
-			"order_total": "Total orders",
-			"goods_favor": "Favorites",
-			"my_tracks": "My browsing history",
-			"my_integral": "My points",
-			"not_reply": "No reply",
-			"replied": "Replied",
-			"presale": "Presale",
-			"presale_price": "Presale price",
-			"seckill_grabbed_demo": "51% sold",
-			"time_to_end": "Time left",
-			"all_tabs": "All tabs",
-			"view_more_goods": "View more products >>"
-		}
+		"single_column_display": "Single column",
+		"large_image_display": "Large image",
+		"horizontal_slide_display": "Horizontal slide",
+		"two_column_vertical": "Two columns (vertical)",
+		"two_column_vertical_alt": "Two columns (vertical)",
+		"two_column_horizontal": "Two columns (horizontal)",
+		"two_column_horizontal_full": "Two columns (horizontal)",
+		"three_column": "Three columns",
+		"no_image_mode": "No image mode",
+		"single_column": "Single column",
+		"double_column": "Double column",
+		"horizontal_slide": "Horizontal slide",
+		"left_image_right_text": "Image left, text right",
+		"top_image_bottom_text": "Image top, text bottom",
+		"large_image_show": "Large image display",
+		"order_total": "Total orders",
+		"goods_favor": "Favorites",
+		"my_tracks": "My browsing history",
+		"my_integral": "My points",
+		"not_reply": "No reply",
+		"replied": "Replied",
+		"presale": "Presale",
+		"presale_price": "Presale price",
+		"seckill_grabbed_demo": "51% sold",
+		"time_to_end": "Time left",
+		"all_tabs": "All tabs"
 	},
-	"lottery": {
-		"lottery": {
-			"rules_title": "Lottery rules",
-			"thanks_join": "Thanks for participating",
-			"try_again_tips": "Keep trying, you will win!",
-			"congrats_get": "Congratulations, you won",
-			"my_prize": "My prizes",
-			"balance_label": "Balance:",
-			"integral_label": ", Points:",
-			"draw_fail": "Lottery failed",
-			"activity_unavailable": "Activity unavailable",
-			"draw_now": "Draw now",
-			"won_prefix": "Won"
-		}
+	"realstore-cart": {
+		"any_purchased_items": "Do you have any purchased items?",
+		"select_order_type": "Please select the order type",
+		"add_product_first": "Please add the product first",
+		"add_cart": "Add cart",
+		"request_failed_try_again": "Request failed, please try again!",
+		"start": "start",
+		"product_data_incorrect": "Product data incorrect",
+		"incorrect_store_info": "Incorrect store info",
+		"choice_store": "Choice store",
+		"choose_another_store": "Choose another store",
+		"enter_store": "Enter store",
+		"select_staff_time_slot": "Select staff and time slot",
+		"select_time_slot": "Please select time slot",
+		"select_date": "Select date",
+		"select_time_slot_2": "Select time slot",
+		"available_time_slots_date": "No available time slots for this date",
+		"booked": "Booked",
+		"taken": "Taken",
+		"confirm_checkout": "Confirm and checkout",
+		"time_slot_occupied_select_again": "This time slot is occupied, please select again",
+		"date_available": "This date is not available",
+		"select_staff_first": "Please select staff first",
+		"select_date_first": "Please select date first",
+		"time_slot_occupied": "This time slot is occupied",
+		"cart_empty": "Cart is empty",
+		"select_staff_date_time_slot_each": "Please select staff, date and time slot for each quantity",
+		"selected_time_slot_occupied_select_again": "The selected time slot is occupied, please select again"
 	},
-	"bargain": {
-		"bargain": {
-			"bargain": "Bargain",
-			"play_rules": "How to bargain",
-			"rules": "Bargain rules",
-			"goods_price": "Product price",
-			"help_cut": "Help cut",
-			"join_count": "Participants",
-			"launch_count": "Launches",
-			"join_bargain": "Join bargain",
-			"people_helped": "people helped,",
-			"invite_bargain": "Come bargain together",
-			"view_bargain": "View bargain",
-			"bargaining_need": "Bargaining, still need",
-			"people_success": "people to succeed",
-			"current_price": "Current price",
-			"bargain_success": "Bargain success",
-			"bargain_fail": "Bargain failed",
-			"bargain_fail_tips": "Sorry, this bargain did not succeed",
-			"login_to_help": "Log in to help",
-			"help_now": "Help now",
-			"already_helped": "Already helped",
-			"invite_help": "Invite to help",
-			"cannot_help": "Cannot help now",
-			"invite_help_cut": "Invite help",
-			"cancel_launch": "Cancel bargain",
-			"bargain_record": "Bargain records",
-			"invite_you_help": "Invite you to help",
-			"invite_help_one": "people helped, come help",
-			"help_success": "Help successful",
-			"go_bargain": "Go bargain",
-			"people_help_cut_suffix": " helped",
-			"floor_price": "Floor price",
-			"already_cut": "Cut",
-			"cut_remain": "Remaining",
-			"success_go_pay": "Congratulations! Bargain succeeded, go pay now!"
-		}
+	"coupon-card": {
+		"there_currently_type_parameter_available": "There is currently no type parameter available",
+		"go_ahead_use": "Go ahead and use it"
 	},
-	"groupbuy": {
-		"groupbuy": {
-			"join_team": "Join group",
-			"play_rules": "How group buy works",
-			"rules": "Group buy rules",
-			"group_price": "Group price",
-			"group_formed": "Group formed",
-			"group_count": "Groups formed",
-			"open_now": "Open group now",
-			"join_now": "Join now",
-			"people_team": "people group",
-			"invite_join": ", invite you to join",
-			"invite_group": ", come group buy together",
-			"grouping_need": "Grouping, still need",
-			"group_success": "Group buy success",
-			"group_full_success": "Congratulations! Group is full!",
-			"full_group": "Full group",
-			"group_fail": "Group buy failed",
-			"group_fail_tips": "Sorry, this group did not form",
-			"team_leader": "Team leader",
-			"login_to_join": "Log in to join",
-			"invite_friends": "Invite friends",
-			"cancel_open": "Cancel group",
-			"invite_you": "Invite you to join",
-			"people_group_invite": "people group, join us",
-			"confirm_cancel": "Cancel this group buy?",
-			"go_groupbuy": "Go group buy",
-			"groupbuy": "Group buy"
-		}
+	"ask-comments-goods": {
+		"answers": "Answers",
+		"any_questions_ask_other_classmates": "If you have any questions, please ask other classmates~"
 	},
-	"ask": {
-		"ask": {
-			"question_content": "Question",
-			"question_category": "Category",
-			"email_notice": "Email notification",
-			"mobile_notice": "Mobile notification",
-			"reply_content": "Reply content"
-		}
-	},
-	"hospital": {
-		"hospital": {
-			"add_patient": "Add patient",
-			"medicine_user": "Patient",
-			"switch_patient": "Switch patient",
-			"select_patient": "Select patient",
-			"chief_complaint": "Chief complaint",
-			"chief_complaint_example": "e.g. cold, gastritis, headache",
-			"chief_complaint_length": "1-230 characters",
-			"free_consult": "Free consultation",
-			"please_select_patient": "Please select patient",
-			"real_name": "Real name",
-			"idcard": "ID number",
-			"mobile": "Mobile",
-			"gender": "Gender",
-			"please_select_gender": "Please select gender",
-			"age": "Age",
-			"weight": "Weight",
-			"health_info": "Health info",
-			"health_info_placeholder": "Enter health info",
-			"relation_tag": "Relation tag",
-			"relation_tag_placeholder": "Select relation tag",
-			"allergy_history": "Allergy history",
-			"sickness_history": "Medical history",
-			"liver_abnormal": "Liver abnormality",
-			"kidney_abnormal": "Kidney abnormality",
-			"pregnancy": "Pregnancy/nursing",
-			"allergy_history_label": "Allergy history",
-			"no_allergy": "No allergy history",
-			"sickness_history_label": "Medical history",
-			"no_sickness": "No medical history",
-			"no_liver_issue": "No liver issue",
-			"no_kidney_issue": "No kidney issue",
-			"pregnancy_label": "Pregnancy/nursing"
-		}
-	},
-	"live": {
-		"live": {
-			"ended": "Live ended",
-			"exit_room": "Exit room",
-			"browser_mute_prefix": "Browser muted,",
-			"click_unmute": "Click to unmute",
-			"host_away": "Host is away",
-			"host_away_tips": "Break time, more coming soon",
-			"buy_goods": "Buy products",
-			"connect_fail_retry": "Connection failed, tap to retry",
-			"like_this_session": "Likes this session",
-			"new_messages_suffix": " new messages",
-			"socket_connect_fail_nth": "Connection failed ({0})",
-			"socket_reconnecting_nth": "Reconnecting ({0})..."
-		}
-	},
-	"givegift": {
-		"givegift": {
-			"my_gift": "My gifts"
-		}
-	},
-	"friendpay": {
-		"friendpay": {
-			"pay_mode_title": "Invite friend to pay",
-			"create_link": "Create pay link",
-			"share_page_title": "Invite friend to pay",
-			"pay_page_title": "Friend pay",
-			"share_amount": "Amount",
-			"pay_amount": "Pay amount",
-			"select_payment": "Select payment method",
-			"invite_fallback_pay": "${name} asks you to pay for this order",
-			"share_link": "Pay link",
-			"share_qrcode": "Share QR code",
-			"invite_qrcode": "Invite QR code",
-			"invite_fallback": "Your friend ${name} asks you to pay",
-			"expire_tips": "Valid until: ",
-			"refresh_link": "Refresh link",
-			"refresh_confirm": "Refreshing will invalidate the old link. Continue?",
-			"refresh_success": "Refreshed",
-			"list_owner": "I initiated",
-			"list_payer": "I paid for",
-			"go_share": "Share",
-			"login_to_pay": "Login to pay",
-			"confirm_pay": "Confirm pay",
-			"link_error": "Invalid pay link",
-			"order_id_error": "Invalid order id",
-			"pay_success_title": "Pay success",
-			"pay_success_tips": "Thank you, the order has been paid",
-			"view_records": "View records"
-		}
-	},
-	"imagesearch": {
-		"imagesearch": {
-			"upload_image": "Upload image",
-			"change_image": "Change",
-			"similar_goods": "Similar goods",
-			"total_prefix": "",
-			"total_suffix": " items",
-			"boot_title": "Upload a photo to find similar items",
-			"boot_desc": "Product or real photos work. We match similar goods for you.",
-			"upload_search": "Search by image",
-			"boot_step1": "Upload",
-			"boot_step2": "Recognize",
-			"boot_step3": "Match",
-			"empty_tips": "No similar goods found. Try another image.",
-			"image_fail": "Failed to process image",
-			"confirm_title": "Search with this image?",
-			"recognizing_title": "Recognizing",
-			"recognizing_btn": "Recognizing image..."
-		}
+	"goods-comments": {
+		"administrator_reply": "Administrator's reply:",
+		"product_been_reviewed_yet": "This product has not been reviewed yet~"
 	}
 }

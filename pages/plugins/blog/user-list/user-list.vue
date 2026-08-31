@@ -56,7 +56,9 @@
     import componentCommon from '@/components/common/common';
     import componentNoData from '@/components/no-data/no-data';
     import componentBottomLine from '@/components/bottom-line/bottom-line';
+    import pluginLocale from '../locale/index.js';
     export default {
+        mixins: [pluginLocale],
         data() {
             return {
                 theme_view: app.globalData.get_theme_value_view(),
@@ -119,7 +121,7 @@
                     // 提示错误
                     this.setData({
                         data_list_loding_status: 2,
-                        data_list_loding_msg: this.$t('form.form.8l3ul5'),
+                        data_list_loding_msg: this.$t('common.user_not_logged'),
                     });
                 }
             },
@@ -225,7 +227,7 @@
                 // 是否再次确认
                 if (e.alert_status != 0 && e.alert_status != 1) {
                     app.globalData.alert({
-                        msg: this.$t('user-list.user-list.yhvl2q'),
+                        msg: this.$t('user-list.sure_want_delete_post'),
                         is_show_cancel: 1,
                         object: this,
                         params: { id: e.currentTarget.dataset.id },

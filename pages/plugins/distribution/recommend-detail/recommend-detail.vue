@@ -54,7 +54,7 @@
                                     <view class="sales-price single-text margin-top-sm">{{ currency_symbol }}{{ data.total_price }}</view>
                                 </view>
                                 <view class="right-button fr tr">
-                                    <button type="default" size="mini" class="bg-main br-main cr-white round dis-block text-size-sm" @tap="buy_event">{{$t('detail.detail.27pmj3')}}</button>
+                                    <button type="default" size="mini" class="bg-main br-main cr-white round dis-block text-size-sm" @tap="buy_event">{{$t('common.buy_now')}}</button>
                                 </view>
                             </view>
                         </view>
@@ -62,7 +62,7 @@
                 </view>
                 <view v-else>
                     <!-- 提示信息 -->
-                    <component-no-data propStatus="0" :propMsg="$t('detail.detail.5knxg6')"></component-no-data>
+                    <component-no-data propStatus="0" :propMsg="$t('common.related_products_available')"></component-no-data>
                 </view>
             </view>
 
@@ -88,8 +88,10 @@
     import componentNoData from '@/components/no-data/no-data';
     import componentBottomLine from '@/components/bottom-line/bottom-line';
     import componentSharePopup from '@/components/share-popup/share-popup';
+    import pluginLocale from '../locale/index.js';
 
     export default {
+        mixins: [pluginLocale],
         data() {
             return {
                 theme_view: app.globalData.get_theme_value_view(),
@@ -272,7 +274,7 @@
                 }
                 var buy_min_number = 1;
                 if (goods_data.length < buy_min_number) {
-                    app.globalData.showToast(this.$t('detail.detail.jsj3u8') + buy_min_number + this.$t('detail.detail.jksm81'));
+                    app.globalData.showToast(this.$t('common.select_least') + buy_min_number + this.$t('common.detail_items'));
                     return false;
                 }
 
@@ -321,19 +323,19 @@
                 // 最小起购数量
                 if (buy_min_number > 0 && number < buy_min_number) {
                     number = buy_min_number;
-                    app.globalData.showToast(this.$t('recommend-detail.recommend-detail.265vyu') + buy_min_number + inventory_unit);
+                    app.globalData.showToast(this.$t('common.starting_purchase') + buy_min_number + inventory_unit);
                 }
 
                 // 最大购买数量
                 if (buy_max_number > 0 && number > buy_max_number) {
                     number = buy_max_number;
-                    app.globalData.showToast(this.$t('goods-category.goods-category.z1eh3v') + buy_max_number + inventory_unit);
+                    app.globalData.showToast(this.$t('common.purchase_limit') + buy_max_number + inventory_unit);
                 }
 
                 // 是否超过库存数量
                 if (number > inventory) {
                     number = inventory;
-                    app.globalData.showToast(this.$t('recommend-detail.recommend-detail.2sis3v') + inventory + inventory_unit);
+                    app.globalData.showToast(this.$t('common.inventory_quantity') + inventory + inventory_unit);
                 }
 
                 // 获取数据

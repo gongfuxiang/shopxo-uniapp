@@ -20,7 +20,7 @@
                             <component-panel-content :propData="item" :propDataField="field_list" propExcludeField="order_no,pay_price" :propIsTerse="true"></component-panel-content>
                         </view>
                         <view class="item-operation tr margin-top-main">
-                            <button class="round bg-white br-grey-9 text-size-md" type="default" size="mini" hover-class="none" :data-ids="item.id" data-type="item" @tap="invoice_event">{{$t('invoice-saveinfo.invoice-saveinfo.89815t')}}</button>
+                            <button class="round bg-white br-grey-9 text-size-md" type="default" size="mini" hover-class="none" :data-ids="item.id" data-type="item" @tap="invoice_event">{{$t('invoice-saveinfo.invoicing')}}</button>
                         </view>
                     </view>
                     <!-- 结尾 -->
@@ -30,7 +30,7 @@
             <!-- 合并开票 -->
             <view v-if="select_ids.length > 0" class="bottom-fixed" :style="bottom_fixed_style">
                 <view class="bottom-line-exclude">
-                    <button class="item bg-white cr-main br-main round wh-auto" type="default" hover-class="none" data-type="all" @tap="invoice_event">{{$t('order.order.o411h6')}}</button>
+                    <button class="item bg-white cr-main br-main round wh-auto" type="default" hover-class="none" data-type="all" @tap="invoice_event">{{$t('order.merge_invoicing')}}</button>
                 </view>
             </view>
         </view>
@@ -49,8 +49,10 @@
     import componentNoData from '@/components/no-data/no-data';
     import componentBottomLine from '@/components/bottom-line/bottom-line';
     import componentPanelContent from "@/components/panel-content/panel-content";
+    import pluginLocale from '../locale/index.js';
 
     export default {
+        mixins: [pluginLocale],
         data() {
             return {
                 theme_view: app.globalData.get_theme_value_view(),
@@ -254,14 +256,14 @@
                 var ids = e.currentTarget.dataset.ids || null;
                 if (type == 'all') {
                     if (this.select_ids.length <= 0) {
-                        app.globalData.showToast(this.$t('order.order.15k32o'));
+                        app.globalData.showToast(this.$t('common.select_data_first'));
                         return false;
                     } else {
                         ids = this.select_ids.join(',');
                     }
                 } else {
                     if (ids === null) {
-                        app.globalData.showToast(this.$t('order.order.3fr155'));
+                        app.globalData.showToast(this.$t('order.element_parameter_id_incorrect'));
                         return false;
                     }
                 }

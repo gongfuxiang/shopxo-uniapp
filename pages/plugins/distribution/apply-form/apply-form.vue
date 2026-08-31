@@ -3,14 +3,14 @@
         <view v-if="data_list_loding_status == 3" class="page-bottom-fixed">
             <view class="padding-main">
                 <view v-if="(apply_data || null) != null && apply_data.status == 0" class="padding-vertical-main border-radius-main bg-yellow-light cr-yellow">
-                    <view>{{$t('apply-form.apply-form.e2dit')}}</view>
+                    <view>{{$t('apply-form.modifications_resubmitted_review_confirm_info_co')}}</view>
                 </view>
                 <view v-else-if="(apply_data || null) != null && apply_data.status == 2" class="padding-vertical-main border-radius-main bg-red-light cr-red">
-                    <view>{{$t('apply.apply.f7ail')}}<template v-if="(apply_data.fail_reason || null) != null && apply_data.fail_reason != ''">：{{ apply_data.fail_reason }}</template></view>
-                    <view class="margin-top-xs">{{$t('apply.apply.r8etry')}}</view>
+                    <view>{{$t('apply.previous_application_not_approved')}}<template v-if="(apply_data.fail_reason || null) != null && apply_data.fail_reason != ''">：{{ apply_data.fail_reason }}</template></view>
+                    <view class="margin-top-xs">{{$t('apply.modify_info_submit_again')}}</view>
                 </view>
 
-                <view v-if="(form_input_data || null) == null || (form_input_data.config || null) == null" class="padding-vertical-main border-radius-main bg-grey-f5 cr-grey">{{$t('apply-form.apply-form.e3mpty')}}</view>
+                <view v-if="(form_input_data || null) == null || (form_input_data.config || null) == null" class="padding-vertical-main border-radius-main bg-grey-f5 cr-grey">{{$t('apply-form.application_form_configured_yet_contact_administ')}}</view>
                 <block v-else>
                     <view class="bg-white border-radius-main padding-main spacing-mb">
                         <component-form-input-base ref="form_input_base" :propConfig="form_input_data.config" :propFormInputId="form_input_data.id" :propKey="random_value" :propBusiness="editor_path_type"></component-form-input-base>
@@ -35,8 +35,10 @@
     import componentCommon from '@/components/common/common';
     import componentNoData from '@/components/no-data/no-data';
     import componentFormInputBase from '@/pages/form-input/components/form-input/form-input-base';
+    import pluginLocale from '../locale/index.js';
 
     export default {
+        mixins: [pluginLocale],
         data() {
             return {
                 theme_view: app.globalData.get_theme_value_view(),
@@ -89,9 +91,9 @@
                                 return;
                             }
                             var apply_data = data.apply_data || null;
-                            var submit_btn_text = this.$t('apply-form.apply-form.s4ubmit');
+                            var submit_btn_text = this.$t('apply-form.submit_application');
                             if ((apply_data || null) != null && parseInt(apply_data.status || 0) == 0) {
-                                submit_btn_text = this.$t('apply-form.apply-form.s5ave');
+                                submit_btn_text = this.$t('apply-form.save_changes');
                             }
                             this.setData({
                                 data_list_loding_status: 3,

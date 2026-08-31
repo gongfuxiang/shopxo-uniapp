@@ -32,7 +32,7 @@
                             </block>
                             <block v-else-if="item.key == 'subform'">
                                 <block v-if="(item.value || null) != null">
-                                    <uni-table border stripe :emptyText="$t('no_data')" >
+                                    <uni-table border stripe :emptyText="$t('common.no_data')" >
                                         <uni-tr>
                                             <block v-for="(items, indexs) in item.value[0]" :key="indexs">
                                                 <uni-th align="left">{{items.name}}</uni-th>

@@ -47,9 +47,9 @@
                                     </view>
                                 </view>
                                 <view class="text-size-xs margin-top-sm">
-                                    <text class="cr-grey">{{$t('map.map.ivy154')}}</text>
+                                    <text class="cr-grey">{{$t('map.total_number_orders_placed')}}</text>
                                     <text class="cr-base fw-b margin-left-sm">{{item.order_count}}</text>
-                                    <button type="default" size="mini" class="br-main cr-main bg-white text-size-xs round fr order-submit" :data-value="item.id" @tap="user_order_event">{{$t('map.map.557z8x')}}</button>
+                                    <button type="default" size="mini" class="br-main cr-main bg-white text-size-xs round fr order-submit" :data-value="item.id" @tap="user_order_event">{{$t('map.view_orders')}}</button>
                                 </view>
                             </view>
                         </view>
@@ -73,8 +73,10 @@
     const app = getApp();
     import componentCommon from '@/components/common/common';
     import componentNoData from "@/components/no-data/no-data";
+    import pluginLocale from '../locale/index.js';
     var plugins_static_url = app.globalData.get_static_url('distribution', true);
     export default {
+        mixins: [pluginLocale],
         data() {
             return {
                 theme_view: app.globalData.get_theme_value_view(),

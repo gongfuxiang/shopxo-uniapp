@@ -4,11 +4,11 @@
             <view v-if="is_cash_available">
                 <form v-if="check_account_list.length > 0" @submit="form_submit" class="form-container oh">
                     <view class="form-gorup margin-bottom radius-md">
-                        <view class="form-gorup-title">{{$t('cash-auth.cash-auth.b39a25')}}<text class="form-group-tips-must">*</text></view>
+                        <view class="form-gorup-title">{{$t('cash-auth.choose_identity_authentication_method')}}<text class="form-group-tips-must">*</text></view>
                         <view class="section">
                             <picker name="account_type" @change="select_check_account_event" :value="check_account_value" :range="check_account_list" range-key="msg">
                                 <view :class="'picker name ' + (check_account_value == null ? 'cr-grey' : 'cr-base')">
-                                    <view v-if="check_account_value == null">{{$t('cash-auth.cash-auth.582q6x')}}</view>
+                                    <view v-if="check_account_value == null">{{$t('cash-auth.select_authentication_account')}}</view>
                                     <view v-else>{{ check_account_list[check_account_value]['msg'] }}</view>
                                 </view>
                             </picker>
@@ -16,8 +16,8 @@
                     </view>
 
                     <view class="form-gorup margin-bottom radius-md pr">
-                        <view class="form-gorup-title">{{$t('cash-auth.cash-auth.d318op')}}<text class="form-group-tips-must">*</text></view>
-                        <input type="number" name="verify" placeholder-class="cr-grey" class="cr-base" :placeholder="$t('cash-auth.cash-auth.2hc312')" maxlength="4" />
+                        <view class="form-gorup-title">{{$t('cash-auth.enter_security_verification_code')}}<text class="form-group-tips-must">*</text></view>
+                        <input type="number" name="verify" placeholder-class="cr-grey" class="cr-base" :placeholder="$t('cash-auth.verification_code_format_digits')" maxlength="4" />
                         <button :class="'bg-grey br-grey cr-base pa round text-size-sm verify-sub ' + (verify_disabled ? 'sub-disabled' : '')" type="default" hover-class="none" size="mini" :loading="verify_loading" :disabled="verify_disabled" @tap="verify_send_event">
                             {{ verify_submit_text }}
                         </button>
@@ -29,20 +29,20 @@
                 </form>
 
                 <view class="margin-top-lg cr-base">
-                    <view class="fw-b text-size">{{$t('cash-auth.cash-auth.0j8388')}}</view>
+                    <view class="fw-b text-size">{{$t('cash-auth.operation_prompt')}}</view>
                     <view class="text-size-xs">
-                        <view>{{$t('cash-auth.cash-auth.59iipw')}}<text class="cr-red" data-value="/pages/login/login?opt_type=bind_email&opt_form=bind_email" @tap="url_event">{{$t('login.login.tgsa4d')}}</text>{{$t('cash-auth.cash-auth.t8y3r7')}}<text class="cr-red" data-value="/pages/login/login?opt_form=bind_verify" @tap="url_event">{{$t('login.login.np9177')}}</text>{{$t('cash-auth.cash-auth.5wbuuy')}}</view>
-                        <view>{{$t('cash-auth.cash-auth.r569wz')}}</view>
-                        <view>{{$t('cash-auth.cash-auth.35837l')}}</view>
-                        <view>{{$t('cash-auth.cash-auth.q2a553')}}</view>
-                        <view>{{$t('cash-auth.cash-auth.lh6bjr')}}</view>
-                        <view>{{$t('cash-auth.cash-auth.ob4gn0')}}</view>
+                        <view>{{$t('cash-auth.select')}}<text class="cr-red" data-value="/pages/login/login?opt_type=bind_email&opt_form=bind_email" @tap="url_event">{{$t('common.bind_email')}}</text>{{$t('cash-auth.or')}}<text class="cr-red" data-value="/pages/login/login?opt_form=bind_verify" @tap="url_event">{{$t('common.bind_phone')}}</text>{{$t('cash-auth.one_way_obtain_security_verification_code')}}</view>
+                        <view>{{$t('cash-auth.bound_phone_email_expired_bind_phone')}}</view>
+                        <view>{{$t('cash-auth.bound_email_expired_bind_email_complete')}}</view>
+                        <view>{{$t('cash-auth.input_verification_code_correctly_below_cannot')}}</view>
+                        <view>{{$t('cash-auth.after_receiving_security_verification_code_compl')}}</view>
+                        <view>{{$t('cash-auth.after_successful_security_verification_complete_')}}</view>
                     </view>
                 </view>
 
                 <view v-if="check_account_list.length == 0" class="margin-top-xxxl">
-                    <button data-value="/pages/login/login?opt_type=bind_email&opt_form=bind_email" @tap="url_event" class="bg-main-pair br-main-pair cr-white text-size round" type="default">{{$t('login.login.8ytyuf')}}</button>
-                    <button data-value="/pages/login/login?opt_form=bind_verify" @tap="url_event" class="bg-main br-main cr-white text-size round margin-top-xl" type="default">{{$t('login.login.d2ng16')}}</button>
+                    <button data-value="/pages/login/login?opt_type=bind_email&opt_form=bind_email" @tap="url_event" class="bg-main-pair br-main-pair cr-white text-size round" type="default">{{$t('login.bind_email_address')}}</button>
+                    <button data-value="/pages/login/login?opt_form=bind_verify" @tap="url_event" class="bg-main br-main cr-white text-size round margin-top-xl" type="default">{{$t('login.bind_mobile_phone_number')}}</button>
                 </view>
             </view>
             <view v-else-if="cash_apply_available != null">
@@ -67,8 +67,10 @@
     import componentNoData from '@/components/no-data/no-data';
     import componentCashUnavailable from '@/pages/plugins/wallet/components/cash-unavailable/cash-unavailable';
     import { BuildCashApplyAvailable, IsCashApplyAvailable } from '@/pages/plugins/wallet/common/cash-apply-available';
+    import pluginLocale from '../locale/index.js';
 
     export default {
+        mixins: [pluginLocale],
         data() {
             return {
                 theme_view: app.globalData.get_theme_value_view(),
@@ -78,7 +80,7 @@
                 data_base: null,
                 user_wallet: null,
                 check_account_list: [],
-                verify_submit_text: this.$t('login.login.s665h5'),
+                verify_submit_text: this.$t('common.obtain_verification_code'),
                 verify_loading: false,
                 verify_disabled: false,
                 form_submit_loading: false,
@@ -190,7 +192,7 @@
                 // 数据验证
                 var self = this;
                 if (self.check_account_value == null) {
-                    app.globalData.showToast(this.$t('cash-auth.cash-auth.5dcsbd'));
+                    app.globalData.showToast(this.$t('cash-auth.choose_authentication_method'));
                     return false;
                 }
 
@@ -220,19 +222,19 @@
                                 if (temp_time <= 1) {
                                     clearInterval(self.temp_clear_time);
                                     self.setData({
-                                        verify_submit_text: self.$t('login.login.s665h5'),
+                                        verify_submit_text: self.$t('common.obtain_verification_code'),
                                         verify_disabled: false,
                                     });
                                 } else {
                                     temp_time--;
                                     self.setData({
-                                        verify_submit_text: self.$t('login.login.n24i5u') + temp_time + self.$t('login.login.4306xr'),
+                                        verify_submit_text: self.$t('common.remain') + temp_time + self.$t('common.second'),
                                     });
                                 }
                             }, 1000);
                         } else {
                             this.setData({
-                                verify_submit_text: this.$t('login.login.s665h5'),
+                                verify_submit_text: this.$t('common.obtain_verification_code'),
                                 verify_loading: false,
                                 verify_disabled: false,
                             });
@@ -242,7 +244,7 @@
                     fail: () => {
                         uni.hideLoading();
                         this.setData({
-                            verify_submit_text: this.$t('login.login.s665h5'),
+                            verify_submit_text: this.$t('common.obtain_verification_code'),
                             verify_loading: false,
                             verify_disabled: false,
                         });
@@ -258,8 +260,8 @@
 
                 // 数据校验
                 var validation = [
-                    { fields: 'account_type', msg: this.$t('cash-auth.cash-auth.5dcsbd'), is_can_zero: 1 },
-                    { fields: 'verify', msg: this.$t('login.login.cesl5d') },
+                    { fields: 'account_type', msg: this.$t('cash-auth.choose_authentication_method'), is_can_zero: 1 },
+                    { fields: 'verify', msg: this.$t('common.please_input_verify_code') },
                 ];
 
                 // 验证提交表单

@@ -81,7 +81,7 @@
                 // 使用 uniCloud.uploadFile 上传图片的示例方法（可适用多选上传）
                 tempFiles.forEach(async (item) => {
                     uni.showLoading({
-                        title: self.$t('form.form.2e5rv3'),
+                        title: self.$t('common.uploading_wait_moment'),
                         mask: true,
                     });
                     await uni.uploadFile({

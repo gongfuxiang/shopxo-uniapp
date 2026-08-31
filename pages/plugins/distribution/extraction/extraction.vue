@@ -10,7 +10,7 @@
                         </view>
                     </view>
                     <view class="margin-top-xxxl">
-                        <button data-value="/pages/plugins/distribution/extraction-apply/extraction-apply" @tap="url_event" class="bg-main br-main cr-white round wh-auto" type="default" size="mini" hover-class="none">{{$t('extraction.extraction.suna53')}}</button>
+                        <button data-value="/pages/plugins/distribution/extraction-apply/extraction-apply" @tap="url_event" class="bg-main br-main cr-white round wh-auto" type="default" size="mini" hover-class="none">{{$t('extraction.apply_now')}}</button>
                     </view>
                 </view>
 
@@ -20,7 +20,7 @@
                     <!-- 审核中 -->
                     <view v-if="extraction.status == 0">
                         <view class="padding-main border-radius-main bg-white">
-                            <view class="cr-red tc text-size-lg">{{$t('extraction.extraction.j0o47u')}}</view>
+                            <view class="cr-red tc text-size-lg">{{$t('extraction.application_info_currently_under_review')}}</view>
                         </view>
                         <view class="margin-top-xxxl">
                             <button data-value="/pages/plugins/distribution/extraction-apply/extraction-apply" @tap="url_event" class="bg-green br-green cr-white round wh-auto" type="default" size="mini" hover-class="none">{{$t('common.edit')}}</button>
@@ -32,8 +32,8 @@
                         <view class="padding-main border-radius-main bg-white">
                             <!-- 导航 -->
                             <view class="padding-bottom-main br-b">
-                                <text class="fw-b">{{$t('extraction.extraction.60601g')}}</text>
-                                <view data-value="/pages/plugins/distribution/extraction-apply/extraction-apply" @tap="url_event" class="fr cr-blue cp">{{$t('extraction.extraction.48rp75')}}</view>
+                                <text class="fw-b">{{$t('extraction.pickup_point_info')}}</text>
+                                <view data-value="/pages/plugins/distribution/extraction-apply/extraction-apply" @tap="url_event" class="fr cr-blue cp">{{$t('extraction.edit_information')}}</view>
                             </view>
                             <!-- 地址信息 -->
                             <view class="margin-top-lg" @tap="address_map_event">
@@ -45,17 +45,17 @@
                             <view class="padding-main border-radius-main bg-white">
                                 <!-- 导航 -->
                                 <view class="padding-bottom-main br-b">
-                                    <text class="fw-b">{{$t('extraction.extraction.641gp7')}}</text>
-                                    <view data-value="/pages/plugins/distribution/extraction-order/extraction-order" @tap="url_event" class="fr cr-blue cp">{{$t('extraction.extraction.wcv68q')}}</view>
+                                    <text class="fw-b">{{$t('extraction.pickup_order_statistics')}}</text>
+                                    <view data-value="/pages/plugins/distribution/extraction-order/extraction-order" @tap="url_event" class="fr cr-blue cp">{{$t('extraction.view_pickup_orders')}}</view>
                                 </view>
                                 <!-- 自提地点统计 -->
                                 <view class="statistics oh padding-top-main">
                                     <view class="item fl tc padding-main" data-value="0" @tap="order_event">
-                                        <view class="title cr-base">{{$t('extraction.extraction.53h4fj')}}</view>
+                                        <view class="title cr-base">{{$t('common.pending')}}</view>
                                         <view class="single-text cr-red fw-b margin-top-sm">{{ statistical.order_wait || 0 }}</view>
                                     </view>
                                     <view class="item fl tc padding-main" data-value="1" @tap="order_event">
-                                        <view class="title cr-base">{{$t('extraction.extraction.wq25fk')}}</view>
+                                        <view class="title cr-base">{{$t('extraction.processed')}}</view>
                                         <view class="single-text cr-green fw-b margin-top-sm">{{ statistical.order_already || 0 }}</view>
                                     </view>
                                 </view>
@@ -71,15 +71,15 @@
                         </view>
                         <!-- 已解约 -->
                         <view v-else class="spacing-mt">
-                            <view class="notice-content-blue">{{$t('extraction.extraction.864dtt')}}</view>
+                            <view class="notice-content-blue">{{$t('extraction.current_status_also_been_terminated_data')}}</view>
                         </view>
                     </view>
                     <!-- 审核失败 -->
                     <view v-else="extraction.status == 2">
                         <view class="padding-main border-radius-main bg-white spacing-mb">
-                            <view class="cr-red tc text-size-lg">{{$t('extraction.extraction.11825x')}}</view>
+                            <view class="cr-red tc text-size-lg">{{$t('extraction.application_info_review_failed')}}</view>
                             <view v-if="(extraction.fail_reason || null) != null" class="margin-top-lg">
-                                <text class="fw-b">{{$t('extraction.extraction.w6hg74')}}</text>
+                                <text class="fw-b">{{$t('extraction.reason')}}</text>
                                 <text class="cr-grey">{{ extraction.fail_reason }}</text>
                             </view>
                         </view>
@@ -107,8 +107,10 @@ const app = getApp();
     import componentCommon from '@/components/common/common';
     import componentNoData from "@/components/no-data/no-data";
     import componentBottomLine from "@/components/bottom-line/bottom-line";
+    import pluginLocale from '../locale/index.js';
 
     export default {
+        mixins: [pluginLocale],
         data() {
             return {
                 theme_view: app.globalData.get_theme_value_view(),

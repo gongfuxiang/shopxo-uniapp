@@ -33,7 +33,7 @@
                                                 <!-- 角标 -->
                                                 <subscriptIndex :propValue="propValue"></subscriptIndex>
                                                 <!-- 预售标签 -->
-                                                <view v-if="form.is_presale_tag == '1'" class="presale-tag" :style="presale_tag_style">{{ form.presale_tag_text || $t('diy.diy.presale') }}</view>
+                                                <view v-if="form.is_presale_tag == '1'" class="presale-tag" :style="presale_tag_style">{{ form.presale_tag_text || $t('diy.presale') }}</view>
                                             </view>
                                         </template>
                                         <view v-if="is_show('title') || is_show('simple_desc') || is_show('price') || is_show('original_price') || form.is_shop_show == '1'" class="flex-col gap-10 wh-auto flex-1 jc-sb oh" :style="content_style">
@@ -51,7 +51,7 @@
                                             <view class="flex-row align-e gap-10 jc-sb">
                                                 <view class="flex-1 flex-col gap-5">
                                                     <view v-if="is_show('price') && !isEmpty(item.min_price)" class="num" :style="{ color: new_style.shop_price_color }">
-                                                        <text v-if="form.shop_style_type == '1'" class="text-size-xss pr-4">{{ form.presale_price_title ? form.presale_price_title : $t('diy.diy.presale_price') }}</text>
+                                                        <text v-if="form.shop_style_type == '1'" class="text-size-xss pr-4">{{ form.presale_price_title ? form.presale_price_title : $t('diy.presale_price') }}</text>
                                                         <text :style="price_symbol">{{ item.show_price_symbol }}</text>
                                                         <text :style="price_style">{{ item.min_price }}</text>
                                                         <text v-if="is_show('price_unit')" :style="price_unit">{{ item.show_price_unit }}</text>
@@ -101,7 +101,7 @@
                                                             <!-- 角标 -->
                                                             <subscriptIndex :propValue="propValue"></subscriptIndex>
                                                             <!-- 预售标签 -->
-                                                            <view v-if="form.is_presale_tag == '1'" class="presale-tag" :style="presale_tag_style">{{ form.presale_tag_text || $t('diy.diy.presale') }}</view>
+                                                            <view v-if="form.is_presale_tag == '1'" class="presale-tag" :style="presale_tag_style">{{ form.presale_tag_text || $t('diy.presale') }}</view>
                                                         </view>
                                                     </template>
                                                     <view v-if="is_show('title') || is_show('simple_desc') || is_show('price') || is_show('original_price') || form.is_shop_show == '1'"  class="flex-col gap-10 wh-auto flex-1 jc-sb" :style="content_style">
@@ -119,7 +119,7 @@
                                                         <view class="flex-row align-e gap-10 jc-sb">
                                                             <view class="flex-1 flex-col gap-5">
                                                                 <view v-if="is_show('price') && !isEmpty(item.min_price)" class="num" :style="{ color: new_style.shop_price_color }">
-                                                                    <text v-if="form.shop_style_type == '1'" class="text-size-xss pr-4">{{ form.presale_price_title ? form.presale_price_title : $t('diy.diy.presale_price') }}</text>
+                                                                    <text v-if="form.shop_style_type == '1'" class="text-size-xss pr-4">{{ form.presale_price_title ? form.presale_price_title : $t('diy.presale_price') }}</text>
                                                                     <text :style="price_symbol">{{ item.show_price_symbol }}</text>
                                                                     <text :style="price_style">{{ item.min_price }}</text>
                                                                     <text v-if="is_show('price_unit')" :style="price_unit">{{ item.show_price_unit }}</text>
@@ -266,9 +266,9 @@
                 const new_list = new_form.data;
                 // 默认数据
                 const product_style_list = [
-                    { name: this.$t('diy.diy.single_column'), value: '1', width: 110, height: 120 },
-                    { name: this.$t('diy.diy.double_column'), value: '2', width: 180, height: 180 },
-                    { name: this.$t('diy.diy.horizontal_slide'), value: '3', width: 0, height: 0 },
+                    { name: this.$t('diy.single_column'), value: '1', width: 110, height: 120 },
+                    { name: this.$t('diy.double_column'), value: '2', width: 180, height: 180 },
+                    { name: this.$t('diy.horizontal_slide'), value: '3', width: 0, height: 0 },
                 ];
                 const scale = sys_width / 390;
                 let img_style = ``;

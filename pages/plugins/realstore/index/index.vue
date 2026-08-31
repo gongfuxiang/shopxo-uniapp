@@ -11,7 +11,7 @@
                         <image :src="not_choice_realstore_images" class="dis-block wh-auto" mode="widthFix"></image>
                         <view v-if="(data_base.home_not_choice_realstore_msg || null) != null" class="cr-grey margin-top-xl">{{data_base.home_not_choice_realstore_msg}}</view>
                         <view class="padding-horizontal-xxxl">
-                            <button type="default" class="bg-main br-main cr-white text-size-sm margin-top-xxl round" hover-class="none" @tap="realstore_choice_event">{{$t('realstore-cart.realstore-cart.87tty2')}}</button>
+                            <button type="default" class="bg-main br-main cr-white text-size-sm margin-top-xxl round" hover-class="none" @tap="realstore_choice_event">{{$t('realstore-cart.choice_store')}}</button>
                         </view>
                     </block>
                     <!-- 已选择的门店 -->
@@ -37,22 +37,22 @@
                                             {{ user_choice_realstore.province_name }}{{ user_choice_realstore.city_name }}{{ user_choice_realstore.county_name }}{{ user_choice_realstore.address }}
                                         </view>
                                         <!-- #ifndef MP-KUAISHOU -->
-                                        <view v-if="user_choice_realstore.lat != 0 && user_choice_realstore.lng != 0" class="tc cp border-radius-sm text-size-xss cr-green br-green padding-horizontal-xs margin-left-xs" @tap="address_map_event">{{$t('detail.detail.688i26')}}</view>
+                                        <view v-if="user_choice_realstore.lat != 0 && user_choice_realstore.lng != 0" class="tc cp border-radius-sm text-size-xss cr-green br-green padding-horizontal-xs margin-left-xs" @tap="address_map_event">{{$t('detail.map')}}</view>
                                         <!-- #endif -->
                                     </view>
                                 </view>
                             </view>
                             <view class="pr margin-top">
                                 <view class="text-size-xs cr-grey">
-                                    <view v-if="(user_choice_realstore.status_info.time || null) != null">{{$t('detail.detail.dor2v9')}}{{ user_choice_realstore.status_info.time }}</view>
-                                    <view v-if="(user_choice_realstore.distance || null) != null">{{$t('extraction-address.extraction-address.42v8tv')}}{{ user_choice_realstore.distance }}</view>
+                                    <view v-if="(user_choice_realstore.status_info.time || null) != null">{{$t('detail.business_hours')}}{{ user_choice_realstore.status_info.time }}</view>
+                                    <view v-if="(user_choice_realstore.distance || null) != null">{{$t('common.distance_from_you')}}{{ user_choice_realstore.distance }}</view>
                                 </view>
-                                <button type="default" size="mini" class="bg-main-light br-main cr-main text-size-xss round pa bottom-0 right-0" hover-class="none" :data-value="user_choice_realstore.url" @tap="url_event">{{$t('realstore-cart.realstore-cart.r67uyg')}}</button>
+                                <button type="default" size="mini" class="bg-main-light br-main cr-main text-size-xss round pa bottom-0 right-0" hover-class="none" :data-value="user_choice_realstore.url" @tap="url_event">{{$t('realstore-cart.enter_store')}}</button>
                             </view>
                         </view>
                         <view v-if="(data_base.home_already_choice_realstore_msg || null) != null" class="cr-grey margin-top-xl">{{data_base.home_already_choice_realstore_msg}}</view>
                         <view class="padding-horizontal-xxxl">
-                            <button type="default" class="bg-main br-main cr-white text-size-sm margin-top-xxl round" hover-class="none" @tap="realstore_choice_event">{{$t('realstore-cart.realstore-cart.76rfgh')}}</button>
+                            <button type="default" class="bg-main br-main cr-white text-size-sm margin-top-xxl round" hover-class="none" @tap="realstore_choice_event">{{$t('realstore-cart.choose_another_store')}}</button>
                         </view>
                     </block>
                 </view>
@@ -70,7 +70,7 @@
                     </view>
                     <!-- 搜索 -->
                     <view class="nav-search padding-main">
-                        <component-search @onsearch="search_button_event" :propIsOnEvent="true" :propIsRequired="false" :propPlaceholder="$t('index.index.c5273j')" propPlaceholderClass="cr-grey-c"></component-search>
+                        <component-search @onsearch="search_button_event" :propIsOnEvent="true" :propIsRequired="false" :propPlaceholder="$t('index.enter_store_name')" propPlaceholderClass="cr-grey-c"></component-search>
                     </view>
                 </view>
 
@@ -91,7 +91,7 @@
             <block v-if="data_list.length > 0">
                 <view class="padding-horizontal-main">
                     <!-- 导航 -->
-                    <component-title :propTitle="data_base.home_data_list_title || $t('index.index.1vf378')" :propMoreUrl="'/pages/plugins/realstore/search/search'+(is_force_choice_realstore == 1 ? '?is_choice_mode=1&choice_mode_back_type=realstore-detail&is_open_realstore_redirect=0' : '')"></component-title>
+                    <component-title :propTitle="data_base.home_data_list_title || $t('index.latest_stores')" :propMoreUrl="'/pages/plugins/realstore/search/search'+(is_force_choice_realstore == 1 ? '?is_choice_mode=1&choice_mode_back_type=realstore-detail&is_open_realstore_redirect=0' : '')"></component-title>
                     <!-- 数据列表 -->
                     <component-realstore-list :propData="{data: data_list}" :propFavorUser="favor_user" :propIsChoice="is_force_choice_realstore == 1" propIsChoiceBackType="realstore-detail" :propIsOpenRealstoreRedirect="false"></component-realstore-list>
                 </view>
@@ -110,7 +110,7 @@
                     <view class="padding-lg">
                         <image v-if="(data_base.home_choice_location_images || null) != null" class="icon max-w" :src="data_base.home_choice_location_images" mode="widthFix"></image>
                         <view v-if="(data_base.home_choice_location_msg || null) != null" class="cr-base margin-top-lg">{{ data_base.home_choice_location_msg }}</view>
-                        <button type="default" class="bg-main br-main cr-white text-size-sm margin-top-xxl round" hover-class="none" @tap="choose_user_location_event">{{$t('index.index.t3d917')}}</button>
+                        <button type="default" class="bg-main br-main cr-white text-size-sm margin-top-xxl round" hover-class="none" @tap="choose_user_location_event">{{$t('index.select_location')}}</button>
                     </view>
                 </view>
             </view>
@@ -135,8 +135,10 @@
     import componentRealstoreList from '@/pages/plugins/realstore/components/realstore-list/realstore-list';
     import componentTitle from '@/components/title/title';
     import componentChoiceLocation from '@/components/choice-location/choice-location';
+    import pluginLocale from '../locale/index.js';
     var plugins_static_url = app.globalData.get_static_url('realstore', true);
     export default {
+        mixins: [pluginLocale],
         data() {
             return {
                 theme_view: app.globalData.get_theme_value_view(),
@@ -460,7 +462,7 @@
             address_map_event(e) {
                 var info = this.user_choice_realstore || {};
                 if (info.lat == 0 || info.lng == 0) {
-                    app.globalData.showToast(this.$t('user-order-detail.user-order-detail.i876o3'));
+                    app.globalData.showToast(this.$t('common.incorrect_address'));
                     return false;
                 }
                 var address = (info.province_name || '') + (info.city_name || '') + (info.county_name || '') + (info.address || '');

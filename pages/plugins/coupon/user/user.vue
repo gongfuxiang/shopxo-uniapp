@@ -48,9 +48,11 @@
     import componentNoData from '@/components/no-data/no-data';
     import componentBottomLine from '@/components/bottom-line/bottom-line';
     import componentCouponCard from '@/pages/plugins/coupon/components/coupon-card/coupon-card';
+    import pluginLocale from '../locale/index.js';
     const coupon_static_url = app.globalData.get_static_url('coupon', true);
 
     export default {
+        mixins: [pluginLocale],
         data() {
             return {
                 theme_view: app.globalData.get_theme_value_view(),
@@ -61,15 +63,15 @@
                 data_list: null,
                 nav_tabs_list: [
                     {
-                        name: this.$t('user.user.s3y4ji'),
+                        name: this.$t('user.unused'),
                         value: 'not_use',
                     },
                     {
-                        name: this.$t('user.user.pggs6s'),
+                        name: this.$t('user.used_2'),
                         value: 'already_use',
                     },
                     {
-                        name: this.$t('user.user.528t26'),
+                        name: this.$t('common.expired'),
                         value: 'already_expire',
                     },
                 ],
@@ -146,7 +148,7 @@
                         if (res.data.code == 0) {
                             this.setData({
                                 data_list: res.data.data || null,
-                                data_list_loding_msg: this.$t('user.user.3ks1wi'),
+                                data_list_loding_msg: this.$t('user.currently_any_coupons'),
                             });
                             this.data_view_handle();
                         } else {

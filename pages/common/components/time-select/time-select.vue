@@ -7,7 +7,7 @@
             <view class="time-select-popup-content" @click.stop="_stopFunc">
                 <view class="time-select-close-btn" v-if="propCloseBtn" @tap="_closeBtnClose">×</view>
                 <view class="time-select-title padding-bottom-sm">
-                    <view v-if="(propTitle || null) != null">{{ propTitle || this.$t('buy.buy.q8u066') }}</view>
+                    <view v-if="(propTitle || null) != null">{{ propTitle || this.$t('common.select_time_2') }}</view>
                     <view v-if="(propSubhead || null) != null">{{ propSubhead }}</view>
                 </view>
                 <view class="time-select-time-box">
@@ -288,16 +288,16 @@
             _getDate(num) {
                 let date = new Date();
                 let date1 = new Date(date);
-                let weekday = [this.$t('time-select.time-select.8k5rr7'), this.$t('time-select.time-select.17353c'), this.$t('time-select.time-select.40rmq4'), this.$t('time-select.time-select.q35g41'), this.$t('time-select.time-select.v213l8'), this.$t('time-select.time-select.8q3q2x'), this.$t('time-select.time-select.9605m5')];
+                let weekday = [this.$t('time-select.sunday'), this.$t('time-select.monday'), this.$t('time-select.tuesday'), this.$t('time-select.wednesday'), this.$t('time-select.thursday'), this.$t('time-select.friday'), this.$t('time-select.saturday')];
                 date1.setDate(date.getDate() + num);
                 let name = '',
                     dateStr = '';
-                name = date1.getMonth() - 0 + 1 + this.$t('detail.detail.zill36') + date1.getDate() + this.$t('time-select.time-select.h7l2xj') + weekday[date1.getDay()] + ')';
+                name = date1.getMonth() - 0 + 1 + this.$t('common.month') + date1.getDate() + this.$t('time-select.daily') + weekday[date1.getDay()] + ')';
                 dateStr = date1.getFullYear() + '/' + (date1.getMonth() - 0 + 1) + '/' + date1.getDate();
                 if (num == 0) {
-                    name = this.$t('time-select.time-select.cq522p') + weekday[date1.getDay()] + ')';
+                    name = this.$t('time-select.today') + weekday[date1.getDay()] + ')';
                 } else if (num == 1) {
-                    name = this.$t('time-select.time-select.ub264m') + weekday[date1.getDay()] + ')';
+                    name = this.$t('time-select.tomorrow') + weekday[date1.getDay()] + ')';
                 }
                 return {
                     name: name,

@@ -53,8 +53,10 @@
     import componentCommon from '@/components/common/common';
     import componentNoData from "@/components/no-data/no-data";
     import componentBottomLine from "@/components/bottom-line/bottom-line";
+    import pluginLocale from '../locale/index.js';
 
     export default {
+        mixins: [pluginLocale],
         data() {
             return {
                 theme_view: app.globalData.get_theme_value_view(),
@@ -68,14 +70,14 @@
                 params: null,
                 nav_status_list: [
                     { name: this.$t('common.all'), value: "-1" },
-                    { name: this.$t('profit.profit.3c7zmg'), value: "0" },
-                    { name: this.$t('batchorder-list.batchorder-list.25sh5e'), value: "1" },
-                    { name: this.$t('order.order.15lr5l'), value: "2" },
-                    { name: this.$t('order.order.6390gk'), value: "3" },
+                    { name: this.$t('common.profit_effective'), value: "0" },
+                    { name: this.$t('batchorder-list.progress'), value: "1" },
+                    { name: this.$t('common.completed'), value: "2" },
+                    { name: this.$t('common.closed'), value: "3" },
                 ],
                 nav_status_index: 0,
                 content_list: [
-                    { name: this.$t('form.form.xy87t8'), field: "describe" },
+                    { name: this.$t('common.describe'), field: "describe" },
                     { name: this.$t('common.note'), field: "note" },
                     { name: this.$t('common.time'), field: "upd_time" },
                     { name: this.$t('common.status'), field: "status_name" },

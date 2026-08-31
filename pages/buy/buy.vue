@@ -1,7 +1,7 @@
 <template>
     <view :class="theme_view">
         <block v-if="buy_site_model_value == 4">
-            <component-no-data propStatus="2" :propMsg="$t('buy.buy.l1c8q6')"></component-no-data>
+            <component-no-data propStatus="2" :propMsg="$t('buy.display_type_does_allow_submission_orders')"></component-no-data>
         </block>
         <block v-else>
             <view v-if="goods_list.length > 0" class="page-bottom-fixed">
@@ -30,7 +30,7 @@
                                 </view>
                             </view>
                             <view v-else class="padding-top-xl padding-bottom-xxxl cr-grey">
-                                {{ (buy_site_model_value == 2) ? $t('buy.buy.wq7gnb') : $t('buy.buy.6rk813') }}
+                                {{ (buy_site_model_value == 2) ? $t('buy.select_pickup_address') : $t('buy.select_shipping_address') }}
                             </view>
                         </view>
                         <view class="address-divider spacing-mb"></view>
@@ -54,12 +54,12 @@
                         <!-- 自提客户名称和电话 -->
                         <block v-if="(buy_extraction_contact_info || null) != null && (buy_extraction_contact_info.is_write || false) == true">
                             <view class="form-gorup row padding-horizontal-0 padding-top-0">
-                                <view class="form-gorup-title margin-right">{{$t('buy.buy.df3raf')}}</view>
-                                <input type="text" name="extraction_contact_name" :value="buy_extraction_contact_info.name" data-value="name" @input="extraction_contact_event" maxlength="30" placeholder-class="cr-grey-9" class="cr-base br-b-f9" :placeholder="$t('user-address-save.user-address-save.5yhgps')" />
+                                <view class="form-gorup-title margin-right">{{$t('buy.my_name')}}</view>
+                                <input type="text" name="extraction_contact_name" :value="buy_extraction_contact_info.name" data-value="name" @input="extraction_contact_event" maxlength="30" placeholder-class="cr-grey-9" class="cr-base br-b-f9" :placeholder="$t('common.name')" />
                             </view>
                             <view class="form-gorup row padding-horizontal-0 padding-top-0">
-                                <view class="form-gorup-title margin-right">{{$t('buy.buy.hjwerf')}}</view>
-                                <input type="text" name="extraction_contact_tel" :value="buy_extraction_contact_info.tel" data-value="tel" @input="extraction_contact_event" maxlength="30" placeholder-class="cr-grey-9" class="cr-base br-b-f9" :placeholder="$t('user-address-save.user-address-save.65507o')" />
+                                <view class="form-gorup-title margin-right">{{$t('buy.my_phone')}}</view>
+                                <input type="text" name="extraction_contact_tel" :value="buy_extraction_contact_info.tel" data-value="tel" @input="extraction_contact_event" maxlength="30" placeholder-class="cr-grey-9" class="cr-base br-b-f9" :placeholder="$t('common.landline_mobile_phone')" />
                             </view>
                         </block>
                     </view>
@@ -75,7 +75,7 @@
                             </view>
                             <!-- #ifndef MP-KUAISHOU -->
                             <view v-if="(group.lng || 0) != 0 && (group.lat || 0) != 0" class="fr">
-                                <view class="goods-group-map-submit br round text-size-xs" :data-index="index" @tap="map_event">{{ $t('buy.buy.o7722q') }}</view>
+                                <view class="goods-group-map-submit br round text-size-xs" :data-index="index" @tap="map_event">{{ $t('common.consult_map') }}</view>
                             </view>
                             <!-- #endif -->
                         </view>
@@ -110,12 +110,12 @@
                                     <view v-for="(booking, bindex) in item.plugins_realstore_staff_booking_data" :key="bindex" :class="'goods-item-staff-booking-unit pr oh ' + (item.plugins_realstore_staff_booking_data.length > 1 ? 'goods-item-staff-booking-unit-multi ' : '') + (bindex > 0 ? 'margin-top-xs padding-top-xs br-t-dashed' : '')">
                                         <text v-if="item.plugins_realstore_staff_booking_data.length > 1" class="goods-item-staff-booking-unit-no pa text-size-xs cr-grey">{{ $t('common.num') }}{{ parseInt(booking.unit_index || 0) + 1 }}</text>
                                         <view v-if="(booking.staff_alias || null) != null && booking.staff_alias != ''" class="goods-item-staff-booking-row text-size-xs">
-                                            <text class="cr-grey va-m">{{ $t('orderallot-detail.orderallot-detail.0f4g8h') }}</text>
+                                            <text class="cr-grey va-m">{{ $t('common.staff') }}</text>
                                             <image v-if="(booking.staff_avatar || null) != null && booking.staff_avatar != ''" class="goods-item-staff-booking-avatar radius margin-right-xs dis-inline-block va-m" :src="booking.staff_avatar" mode="aspectFill"></image>
                                             <text class="va-m">{{ booking.staff_alias }}</text>
                                         </view>
                                         <view v-if="((booking.ymd_text || null) != null && booking.ymd_text != '') || ((booking.period_text || null) != null && booking.period_text != '')" class="goods-item-staff-booking-row text-size-xs margin-top-xss">
-                                            <text class="cr-grey">{{ $t('orderallot-detail.orderallot-detail.1i5j9k') }}</text>
+                                            <text class="cr-grey">{{ $t('common.booking_time') }}</text>
                                             <text v-if="(booking.ymd_text || null) != null && booking.ymd_text != ''">{{ booking.ymd_text }}</text>
                                             <text v-if="(booking.period_text || null) != null && booking.period_text != ''" :class="(booking.ymd_text || null) != null && booking.ymd_text != '' ? 'margin-left-xs' : ''">{{ booking.period_text }}</text>
                                         </view>
@@ -129,7 +129,7 @@
                         </view>
                         <!-- 运费 -->
                         <view v-if="(group.plugins_freightfee_data || null) != null && (group.plugins_freightfee_data.default || null) != null && (group.plugins_freightfee_data.fee_list || null) != null && group.plugins_freightfee_data.fee_list.length > 0" class="buy-data-item oh">
-                            <text class="cr-base">{{ $t('buy.buy.876tgh') }}</text>
+                            <text class="cr-base">{{ $t('buy.shipping_method') }}</text>
                             <view class="right-value fr cp tr">
                                 <view class="right-value-content single-text dis-inline-block va-m">
                                     <picker :data-wid="group.id" @change="plugins_freightfee_change_event" :value="group.plugins_freightfee_data.default.key" :range="group.plugins_freightfee_data.fee_list" range-key="fee_name">
@@ -143,9 +143,9 @@
                         </view>
                         <!-- 优惠劵 -->
                         <view v-if="(plugins_coupon_data || null) != null && (plugins_coupon_data[index] || null) != null && (plugins_coupon_data[index].coupon_data || null) != null && (plugins_coupon_data[index].coupon_data.coupon_list || null) != null && plugins_coupon_data[index].coupon_data.coupon_list.length > 0" class="buy-data-item oh" :data-index="index" @tap="plugins_coupon_open_event">
-                            <text class="cr-base">{{ $t('buy.buy.45ovhs') }}</text>
+                            <text class="cr-base">{{ $t('buy.coupons') }}</text>
                             <view class="right-value fr cp tr">
-                                <text class="right-value-content single-text cr-grey va-m">{{ (plugins_choice_coupon_value || null) != null && (plugins_choice_coupon_value[group.id] || null) != null ? plugins_choice_coupon_value[group.id] : $t('buy.buy.553mxo') }}</text>
+                                <text class="right-value-content single-text cr-grey va-m">{{ (plugins_choice_coupon_value || null) != null && (plugins_choice_coupon_value[group.id] || null) != null ? plugins_choice_coupon_value[group.id] : $t('buy.select_coupon') }}</text>
                                 <view class="dis-inline-block va-m lh-xs">
                                     <iconfont name="icon-arrow-right" color="#999"></iconfont>
                                 </view>
@@ -155,7 +155,7 @@
                         <view v-if="(plugins_realstore_data || null) != null && (plugins_realstore_data.user_card || null) != null && (plugins_realstore_data['user_card'][group.id] || null) != null" class="plugins-realstore-container-view">
                             <block v-for="(item, index2) in plugins_realstore_data['user_card'][group.id]['data']" :key="index2">
                                 <view class="buy-data-item oh oh wh-auto">
-                                    <text class="cr-base va-m">{{ $t('buy.buy.58rs1a') }}</text>
+                                    <text class="cr-base va-m">{{ $t('buy.store_secondary_card') }}</text>
                                     <image class="image circle br va-m margin-left-xs" :src="item.images" mode="aspectFill"></image>
                                     <text class="cr-grey va-m margin-left-xss text-size-xs">x{{ item.stock }}</text>
                                     <view class="right-value fr cp tr" :data-index="index2" :data-groupid="group.id" @tap="plugins_realstore_open_event">
@@ -207,10 +207,10 @@
                                     <text v-if="(plugins_points_data.use_msg_tips || null) != null" class="va-m">{{ plugins_points_data.use_msg_tips }}</text>
                                 </block>
                                 <view v-else class="dis-inline-block">
-                                    <text class="va-m">{{ $t('buy.buy.33fugm') }}</text>
+                                    <text class="va-m">{{ $t('common.apply') }}</text>
                                     <input type="number" class="br radius dis-inline-block va-m tc text-size-xs padding-horizontal-sm margin-left-xs plugins-points-use-value" :value="actual_use_integral" @input="points_use_value_event" @confirm="points_use_value_confirm_event" :placeholder="$t('common.deduct')" />
                                     <button type="default" size="mini" class="bg-grey-e cr-gray cr-base text-size-xs radius va-m margin-right-xs plugins-points-use-submit" @tap="points_use_value_confirm_event">{{ $t('common.confirm') }}</button>
-                                    <text class="va-m">{{ $t('buy.buy.4di4i2') }}</text>
+                                    <text class="va-m">{{ $t('buy.points') }}</text>
                                 </view>
                                 <block v-if="plugins_points_data.is_pure_exchange_modal == undefined || plugins_points_data.is_pure_exchange_modal != 1 || plugins_points_data.discount_type != 1">
                                     <text class="sales-price va-m">-{{ currency_symbol }}{{ plugins_points_data.discount_price }}</text>
@@ -270,7 +270,7 @@
                                 </view>
                             </view>
                             <view v-if="payment_list_expand_visible()" class="payment-list-toggle tc padding-top-sm cp" @tap="payment_list_expand_event">
-                                <text class="cr-grey text-size-xs va-m">{{ payment_list_expand_status ? $t('buy.buy.payment_collapse') : $t('buy.buy.payment_expand_all') }}</text>
+                                <text class="cr-grey text-size-xs va-m">{{ payment_list_expand_status ? $t('buy.payment_collapse') : $t('buy.payment_expand_all') }}</text>
                                 <view class="dis-inline-block margin-left-xs va-m">
                                     <iconfont :name="payment_list_expand_status ? 'icon-arrow-top' : 'icon-arrow-bottom'" size="28rpx" propClass="cr-grey"></iconfont>
                                 </view>
@@ -285,7 +285,7 @@
                             <view v-else @tap="bind_user_note_tap_event" :class="'textarea-view ' + ((user_note_value || null) == null ? 'cr-grey' : '')">{{ user_note_value || $t('common.leave_message') }}</view>
                         </view>
                         <view v-if="(plugins_intellectstools_data || null) != null && (plugins_intellectstools_data.note_fast_data || null) != null" class="plugins-intellectstools-data-note-fast margin-top-sm">
-                            <text class="cr-grey margin-right-sm va-m text-size-xs">{{ $t('buy.buy.q7jq76') }}</text>
+                            <text class="cr-grey margin-right-sm va-m text-size-xs">{{ $t('buy.quick_input') }}</text>
                             <view class="note-fast-data-list scroll-view-horizontal dis-inline-block va-m">
                                 <scroll-view :scroll-x="true" :show-scrollbar="false" :scroll-with-animation="true">
                                     <block v-for="(item, index) in plugins_intellectstools_data.note_fast_data" :key="index">
@@ -299,7 +299,7 @@
                     <!-- 发票信息 -->
                     <view v-if="plugins_invoice_buy_data != null && total_price > 0" class="padding-horizontal-main border-radius-main bg-white spacing-mb">
                         <view class="buy-data-item oh" @tap="plugins_invoice_open_event">
-                            <text class="cr-base">{{ $t('buy.buy.k8inv1') }}</text>
+                            <text class="cr-base">{{ $t('common.text_2') }}</text>
                             <view class="right-value fr cp tr">
                                 <text :class="'right-value-content single-text va-m ' + (plugins_invoice_summary_grey ? 'cr-grey' : 'cr-base')">{{ plugins_invoice_summary_text }}</text>
                                 <view class="dis-inline-block va-m lh-xs">
@@ -307,7 +307,7 @@
                                 </view>
                             </view>
                         </view>
-                        <view v-if="plugins_invoice_wallet_payment" class="cr-grey text-size-xs padding-bottom-sm">{{ $t('buy.buy.k8inv6') }}</view>
+                        <view v-if="plugins_invoice_wallet_payment" class="cr-grey text-size-xs padding-bottom-sm">{{ $t('buy.pay_2') }}</view>
                     </view>
 
                     <!-- 底部说明 - 智能工具箱插件 -->
@@ -323,11 +323,11 @@
                     <view class="bottom-line-exclude">
                         <view class="item oh round flex-row jc-sb align-c br-top-shadow bg-white padding-vertical-sm">
                             <view class="nav-base single-text padding-left-main fl">
-                                <text>{{ $t('buy.buy.wx78ju') }}</text>
+                                <text>{{ $t('common.buy_total') }}</text>
                                 <text class="sales-price">{{ currency_symbol }}{{ total_price }}</text>
                             </view>
                             <view class="nav-submit padding-horizontal-main fr">
-                                <button class="btn bg-main cr-white round text-size-md" type="default" @tap="buy_submit_event" :disabled="buy_submit_disabled_status" hover-class="none">{{ is_friend_pay_mode == 1 ? $t('friendpay.friendpay.create_link') : $t('buy.buy.4884hk') }}</button>
+                                <button class="btn bg-main cr-white round text-size-md" type="default" @tap="buy_submit_event" :disabled="buy_submit_disabled_status" hover-class="none">{{ is_friend_pay_mode == 1 ? $t('common.create_link') : $t('common.place_order') }}</button>
                             </view>
                         </view>
                     </view>
@@ -347,7 +347,7 @@
                     </view>
                     <view v-if="plugins_coupon_list.length > 0" class="plugins-coupon-container padding-horizontal-main padding-bottom-main oh">
                         <view class="not-use-tips tc">
-                            <text class="cp" @tap="plugins_coupon_not_use_event">{{ $t('buy.buy.2c3i88') }}</text>
+                            <text class="cp" @tap="plugins_coupon_not_use_event">{{ $t('buy.not_use_coupons') }}</text>
                         </view>
                         <block v-for="(item, index) in plugins_coupon_list" :key="index">
                             <view :class="'item spacing-mt bg-white border-radius-main ' + ((item.is_active || 0) == 1 ? 'item-disabled' : '')">
@@ -381,7 +381,7 @@
                     </view>
                     <view class="plugins-realstore-container padding-horizontal-main padding-bottom-main oh">
                         <view class="not-use-tips tc">
-                            <text class="cp cr-yellow text-size-sm" data-type="0" @tap="plugins_realstore_use_event">{{ $t('buy.buy.8vqfp3') }}</text>
+                            <text class="cp cr-yellow text-size-sm" data-type="0" @tap="plugins_realstore_use_event">{{ $t('buy.not_use_secondary_cards') }}</text>
                         </view>
                         <view v-if="(plugins_realstore_data || null) != null && (plugins_realstore_data.user_card || null) != null && (plugins_realstore_data['user_card'][popup_plugins_realstore_group_id] || null) != null">
                             <block v-for="(item, index) in plugins_realstore_data['user_card'][popup_plugins_realstore_group_id]['data'][popup_plugins_realstore_card_index]['user_card']" :key="index">
@@ -389,11 +389,11 @@
                                     <view class="v-left fl">
                                         <view class="base single-text">
                                             <text class="value fw-b text-size-xxl">{{ item.valid_number }}</text>
-                                            <text class="unit margin-left-xs">{{ $t('buy.buy.0pgsrm') }}</text>
+                                            <text class="unit margin-left-xs">{{ $t('common.buy_second') }}</text>
                                             <text v-if="(item.name || null) != null" class="cr-base margin-left-lg">{{ item.name }}</text>
                                         </view>
                                         <view v-if="(item.describe || null) != null" class="margin-top-sm cr-grey single-text">{{ item.describe }}</view>
-                                        <view class="margin-top-sm cr-grey single-text text-size-xs">{{ item.start_time }}{{ $t('buy.buy.70u2vy') }}{{ item.end_time }}</view>
+                                        <view class="margin-top-sm cr-grey single-text text-size-xs">{{ item.start_time }}{{ $t('buy.to') }}{{ item.end_time }}</view>
                                     </view>
                                     <view v-if="(item.is_active || 0) == 1" class="v-right bg-main fr tc cr-white">
                                         <text>{{ $t('common.selected') }}</text>
@@ -437,10 +437,12 @@
     import componentFormInputBase from '@/pages/form-input/components/form-input/form-input-base';
     import componentInvoiceBuyPopup from '@/pages/plugins/invoice/components/invoice-buy-popup/invoice-buy-popup';
     import componentFriendpayModeSwitch from '@/pages/plugins/friendpay/components/pay-mode-switch/pay-mode-switch';
+    import pluginLocale from './locale/index.js';
 
     var common_static_url = app.globalData.get_static_url('common');
     var plugins_invoice_buy_cache_key = 'plugins-invoice-buy-data';
     export default {
+        mixins: [pluginLocale],
         data() {
             return {
                 theme_view: app.globalData.get_theme_value_view(),
@@ -522,7 +524,7 @@
                 qrcode_url: '',
                 // 前往支付页面携带的参数
                 to_page_back: {
-                    title: this.$t('buy.buy.718tux'),
+                    title: this.$t('common.enter_my_order'),
                     page: '/pages/user-order/user-order',
                 },
                 // 支付失败跳转的页面
@@ -633,7 +635,7 @@
                 if (this.params == null) {
                     this.setData({
                         data_list_loding_status: 2,
-                        data_list_loding_msg: this.$t('buy.buy.p7e91u'),
+                        data_list_loding_msg: this.$t('common.incorrect_product_info'),
                     });
                     uni.stopPullDownRefresh();
                     return false;
@@ -655,7 +657,7 @@
                     var realstore_order_page = '/pages/plugins/realstore/orderallot-list/orderallot-list';
                     this.setData({
                         to_page_back: {
-                            title: this.$t('buy.buy.4is2ak'),
+                            title: this.$t('buy.enter_store_order'),
                             page: realstore_order_page,
                         },
                         // 支付失败跳转的页面
@@ -737,7 +739,7 @@
                                     // 标题
                                     title: temp_dt.title || this.$t('common.time'),
                                     // 占位文本及标题
-                                    placeholder: temp_dt.placeholder || this.$t('buy.buy.1fi842'),
+                                    placeholder: temp_dt.placeholder || this.$t('buy.select_time'),
                                     // 天起始时间
                                     time_start: temp_dt.time_start || '',
                                     // 天结束时间
@@ -749,7 +751,7 @@
                                     // 禁止选择的时间
                                     disabled: temp_dt.disabled || '',
                                     // 未选择错误提示
-                                    error_msg: temp_dt.error_msg || this.$t('buy.buy.q8u066'),
+                                    error_msg: temp_dt.error_msg || this.$t('common.select_time_2'),
                                 };
                                 
                                 // 自提客户信息
@@ -765,7 +767,7 @@
                                     // 是否必选
                                     required: parseInt(temp_ct.required || 0) == 1,
                                     // 未选择错误提示
-                                    error_msg: temp_ct.error_msg || this.$t('buy.buy.8fghje'),
+                                    error_msg: temp_ct.error_msg || this.$t('buy.fill_name_phone_number'),
                                 };
 
                                 // 商品数据处理
@@ -839,7 +841,7 @@
                                             plugins_choice_coupon_value[cupk] = data.plugins_coupon_data[i]['coupon_data']['coupon_choice']['coupon']['desc'];
                                         } else {
                                             var coupon_count = (data.plugins_coupon_data[i]['coupon_data']['coupon_list'] || null) != null ? data.plugins_coupon_data[i]['coupon_data'].coupon_list.length : 0;
-                                            plugins_choice_coupon_value[cupk] = coupon_count > 0 ? this.$t('buy.buy.hw4l5m') + coupon_count + this.$t('buy.buy.5iuqow') : this.$t('buy.buy.4rb08b');
+                                            plugins_choice_coupon_value[cupk] = coupon_count > 0 ? this.$t('buy.optional_coupons') + coupon_count + this.$t('common.text') : this.$t('buy.there_currently_available_coupons_available');
                                         }
                                     }
 
@@ -1013,10 +1015,10 @@
             plugins_invoice_summary_text_build(data) {
                 data = data || {};
                 if (this.plugins_invoice_wallet_payment) {
-                    return this.$t('buy.buy.k8inv5');
+                    return this.$t('buy.pay');
                 }
                 if (parseInt(data.is_buy_invoice || 0) != 1) {
-                    return this.$t('buy.buy.k8inv2');
+                    return this.$t('common.no_invoice');
                 }
                 var config = this.plugins_invoice_buy_data || {};
                 var type_map = config.invoice_type_map || {};
@@ -1028,7 +1030,7 @@
                     var inner = apply_name ? (apply_name + '-' + invoice_title) : invoice_title;
                     return type_name ? (type_name + '(' + inner + ')') : ('(' + inner + ')');
                 }
-                return type_name || this.$t('buy.buy.k8inv8');
+                return type_name || this.$t('common.text_6');
             },
 
             // 发票摘要更新
@@ -1073,7 +1075,7 @@
             // 发票弹窗打开
             plugins_invoice_open_event() {
                 if (this.plugins_invoice_wallet_payment) {
-                    app.globalData.showToast(this.$t('buy.buy.k8inv5'));
+                    app.globalData.showToast(this.$t('buy.pay'));
                     return;
                 }
                 this.setData({
@@ -1179,7 +1181,7 @@
                 if (this.buy_site_model_value <= 2) {
                     validation.push({
                         fields: 'address_id',
-                        msg: this.$t('buy.buy.3740ur'),
+                        msg: this.$t('buy.select_address'),
                         is_can_zero: 1,
                     });
                     if (!app.globalData.fields_check(data, validation)) {
@@ -1207,7 +1209,7 @@
                 if ((datetime.is_select || false) == true) {
                     // 是否必选
                     if ((datetime.required || false) == true && (datetime.value || null) == null) {
-                        app.globalData.showToast(datetime.error_msg || this.$t('buy.buy.q8u066'));
+                        app.globalData.showToast(datetime.error_msg || this.$t('common.select_time_2'));
                         return false;
                     }
                     data['appoint_time'] = datetime.value || '';
@@ -1218,7 +1220,7 @@
                 if ((extraction_contact.is_write || false) == true) {
                     // 是否必选
                     if ((extraction_contact.required || false) == true && ((extraction_contact.name || null) == null || (extraction_contact.tel || null) == null)) {
-                        app.globalData.showToast(extraction_contact.error_msg || this.$t('buy.buy.8fghje'));
+                        app.globalData.showToast(extraction_contact.error_msg || this.$t('buy.fill_name_phone_number'));
                         return false;
                     }
                     data['extraction_contact_name'] = extraction_contact.name || '';
@@ -1228,7 +1230,7 @@
                 // 是否需要选择支付方式、并且未选择虚拟币支付方式
                 if (this.total_price > 0 && this.common_order_is_booking != 1 && parseInt(this.is_friend_pay_mode || 0) != 1 && (this.plugins_coin_payment_id || null) == null) {
                     if ((data.payment_id || null) == null) {
-                        app.globalData.showToast(this.$t('buy.buy.71kidy'));
+                        app.globalData.showToast(this.$t('common.select_payment_method'));
                         return false;
                     }
                 }
@@ -1481,7 +1483,7 @@
                 } else if (this.buy_site_model_value == 2) {
                     app.globalData.url_open('/pages/extraction-address/extraction-address?is_back=1&is_buy=1' + params);
                 } else {
-                    app.globalData.showToast(this.$t('buy.buy.31616e'));
+                    app.globalData.showToast(this.$t('buy.current_mode_does_allow_use_addresses'));
                 }
             },
 
@@ -1517,7 +1519,7 @@
                 var index = e.currentTarget.dataset.index || 0;
                 var data = this.goods_list[index] || null;
                 if (data == null) {
-                    app.globalData.showToast(this.$t('user-order-detail.user-order-detail.i876o3'));
+                    app.globalData.showToast(this.$t('common.incorrect_address'));
                     return false;
                 }
 

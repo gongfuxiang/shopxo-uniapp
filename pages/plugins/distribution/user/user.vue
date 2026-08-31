@@ -36,14 +36,14 @@
                                                 <!-- 取货点 -->
                                                 <block v-if="(data_base.is_enable_self_extraction || 0) == 1">
                                                     <button data-value="/pages/plugins/distribution/extraction/extraction" @tap="url_event" class="text-size-xs cr-white" size="mini" type="default" hover-class="none">
-                                                        <text class="margin-right-xs">{{ (extraction || null) == null ? $t('user.user.2344s8') : '' }}{{$t('user.user.b5cnj1')}}</text>
+                                                        <text class="margin-right-xs">{{ (extraction || null) == null ? $t('user.application') : '' }}{{$t('user.pickup_point')}}</text>
                                                         <iconfont name="icon-arrow-right" size="18rpx" color="#fff" propClass="pa"></iconfont>
                                                     </button>
                                                 </block>
                                                 <!-- 无分销等级：申请分销 -->
                                                 <block v-if="(user_level || null) == null && (data_base.is_enable_distribution_apply || 0) == 1">
                                                     <button data-value="/pages/plugins/distribution/apply/apply" @tap="url_event" class="text-size-xs cr-white" size="mini" type="default" hover-class="none">
-                                                        <text class="margin-right-xs">{{$t('user.user.a8dapply')}}</text>
+                                                        <text class="margin-right-xs">{{$t('user.apply_distribution')}}</text>
                                                         <iconfont name="icon-arrow-right" size="18rpx" color="#fff" propClass="pa"></iconfont>
                                                     </button>
                                                 </block>
@@ -71,13 +71,13 @@
                         <!-- 上级用户 -->
                         <view v-if="(data_base.is_show_superior || 0) == 1 && ((superior || null) != null || (data_base.is_modify_superior || 0) == 1)" class="superior">
                             <view class="superior-item flex-row jc-sb align-c oh border-radius-top-main">
-                                <view class="superior-title cr-white fw-b va-m text-size-sm">{{$t('user.user.4rj120')}}</view>
+                                <view class="superior-title cr-white fw-b va-m text-size-sm">{{$t('user.superior_user')}}</view>
                                 <view class="superior-content">
                                     <block v-if="(data_base.is_show_superior || 0) == 1 && (superior || null) != null">
                                         <image :src="superior.avatar" mode="widthFix" class="circle va-m"></image>
                                         <text class="cr-white va-m margin-left-sm text-size-xs">{{ superior.user_name_view }}</text>
                                     </block>
-                                    <text v-if="(data_base.is_modify_superior || 0) == 1" class="cr-white text-size-xs br round padding-horizontal-main padding-top-xs padding-bottom-xs margin-left" @tap="modify_superior_open_event">{{$t('user.user.567lwz')}}</text>
+                                    <text v-if="(data_base.is_modify_superior || 0) == 1" class="cr-white text-size-xs br round padding-horizontal-main padding-top-xs padding-bottom-xs margin-left" @tap="modify_superior_open_event">{{$t('common.modify')}}</text>
                                 </view>
                             </view>
                         </view>
@@ -86,7 +86,7 @@
                         <view v-if="stats_user_promotion_data_list.length > 0 || stats_base_data_list.length > 0 || stats_profit_data_list.length > 0" class="padding-horizontal-main oh">
                             <view class="stats-container padding-main border-radius-main bg-white pr spacing-mb">
                                 <view class="flex-row jc-sb align-c">
-                                    <view class="title-left-border text-size fw-b">{{$t('user.user.67y36w')}}</view>
+                                    <view class="title-left-border text-size fw-b">{{$t('user.basic_statistics')}}</view>
                                     <button type="default" size="mini" class="br-grey-f5 bg-grey-f5 round stats-switch-submit text-size-xs pr margin-0" @tap="popup_time_event">
                                         {{ popup_time_value.name }}
                                         <iconfont name="icon-arrow-bottom" size="24rpx" class="pa" color="#999"></iconfont>
@@ -98,7 +98,7 @@
                                         <view class="padding-main flex-1" :class="stats_user_promotion_data_list.length - 1 > index ? 'divider-r-f5' : ''" :data-value="item.to_page" @tap="url_event">
                                             <view class="single-text margin-top-sm">
                                                 <text class="fw-b promotion-size">{{ item.value }}</text>
-                                                <text v-if="(item.unit || null) != null" class="cr-grey-9 text-size-xs">{{$t('user.user.rjye50')}}</text>
+                                                <text v-if="(item.unit || null) != null" class="cr-grey-9 text-size-xs">{{$t('common.person_unit')}}</text>
                                             </view>
                                             <view class="cr-grey text-size-xs">{{ item.name }}</view>
                                         </view>
@@ -135,7 +135,7 @@
 
                             <!-- 返佣统计 -->
                             <view v-if="stats_profit_data_list.length > 0" class="stats-container padding-sm border-radius-main bg-white pr">
-                                <view class="title-left-border text-size fw-b padding-vertical-sm padding-horizontal-main margin-left-sm">{{$t('user.user.q822fj')}}</view>
+                                <view class="title-left-border text-size fw-b padding-vertical-sm padding-horizontal-main margin-left-sm">{{$t('user.rebate_statistics')}}</view>
                                 <view class="flex-row flex-wrap">
                                     <block v-for="(item, index) in stats_profit_data_list" :key="index">
                                         <view class="flex-width-half">
@@ -171,7 +171,7 @@
                             <view class="padding-main">
                                 <view class="flex-row jc-sb align-c bottom-line-exclude">
                                     <text class="cr-base">{{ profit_ladder.msg }}</text>
-                                    <text data-value="/pages/plugins/distribution/poster/poster" @tap="url_event" class="text-size bg-main cr-white dis-inline-block round cp padding-horizontal-xxxl promotion-btn">{{$t('user.user.xjxb2v')}}</text>
+                                    <text data-value="/pages/plugins/distribution/poster/poster" @tap="url_event" class="text-size bg-main cr-white dis-inline-block round cp padding-horizontal-xxxl promotion-btn">{{$t('user.go_promote')}}</text>
                                 </view>
                             </view>
                         </view>
@@ -197,20 +197,20 @@
                                         </view>
 
                                         <view class="form-gorup bg-white">
-                                            <view class="form-gorup-title">{{$t('team.team.pcaom3')}}</view>
+                                            <view class="form-gorup-title">{{$t('team.start_time')}}</view>
                                             <view class="br-b">
-                                                <uni-datetime-picker @change="time_start_change_event" v-model="popup_time_value.start" :border="false" :showFirstIcon="false" :hide-second="true" type="datetime" :placeholder="$t('team.team.pcaom3')" placeholder-class="cr-grey" />
+                                                <uni-datetime-picker @change="time_start_change_event" v-model="popup_time_value.start" :border="false" :showFirstIcon="false" :hide-second="true" type="datetime" :placeholder="$t('team.start_time')" placeholder-class="cr-grey" />
                                             </view>
                                         </view>
                                         <view class="form-gorup bg-white">
-                                            <view class="form-gorup-title">{{$t('team.team.iee9bp')}}</view>
+                                            <view class="form-gorup-title">{{$t('common.end_time')}}</view>
                                             <view class="br-b">
-                                                <uni-datetime-picker @change="time_end_change_event" v-model="popup_time_value.end" :border="false" :showFirstIcon="false" :hide-second="true" type="datetime" :placeholder="$t('team.team.iee9bp')" placeholder-class="cr-grey" />
+                                                <uni-datetime-picker @change="time_end_change_event" v-model="popup_time_value.end" :border="false" :showFirstIcon="false" :hide-second="true" type="datetime" :placeholder="$t('common.end_time')" placeholder-class="cr-grey" />
                                             </view>
                                         </view>
                                         <view class="bottom-fixed">
                                             <view class="bottom-line-exclude">
-                                                <button class="bg-main br-main cr-white round text-size" type="default" form-type="submit" hover-class="none" :disabled="form_submit_disabled_status">{{$t('user.user.25f97u')}}</button>
+                                                <button class="bg-main br-main cr-white round text-size" type="default" form-type="submit" hover-class="none" :disabled="form_submit_disabled_status">{{$t('user.query')}}</button>
                                             </view>
                                         </view>
                                     </form>
@@ -234,7 +234,7 @@
                                                     @onsearch="modify_superior_search_submit_event"
                                                     :propIsOnEvent="true"
                                                     :propIsRequired="false"
-                                                    :propPlaceholder="$t('user.user.nk3cpq')"
+                                                    :propPlaceholder="$t('user.enter_user_id_first_name_nickname')"
                                                     propBrColor="#eee"
                                                     propSize="md"
                                                     :propIsBtn="true"
@@ -255,7 +255,7 @@
                                                         </block>
                                                         <view v-else class="cr-red">{{modify_superior_user_data.error_msg}}</view>
                                                     </block>
-                                                    <view v-else class="cr-grey">{{$t('user.user.iynkpl')}}</view>
+                                                    <view v-else class="cr-grey">{{$t('user.enter_user_info_search_first')}}</view>
                                                     <view v-if="(superior || null) != null && (superior.can_modify_number_msg || null) != null" class="cr-yellow margin-top">{{superior.can_modify_number_msg}}</view>
                                                 </view>
                                             </view>
@@ -289,8 +289,10 @@
     import componentNoData from '@/components/no-data/no-data';
     import componentPopup from '@/components/popup/popup';
     import componentSearch from '@/components/search/search';
+    import pluginLocale from '../locale/index.js';
     var currency_symbol = app.globalData.currency_symbol();
     export default {
+        mixins: [pluginLocale],
         data() {
             return {
                 theme_view: app.globalData.get_theme_value_view(),
@@ -300,7 +302,7 @@
                 currency_symbol: currency_symbol,
                 default_images_data: {},
                 avatar: app.globalData.data.default_user_head_src,
-                nickname: this.$t('login.login.6yfr9g'),
+                nickname: this.$t('common.login_register'),
                 user_referrer: null,
                 data_base: null,
                 user_level: null,
@@ -318,7 +320,7 @@
                 stats_profit_data_list: [],
                 popup_time_status: false,
                 form_submit_disabled_status: false,
-                popup_time_value: { name: this.$t('user.user.dcbt21'), start: '', end: '', index: '' },
+                popup_time_value: { name: this.$t('user.custom'), start: '', end: '', index: '' },
                 quit_time_checked_name: '',
                 modify_superior_popup_status: false,
                 modify_superior_search_input_keywords_value: '',
@@ -518,7 +520,7 @@
                     form_submit_disabled_status: true,
                 });
                 uni.showLoading({
-                    title: this.$t('user.user.4141u2'),
+                    title: this.$t('user.searching'),
                 });
                 uni.request({
                     url: app.globalData.get_request_url('stats', 'user', 'distribution'),
@@ -530,7 +532,7 @@
                         if (res.data.code == 0) {
                             var data = res.data.data;
                             var temp_value = this.popup_time_value;
-                            temp_value.name = (temp_value.index || null) == null ? ((temp_value.start || null) == null && (temp_value.end || null) == null ? this.$t('common.all') : this.$t('user.user.dcbt21')) : this.time_data[temp_value.index]['name'];
+                            temp_value.name = (temp_value.index || null) == null ? ((temp_value.start || null) == null && (temp_value.end || null) == null ? this.$t('common.all') : this.$t('user.custom')) : this.time_data[temp_value.index]['name'];
                             this.setData({
                                 popup_time_status: false,
                                 form_submit_disabled_status: false,
@@ -606,7 +608,7 @@
             // 上级用户修改 - 搜索用户
             modify_superior_search_user() {
                 uni.showLoading({
-                    title: this.$t('recommend-form.recommend-form.e5k407'),
+                    title: this.$t('recommend-form.searching'),
                     mask: true
                 });
                 uni.request({
@@ -640,7 +642,7 @@
             // 上级用户修改 - 提交
             modify_superior_submit_event(e) {
                 if((this.modify_superior_user_data || null) == null || (this.modify_superior_user_data.data || null) == null) {
-                    app.globalData.showToast(this.$t('user.user.f5rny5'));
+                    app.globalData.showToast(this.$t('user.search_users_first'));
                     return false;
                 }
                 this.setData({

@@ -25,7 +25,7 @@
 
             <view class="bottom-fixed" :style="bottom_fixed_style">
                 <view class="bottom-line-exclude">
-                    <button class="item bg-white br-main cr-main round text-size" type="default" data-value="/pages/plugins/ask/form/form" @tap="url_event" hover-class="none">{{ $t('goods-detail.goods-detail.7ulh8b') }}</button>
+                    <button class="item bg-white br-main cr-main round text-size" type="default" data-value="/pages/plugins/ask/form/form" @tap="url_event" hover-class="none">{{ $t('common.ask_question') }}</button>
                 </view>
             </view>
         </view>
@@ -40,8 +40,10 @@
     import componentNoData from '@/components/no-data/no-data';
     import componentBottomLine from '@/components/bottom-line/bottom-line';
     import componentPanelContent from '@/components/panel-content/panel-content';
+    import pluginLocale from '../locale/index.js';
 
     export default {
+        mixins: [pluginLocale],
         data() {
             return {
                 theme_view: app.globalData.get_theme_value_view(),

@@ -92,7 +92,7 @@
                     let self = this;
                     uni.showModal({
                         title: self.$t('common.tips'),
-                        content: self.$t('switch.switch.8w5ok6', [text]),
+                        content: self.$t('switch.sure_want_adjust', [text]),
                         success: (res) => {
                             if (res.confirm) {
                                 self.isSwitch = isSwitch;

@@ -29,7 +29,7 @@
                 </view>
                 <view class="recharge-content padding-xxl bg-white">
                     <view class="margin-bottom-xxxl">
-                        <view class="margin-bottom-main">{{$t('recharge.recharge.lh6k86')}}</view>
+                        <view class="margin-bottom-main">{{$t('recharge.recharge_address')}}</view>
                         <view class="recharge-content-input-bg padding-main border-radius-sm flex-row align-c">
                             <view class="single-text padding-right-sm flex-1 flex-width">{{ accounts.platform_data.recharge_address }}</view>
                             <view :data-value="accounts.platform_data.recharge_address" @tap.stop="text_copy_event">
@@ -38,7 +38,7 @@
                         </view>
                     </view>
                     <view class="margin-bottom-xxxl">
-                        <view class="margin-bottom-main">{{$t('recharge.recharge.e5rblc')}}</view>
+                        <view class="margin-bottom-main">{{$t('recharge.coin_charging_network')}}</view>
                         <block v-if="network_list.length > 0">
                             <picker class="recharge-content-input-bg padding-main border-radius-sm" @change="recharge_event" :value="network_list_index" :range="network_list" range-key="name">
                                 <view class="picker arrow-bottom">
@@ -46,11 +46,11 @@
                                 </view>
                             </picker>
                         </block>
-                        <view v-else class="cr-grey">{{$t('cash.cash.1g49wo')}}</view>
+                        <view v-else class="cr-grey">{{$t('cash.network_data')}}</view>
                     </view>
                     <view class="margin-bottom-xxxl">
                         <view v-if="accounts.platform_data.preset_data.length > 0">
-                            <view class="margin-bottom-xs">{{$t('recharge.recharge.eb6722')}}</view>
+                            <view class="margin-bottom-xs">{{$t('recharge.choose_recharge_coins')}}</view>
                             <view class="flex-row flex-wrap recharge-price-item margin-bottom-xs">
                                 <block v-for="(item, index) in accounts.platform_data.preset_data" :key="index">
                                     <view class="recharge-price-list flex-col align-c jc-c pr" :class="preset_data_index == index ? 'active' : ''" :data-index="index" :data-value="item.value" @tap="preset_data_change">
@@ -65,15 +65,15 @@
                             </view>
                         </view>
                         <view class="recharge-content-input-bg padding-main border-radius-sm flex-row align-c margin-bottom-xxl">
-                            <text>{{$t('recharge.recharge.k1e7hs')}}</text>
+                            <text>{{$t('recharge.other_quantities')}}</text>
                             <view class="padding-left-lg">
-                                <input type="digit" name="coin" :value="recharge_num" placeholder-class="text-size-md cr-grey-9" :placeholder="$t('recharge.recharge.0i541i')" @input="recharge_num_change" />
+                                <input type="digit" name="coin" :value="recharge_num" placeholder-class="text-size-md cr-grey-9" :placeholder="$t('recharge.enter_recharge_quantity')" @input="recharge_num_change" />
                             </view>
                         </view>
-                        <button type="default" class="recharge-btn cr-white round" @tap="recharge_submit">{{$t('recharge.recharge.x27b25')}}</button>
+                        <button type="default" class="recharge-btn cr-white round" @tap="recharge_submit">{{$t('common.recharge_now')}}</button>
                     </view>
                     <view v-if="accounts.platform_data.recharge_desc.length > 0" class="margin-bottom-xxxl">
-                        <view class="margin-bottom-main">{{$t('recharge.recharge.e8n7ul')}}</view>
+                        <view class="margin-bottom-main">{{$t('recharge.recharge_instructions_2')}}</view>
                         <view class="recharge-content-tips">
                             <view v-for="(item, index) in accounts.platform_data.recharge_desc" :key="index" class="item pr padding-left-xl margin-bottom-sm cr-grey-9 text-size-xs">{{ item }}</view>
                         </view>
@@ -119,6 +119,7 @@
     import componentNavBack from '@/components/nav-back/nav-back';
     import componentNoData from '@/components/no-data/no-data';
     import componentPopup from '@/components/popup/popup';
+    import pluginLocale from '../locale/index.js';
     var wallet_static_url = app.globalData.get_static_url('coin', true) + 'app/';
     // 状态栏高度
     var bar_height = parseInt(app.globalData.get_system_info('statusBarHeight', 0, true));
@@ -126,6 +127,7 @@
     bar_height = 0;
     // #endif
     export default {
+        mixins: [pluginLocale],
         data() {
             return {
                 theme_view: app.globalData.get_theme_value_view(),
@@ -273,7 +275,7 @@
             // 立即充值
             recharge_submit() {
                 if(this.network_list.length == 0) {
-                    app.globalData.showToast(this.$t('cash.cash.en6vsa'));
+                    app.globalData.showToast(this.$t('cash.network_data_empty_contact_customer_service'));
                     return false;
                 }
 
@@ -285,7 +287,7 @@
                     coin: this.recharge_num,
                 };
                 // 数据校验
-                var validation = [{ fields: 'coin', msg: this.$t('recharge.recharge.5q02ar') }];
+                var validation = [{ fields: 'coin', msg: this.$t('recharge.select_enter_recharge_quantity') }];
 
                 // 验证提交表单
                 if (app.globalData.fields_check(new_data, validation)) {

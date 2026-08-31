@@ -146,9 +146,9 @@
                     }
                     // 默认数据
                     const style_list = [
-                        { name: this.$t('diy.diy.left_image_right_text'), value: '0', width: 143, height: 143 },
-                        { name: this.$t('diy.diy.top_image_bottom_text'), value: '1', width: 0, height: 126 },
-                        { name: this.$t('diy.diy.large_image_show'), value: '2', width: 0, height: 126 },
+                        { name: this.$t('diy.left_image_right_text'), value: '0', width: 143, height: 143 },
+                        { name: this.$t('diy.top_image_bottom_text'), value: '1', width: 0, height: 126 },
+                        { name: this.$t('diy.large_image_show'), value: '2', width: 0, height: 126 },
                     ];
                     const scale = sys_width / 390;
                     let img_style = ``;

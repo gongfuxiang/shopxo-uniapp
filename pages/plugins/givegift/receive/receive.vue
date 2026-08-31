@@ -27,7 +27,7 @@
                         </view>
                         <view v-if="(data.desc || null) != null" class="margin-top-lg cr-red">{{data.desc}}</view>
                         <view class="margin-top-xxl padding-bottom-sm">
-                            <input type="text" class="br round padding-horizontal lh-xxl ht-xxl" placeholder-class="cr-grey-c" :placeholder="$t('givegift-gift.givegift-gift.34rrr3')" name="user_message" />
+                            <input type="text" class="br round padding-horizontal lh-xxl ht-xxl" placeholder-class="cr-grey-c" :placeholder="$t('givegift-gift.leave_message_ta_express_gratitude')" name="user_message" />
                         </view>
                     </view>
                 </view>
@@ -60,7 +60,9 @@
     import componentNoData from '@/components/no-data/no-data';
     import componentGoodsSpecChoice from '@/components/goods-spec-choice/goods-spec-choice';
     import componentSharePopup from '@/components/share-popup/share-popup';
+    import pluginLocale from '../locale/index.js';
     export default {
+        mixins: [pluginLocale],
         data() {
             return {
                 theme_view: app.globalData.get_theme_value_view(),

@@ -58,10 +58,10 @@ const app = getApp();
                 style: '',
                 id_bool: true,
                 stats_list: [
-                    { id: 'order_count', name: this.$t('diy.diy.order_total'), value: '100', url: 'user-order' },
-                    { id: 'goods_favor_count', name: this.$t('diy.diy.goods_favor'), value: '10', url: 'user-favor' },
-                    { id: 'goods_browse_count', name: this.$t('diy.diy.my_tracks'), value: '1000', url: 'user-goods-browse' },
-                    { id: 'integral_number', name: this.$t('diy.diy.my_integral'), value: '10000', url: 'user-integral' },
+                    { id: 'order_count', name: this.$t('diy.order_total'), value: '100', url: 'user-order' },
+                    { id: 'goods_favor_count', name: this.$t('diy.goods_favor'), value: '10', url: 'user-favor' },
+                    { id: 'goods_browse_count', name: this.$t('diy.my_tracks'), value: '1000', url: 'user-goods-browse' },
+                    { id: 'integral_number', name: this.$t('diy.my_integral'), value: '10000', url: 'user-integral' },
                 ],
                 config: ['order_count', 'goods_favor_count', 'goods_browse_count', 'integral_number'],
                 icon_setting: [

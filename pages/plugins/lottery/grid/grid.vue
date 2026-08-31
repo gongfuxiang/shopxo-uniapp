@@ -27,7 +27,7 @@
                         <block v-for="rep in marqueeDuplicateRuns" :key="rep">
                             <text v-for="(mv, mi) in marqueeList" :key="mi" class="lottery-marquee-item">
                                 <text v-if="(mv.user_mask || '').toString().trim()">{{ mv.user_mask }}，</text>
-                                <text>{{ $t('lottery.lottery.won_prefix') }}{{ mv.reward_name || '-' }} </text>
+                                <text>{{ $t('lottery.won_prefix') }}{{ mv.reward_name || '-' }} </text>
                                 <text class="lottery-marquee-em">{{ $t('common.just_now') }}</text>
                             </text>
                         </block>
@@ -40,7 +40,7 @@
 
         <view v-if="rulesPopupVisible" class="lottery-rules-mask" @tap="rulesPopupVisible = false">
             <view class="lottery-rules-dialog" @tap.stop>
-                <view class="lottery-rules-title">{{ $t('lottery.lottery.rules_title') }}</view>
+                <view class="lottery-rules-title">{{ $t('lottery.rules_title') }}</view>
                 <scroll-view :scroll-y="true" class="lottery-rules-scroll">
                     <text class="lottery-rules-text">{{ rulesDisplayText }}</text>
                 </scroll-view>
@@ -97,7 +97,9 @@
     import componentCommon from '@/components/common/common';
     import componentNoData from '@/components/no-data/no-data';
     import componentLotteryGrid from '@/pages/plugins/lottery/components/lottery-grid/lottery-grid';
+    import pluginLocale from '../locale/index.js';
     export default {
+        mixins: [pluginLocale],
         components: {
             componentCommon,
             componentNoData,
@@ -115,9 +117,9 @@
                 lastDrawResult: null,
                 resultSuccessImage: '',
                 resultFailImage: '',
-                resultFailTitle: this.$t('lottery.lottery.thanks_join'),
-                resultFailDesc: this.$t('lottery.lottery.try_again_tips'),
-                resultSuccessTitle: this.$t('lottery.lottery.congrats_get'),
+                resultFailTitle: this.$t('lottery.thanks_join'),
+                resultFailDesc: this.$t('lottery.try_again_tips'),
+                resultSuccessTitle: this.$t('lottery.congrats_get'),
                 resultModalVisible: false,
                 resultModalTitle: '',
                 resultModalDesc: '',
@@ -137,7 +139,7 @@
                 /** 有每日次数上限时，draw 返回后暂存次数相关字段，跑马灯停格后再合并到页面数据 */
                 pendingGridChancePatch: null,
                 /** 底部跳转中奖记录文案（接口 lottery_user_center_record_menu_name） */
-                recordEntryMenuName: this.$t('lottery.lottery.my_prize'),
+                recordEntryMenuName: this.$t('lottery.my_prize'),
             };
         },
         computed: {
@@ -156,7 +158,7 @@
                 if (s) {
                     return s;
                 }
-                return this.$t('lottery.lottery.balance_label') + (g.user_wallet_money || '0.00') + this.$t('lottery.lottery.integral_label') + (g.user_integral || '0');
+                return this.$t('lottery.balance_label') + (g.user_wallet_money || '0.00') + this.$t('lottery.integral_label') + (g.user_integral || '0');
             },
             /**
              * 弹窗确认按钮文案（多语言）
@@ -244,13 +246,13 @@
                 const bgUrl = isNone ? this.resultFailImage : this.resultSuccessImage;
                 this.resultModalBgUrl = bgUrl ? String(bgUrl).trim() : '';
                 if (isNone) {
-                    this.resultModalTitle = this.resultFailTitle || this.$t('lottery.lottery.thanks_join');
+                    this.resultModalTitle = this.resultFailTitle || this.$t('lottery.thanks_join');
                     this.resultModalShowPrizeIcon = false;
                     this.resultModalPrizeIcon = '';
                     this.resultModalPrizeName = '';
-                    this.resultModalDesc = this.resultFailDesc || this.$t('lottery.lottery.try_again_tips');
+                    this.resultModalDesc = this.resultFailDesc || this.$t('lottery.try_again_tips');
                 } else {
-                    this.resultModalTitle = this.resultSuccessTitle || this.$t('lottery.lottery.congrats_get');
+                    this.resultModalTitle = this.resultSuccessTitle || this.$t('lottery.congrats_get');
                     const icon = d.icon || '';
                     this.resultModalShowPrizeIcon = !!icon;
                     this.resultModalPrizeIcon = icon;
@@ -340,7 +342,7 @@
                             }
                         } else {
                             // 错误提示
-                            app.globalData.showToast(res.data.msg || this.$t('lottery.lottery.draw_fail'));
+                            app.globalData.showToast(res.data.msg || this.$t('lottery.draw_fail'));
                         }
                     },
                     fail: () => {
@@ -366,10 +368,10 @@
                             const grid = data.lottery_grid || {};
                             this.marqueeList = Array.isArray(data.marquee_list) ? data.marquee_list : [];
                             this.recordEntryMenuName =
-                                String(data.lottery_user_center_record_menu_name || '').trim() || this.$t('lottery.lottery.my_prize');
+                                String(data.lottery_user_center_record_menu_name || '').trim() || this.$t('lottery.my_prize');
                             this.lotteryGrid = grid;
                             if (grid.enable === false) {
-                                const tip = String(grid.error_tips || '').trim() || this.$t('lottery.lottery.activity_unavailable');
+                                const tip = String(grid.error_tips || '').trim() || this.$t('lottery.activity_unavailable');
                                 this.data_list_loding_status = 0;
                                 this.data_list_loding_msg = tip;
                             } else {
@@ -378,9 +380,9 @@
                             }
                             this.resultSuccessImage = grid.result_success_image || '';
                             this.resultFailImage = grid.result_fail_image || '';
-                            this.resultFailTitle = grid.result_fail_title || this.$t('lottery.lottery.thanks_join');
-                            this.resultFailDesc = grid.result_fail_desc || this.$t('lottery.lottery.try_again_tips');
-                            this.resultSuccessTitle = grid.result_success_title || this.$t('lottery.lottery.congrats_get');
+                            this.resultFailTitle = grid.result_fail_title || this.$t('lottery.thanks_join');
+                            this.resultFailDesc = grid.result_fail_desc || this.$t('lottery.try_again_tips');
+                            this.resultSuccessTitle = grid.result_success_title || this.$t('lottery.congrats_get');
                             this.nImg = grid.index_bg_app || '';
                             this.AwardList = this.gridCellsToAwardList(grid);
                             // 分享标题/描述取自 banner_*；配图优先标题手机端图
@@ -443,7 +445,7 @@
                     if (cell.type === 'btn') {
                         list[gi] = {
                             image: grid.draw_start_image || '',
-                            name: grid.draw_price_tips || this.$t('lottery.lottery.draw_now'),
+                            name: grid.draw_price_tips || this.$t('lottery.draw_now'),
                             index_num: gi,
                         };
                     } else {

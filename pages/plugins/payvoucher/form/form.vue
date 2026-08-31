@@ -5,13 +5,13 @@
                 <!-- 订单信息 -->
                 <view class="padding-main bg-white border-radius-main margin-bottom-main">
                     <view class="margin-bottom-sm flex-row">
-                        <text class="cr-grey-9 title">来源类型</text>
+                        <text class="cr-grey-9 title">{{$t('payvoucher.source_type')}}</text>
                         <text class="fw-b">{{ page_data.source_type_name || '' }}</text>
                     </view>
                     <block v-if="(page_data.is_batch || 0) == 1">
                         <view class="margin-bottom-sm flex-row">
-                            <text class="cr-grey-9 title">合并订单</text>
-                            <text class="fw-b">共 {{ page_data.order_count || 0 }} 笔</text>
+                            <text class="cr-grey-9 title">{{$t('payvoucher.merge_order')}}</text>
+                            <text class="fw-b">{{$t('common.total')}} {{ page_data.order_count || 0 }} {{$t('payvoucher.order_unit')}}</text>
                         </view>
                         <view v-for="(ov, oi) in page_data.order_list || []" :key="oi" class="flex-row jc-sb align-c padding-vertical-sm br-b">
                             <view class="flex-row align-c flex-1" :data-value="ov.order_no || ''" @tap="text_copy_event">
@@ -23,13 +23,13 @@
                             <text class="cr-red fw-b">{{ ov.price }}</text>
                         </view>
                         <view class="margin-top-sm flex-row jc-sb">
-                            <text class="cr-grey-9">应付合计</text>
+                            <text class="cr-grey-9">{{$t('payvoucher.pay_total')}}</text>
                             <text class="cr-red fw-b">{{ page_data.total_price }}</text>
                         </view>
                     </block>
                     <block v-else>
                         <view class="margin-bottom-sm flex-row align-c">
-                            <text class="cr-grey-9 title">订单编号</text>
+                            <text class="cr-grey-9 title">{{$t('common.user_order_detail_order_number')}}</text>
                             <view class="flex-row align-c" :data-value="(page_data.order && page_data.order.order_no) || ''" @tap="text_copy_event">
                                 <text class="fw-b">{{ (page_data.order && page_data.order.order_no) || '' }}</text>
                                 <view v-if="(page_data.order && page_data.order.order_no) || ''" class="dis-inline-block margin-left-sm">
@@ -38,12 +38,12 @@
                             </view>
                         </view>
                         <view class="margin-bottom-sm flex-row">
-                            <text class="cr-grey-9 title">应付金额</text>
+                            <text class="cr-grey-9 title">{{$t('payvoucher.payable_amount')}}</text>
                             <text class="cr-red fw-b">{{ page_data.total_price }}</text>
                         </view>
                     </block>
                     <view v-if="page_data.status_name" class="margin-top-sm flex-row">
-                        <text class="cr-grey-9 title">凭证状态</text>
+                        <text class="cr-grey-9 title">{{$t('payvoucher.voucher_status')}}</text>
                         <text class="fw-b">{{ page_data.status_name }}</text>
                     </view>
                     <view v-if="page_data.order_close_tips" class="margin-top-main cr-yellow text-size-sm">{{ page_data.order_close_tips }}</view>
@@ -51,7 +51,7 @@
 
                 <!-- 收款账户 -->
                 <view v-if="page_data.account" class="padding-main bg-white border-radius-main margin-bottom-main">
-                    <view class="fw-b margin-bottom-main">收款信息</view>
+                    <view class="fw-b margin-bottom-main">{{$t('payvoucher.receive_info')}}</view>
                     <view v-if="page_data.account.content" class="account-content cr-base text-size-sm margin-bottom-sm">{{ page_data.account.content }}</view>
                     <view v-if="page_data.account.tips" class="cr-yellow text-size-sm margin-bottom-sm">{{ page_data.account.tips }}</view>
                     <image v-if="page_data.account.images_url" :src="page_data.account.images_url" mode="widthFix" class="account-images radius-md wh-auto" @tap="preview_account_image"></image>
@@ -60,15 +60,15 @@
                 <!-- 凭证 -->
                 <view class="padding-main bg-white border-radius-main margin-bottom-main form-container">
                     <view class="form-gorup-title flex-row align-e margin-bottom-main">
-                        <text class="fw-b">支付凭证</text>
+                        <text class="fw-b">{{$t('payvoucher.pay_voucher')}}</text>
                         <text v-if="(page_data.is_readonly || 0) != 1" class="form-group-tips-must">*</text>
-                        <text class="cr-grey-c text-size-xs margin-left-sm">{{ page_data.voucher_tips || '请上传转账截图，最多10张' }}</text>
+                        <text class="cr-grey-c text-size-xs margin-left-sm">{{ page_data.voucher_tips || $t('payvoucher.upload_transfer_screenshot') }}</text>
                     </view>
                     <block v-if="(page_data.is_readonly || 0) == 1">
                         <view v-if="(image_list || []).length > 0" class="flex-row flex-wrap">
                             <image v-for="(img, ii) in image_list" :key="ii" :src="img" mode="aspectFill" class="voucher-view-img radius-md margin-right-sm margin-bottom-sm" :data-index="ii" @tap="preview_voucher_image"></image>
                         </view>
-                        <view v-else class="cr-grey">暂无凭证</view>
+                        <view v-else class="cr-grey">{{$t('payvoucher.no_voucher')}}</view>
                     </block>
                     <block v-else>
                         <component-upload :propData="image_list" :propMaxNum="10" :propPathType="editor_path_type" @call-back="return_image_event"></component-upload>
@@ -79,8 +79,8 @@
                     <view class="bottom-line-exclude">
                         <view class="flex-row align-c">
                             <button type="default" class="item cancel-btn round bg-white cr-base br-grey margin-right-sm" hover-class="none" @tap="cancel_event">{{$t('common.cancel')}}</button>
-                            <button v-if="(page_data.is_readonly || 0) != 1" type="default" class="item submit-btn round bg-main br-main cr-white margin-left-sm" hover-class="none" :loading="form_submit_loading" :disabled="form_submit_loading" @tap="submit_event">提交凭证</button>
-                            <button v-else type="default" class="item submit-btn round bg-main br-main cr-white margin-left-sm" hover-class="none" @tap="cancel_event">返回</button>
+                            <button v-if="(page_data.is_readonly || 0) != 1" type="default" class="item submit-btn round bg-main br-main cr-white margin-left-sm" hover-class="none" :loading="form_submit_loading" :disabled="form_submit_loading" @tap="submit_event">{{$t('payvoucher.submit_voucher')}}</button>
+                            <button v-else type="default" class="item submit-btn round bg-main br-main cr-white margin-left-sm" hover-class="none" @tap="cancel_event">{{$t('common.return')}}</button>
                         </view>
                     </view>
                 </view>
@@ -98,8 +98,10 @@
     import componentCommon from '@/components/common/common';
     import componentNoData from '@/components/no-data/no-data';
     import componentUpload from '@/components/upload/upload';
+    import pluginLocale from '../locale/index.js';
 
     export default {
+        mixins: [pluginLocale],
         data() {
             return {
                 theme_view: app.globalData.get_theme_value_view(),
@@ -256,7 +258,7 @@
                     return;
                 }
                 if ((this.image_list || []).length <= 0) {
-                    app.globalData.showToast('请上传支付凭证图片');
+                    app.globalData.showToast(this.$t('payvoucher.upload_voucher_image'));
                     return;
                 }
                 var post = {

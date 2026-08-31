@@ -52,7 +52,7 @@
             },
             // 标题文案
             titleText() {
-                return this.pageText.pay_mode_title || this.$t('friendpay.friendpay.pay_mode_title');
+                return this.pageText.pay_mode_title || this.$t('friendpay.pay_mode_title');
             },
             // 说明文案
             contentLines() {

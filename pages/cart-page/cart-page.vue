@@ -110,7 +110,7 @@
                     <!-- 空购物车 -->
                     <view v-if="data_list.length == 0 && data_list_loding_status == 0" class="cart-no-data-box tc">
                         <image :src="common_static_url + 'cart-empty.png'" mode="widthFix" class="margin-bottom-lg image"></image>
-                        <view class="cr-grey text-size-sm">{{ data_list_loding_msg || $t('cart.cart.j8on74') }}</view>
+                        <view class="cr-grey text-size-sm">{{ data_list_loding_msg || $t('common.cart_empty') }}</view>
                         <view class="margin-top-xxl">
                             <button class="bg-main br-main cr-white text-size-md round" type="default" size="mini" hover-class="none" @tap="no_cart_data_btn_event">{{no_cart_data_btn_text}}</button>
                         </view>
@@ -128,7 +128,7 @@
                     <!-- 猜你喜欢 -->
                     <view v-if="(goods_list || null) != null && goods_list.length > 0" class="padding-horizontal-main margin-top-xxxl">
                         <view class="tc spacing-mb">
-                            <view class="guess-like fw-b text-size-md">{{ $t('goods-detail.goods-detail.v2974w') }}</view>
+                            <view class="guess-like fw-b text-size-md">{{ $t('common.guess_like') }}</view>
                         </view>
                         <div class="spacing-mt">
                             <component-goods-list :propData="{ style_type: 1, goods_list: goods_list, random: random_value }" :propIsCartNumberTabBarBadgeSync="(plugins_realstore_info || null) == null" :propIsCartParaCurve="(plugins_realstore_info || null) == null" :propCurrencySymbol="currency_symbol" propSource="index" @CartSuccessEvent="cart_success_event"></component-goods-list>
@@ -160,7 +160,7 @@
                                         </view>
                                         <view class="price">
                                             <view class="flex-row jc-s flex-nowrap align-c">
-                                                <view>{{ $t('buy.buy.wx78ju') }}</view>
+                                                <view>{{ $t('common.buy_total') }}</view>
                                                 <view class="sales-price single-text fw-b">
                                                     <text class="text-size-sm">{{ currency_symbol }}</text>
                                                     <text class="text-size-lg">{{ total_price }}</text>
@@ -194,7 +194,7 @@
                     <component-popup :propShow="discount_detail_status" propPosition="bottom" propStyle="background: #F6F6F6;" @onclose="discount_detail_close_event">
                         <view v-if="data_list.length > 0" class="discount_detail-popup padding-main">
                             <view class="oh tc discount_detail-popup-title">
-                                <text class="text-size">{{ $t('cart.cart.t41i4x') }}</text>
+                                <text class="text-size">{{ $t('common.amount_details') }}</text>
                                 <view class="fr" @tap.stop="discount_detail_close_event">
                                     <iconfont name="icon-close-line" size="28rpx" color="#999"></iconfont>
                                 </view>
@@ -230,14 +230,14 @@
                                     </view>
                                 </scroll-view>
                                 <view v-if="data_list.length > 4" class="tc padding-top-sm" @tap="open_goods_list_event">
-                                    <text class="cr-grey-9 text-size-xs">{{ $t('common.selected') }}{{ goods_count }}{{ $t('cart.cart.miti3i') }}</text>
+                                    <text class="cr-grey-9 text-size-xs">{{ $t('common.selected') }}{{ goods_count }}{{ $t('common.cart_items') }}</text>
                                     <iconfont :name="!discount_detail_goods_list_status ? 'icon-arrow-bottom' : 'icon-arrow-top'" size="28rpx" propClass="pr top-xs margin-left-xs"></iconfont>
                                 </view>
                             </view>
 
                             <view v-if="total_num > 0" class="padding bg-white border-radius-main margin-top">
                                 <view class="flex-row jc-sb align-c text-size fw-b margin-bottom">
-                                    <view>{{ $t('cart.cart.t41i4x') }}</view>
+                                    <view>{{ $t('common.amount_details') }}</view>
                                     <view> {{ currency_symbol }}{{ all_total_price }} </view>
                                 </view>
                                 <block v-if="preferential_price > 0">
@@ -278,7 +278,7 @@
         <component-popup :propShow="plugins_realstore_choice_status" propPosition="bottom" @onclose="realstore_choice_close_event">
             <view class="padding-horizontal-main padding-top-main bg-white">
                 <view class="oh tc">
-                    <text class="text-size">{{ $t('cart.cart.7gdej1') }}</text>
+                    <text class="text-size">{{ $t('common.nearby_stores') }}</text>
                     <view class="fr" @tap.stop="realstore_choice_close_event">
                         <iconfont name="icon-close-line" size="28rpx" color="#999"></iconfont>
                     </view>
@@ -306,7 +306,7 @@
                         </view>
                     </block>
                     <block v-else>
-                        <component-no-data :propMsg="$t('cart.cart.h63814')"></component-no-data>
+                        <component-no-data :propMsg="$t('common.store_info_available')"></component-no-data>
                     </block>
                 </view>
             </view>
@@ -354,10 +354,12 @@
     import componentBottomLine from '@/components/bottom-line/bottom-line';
     import componentPopup from '@/components/popup/popup';
     import componentRealstoreCart from '@/pages/plugins/realstore/components/realstore-cart/realstore-cart';
+    import pluginLocale from './locale/index.js';
 
     var common_static_url = app.globalData.get_static_url('common');
     var status_bar_height = parseInt(app.globalData.get_system_info('statusBarHeight', 0, true));
     export default {
+        mixins: [pluginLocale],
         data() {
             return {
                 status_bar_height: status_bar_height,
@@ -365,7 +367,7 @@
                 theme_color: app.globalData.get_theme_color(),
                 common_static_url: common_static_url,
                 user: null,
-                no_cart_data_btn_text: this.$t('login.login.6yfr9g'),
+                no_cart_data_btn_text: this.$t('common.login_register'),
                 load_status: 0,
                 data_list_loding_status: 1,
                 data_list_loding_msg: '',
@@ -515,9 +517,9 @@
                         user: null,
                         data_list: [],
                         plugins_realstore_info: null,
-                        no_cart_data_btn_text: this.$t('login.login.6yfr9g'),
+                        no_cart_data_btn_text: this.$t('common.login_register'),
                         data_list_loding_status: 0,
-                        data_list_loding_msg: this.$t('extraction-apply.extraction-apply.m3xdif'),
+                        data_list_loding_msg: this.$t('common.authorize_user_info_first'),
                     });
 
                     // 有用户信息，是否需要绑定手机
@@ -525,7 +527,7 @@
                         var cache_user = app.globalData.get_user_cache_info() || null;
                         if(cache_user != null && app.globalData.user_is_bind_mobile(cache_user)) {
                             this.setData({
-                                no_cart_data_btn_text: this.$t('login.login.np9177')
+                                no_cart_data_btn_text: this.$t('common.bind_phone')
                             });
                         }
                     }
@@ -597,7 +599,7 @@
                                 data_is_loading: 0,
                                 data_list: data_list,
                                 data_list_loding_status: data_list.length == 0 ? 0 : 3,
-                                data_list_loding_msg: this.$t('cart.cart.j8on74'),
+                                data_list_loding_msg: this.$t('common.cart_empty'),
                                 plugins_intellectstools_data: data.plugins_intellectstools_data || null,
                             });
 
@@ -684,7 +686,7 @@
                 var self = this;
                 uni.showModal({
                     title: self.$t('common.warm_tips'),
-                    content: self.$t('cart.cart.3v6ulk'),
+                    content: self.$t('common.after_choosing_so_long_really_want'),
                     confirmText: self.$t('common.confirm'),
                     cancelText: self.$t('common.not_yet'),
                     success: (result) => {
@@ -707,7 +709,7 @@
                     buy_number = buy_min_number;
                     this.data_list[index].stock = buy_min_number;
                     if (buy_min_number > 1) {
-                        app.globalData.showToast(this.$t('recommend-detail.recommend-detail.265vyu') + buy_min_number + inventory_unit);
+                        app.globalData.showToast(this.$t('common.starting_purchase') + buy_min_number + inventory_unit);
                         this.model_tips(temp_data_list[index]['id']);
                         return false;
                     }
@@ -715,13 +717,13 @@
 
                 if (buy_max_number > 0 && buy_number > buy_max_number) {
                     buy_number = buy_max_number;
-                    app.globalData.showToast(this.$t('goods-category.goods-category.z1eh3v') + buy_max_number + inventory_unit);
+                    app.globalData.showToast(this.$t('common.purchase_limit') + buy_max_number + inventory_unit);
                     return false;
                 }
 
                 if (buy_number > inventory) {
                     buy_number = inventory;
-                    app.globalData.showToast(this.$t('recommend-detail.recommend-detail.2sis3v') + inventory + inventory_unit);
+                    app.globalData.showToast(this.$t('common.inventory_quantity') + inventory + inventory_unit);
                     return false;
                 }
 
@@ -826,7 +828,7 @@
                 var self = this;
                 uni.showModal({
                     title: self.$t('common.warm_tips'),
-                    content: self.$t('cart.cart.3v6ulk'),
+                    content: self.$t('common.after_choosing_so_long_really_want'),
                     confirmText: self.$t('common.confirm'),
                     cancelText: self.$t('common.not_yet'),
                     success: (result) => {
@@ -839,7 +841,7 @@
                                 }
                             }
                             if (data.length <= 0) {
-                                app.globalData.showToast(self.$t('order.order.15k32o'));
+                                app.globalData.showToast(self.$t('common.select_data_first'));
                                 return false;
                             }
                             self.cart_delete(data.join(','), 'delete');
@@ -860,7 +862,7 @@
                 var index = e.index || 0;
                 var temp_data_list = this.data_list;
                 if (this.swipe_item_index === null) {
-                    app.globalData.showToast(this.$t('cart.cart.8q2yej'));
+                    app.globalData.showToast(this.$t('common.slide_data_want_operate_first'));
                     return false;
                 }
                 if ((temp_data_list[this.swipe_item_index] || null) == null) {

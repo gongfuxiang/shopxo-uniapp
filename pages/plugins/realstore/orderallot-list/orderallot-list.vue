@@ -44,7 +44,7 @@
                         </view>
                     </view>
                     <view class="padding-vertical-main tr cr-base text-size">
-                        <text>{{$t('common.total')}}<text class="fw-b">{{ item.buy_number_count }}</text>{{$t('user-order-detail.user-order-detail.41ty94')}}<text class="sales-price margin-right-xs">{{ item.currency_data.currency_symbol }}{{ item.total_price }}</text></text>
+                        <text>{{$t('common.total')}}<text class="fw-b">{{ item.buy_number_count }}</text>{{$t('common.total_pieces')}}<text class="sales-price margin-right-xs">{{ item.currency_data.currency_symbol }}{{ item.total_price }}</text></text>
                     </view>
                     <view v-if="
                         (
@@ -60,11 +60,11 @@
                     " class="item-operation tr br-t padding-vertical-main">
                         <button v-if="item.operate_data.is_cancel == 1" class="round bg-white cr-yellow br-yellow" type="default" size="mini" @tap="cancel_event" :data-value="item.id" :data-index="index" hover-class="none">{{$t('common.cancel')}}</button>
                         <button v-if="item.operate_data.is_pay == 1" class="round bg-white cr-green br-green" type="default" size="mini" @tap="pay_event" :data-value="item.order_id" :data-index="index" :data-price="item.total_price" :data-payment="item.main_order_data.payment_id" :data-currency-symbol="item.currency_data.currency_symbol" hover-class="none">{{$t('common.pay')}}</button>
-                        <button v-if="item.operate_data.is_collect == 1" class="round bg-white cr-green br-green" type="default" size="mini" @tap="collect_event" :data-value="item.id" :data-index="index" hover-class="none">{{$t('orderallot-list.orderallot-list.w2w2w4')}}</button>
-                        <button v-if="(item.operate_data.is_order_batch || 0) == 1" class="round bg-white cr-blue br-blue" type="default" size="mini" @tap="url_event" :data-value="'/pages/plugins/realstore/batchorder-list/batchorder-list?oid=' + item.order_id" hover-class="none">{{$t('orderallot-list.orderallot-list.6m73j2')}}</button>
-                        <button v-if="(item.operate_data.is_order_frequencycard || 0) == 1" class="round bg-white cr-green br-green" type="default" size="mini" @tap="url_event" :data-value="'/pages/plugins/realstore/frequencycard-list/frequencycard-list?oid=' + item.order_id" hover-class="none">{{$t('orderallot-list.orderallot-list.b13k5r')}}</button>
-                        <button v-if="(item.express_data || null) != null && item.express_data.length > 0" class="round bg-white cr-main br-main" type="default" size="mini" @tap="url_event" :data-value="'/pages/plugins/express/detail/detail?oid=' + item.id + '&action_type=realstore'" hover-class="none">{{$t('orderallot-list.orderallot-list.w2t242')}}</button>
-                        <button v-if="(item.plugins_delivery_data || 0) > 0" class="round bg-white cr-main br-main margin-bottom-main" type="default" size="mini" @tap="url_event" :data-value="'/pages/plugins/delivery/logistics/logistics?id=' + item.plugins_delivery_data" hover-class="none">{{$t('orderallot-list.orderallot-list.w2t242')}}</button>
+                        <button v-if="item.operate_data.is_collect == 1" class="round bg-white cr-green br-green" type="default" size="mini" @tap="collect_event" :data-value="item.id" :data-index="index" hover-class="none">{{$t('common.receiving_goods')}}</button>
+                        <button v-if="(item.operate_data.is_order_batch || 0) == 1" class="round bg-white cr-blue br-blue" type="default" size="mini" @tap="url_event" :data-value="'/pages/plugins/realstore/batchorder-list/batchorder-list?oid=' + item.order_id" hover-class="none">{{$t('common.batch')}}</button>
+                        <button v-if="(item.operate_data.is_order_frequencycard || 0) == 1" class="round bg-white cr-green br-green" type="default" size="mini" @tap="url_event" :data-value="'/pages/plugins/realstore/frequencycard-list/frequencycard-list?oid=' + item.order_id" hover-class="none">{{$t('common.secondary_card')}}</button>
+                        <button v-if="(item.express_data || null) != null && item.express_data.length > 0" class="round bg-white cr-main br-main" type="default" size="mini" @tap="url_event" :data-value="'/pages/plugins/express/detail/detail?oid=' + item.id + '&action_type=realstore'" hover-class="none">{{$t('common.logistics')}}</button>
+                        <button v-if="(item.plugins_delivery_data || 0) > 0" class="round bg-white cr-main br-main margin-bottom-main" type="default" size="mini" @tap="url_event" :data-value="'/pages/plugins/delivery/logistics/logistics?id=' + item.plugins_delivery_data" hover-class="none">{{$t('common.logistics')}}</button>
                         <button v-if="(item.plugins_ordergoodsform_data || 0) == 1" class="round bg-white cr-blue br-blue margin-bottom-main" type="default" size="mini" @tap="url_event" :data-value="'/pages/plugins/ordergoodsform/order/order?id=' + item.order_id" hover-class="none">{{$t('common.form')}}</button>
                     </view>
                 </view>
@@ -108,6 +108,7 @@
     import componentNoData from "@/components/no-data/no-data";
     import componentBottomLine from "@/components/bottom-line/bottom-line";
     import componentPayment from '@/components/payment/payment';
+    import pluginLocale from '../locale/index.js';
 
     // 状态栏高度
     var bar_height = parseInt(app.globalData.get_system_info('statusBarHeight', 0, true));
@@ -115,6 +116,7 @@
     bar_height = 0;
     // #endif
     export default {
+        mixins: [pluginLocale],
         data() {
             return {
                 theme_view: app.globalData.get_theme_value_view(),
@@ -136,11 +138,11 @@
                 content_style: '',
                 nav_status_list: [
                     { name: this.$t('common.all'), value: "-1" },
-                    { name: this.$t('extraction.extraction.53h4fj'), value: "0,1" },
-                    { name: this.$t('orderallot-list.orderallot-list.285ir2'), value: "2,5" },
-                    { name: this.$t('order.order.q820hx'), value: "3" },
-                    { name: this.$t('order.order.15lr5l'), value: "4" },
-                    { name: this.$t('detail.detail.32171c'), value: "6,7" },
+                    { name: this.$t('common.pending'), value: "0,1" },
+                    { name: this.$t('orderallot-list.service'), value: "2,5" },
+                    { name: this.$t('common.receive'), value: "3" },
+                    { name: this.$t('common.completed'), value: "4" },
+                    { name: this.$t('common.invalid'), value: "6,7" },
                 ],
                 nav_status_index: 0,
                 // 前往页面携带的参数
@@ -427,7 +429,7 @@
                         temp_data_list[i]['operate_data']['is_pay'] = 0;
                         temp_data_list[i]['operate_data']['is_cancel'] = 0;
                         temp_data_list[i]['status'] = 2;
-                        temp_data_list[i]['status_name'] = this.$t('orderallot-list.orderallot-list.x5l17j');
+                        temp_data_list[i]['status_name'] = this.$t('orderallot-list.received');
                     }
                 }
                 this.setData({
@@ -464,7 +466,7 @@
                                     if (res.data.code == 0) {
                                         var temp_data_list = this.data_list;
                                         temp_data_list[index]['status'] = 5;
-                                        temp_data_list[index]['status_name'] = this.$t('order.order.1k98tk');
+                                        temp_data_list[index]['status_name'] = this.$t('common.canceled');
                                         temp_data_list[index]['operate_data']['is_cancel'] = 0;
                                         temp_data_list[index]['operate_data']['is_pay'] = 0;
                                         temp_data_list[index]['operate_data']['is_delete'] = 1;
@@ -490,7 +492,7 @@
             collect_event(e) {
                 uni.showModal({
                     title: this.$t('common.warm_tips'),
-                    content: this.$t('orderallot-list.orderallot-list.o3ouqv'),
+                    content: this.$t('common.confirm_goods_been_received_completed_cannot'),
                     confirmText: this.$t('common.confirm'),
                     cancelText: this.$t('common.no'),
                     success: (result) => {
@@ -515,7 +517,7 @@
                                     if (res.data.code == 0) {
                                         var temp_data_list = this.data_list;
                                         temp_data_list[index]["status"] = 4;
-                                        temp_data_list[index]["status_name"] = this.$t('order.order.15lr5l');
+                                        temp_data_list[index]["status_name"] = this.$t('common.completed');
                                         temp_data_list[index]["operate_data"]["is_collect"] = 0;
                                         this.setData({
                                             data_list: temp_data_list,

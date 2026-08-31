@@ -36,8 +36,10 @@
     const app = getApp();
     import componentCommon from '@/components/common/common';
     import componentNoData from '@/components/no-data/no-data';
+    import pluginLocale from '../locale/index.js';
 
     export default {
+        mixins: [pluginLocale],
         data() {
             return {
                 theme_view: app.globalData.get_theme_value_view(),
@@ -173,11 +175,11 @@
                 var maxI = parseInt(row.user_integral_value, 10) || 0;
                 var amt = parseInt(this.integral_input, 10) || 0;
                 if (amt < 1) {
-                    app.globalData.showToast(row.text_validation_integral_input || this.$t('common.params_error_tips'));
+                    app.globalData.showToast(row.text_validation_integral_input || this.$t('common.parameter_error'));
                     return;
                 }
                 if (amt > maxI) {
-                    app.globalData.showToast(row.text_validation_integral_input || this.$t('common.params_error_tips'));
+                    app.globalData.showToast(row.text_validation_integral_input || this.$t('common.parameter_error'));
                     return;
                 }
                 this.setData({

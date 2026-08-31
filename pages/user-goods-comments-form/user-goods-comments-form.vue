@@ -5,18 +5,18 @@
                 <view class="bg-white border-radius-main padding-main flex-row align-c spacing-mb">
                     <image v-if="goods_images" class="avatar dis-block margin-right-xs br-f5 padding-xs radius" :src="goods_images" mode="aspectFit"></image>
                     <view class="flex-1 flex-width flex-row align-c">
-                        <view class="margin-right-sm">{{ $t('goods-comments.goods-comments.31ees6') }}</view>
+                        <view class="margin-right-sm">{{ $t('common.product_rating') }}</view>
                         <uni-rate :value="rate_value" @change="rate_change_event" />
                     </view>
                 </view>
                 <view class="bg-white border-radius-main padding-main">
-                    <textarea name="content" @input="text_input_event" maxlength="230" :value="content" auto-height :placeholder="$t('goods-comments.goods-comments.6p942c')" placeholder-class="cr-grey-9" class="wh-auto input-height" />
+                    <textarea name="content" @input="text_input_event" maxlength="230" :value="content" auto-height :placeholder="$t('common.enter_review')" placeholder-class="cr-grey-9" class="wh-auto input-height" />
                     <view class="tr text-size-xs cr-grey-c">{{ text_num }}/230</view>
                     <view class="tr">
                         <checkbox-group @change="is_anonymous_change_event">
                             <label class="cr-grey-9 text-size-xs">
                                 <checkbox :value="is_anonymous" :checked="is_anonymous === '1' ? true : false" :color="theme_color" style="transform: scale(0.5)" />
-                                <text class="pr top-xs">{{ $t('form.form.2f52v3') }}</text>
+                                <text class="pr top-xs">{{ $t('common.anonymous_publishing') }}</text>
                             </label>
                         </checkbox-group>
                     </view>
@@ -43,7 +43,9 @@
     const app = getApp();
     import componentCommon from '@/components/common/common';
     import componentNoData from '@/components/no-data/no-data';
+    import pluginLocale from './locale/index.js';
     export default {
+        mixins: [pluginLocale],
         data() {
             return {
                 theme_view: app.globalData.get_theme_value_view(),
@@ -55,7 +57,7 @@
                 content: '',
                 text_num: 0,
                 data_list_loding_status: 1,
-                data_list_loding_msg: this.$t('form.form.bniyyt'),
+                data_list_loding_msg: this.$t('common.handling_errors'),
                 form_submit_loading: false,
             };
         },
@@ -109,7 +111,7 @@
                     // 提示错误
                     this.setData({
                         data_list_loding_status: 2,
-                        data_list_loding_msg: this.$t('form.form.8l3ul5'),
+                        data_list_loding_msg: this.$t('common.user_not_logged'),
                     });
                 }
             },
@@ -150,8 +152,8 @@
             formSubmit(e) {
                 // 数据验证
                 var validation = [
-                    { fields: 'rating', msg: this.$t('goods-comments.goods-comments.pe5p52') },
-                    { fields: 'content', msg: this.$t('goods-comments.goods-comments.1wut9j') },
+                    { fields: 'rating', msg: this.$t('common.select_rating') },
+                    { fields: 'content', msg: this.$t('common.enter_review_2') },
                 ];
                 var validate = {
                     rating: this.rate_value,

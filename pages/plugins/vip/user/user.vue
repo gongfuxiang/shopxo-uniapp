@@ -55,19 +55,19 @@
                                         <!-- 会员已过期或未开通 -->
                                         <block v-if="(user_vip.surplus_time_number || 0) == 0">
                                             <button v-if="(data_base.is_user_buy || null) == 1" data-value="/pages/plugins/vip/buy/buy" @tap="url_event" class="submit-buy cr-white pr" type="default" size="mini" hover-class="none">
-                                                <text>{{$t('user.user.n4orgk')}}</text>
+                                                <text>{{$t('user.activate_membership')}}</text>
                                                 <view class="dis-inline-block margin-left-sm"><iconfont name="icon-arrow-right" size="18rpx"></iconfont></view>
                                             </button>
                                         </block>
                                         <block v-else>
                                             <block v-if="(user_vip.is_supported_renew || null) == null || user_vip.is_supported_renew != 1">
                                                 <block v-if="(data_base.is_supported_renew_old_order || null) == 1">
-                                                    <button size="mini" type="default" hover-class="none" class="submit-buy cr-white pr" @tap="uservip_renew_event" :disabled="submit_disabled_status">{{$t('user.user.k614v7')}}<iconfont name="icon-arrow-right" size="18rpx"></iconfont>
+                                                    <button size="mini" type="default" hover-class="none" class="submit-buy cr-white pr" @tap="uservip_renew_event" :disabled="submit_disabled_status">{{$t('user.renewal_membership')}}<iconfont name="icon-arrow-right" size="18rpx"></iconfont>
                                                     </button>
                                                 </block>
                                                 <block v-else>
                                                     <block v-if="(data_base || null) != null && (data_base.is_user_buy || 0) == 1">
-                                                        <button data-value="/pages/plugins/vip/buy/buy" @tap="url_event" class="submit-buy cr-white pr" type="default" size="mini" hover-class="none">{{$t('user.user.65cc6z')}}<iconfont name="icon-arrow-right" size="18rpx" propClass="pa right-icon"></iconfont></button>
+                                                        <button data-value="/pages/plugins/vip/buy/buy" @tap="url_event" class="submit-buy cr-white pr" type="default" size="mini" hover-class="none">{{$t('user.continuous_activation')}}<iconfont name="icon-arrow-right" size="18rpx" propClass="pa right-icon"></iconfont></button>
                                                     </block>
                                                 </block>
                                             </block>
@@ -78,7 +78,7 @@
                                 <block v-else>
                                     <block v-if="(data_base || null) != null && (data_base.is_user_buy || 0) == 1">
                                         <button data-value="/pages/plugins/vip/buy/buy" @tap="url_event" class="submit-buy cr-white pr" type="default" size="mini" hover-class="none">
-                                            <text>{{$t('user.user.n4orgk')}}</text>
+                                            <text>{{$t('user.activate_membership')}}</text>
                                             <view class="dis-inline-block margin-left-sm"><iconfont name="icon-arrow-right" size="18rpx" propClass="pa right-icon"></iconfont></view>
                                         </button>
                                     </block>
@@ -95,7 +95,7 @@
                     <view v-if="statistics_data !== null" class="padding-horizontal-main spacing-mt">
                         <!-- 推广客户 -->
                         <view class="promotion padding-sm border-radius-main bg-white pr spacing-mb">
-                            <view class="title-left-border text-size fw-b padding-vertical-sm padding-horizontal-main margin-left-sm">{{$t('user.user.76dcx6')}}</view>
+                            <view class="title-left-border text-size fw-b padding-vertical-sm padding-horizontal-main margin-left-sm">{{$t('user.promote_customers')}}</view>
                             <view class="flex-row jc-sa align-c">
                                 <block v-for="(item, index) in statistics_data.user_total" :key="index">
                                     <view class="flex-width-half">
@@ -104,7 +104,7 @@
                                             <view class="flex-1 flex-width padding-left-main">
                                                 <view class="single-text margin-top-sm">
                                                     <text class="num fw-b">{{ item.value }}</text>
-                                                    <text class="cr-grey-9 text-size-xs">{{$t('user.user.rjye50')}}</text>
+                                                    <text class="cr-grey-9 text-size-xs">{{$t('common.person_unit')}}</text>
                                                 </view>
                                                 <view class="cr-base text-size-xs single-text">{{ item.name }}</view>
                                             </view>
@@ -116,7 +116,7 @@
 
                         <!-- 返利概况 -->
                         <view class="rebate profit-container padding-main border-radius-main bg-white">
-                            <view class="title-left-border text-size fw-b padding-vertical-sm padding-horizontal-main margin-left-sm">{{$t('user.user.981200')}}</view>
+                            <view class="title-left-border text-size fw-b padding-vertical-sm padding-horizontal-main margin-left-sm">{{$t('user.rebate_overview')}}</view>
                             <view class="oh tc flex-row jc-sa align-c">
                                 <block v-for="(item, index) in statistics_data.user_profit" :key="index">
                                     <view class="item padding-main flex-1" :class="index + 1 === statistics_data.user_profit.length ? '' : 'divider-r-f5'">
@@ -169,7 +169,9 @@
     import componentCommon from '@/components/common/common';
     import componentNavBack from '@/components/nav-back/nav-back';
     import componentNoData from '@/components/no-data/no-data';
+    import pluginLocale from '../locale/index.js';
     export default {
+        mixins: [pluginLocale],
         data() {
             return {
                 theme_view: app.globalData.get_theme_value_view(),
@@ -180,7 +182,7 @@
                 user_vip: null,
                 nav_list: [],
                 avatar: app.globalData.data.default_user_head_src,
-                nickname: this.$t('login.login.6yfr9g'),
+                nickname: this.$t('common.login_register'),
                 submit_disabled_status: false,
                 default_images_data: {},
                 // 推广客户，反力概况
@@ -306,7 +308,7 @@
                 var self = this;
                 uni.showModal({
                     title: this.$t('common.warm_tips'),
-                    content: this.$t('user.user.95s1ez'),
+                    content: this.$t('common.sure_continue_renewal_based_original_duration'),
                     confirmText: this.$t('common.confirm'),
                     cancelText: this.$t('common.not_yet'),
                     success: (result) => {

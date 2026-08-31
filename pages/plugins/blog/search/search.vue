@@ -5,7 +5,7 @@
             <view class="padding-horizontal-main padding-top-main padding-bottom-sm bg-white">
                 <view class="search-keywords pr">
                     <icon type="search" size="12" class="pa"></icon>
-                    <input type="text" confirm-type="search" :placeholder="$t('search.search.723rbx')" :value="search_keywords_value" @confirm="search_keywords_event" class="cr-base round wh-auto" placeholder-class="cr-grey" />
+                    <input type="text" confirm-type="search" :placeholder="$t('common.actually_searching_very_simple')" :value="search_keywords_value" @confirm="search_keywords_event" class="cr-base round wh-auto" placeholder-class="cr-grey" />
                 </view>
             </view>
 
@@ -46,7 +46,7 @@
                 <view class="bottom-line-exclude">
                     <view class="item flex-row jc-sa align-c text-size fw-b br bg-white round padding-vertical">
                         <view data-value="/pages/plugins/blog/form/form" @tap="url_event" class="flex-1 tc flex-col jc-c align-c cp">
-                            <view class="divider-r-d wh-auto"> <iconfont name="icon-edit-below-line" size="30rpx" color="#333" propClass="margin-right-sm"></iconfont>{{$t('detail.detail.fn3w01')}}{{ blog_main_name }}</view>
+                            <view class="divider-r-d wh-auto"> <iconfont name="icon-edit-below-line" size="30rpx" color="#333" propClass="margin-right-sm"></iconfont>{{$t('detail.release')}}{{ blog_main_name }}</view>
                         </view>
                         <view data-value="/pages/plugins/blog/user-list/user-list" @tap="url_event" class="flex-1 tc flex-col jc-c align-c cp">
                             <view class="wh-auto"> <iconfont name="icon-list-dot" size="32rpx" color="#333" propClass="margin-right-sm pr top-xs"></iconfont>{{$t('common.my')}}{{ blog_main_name }}</view>
@@ -69,8 +69,10 @@
     import componentCommon from '@/components/common/common';
     import componentNoData from '@/components/no-data/no-data';
     import componentBottomLine from '@/components/bottom-line/bottom-line';
+    import pluginLocale from '../locale/index.js';
 
     export default {
+        mixins: [pluginLocale],
         data() {
             return {
                 theme_view: app.globalData.get_theme_value_view(),
@@ -90,7 +92,7 @@
                 search_keywords_value: '',
                 // 自定义分享信息
                 share_info: {},
-                blog_main_name: this.$t('detail.detail.e439j9'),
+                blog_main_name: this.$t('detail.bowen'),
             };
         },
 
@@ -149,7 +151,7 @@
                         if (res.data.code == 0) {
                             var data = res.data.data;
                             // 标题
-                            var blog_main_name = (data.base || null) == null ? this.$t('detail.detail.e439j9') : data.base.blog_main_name || this.$t('detail.detail.e439j9');
+                            var blog_main_name = (data.base || null) == null ? this.$t('detail.bowen') : data.base.blog_main_name || this.$t('detail.bowen');
                             this.setData({
                                 data_base: data.base || null,
                                 category: data.category || [],

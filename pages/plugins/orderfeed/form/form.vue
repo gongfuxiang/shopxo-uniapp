@@ -9,15 +9,15 @@
                             <view class="multi-text">{{item.title}}</view>
                             <view class="cr-price fw-b margin-top-xs">{{order.currency_data.currency_symbol}}{{item.price}}</view>
                             <view v-if="(item.spec_text || null) != null" class="cr-grey margin-top-xs">{{item.spec_text}}</view>
-                            <button v-if="(order || null) != null && (order.items || null) != null && order.items.length > 1" type="default" size="mini" class="br-base bg-white cr-base pa right-xxxxl bottom-xxxxl" @tap.stop="order_goods_back_event">{{$t('orderfeed-form.orderfeed-form.54rttr')}}</button>
+                            <button v-if="(order || null) != null && (order.items || null) != null && order.items.length > 1" type="default" size="mini" class="br-base bg-white cr-base pa right-xxxxl bottom-xxxxl" @tap.stop="order_goods_back_event">{{$t('orderfeed-form.choose_other_products')}}</button>
                         </view>
                     </view>
                     <view class="form-gorup border-radius-main spacing-mb">
-                        <view class="form-gorup-title padding-right-main">{{$t('user-orderaftersale-detail.user-orderaftersale-detail.87tuff')}}<text class="form-group-tips-must">*</text></view>
-                        <textarea name="describe" placeholder-class="cr-grey-9" class="cr-base" :placeholder="$t('user-orderaftersale-detail.user-orderaftersale-detail.6uygft')" maxlength="230" :value="data.describe || ''"></textarea>
+                        <view class="form-gorup-title padding-right-main">{{$t('common.describe_reason')}}<text class="form-group-tips-must">*</text></view>
+                        <textarea name="describe" placeholder-class="cr-grey-9" class="cr-base" :placeholder="$t('common.describe_reason_format_230_characters')" maxlength="230" :value="data.describe || ''"></textarea>
                     </view>
                     <view class="form-gorup border-radius-main">
-                        <view class="form-gorup-title padding-right-main">{{$t('common.image')}}<text class="form-group-tips">{{$t('complaint-form.complaint-form.56ys33')}}</text></view>
+                        <view class="form-gorup-title padding-right-main">{{$t('common.image')}}<text class="form-group-tips">{{$t('common.upload_complete_clear_images_up_maximum')}}</text></view>
                         <view class="margin-top-main">
                             <component-upload :propData="data.images" :propMaxNum="10" :propPathType="editor_path_type" @call-back="retrun_image_event"></component-upload>
                         </view>
@@ -49,7 +49,7 @@
                                 <view class="multi-text">{{itemv.title}}</view>
                                 <view class="cr-price fw-b margin-top-xs">{{order.currency_data.currency_symbol}}{{itemv.price}}</view>
                                 <view v-if="(itemv.spec_text || null) != null" class="cr-grey margin-top-xs">{{itemv.spec_text}}</view>
-                                <button type="default" size="mini" class="br-main bg-white cr-main pa right-xxxxl bottom-xxxxl" :data-index="index" @tap.stop="order_goods_use_event">{{$t('orderfeed-form.orderfeed-form.fsdft3')}}</button>
+                                <button type="default" size="mini" class="br-main bg-white cr-main pa right-xxxxl bottom-xxxxl" :data-index="index" @tap.stop="order_goods_use_event">{{$t('orderfeed-form.feedback_product')}}</button>
                             </view>
                         </view>
                     </block>
@@ -74,7 +74,9 @@
     import componentCommon from '@/components/common/common';
     import componentUpload from '@/components/upload/upload';
     import componentNoData from '@/components/no-data/no-data';
+    import pluginLocale from '../locale/index.js';
     export default {
+        mixins: [pluginLocale],
         data() {
             return {
                 theme_view: app.globalData.get_theme_value_view(),
@@ -212,7 +214,7 @@
                 }
                 // 数据验证
                 var validation = [
-                    { fields: 'describe', msg: this.$t('user-orderaftersale-detail.user-orderaftersale-detail.6uygft') },
+                    { fields: 'describe', msg: this.$t('common.describe_reason_format_230_characters') },
                 ];
                 var form_data = {...this.data, ...this.params};
                     form_data['describe'] = e.detail.value.describe;

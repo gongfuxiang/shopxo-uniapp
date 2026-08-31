@@ -4,25 +4,25 @@
             <!-- 已有分销权限 -->
             <view v-if="is_has_distribution_level == 1" class="padding-main">
                 <view class="padding-vertical-main border-radius-main bg-green-light cr-green">
-                    <view>{{$t('apply.apply.p8ssed')}}<template v-if="(apply_data || null) != null && (apply_data.level_name || null) != null">{{$t('apply.apply.l3vnel')}}{{ apply_data.level_name }}</template></view>
+                    <view>{{$t('apply.distribution_application_been_approved')}}<template v-if="(apply_data || null) != null && (apply_data.level_name || null) != null">{{$t('apply.level')}}{{ apply_data.level_name }}</template></view>
                 </view>
                 <view v-if="(apply_data || null) != null && ((apply_data.audit_time || null) != null || (apply_data.add_time || null) != null)" class="cr-grey text-size-sm spacing-mb">
-                    <view v-if="(apply_data.audit_time || null) != null">{{$t('apply.apply.a9time')}}{{ apply_data.audit_time }}</view>
-                    <view v-if="(apply_data.add_time || null) != null" class="margin-top-xs">{{$t('apply.apply.a4time')}}{{ apply_data.add_time }}</view>
+                    <view v-if="(apply_data.audit_time || null) != null">{{$t('apply.review_time')}}{{ apply_data.audit_time }}</view>
+                    <view v-if="(apply_data.add_time || null) != null" class="margin-top-xs">{{$t('apply.application_time')}}{{ apply_data.add_time }}</view>
                 </view>
                 <view v-if="(apply_data || null) != null && !isEmpty(apply_data.form_data)" class="bg-white border-radius-main">
-                    <component-form-input-detail :propTitle="$t('apply.apply.i5nfo')" :propData="apply_data.form_data"></component-form-input-detail>
+                    <component-form-input-detail :propTitle="$t('apply.application_info')" :propData="apply_data.form_data"></component-form-input-detail>
                 </view>
             </view>
 
             <!-- 待审核：详情 + 去表单编辑 -->
             <view v-else-if="(apply_data || null) != null && apply_data.status == 0" class="padding-main">
                 <view class="padding-vertical-main border-radius-main bg-yellow-light cr-yellow">
-                    <view>{{$t('apply.apply.w6ait')}}</view>
+                    <view>{{$t('apply.distribution_application_under_review_wait_patie')}}</view>
                 </view>
-                <view v-if="(apply_data.add_time || null) != null" class="cr-grey text-size-sm margin-top-sm margin-bottom-sm">{{$t('apply.apply.a4time')}}{{ apply_data.add_time }}</view>
+                <view v-if="(apply_data.add_time || null) != null" class="cr-grey text-size-sm margin-top-sm margin-bottom-sm">{{$t('apply.application_time')}}{{ apply_data.add_time }}</view>
                 <view v-if="!isEmpty(apply_data.form_data)" class="bg-white border-radius-main spacing-mb">
-                    <component-form-input-detail :propTitle="$t('apply.apply.i5nfo')" :propData="apply_data.form_data"></component-form-input-detail>
+                    <component-form-input-detail :propTitle="$t('apply.application_info')" :propData="apply_data.form_data"></component-form-input-detail>
                 </view>
                 <view class="bottom-fixed" :style="bottom_fixed_style">
                     <view class="bottom-line-exclude">
@@ -34,25 +34,25 @@
             <!-- 已拒绝：提示 + 去表单重申 -->
             <view v-else-if="(apply_data || null) != null && apply_data.status == 2" class="padding-main">
                 <view class="padding-vertical-main border-radius-main bg-red-light cr-red">
-                    <view>{{$t('apply.apply.f7ail')}}<template v-if="(apply_data.fail_reason || null) != null && apply_data.fail_reason != ''">：{{ apply_data.fail_reason }}</template></view>
-                    <view class="margin-top-xs">{{$t('apply.apply.r8etry')}}</view>
+                    <view>{{$t('apply.previous_application_not_approved')}}<template v-if="(apply_data.fail_reason || null) != null && apply_data.fail_reason != ''">：{{ apply_data.fail_reason }}</template></view>
+                    <view class="margin-top-xs">{{$t('apply.modify_info_submit_again')}}</view>
                 </view>
                 <view v-if="!isEmpty(apply_data.form_data)" class="bg-white border-radius-main spacing-mb">
-                    <component-form-input-detail :propTitle="$t('apply.apply.i5nfo')" :propData="apply_data.form_data"></component-form-input-detail>
+                    <component-form-input-detail :propTitle="$t('apply.application_info')" :propData="apply_data.form_data"></component-form-input-detail>
                 </view>
                 <view class="bottom-fixed" :style="bottom_fixed_style">
                     <view class="bottom-line-exclude">
-                        <button class="item bg-main br-main cr-white round text-size" type="default" hover-class="none" data-value="/pages/plugins/distribution/apply-form/apply-form" @tap="url_event">{{$t('apply.apply.r1eapp')}}</button>
+                        <button class="item bg-main br-main cr-white round text-size" type="default" hover-class="none" data-value="/pages/plugins/distribution/apply-form/apply-form" @tap="url_event">{{$t('apply.reapply')}}</button>
                     </view>
                 </view>
             </view>
 
             <!-- 无申请记录：引导去填写 -->
             <view v-else class="padding-main">
-                <component-no-data propStatus="0" :propMsg="$t('apply.apply.g9uide')"></component-no-data>
+                <component-no-data propStatus="0" :propMsg="$t('apply.tap_go_fill_fill_application_info')"></component-no-data>
                 <view class="bottom-fixed" :style="bottom_fixed_style">
                     <view class="bottom-line-exclude">
-                        <button class="item bg-main br-main cr-white round text-size" type="default" hover-class="none" data-value="/pages/plugins/distribution/apply-form/apply-form" @tap="url_event">{{$t('apply.apply.g0ofill')}}</button>
+                        <button class="item bg-main br-main cr-white round text-size" type="default" hover-class="none" data-value="/pages/plugins/distribution/apply-form/apply-form" @tap="url_event">{{$t('apply.go_fill')}}</button>
                     </view>
                 </view>
             </view>
@@ -69,8 +69,10 @@
     import componentCommon from '@/components/common/common';
     import componentNoData from '@/components/no-data/no-data';
     import componentFormInputDetail from '@/pages/form-input/components/form-input-detail/form-input-detail';
+    import pluginLocale from '../locale/index.js';
 
     export default {
+        mixins: [pluginLocale],
         data() {
             return {
                 theme_view: app.globalData.get_theme_value_view(),
@@ -141,7 +143,7 @@
                                 });
                                 uni.showModal({
                                     title: this.$t('common.tips'),
-                                    content: this.$t('apply.apply.c1nfirm'),
+                                    content: this.$t('apply.fill_application_form_now'),
                                     confirmText: this.$t('common.confirm'),
                                     cancelText: this.$t('common.cancel'),
                                     success: (result) => {

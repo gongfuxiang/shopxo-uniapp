@@ -1,6 +1,6 @@
 <template>
     <view :class="theme_view">
-        <component-nav-back :propName="$t('detail.detail.yvmu0z')"></component-nav-back>
+        <component-nav-back :propName="$t('detail.account_details')"></component-nav-back>
         <view v-if="accounts_list.length > 0">
             <scroll-view :scroll-y="true" class="scroll-box" lower-threshold="60" @scroll="scroll_event">
                 <view class="coin-title flex-col padding-lg">
@@ -44,25 +44,25 @@
                             </view>
                             <view>
                                 <view class="margin-bottom-sm flex-row">
-                                    <text class="cr-grey-9">{{$t('detail.detail.4w20tq')}}</text>
+                                    <text class="cr-grey-9">{{$t('detail.operation_type')}}</text>
                                     <text class="fw-b warp">{{ item.operate_type_name }}</text>
                                 </view>
                                 <view class="margin-bottom-sm flex-row">
-                                    <text class="cr-grey-9">{{$t('detail.detail.s101d1')}}</text>
+                                    <text class="cr-grey-9">{{$t('detail.number_operations')}}</text>
                                     <text class="fw-b warp">{{ item.operate_coin }}</text>
                                 </view>
                                 <view class="margin-bottom-sm flex-row">
-                                    <text class="cr-grey-9">{{$t('detail.detail.e30wj1')}}</text>
+                                    <text class="cr-grey-9">{{$t('detail.original_quantity')}}</text>
                                     <text class="fw-b warp">{{ item.original_coin }}</text>
                                 </view>
                                 <view class="flex-row">
-                                    <text class="cr-grey-9">{{$t('detail.detail.jdour8')}}</text>
+                                    <text class="cr-grey-9">{{$t('detail.latest_quantity')}}</text>
                                     <text class="fw-b warp">{{ item.latest_coin }}</text>
                                 </view>
                             </view>
                         </view>
                         <view class="tc cr-grey cp" :data-value="'/pages/plugins/coin/transaction-list/transaction-list?id=' + accounts.id" @tap="url_event">
-                            <text class="va-m">{{$t('detail.detail.7fhy2u')}}</text>
+                            <text class="va-m">{{$t('detail.view_more_details')}}</text>
                             <view class="dis-inline-block va-m margin-top-xs margin-left-xs">
                                 <iconfont name="icon-arrow-right" color="#999"></iconfont>
                             </view>
@@ -143,6 +143,7 @@
     import componentNavBack from '@/components/nav-back/nav-back';
     import componentNoData from '@/components/no-data/no-data';
     import componentPopup from '@/components/popup/popup';
+    import pluginLocale from '../locale/index.js';
     var wallet_static_url = app.globalData.get_static_url('coin', true) + 'app/';
     // 状态栏高度
     var bar_height = parseInt(app.globalData.get_system_info('statusBarHeight', 0, true));
@@ -150,6 +151,7 @@
     bar_height = 0;
     // #endif
     export default {
+        mixins: [pluginLocale],
         data() {
             return {
                 theme_view: app.globalData.get_theme_value_view(),

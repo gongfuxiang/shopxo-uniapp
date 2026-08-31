@@ -3,11 +3,11 @@
         <view class="convert">
             <view class="padding-main bg-white pr nav flex-row oa">
                 <view class="flex-shrink flex-row align-c margin-right-xxxl padding-right-xl pr" @tap="popup_send_accounts_open_event">
-                    <view>{{ send_accounts_name !== null && send_accounts_name !== $t('common.all') ? send_accounts_name : $t('convert-list.convert-list.q48666') }}</view>
+                    <view>{{ send_accounts_name !== null && send_accounts_name !== $t('common.all') ? send_accounts_name : $t('convert-list.initiate_account') }}</view>
                     <view class="pa right-0"><iconfont :name="popup_send_accounts_status ? 'icon-arrow-top' : 'icon-arrow-bottom'" size="24rpx"></iconfont></view>
                 </view>
                 <view class="flex-shrink flex-row align-c padding-right-xl pr" @tap="popup_receive_accounts_open_event">
-                    <view>{{ receive_accounts_name !== null && receive_accounts_name !== $t('common.all') ? receive_accounts_name : $t('convert-list.convert-list.47646p') }}</view>
+                    <view>{{ receive_accounts_name !== null && receive_accounts_name !== $t('common.all') ? receive_accounts_name : $t('convert-list.receiving_account') }}</view>
                     <view class="pa right-0"><iconfont :name="popup_receive_accounts_status ? 'icon-arrow-top' : 'icon-arrow-bottom'" size="24rpx"></iconfont></view>
                 </view>
             </view>
@@ -20,27 +20,27 @@
                             </view>
                             <view class="convert-group-row">
                                 <view class="margin-bottom-sm flex-row">
-                                    <text class="cr-grey-9 title">{{$t('convert-list.convert-list.8813rd')}}</text>
+                                    <text class="cr-grey-9 title">{{$t('convert-list.conversion_order_number')}}</text>
                                     <text class="fw-b warp">{{ item.convert_no }}</text>
                                 </view>
                                 <view class="margin-bottom-sm flex-row">
-                                    <text class="cr-grey-9 title">{{$t('convert-list.convert-list.c374ec')}}</text>
+                                    <text class="cr-grey-9 title">{{$t('convert-list.transfer_out_balance')}}</text>
                                     <text class="fw-b warp">{{ item.convert_value }}</text>
                                 </view>
                                 <view class="margin-bottom-sm flex-row">
-                                    <text class="cr-grey-9 title">{{$t('convert-list.convert-list.6mxu85')}}</text>
+                                    <text class="cr-grey-9 title">{{$t('convert-list.transfer_out_account')}}</text>
                                     <text class="fw-b warp">{{ item.send_accounts_id }}</text>
                                 </view>
                                 <view class="margin-bottom-sm flex-row">
-                                    <text class="cr-grey-9 title">{{$t('convert-list.convert-list.733518')}}</text>
+                                    <text class="cr-grey-9 title">{{$t('convert-list.transfer_account')}}</text>
                                     <text class="fw-b warp">{{ item.receive_accounts_id }}</text>
                                 </view>
                                 <view class="margin-bottom-sm flex-row">
-                                    <text class="cr-grey-9 title">{{$t('convert-list.convert-list.6347mw')}}</text>
+                                    <text class="cr-grey-9 title">{{$t('convert-list.latest_currency')}}</text>
                                     <text class="fw-b warp">{{ item.coin }}</text>
                                 </view>
                                 <view class="flex-row">
-                                    <text class="cr-grey-9 title">{{$t('convert-list.convert-list.9oy325')}}</text>
+                                    <text class="cr-grey-9 title">{{$t('convert-list.remarks')}}</text>
                                     <text class="fw-b warp">{{ item.note }}</text>
                                 </view>
                             </view>
@@ -57,7 +57,7 @@
             <!-- 发起账户 -->
             <component-popup :propShow="popup_send_accounts_status" propPosition="top" :propTop="popup_top_height + 'px'" @onclose="popup_send_accounts_close_event">
                 <view class="padding-vertical-lg">
-                    <view class="padding-horizontal-main text-size-xs">{{$t('convert-list.convert-list.q48666')}}</view>
+                    <view class="padding-horizontal-main text-size-xs">{{$t('convert-list.initiate_account')}}</view>
                     <view class="popup_accounts_container padding-sm flex-row flex-wrap align-c tc text-size-md">
                         <view class="flex-width-half-half">
                             <view class="item margin-sm padding-vertical-sm" :class="send_accounts_list_index == null ? 'cr-main bg-main-light' : ''" :data-name="$t('common.all')" :data-value="null" :data-index="null" @tap="send_accounts_list_event">{{$t('common.all')}}</view>
@@ -67,7 +67,7 @@
                         </view>
                     </view>
                     <view class="tc padding-top-lg br-t" @tap="popup_send_accounts_close_event">
-                        <text class="padding-right-sm">{{ $t('nav-more.nav-more.h9g4b1') }}</text>
+                        <text class="padding-right-sm">{{ $t('common.click_collapse') }}</text>
                         <iconfont name="icon-arrow-top" color="#ccc"></iconfont>
                     </view>
                 </view>
@@ -75,7 +75,7 @@
             <!-- 接收账户 -->
             <component-popup :propShow="popup_receive_accounts_status" propPosition="top" :propTop="popup_top_height + 'px'" @onclose="popup_receive_accounts_close_event">
                 <view class="padding-vertical-lg">
-                    <view class="padding-horizontal-main text-size-xs">{{$t('convert-list.convert-list.47646p')}}</view>
+                    <view class="padding-horizontal-main text-size-xs">{{$t('convert-list.receiving_account')}}</view>
                     <view class="popup_accounts_container padding-sm flex-row flex-wrap align-c tc text-size-md">
                         <view class="flex-width-half-half">
                             <view class="item margin-sm padding-vertical-sm" :class="receive_accounts_list_index == null ? 'cr-main bg-main-light' : ''" :data-name="$t('common.all')" :data-value="null" :data-index="null" @tap="receive_accounts_list_event">{{$t('common.all')}}</view>
@@ -85,7 +85,7 @@
                         </view>
                     </view>
                     <view class="tc padding-top-lg br-t" @tap="popup_receive_accounts_close_event">
-                        <text class="padding-right-sm">{{ $t('nav-more.nav-more.h9g4b1') }}</text>
+                        <text class="padding-right-sm">{{ $t('common.click_collapse') }}</text>
                         <iconfont name="icon-arrow-top" color="#ccc"></iconfont>
                     </view>
                 </view>
@@ -102,6 +102,7 @@
     import componentNoData from '@/components/no-data/no-data';
     import componentPopup from '@/components/popup/popup';
     import componentBottomLine from '@/components/bottom-line/bottom-line';
+    import pluginLocale from '../locale/index.js';
     var accounts_static_url = app.globalData.get_static_url('coin', true) + 'app/';
     // 状态栏高度
     var bar_height = parseInt(app.globalData.get_system_info('statusBarHeight', 0, true));
@@ -109,6 +110,7 @@
     bar_height = 0;
     // #endif
     export default {
+        mixins: [pluginLocale],
         data() {
             return {
                 theme_view: app.globalData.get_theme_value_view(),

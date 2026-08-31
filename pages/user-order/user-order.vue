@@ -54,7 +54,7 @@
                             </view>
                         </view>
                         <view class="padding-vertical-main tr cr-base text-size-sm">
-                            <text>{{$t('common.total')}}<text class="fw-b">{{ item.buy_number_count }}</text>{{$t('user-order-detail.user-order-detail.41ty94')}}<text class="sales-price margin-right-xs">{{ item.currency_data.currency_symbol }}{{ item.total_price }}</text></text>
+                            <text>{{$t('common.total')}}<text class="fw-b">{{ item.buy_number_count }}</text>{{$t('common.total_pieces')}}<text class="sales-price margin-right-xs">{{ item.currency_data.currency_symbol }}{{ item.total_price }}</text></text>
                         </view>
                         <component-order-operate-more
                             :propOrder="item"
@@ -129,6 +129,7 @@
     import componentBottomLine from '@/components/bottom-line/bottom-line';
     import componentPayment from '@/components/payment/payment';
     import componentFriendpayOrderPayPopup from '@/pages/plugins/friendpay/components/order-pay-popup/order-pay-popup';
+    import pluginLocale from './locale/index.js';
 
     var common_static_url = app.globalData.get_static_url('common');
     // 状态栏高度
@@ -137,6 +138,7 @@
     bar_height = 0;
     // #endif
     export default {
+        mixins: [pluginLocale],
         data() {
             return {
                 theme_view: app.globalData.get_theme_value_view(),
@@ -161,11 +163,11 @@
                 content_style: '',
                 nav_status_list: [
                     { name: this.$t('common.all'), value: '-1' },
-                    { name: this.$t('user.user.9u8e61'), value: '1' },
-                    { name: this.$t('user.user.66714e'), value: '2' },
-                    { name: this.$t('order.order.q820hx'), value: '3' },
-                    { name: this.$t('order.order.15lr5l'), value: '4' },
-                    { name: this.$t('detail.detail.32171c'), value: '5,6' },
+                    { name: this.$t('common.user_pay'), value: '1' },
+                    { name: this.$t('common.shipping'), value: '2' },
+                    { name: this.$t('common.receive'), value: '3' },
+                    { name: this.$t('common.completed'), value: '4' },
+                    { name: this.$t('common.invalid'), value: '5,6' },
                 ],
                 mult_payment_id_list: [],
                 order_select_ids: [],
@@ -491,7 +493,7 @@
                             case 0:
                             case 1:
                                 temp_data_list[i]['status'] = 2;
-                                temp_data_list[i]['status_name'] = this.$t('user.user.66714e');
+                                temp_data_list[i]['status_name'] = this.$t('common.shipping');
                                 break;
                             // 自提模式
                             case 2:
@@ -501,7 +503,7 @@
                             // 虚拟模式
                             case 3:
                                 temp_data_list[i]['status'] = 3;
-                                temp_data_list[i]['status_name'] = this.$t('order.order.q820hx');
+                                temp_data_list[i]['status_name'] = this.$t('common.receive');
                                 break;
                         }
                     }
@@ -540,7 +542,7 @@
                                     if (res.data.code == 0) {
                                         var temp_data_list = this.data_list;
                                         temp_data_list[index]['status'] = 5;
-                                        temp_data_list[index]['status_name'] = this.$t('order.order.1k98tk');
+                                        temp_data_list[index]['status_name'] = this.$t('common.canceled');
                                         temp_data_list[index]['operate_data']['is_cancel'] = 0;
                                         temp_data_list[index]['operate_data']['is_pay'] = 0;
                                         temp_data_list[index]['operate_data']['is_delete'] = 1;
@@ -592,7 +594,7 @@
             collect_hand_handle(e) {
                 uni.showModal({
                     title: this.$t('common.warm_tips'),
-                    content: this.$t('orderallot-list.orderallot-list.o3ouqv'),
+                    content: this.$t('common.confirm_goods_been_received_completed_cannot'),
                     confirmText: this.$t('common.confirm'),
                     cancelText: this.$t('common.no'),
                     success: (result) => {
@@ -625,7 +627,7 @@
                         if (res.data.code == 0) {
                             var temp_data_list = this.data_list;
                             temp_data_list[index]['status'] = 4;
-                            temp_data_list[index]['status_name'] = this.$t('order.order.15lr5l');
+                            temp_data_list[index]['status_name'] = this.$t('common.completed');
                             temp_data_list[index]['operate_data']['is_collect'] = 0;
                             temp_data_list[index]['operate_data']['is_comments'] = 1;
                             temp_data_list[index]['operate_data']['is_delete'] = 1;
@@ -714,7 +716,7 @@
                 var oid = e.currentTarget.dataset.oid || 0;
                 var did = e.currentTarget.dataset.did || 0;
                 if (oid == 0 || did == 0) {
-                    app.globalData.showToast(this.$t('user-order-detail.user-order-detail.5k6k56'));
+                    app.globalData.showToast(this.$t('common.parameter_error'));
                     return false;
                 }
 
