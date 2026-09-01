@@ -357,7 +357,7 @@
                             goods_data.push({
                                 goods_id: goods_id,
                                 stock: temp_goods[i]['buy_min_number'] || 1,
-                                spec: temp_goods[i]['spec_choice_data'] || '',
+                                spec: (temp_goods[i]['spec_choice_data'] || []).map(function (v) { return { key: v.key }; }),
                             });
                         }
                     } else {
