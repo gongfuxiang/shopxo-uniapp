@@ -1,0 +1,563 @@
+{
+  "ABIRoot": {
+    "kind": "Root",
+    "name": "TopLevel",
+    "printedName": "TopLevel",
+    "children": [
+      {
+        "kind": "Import",
+        "name": "Foundation",
+        "printedName": "Foundation",
+        "declKind": "Import",
+        "moduleName": "iosUtsFramework",
+        "declAttributes": [
+          "RawDocComment"
+        ]
+      },
+      {
+        "kind": "Import",
+        "name": "AVFoundation",
+        "printedName": "AVFoundation",
+        "declKind": "Import",
+        "moduleName": "iosUtsFramework"
+      },
+      {
+        "kind": "Import",
+        "name": "UIKit",
+        "printedName": "UIKit",
+        "declKind": "Import",
+        "moduleName": "iosUtsFramework"
+      },
+      {
+        "kind": "TypeDecl",
+        "name": "LxScreenTools",
+        "printedName": "LxScreenTools",
+        "children": [
+          {
+            "kind": "Constructor",
+            "name": "init",
+            "printedName": "init()",
+            "children": [
+              {
+                "kind": "TypeNominal",
+                "name": "LxScreenTools",
+                "printedName": "iosUtsFramework.LxScreenTools",
+                "usr": "s:15iosUtsFramework13LxScreenToolsC"
+              }
+            ],
+            "declKind": "Constructor",
+            "usr": "s:15iosUtsFramework13LxScreenToolsCACycfc",
+            "mangledName": "$s15iosUtsFramework13LxScreenToolsCACycfc",
+            "moduleName": "iosUtsFramework",
+            "declAttributes": [
+              "AccessControl"
+            ],
+            "init_kind": "Designated"
+          },
+          {
+            "kind": "Function",
+            "name": "testBack",
+            "printedName": "testBack(handler:)",
+            "children": [
+              {
+                "kind": "TypeNominal",
+                "name": "Void",
+                "printedName": "()"
+              },
+              {
+                "kind": "TypeFunc",
+                "name": "Function",
+                "printedName": "(Swift.String) -> ()",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "Void",
+                    "printedName": "()"
+                  },
+                  {
+                    "kind": "TypeNominal",
+                    "name": "String",
+                    "printedName": "Swift.String",
+                    "usr": "s:SS"
+                  }
+                ],
+                "typeAttributes": [
+                  "noescape"
+                ]
+              }
+            ],
+            "declKind": "Func",
+            "usr": "s:15iosUtsFramework13LxScreenToolsC8testBack7handleryySSXE_tF",
+            "mangledName": "$s15iosUtsFramework13LxScreenToolsC8testBack7handleryySSXE_tF",
+            "moduleName": "iosUtsFramework",
+            "declAttributes": [
+              "AccessControl",
+              "RawDocComment"
+            ],
+            "funcSelfKind": "NonMutating"
+          },
+          {
+            "kind": "Function",
+            "name": "getVideoThumbToBase64",
+            "printedName": "getVideoThumbToBase64(path:type:handler:)",
+            "children": [
+              {
+                "kind": "TypeNominal",
+                "name": "Void",
+                "printedName": "()"
+              },
+              {
+                "kind": "TypeNominal",
+                "name": "String",
+                "printedName": "Swift.String",
+                "usr": "s:SS"
+              },
+              {
+                "kind": "TypeNominal",
+                "name": "NSNumber",
+                "printedName": "Foundation.NSNumber",
+                "usr": "c:objc(cs)NSNumber"
+              },
+              {
+                "kind": "TypeFunc",
+                "name": "Function",
+                "printedName": "(Swift.String, Swift.String) -> ()",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "Void",
+                    "printedName": "()"
+                  },
+                  {
+                    "kind": "TypeNominal",
+                    "name": "Tuple",
+                    "printedName": "(Swift.String, Swift.String)",
+                    "children": [
+                      {
+                        "kind": "TypeNominal",
+                        "name": "String",
+                        "printedName": "Swift.String",
+                        "usr": "s:SS"
+                      },
+                      {
+                        "kind": "TypeNominal",
+                        "name": "String",
+                        "printedName": "Swift.String",
+                        "usr": "s:SS"
+                      }
+                    ]
+                  }
+                ]
+              }
+            ],
+            "declKind": "Func",
+            "usr": "s:15iosUtsFramework13LxScreenToolsC21getVideoThumbToBase644path4type7handlerySS_So8NSNumberCySS_SStctF",
+            "mangledName": "$s15iosUtsFramework13LxScreenToolsC21getVideoThumbToBase644path4type7handlerySS_So8NSNumberCySS_SStctF",
+            "moduleName": "iosUtsFramework",
+            "declAttributes": [
+              "AccessControl",
+              "RawDocComment"
+            ],
+            "funcSelfKind": "NonMutating"
+          },
+          {
+            "kind": "Function",
+            "name": "getThumbByTimeToBase64",
+            "printedName": "getThumbByTimeToBase64(seconde:path:type:handler:)",
+            "children": [
+              {
+                "kind": "TypeNominal",
+                "name": "Void",
+                "printedName": "()"
+              },
+              {
+                "kind": "TypeNominal",
+                "name": "NSNumber",
+                "printedName": "Foundation.NSNumber",
+                "usr": "c:objc(cs)NSNumber"
+              },
+              {
+                "kind": "TypeNominal",
+                "name": "String",
+                "printedName": "Swift.String",
+                "usr": "s:SS"
+              },
+              {
+                "kind": "TypeNominal",
+                "name": "NSNumber",
+                "printedName": "Foundation.NSNumber",
+                "usr": "c:objc(cs)NSNumber"
+              },
+              {
+                "kind": "TypeFunc",
+                "name": "Function",
+                "printedName": "(Swift.String, Swift.String) -> ()",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "Void",
+                    "printedName": "()"
+                  },
+                  {
+                    "kind": "TypeNominal",
+                    "name": "Tuple",
+                    "printedName": "(Swift.String, Swift.String)",
+                    "children": [
+                      {
+                        "kind": "TypeNominal",
+                        "name": "String",
+                        "printedName": "Swift.String",
+                        "usr": "s:SS"
+                      },
+                      {
+                        "kind": "TypeNominal",
+                        "name": "String",
+                        "printedName": "Swift.String",
+                        "usr": "s:SS"
+                      }
+                    ]
+                  }
+                ]
+              }
+            ],
+            "declKind": "Func",
+            "usr": "s:15iosUtsFramework13LxScreenToolsC22getThumbByTimeToBase647seconde4path4type7handlerySo8NSNumberC_SSAJySS_SStctF",
+            "mangledName": "$s15iosUtsFramework13LxScreenToolsC22getThumbByTimeToBase647seconde4path4type7handlerySo8NSNumberC_SSAJySS_SStctF",
+            "moduleName": "iosUtsFramework",
+            "declAttributes": [
+              "AccessControl",
+              "RawDocComment"
+            ],
+            "funcSelfKind": "NonMutating"
+          },
+          {
+            "kind": "Function",
+            "name": "pathToImageByTime",
+            "printedName": "pathToImageByTime(seconde:path:type:handler:)",
+            "children": [
+              {
+                "kind": "TypeNominal",
+                "name": "Void",
+                "printedName": "()"
+              },
+              {
+                "kind": "TypeNominal",
+                "name": "Double",
+                "printedName": "Swift.Double",
+                "usr": "s:Sd"
+              },
+              {
+                "kind": "TypeNominal",
+                "name": "String",
+                "printedName": "Swift.String",
+                "usr": "s:SS"
+              },
+              {
+                "kind": "TypeNominal",
+                "name": "Int",
+                "printedName": "Swift.Int",
+                "usr": "s:Si"
+              },
+              {
+                "kind": "TypeFunc",
+                "name": "Function",
+                "printedName": "(UIKit.UIImage, Swift.String) -> ()",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "Void",
+                    "printedName": "()"
+                  },
+                  {
+                    "kind": "TypeNominal",
+                    "name": "Tuple",
+                    "printedName": "(UIKit.UIImage, Swift.String)",
+                    "children": [
+                      {
+                        "kind": "TypeNominal",
+                        "name": "UIImage",
+                        "printedName": "UIKit.UIImage",
+                        "usr": "c:objc(cs)UIImage"
+                      },
+                      {
+                        "kind": "TypeNominal",
+                        "name": "String",
+                        "printedName": "Swift.String",
+                        "usr": "s:SS"
+                      }
+                    ]
+                  }
+                ],
+                "typeAttributes": [
+                  "noescape"
+                ]
+              }
+            ],
+            "declKind": "Func",
+            "usr": "s:15iosUtsFramework13LxScreenToolsC17pathToImageByTime7seconde0G04type7handlerySd_SSSiySo7UIImageC_SStXEtF",
+            "mangledName": "$s15iosUtsFramework13LxScreenToolsC17pathToImageByTime7seconde0G04type7handlerySd_SSSiySo7UIImageC_SStXEtF",
+            "moduleName": "iosUtsFramework",
+            "declAttributes": [
+              "AccessControl",
+              "RawDocComment"
+            ],
+            "funcSelfKind": "NonMutating"
+          },
+          {
+            "kind": "Function",
+            "name": "pathToImageFirst",
+            "printedName": "pathToImageFirst(path:type:handler:)",
+            "children": [
+              {
+                "kind": "TypeNominal",
+                "name": "Void",
+                "printedName": "()"
+              },
+              {
+                "kind": "TypeNominal",
+                "name": "String",
+                "printedName": "Swift.String",
+                "usr": "s:SS"
+              },
+              {
+                "kind": "TypeNominal",
+                "name": "Int",
+                "printedName": "Swift.Int",
+                "usr": "s:Si"
+              },
+              {
+                "kind": "TypeFunc",
+                "name": "Function",
+                "printedName": "(UIKit.UIImage, Swift.String) -> ()",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "Void",
+                    "printedName": "()"
+                  },
+                  {
+                    "kind": "TypeNominal",
+                    "name": "Tuple",
+                    "printedName": "(UIKit.UIImage, Swift.String)",
+                    "children": [
+                      {
+                        "kind": "TypeNominal",
+                        "name": "UIImage",
+                        "printedName": "UIKit.UIImage",
+                        "usr": "c:objc(cs)UIImage"
+                      },
+                      {
+                        "kind": "TypeNominal",
+                        "name": "String",
+                        "printedName": "Swift.String",
+                        "usr": "s:SS"
+                      }
+                    ]
+                  }
+                ],
+                "typeAttributes": [
+                  "noescape"
+                ]
+              }
+            ],
+            "declKind": "Func",
+            "usr": "s:15iosUtsFramework13LxScreenToolsC16pathToImageFirst0G04type7handlerySS_SiySo7UIImageC_SStXEtF",
+            "mangledName": "$s15iosUtsFramework13LxScreenToolsC16pathToImageFirst0G04type7handlerySS_SiySo7UIImageC_SStXEtF",
+            "moduleName": "iosUtsFramework",
+            "declAttributes": [
+              "AccessControl",
+              "RawDocComment"
+            ],
+            "funcSelfKind": "NonMutating"
+          },
+          {
+            "kind": "Function",
+            "name": "base64ToImage",
+            "printedName": "base64ToImage(base64String:)",
+            "children": [
+              {
+                "kind": "TypeNominal",
+                "name": "UIImage",
+                "printedName": "UIKit.UIImage",
+                "usr": "c:objc(cs)UIImage"
+              },
+              {
+                "kind": "TypeNominal",
+                "name": "String",
+                "printedName": "Swift.String",
+                "usr": "s:SS"
+              }
+            ],
+            "declKind": "Func",
+            "usr": "s:15iosUtsFramework13LxScreenToolsC13base64ToImage0G6StringSo7UIImageCSS_tF",
+            "mangledName": "$s15iosUtsFramework13LxScreenToolsC13base64ToImage0G6StringSo7UIImageCSS_tF",
+            "moduleName": "iosUtsFramework",
+            "declAttributes": [
+              "AccessControl",
+              "RawDocComment"
+            ],
+            "funcSelfKind": "NonMutating"
+          }
+        ],
+        "declKind": "Class",
+        "usr": "s:15iosUtsFramework13LxScreenToolsC",
+        "mangledName": "$s15iosUtsFramework13LxScreenToolsC",
+        "moduleName": "iosUtsFramework",
+        "declAttributes": [
+          "AccessControl",
+          "RawDocComment"
+        ]
+      }
+    ],
+    "json_format_version": 8
+  },
+  "ConstValues": [
+    {
+      "filePath": "\/Users\/lxp\/Desktop\/project\/web\/my-info\/gitee\/iosUtsFramework\/iosUtsFramework\/LxScreenTools.swift",
+      "kind": "StringLiteral",
+      "offset": 381,
+      "length": 20,
+      "value": "\"测试无参回调\""
+    },
+    {
+      "filePath": "\/Users\/lxp\/Desktop\/project\/web\/my-info\/gitee\/iosUtsFramework\/iosUtsFramework\/LxScreenTools.swift",
+      "kind": "StringLiteral",
+      "offset": 3209,
+      "length": 7,
+      "value": "\"error\""
+    },
+    {
+      "filePath": "\/Users\/lxp\/Desktop\/project\/web\/my-info\/gitee\/iosUtsFramework\/iosUtsFramework\/LxScreenTools.swift",
+      "kind": "StringLiteral",
+      "offset": 3236,
+      "length": 24,
+      "value": "\"出现错误了!\""
+    },
+    {
+      "filePath": "\/Users\/lxp\/Desktop\/project\/web\/my-info\/gitee\/iosUtsFramework\/iosUtsFramework\/LxScreenTools.swift",
+      "kind": "StringLiteral",
+      "offset": 3259,
+      "length": 2,
+      "value": "\"\""
+    },
+    {
+      "filePath": "\/Users\/lxp\/Desktop\/project\/web\/my-info\/gitee\/iosUtsFramework\/iosUtsFramework\/LxScreenTools.swift",
+      "kind": "StringLiteral",
+      "offset": 3292,
+      "length": 4,
+      "value": "\"-3\""
+    },
+    {
+      "filePath": "\/Users\/lxp\/Desktop\/project\/web\/my-info\/gitee\/iosUtsFramework\/iosUtsFramework\/LxScreenTools.swift",
+      "kind": "BooleanLiteral",
+      "offset": 3846,
+      "length": 4,
+      "value": "true"
+    },
+    {
+      "filePath": "\/Users\/lxp\/Desktop\/project\/web\/my-info\/gitee\/iosUtsFramework\/iosUtsFramework\/LxScreenTools.swift",
+      "kind": "IntegerLiteral",
+      "offset": 4014,
+      "length": 3,
+      "value": "600"
+    },
+    {
+      "filePath": "\/Users\/lxp\/Desktop\/project\/web\/my-info\/gitee\/iosUtsFramework\/iosUtsFramework\/LxScreenTools.swift",
+      "kind": "StringLiteral",
+      "offset": 4270,
+      "length": 3,
+      "value": "\"0\""
+    },
+    {
+      "filePath": "\/Users\/lxp\/Desktop\/project\/web\/my-info\/gitee\/iosUtsFramework\/iosUtsFramework\/LxScreenTools.swift",
+      "kind": "StringLiteral",
+      "offset": 4353,
+      "length": 7,
+      "value": "\"error\""
+    },
+    {
+      "filePath": "\/Users\/lxp\/Desktop\/project\/web\/my-info\/gitee\/iosUtsFramework\/iosUtsFramework\/LxScreenTools.swift",
+      "kind": "StringLiteral",
+      "offset": 4380,
+      "length": 21,
+      "value": "\"出现错误!\""
+    },
+    {
+      "filePath": "\/Users\/lxp\/Desktop\/project\/web\/my-info\/gitee\/iosUtsFramework\/iosUtsFramework\/LxScreenTools.swift",
+      "kind": "StringLiteral",
+      "offset": 4400,
+      "length": 2,
+      "value": "\"\""
+    },
+    {
+      "filePath": "\/Users\/lxp\/Desktop\/project\/web\/my-info\/gitee\/iosUtsFramework\/iosUtsFramework\/LxScreenTools.swift",
+      "kind": "StringLiteral",
+      "offset": 4433,
+      "length": 4,
+      "value": "\"-1\""
+    },
+    {
+      "filePath": "\/Users\/lxp\/Desktop\/project\/web\/my-info\/gitee\/iosUtsFramework\/iosUtsFramework\/LxScreenTools.swift",
+      "kind": "BooleanLiteral",
+      "offset": 4807,
+      "length": 4,
+      "value": "true"
+    },
+    {
+      "filePath": "\/Users\/lxp\/Desktop\/project\/web\/my-info\/gitee\/iosUtsFramework\/iosUtsFramework\/LxScreenTools.swift",
+      "kind": "FloatLiteral",
+      "offset": 4862,
+      "length": 3,
+      "value": "0.0"
+    },
+    {
+      "filePath": "\/Users\/lxp\/Desktop\/project\/web\/my-info\/gitee\/iosUtsFramework\/iosUtsFramework\/LxScreenTools.swift",
+      "kind": "IntegerLiteral",
+      "offset": 4887,
+      "length": 1,
+      "value": "1"
+    },
+    {
+      "filePath": "\/Users\/lxp\/Desktop\/project\/web\/my-info\/gitee\/iosUtsFramework\/iosUtsFramework\/LxScreenTools.swift",
+      "kind": "StringLiteral",
+      "offset": 5141,
+      "length": 3,
+      "value": "\"0\""
+    },
+    {
+      "filePath": "\/Users\/lxp\/Desktop\/project\/web\/my-info\/gitee\/iosUtsFramework\/iosUtsFramework\/LxScreenTools.swift",
+      "kind": "StringLiteral",
+      "offset": 5224,
+      "length": 7,
+      "value": "\"error\""
+    },
+    {
+      "filePath": "\/Users\/lxp\/Desktop\/project\/web\/my-info\/gitee\/iosUtsFramework\/iosUtsFramework\/LxScreenTools.swift",
+      "kind": "StringLiteral",
+      "offset": 5251,
+      "length": 21,
+      "value": "\"出现错误!\""
+    },
+    {
+      "filePath": "\/Users\/lxp\/Desktop\/project\/web\/my-info\/gitee\/iosUtsFramework\/iosUtsFramework\/LxScreenTools.swift",
+      "kind": "StringLiteral",
+      "offset": 5271,
+      "length": 2,
+      "value": "\"\""
+    },
+    {
+      "filePath": "\/Users\/lxp\/Desktop\/project\/web\/my-info\/gitee\/iosUtsFramework\/iosUtsFramework\/LxScreenTools.swift",
+      "kind": "StringLiteral",
+      "offset": 5304,
+      "length": 4,
+      "value": "\"-1\""
+    },
+    {
+      "filePath": "\/Users\/lxp\/Desktop\/project\/web\/my-info\/gitee\/iosUtsFramework\/iosUtsFramework\/LxScreenTools.swift",
+      "kind": "FloatLiteral",
+      "offset": 5792,
+      "length": 3,
+      "value": "1.0"
+    }
+  ]
+}

@@ -338,7 +338,9 @@
         position: absolute;
         top: 0;
         right: 0;
+        /* #ifndef APP-NVUE */
         z-index: 10;
+        /* #endif */
         width: 72rpx;
         height: 72rpx;
         display: flex;
@@ -349,7 +351,9 @@
     .share-popup-content {
         padding: 0 20rpx;
         padding-right: 72rpx;
+        /* #ifndef APP-NVUE */
         text-align: left;
+        /* #endif */
         /* #ifdef APP */
         padding-top: 16rpx;
         /* #endif */
@@ -367,7 +371,10 @@
         /* #endif */
     }
     .share-item-inner {
+        /* #ifndef APP-NVUE */
         width: 100%;
+        /* #endif */
+        flex: 1;
         display: flex;
         flex-direction: row;
         align-items: center;
@@ -376,8 +383,10 @@
         width: 80rpx;
         height: 80rpx;
         margin-right: 20rpx;
+        /* #ifndef APP-NVUE */
         flex-shrink: 0;
         vertical-align: middle;
+        /* #endif */
     }
     /* #ifndef APP-NVUE */
     .share-items text {
@@ -387,26 +396,28 @@
         line-height: 80rpx;
         /* #endif */
     }
-    /* #endif */
-    /* #ifndef APP-NVUE */
     .share-items:not(:first-child) {
-        border-top: 1px solid #f0f0f0;
+        border-top-width: 1px;
+        border-top-style: solid;
+        border-top-color: #f0f0f0;
+    }
+    .share-items .btn {
+        background: transparent;
+        border-width: 0;
+        border-style: solid;
+        border-color: transparent;
+        padding: 0;
+        margin: 0;
+        width: 100%;
+        height: 80rpx;
+        line-height: 80rpx;
+        text-align: left;
+        font-size: 24rpx;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
     }
     /* #endif */
-    .share-items .btn {
-        background: transparent !important;
-        border: none !important;
-        padding: 0 !important;
-        margin: 0 !important;
-        width: 100%;
-        height: auto !important;
-        min-height: 0 !important;
-        line-height: normal !important;
-        text-align: left;
-        font-size: inherit;
-        display: block;
-        box-sizing: border-box;
-    }
     /* #ifdef MP */
     .share-items .btn::after {
         border: none;
@@ -415,6 +426,9 @@
     .single-text {
         /* #ifndef APP-NVUE */
         line-height: 80rpx;
+        /* #endif */
+        /* #ifdef APP-NVUE */
+        lines: 1;
         /* #endif */
     }
 </style>

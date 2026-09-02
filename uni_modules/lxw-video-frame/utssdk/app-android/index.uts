@@ -1,0 +1,77 @@
+import MyScreenThumbnailUtils from 'com.lxp.lxscreen.util.MyScreenThumbnailUtils';
+import OnResultListener from 'com.lxp.lxscreen.util.OnResultListener';
+import File from 'java.io.File';
+import { lxwSuccess, lxwAfter, lxwReqAfter } from '../interface.uts';
+
+export type inputData = {
+	path : string, //路径
+	type : number, // 0 是网络视频 1是本地视频
+}
+/*
+data:image/png;base64,
+*/
+
+
+export type GetBatteryInfoOptions = {
+	data : inputData;
+	success ?: (res : object) => void;
+	fail ?: (res : object) => void;
+	complete ?: (res : object) => void;
+}
+
+
+
+
+class OnLXScreenListener extends OnResultListener {
+
+	opt : GetBatteryInfoOptions
+	constructor(opt : GetBatteryInfoOptions) {
+		super();
+		// this.base64Msg = base64Msg
+		this.opt = opt
+	}
+
+	override success(code ?: String, msg ?: String) : void {
+		// super.success(code,msg)
+		var b64 = "data:image/png;base64," + msg;
+		
+		this.opt.success?.(lxwSuccess(this.opt.data.path, b64))
+	}
+	override fail(code ?: String, msg ?: String) : void {
+
+		this.opt.fail?.(lxwReqAfter(this.opt.data.path, "", msg))
+
+	}
+}
+
+/**
+ * 获取截图第一帧
+ */
+export function callVideoFrameInfo(options : GetBatteryInfoOptions) {
+
+	let qp = options.data.path;
+	// let qpsecond = options.data.second;
+	let qptype = Integer.parseInt( options.data.type+"");
+	console.log("run cvfi path : " + options.data.path)
+	let file = new File(qp);
+
+	try {
+		if (qptype == 1 && !file.exists()) {
+
+			options.fail?.(lxwReqAfter(qp, "", "查找文件失败"))
+		} else {
+			MyScreenThumbnailUtils.getVideoThumbToBase64(qp, qptype,new OnLXScreenListener(options));
+		}
+	} catch (e) {
+
+		options.fail?.(lxwAfter(qp, ""))
+	}
+
+}
+
+/**
+ * 释放
+ */
+export function releaseVideoFrame() {
+	MyScreenThumbnailUtils.release("")
+}

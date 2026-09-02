@@ -151,6 +151,13 @@
                                     <text class="item-name va-m cr-base margin-left-sm text-size-sm">{{ nav_logout_data.name }}</text>
                                 </view>
                             </view>
+                            <!-- 在线客服：游客也可进入（chat 支持匿名 uuid） -->
+                            <view class="nav-item br-t cp padding-main" @tap="chat_nav_event">
+                                <view class="arrow-right">
+                                    <image :src="common_static_url + 'online-service-icon.png'" class="item-icon va-m" mode="widthFix"></image>
+                                    <text class="item-name va-m cr-base margin-left-sm text-size-sm">{{ $t('design.design.21kak7') }}</text>
+                                </view>
+                            </view>
                             <!-- 联系客服 -->
                             <view v-if="(common_app_customer_service_tel || null) != null" class="nav-item br-t cp padding-main" @tap="call_event">
                                 <view class="arrow-right">
@@ -171,6 +178,11 @@
                             <view v-if="(nav_logout_data || null) != null" class="nav-item padding-vertical-main padding-horizontal-xs fl tc cp" @tap="remove_user_cache_event">
                                 <image :src="common_static_url + nav_logout_data.icon + '-icon.png'" class="item-icon" mode="widthFix"></image>
                                 <view class="item-name single-text cr-base text-size-sm">{{ nav_logout_data.name }}</view>
+                            </view>
+                            <!-- 在线客服：游客也可进入（chat 支持匿名 uuid） -->
+                            <view class="nav-item padding-vertical-main padding-horizontal-xs fl tc cp" @tap="chat_nav_event">
+                                <image :src="common_static_url + 'online-service-icon.png'" class="item-icon" mode="widthFix"></image>
+                                <view class="item-name single-text cr-base text-size-sm">{{ $t('design.design.21kak7') }}</view>
                             </view>
                             <!-- 联系客服 -->
                             <view v-if="(common_app_customer_service_tel || null) != null" class="nav-item padding-vertical-main padding-horizontal-xs fl tc cp" @tap="call_event">
@@ -542,6 +554,15 @@
 
                 // 初始数据
                 this.get_data();
+            },
+
+            // 在线客服（原生）
+            chat_nav_event() {
+                if (typeof app.globalData.chat_native_entry_handle == 'function') {
+                    app.globalData.chat_native_entry_handle({ to_list: 1 });
+                    return;
+                }
+                app.globalData.url_open('/pages/plugins/chat/list/list');
             },
 
             // 客服电话

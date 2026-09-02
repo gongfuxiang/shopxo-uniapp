@@ -29,7 +29,8 @@
             "Geolocation" : {},
             "Share" : {},
             "VideoPlayer" : {},
-            "Camera" : {}
+            "Camera" : {},
+            "Push" : {}
         },
         "distribute" : {
             "android" : {
@@ -169,7 +170,12 @@
                         "UniversalLinks" : "https://d1.shopxo.vip/.well-known/"
                     }
                 },
-                "push" : {}
+                "push" : {
+                    "unipush" : {
+                        "version" : "2",
+                        "offline" : false
+                    }
+                }
             },
             "icons" : {
                 "android" : {
@@ -236,19 +242,18 @@
             }
         },
         "__usePrivacyCheck__" : true,
-        "plugins" : {
-            // 腾讯地图路线规划插件（需要到小程序后台设置->第三方设置->插件管理里面添加【腾讯位置服务路线规划】插件，教程 https://mp.weixin.qq.com/wxopen/plugindevdoc?appid=wx50b5593e81dd937a）
-            // "routePlan" : {
-            //     "version" : "1.0.19",
-            //     "provider" : "wx50b5593e81dd937a"
-            // },
-            // 直播（需要到小程序后台设置->第三方设置->插件管理里面添加【小程序直播组件】插件，教程 https://mp.weixin.qq.com/wxopen/pluginbasicprofile?action=intro&appid=wx2b03c6e691cd7370）
-            // "live-player-plugin" : {
-            //     "version" : "1.3.5",
-            //     "provider" : "wx2b03c6e691cd7370"
-            // }
-        }
+        "plugins" : {}
     },
+    // 腾讯地图路线规划插件（需要到小程序后台设置->第三方设置->插件管理里面添加【腾讯位置服务路线规划】插件，教程 https://mp.weixin.qq.com/wxopen/plugindevdoc?appid=wx50b5593e81dd937a）
+    // "routePlan" : {
+    //     "version" : "1.0.19",
+    //     "provider" : "wx50b5593e81dd937a"
+    // },
+    // 直播（需要到小程序后台设置->第三方设置->插件管理里面添加【小程序直播组件】插件，教程 https://mp.weixin.qq.com/wxopen/pluginbasicprofile?action=intro&appid=wx2b03c6e691cd7370）
+    // "live-player-plugin" : {
+    //     "version" : "1.3.5",
+    //     "provider" : "wx2b03c6e691cd7370"
+    // }
     "mp-alipay" : {
         "usingComponents" : true,
         "appid" : "2021001173639600"
@@ -301,7 +306,19 @@
         },
         "devServer" : {
             "https" : false,
-            "port" : 8082
+            "port" : 8082,
+            "proxy" : {
+                "/api.php" : {
+                    "target" : "https://new.shopxo.vip",
+                    "changeOrigin" : true,
+                    "secure" : true
+                },
+                "/index.php" : {
+                    "target" : "https://new.shopxo.vip",
+                    "changeOrigin" : true,
+                    "secure" : true
+                }
+            }
         },
         "router" : {
             "mode" : "hash",
