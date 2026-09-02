@@ -5,7 +5,7 @@
             <view v-if="propIsIcon" class="search-icon dis-inline-block pa" :style="'padding:' + propPadding" @tap="search_icon_event">
                 <iconfont :name="propIcon" :color="propIconColor" size="24rpx"></iconfont>
             </view>
-            <view v-if="propIsEnterSearchStart" @tap="seat_input_event" :class="'input '+propClass+' '+propPlaceholderClass+' '+(propIsIcon ? ' input-left-icon' : '')+' '+(propIsBtn ? ' input-search-btn' : '')+(propRightIcon ? ' input-right-icon' : '')">{{propPlaceholder || propPlaceholderValue || this.$t('search.actually_searching_very_simple_2')}}</view>
+            <view v-if="propIsEnterSearchStart" @tap="seat_input_event" :class="'input oh '+propClass+' '+propPlaceholderClass+' '+(propIsIcon ? ' input-left-icon' : '')+' '+(propIsBtn ? ' input-search-btn' : '')+(propRightIcon ? ' input-right-icon' : '')">{{propPlaceholder || propPlaceholderValue || this.$t('search.actually_searching_very_simple_2')}}</view>
             <input
                 v-else
                 type="text"
