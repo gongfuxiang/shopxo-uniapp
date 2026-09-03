@@ -1230,6 +1230,17 @@ const chat_session_ended_set = (contact_id, ended) => {
 	}
 };
 
+/** 服务端 is_chat_ended 可能是 1/'1'/true */
+const ai_flag_is_ended = (value) => {
+	if (value === true || value === 1 || value === '1') {
+		return true;
+	}
+	if (value === false || value === 0 || value === '0' || value == null || value === '') {
+		return false;
+	}
+	return parseInt(value || 0) == 1;
+};
+
 /** 结束态下先发 chat-continue，回包后再发出排队中的消息（对齐 admin-app） */
 let pending_send_seq = 0;
 let pending_send_after_continue = [];
@@ -1506,7 +1517,10 @@ const chat_apply_ai_mode = (ai = {}, tip_msg = '') => {
 	ai = ai || {};
 	const visitor_cuid = parseInt(ai.visitor_cuid || 0);
 	const active_id = active_contact_id();
-	const map_key = visitor_cuid || active_id;
+	// 咨询端联系人是客服(receive)：结束态必须记在 agent id 上，不能被 visitor_cuid 带偏
+	const map_key = state.user_type == 'user'
+		? (active_id || visitor_cuid)
+		: (visitor_cuid || active_id);
 	if (state.user_type == 'work' && visitor_cuid > 0) {
 		state.ai_mode_map[visitor_cuid] = {
 			...(state.ai_mode_map[visitor_cuid] || {}),
@@ -1527,7 +1541,7 @@ const chat_apply_ai_mode = (ai = {}, tip_msg = '') => {
 			};
 		}
 		if (typeof ai.is_chat_ended != 'undefined' && map_key > 0) {
-			chat_session_ended_set(map_key, parseInt(ai.is_chat_ended || 0) == 1);
+			chat_session_ended_set(map_key, ai_flag_is_ended(ai.is_chat_ended));
 		}
 		emit_ai_and_list();
 		return;
@@ -1550,9 +1564,10 @@ const chat_apply_ai_mode = (ai = {}, tip_msg = '') => {
 	if (typeof ai.is_chat_ended != 'undefined') {
 		const ended_key = map_key > 0 ? map_key : active_id;
 		if (ended_key > 0) {
-			chat_session_ended_set(ended_key, parseInt(ai.is_chat_ended || 0) == 1);
+			const ended = ai_flag_is_ended(ai.is_chat_ended);
+			chat_session_ended_set(ended_key, ended);
 			if (state.ai_mode_map[ended_key]) {
-				state.ai_mode_map[ended_key].is_chat_ended = parseInt(ai.is_chat_ended || 0) == 1 ? 1 : 0;
+				state.ai_mode_map[ended_key].is_chat_ended = ended ? 1 : 0;
 			}
 		}
 	}
@@ -1658,6 +1673,9 @@ export const chat_build_session_url = (id, entry = {}) => {
 	}
 	if (!isEmpty(src.chat_type)) {
 		url += '&chat_type=' + encodeURIComponent(String(src.chat_type));
+	}
+	if (src.from_list === true || src.from_list == 1 || src.from_list == '1') {
+		url += '&from_list=1';
 	}
 	return url;
 };
@@ -2519,17 +2537,14 @@ const handle_message = (raw) => {
 			if (!state.init_message) {
 				chat_log('init_message 为空：请在后台「客服插件」配置工作台初始消息，或确认 WS success.msg 有值');
 			}
+			// 对齐 PC 咨询端：success 始终写入服务端分配的 receive（无 id 进线时由此自动分配客服）
+			// 详情页若带路由 id，on_success 里 resolve_route_receive_user 会再按 id 校正
 			if (state.user_type == 'user' && data.receive) {
 				const receive = { ...data.receive };
 				if (receive.avatar) {
 					receive.avatar = absolutize_url(receive.avatar);
 				}
-				// 列表进会话后刷新重连：勿用 success.receive 冲掉已选客服（管理端 work 不会覆盖）
-				const cur_id = parseInt((state.receive_user && state.receive_user.id) || 0) || 0;
-				const next_id = parseInt(receive.id || 0) || 0;
-				if (!(cur_id > 0) || cur_id == next_id) {
-					state.receive_user = receive;
-				}
+				chat_set_receive_user(receive);
 			}
 			if (data.data && data.data.user_list) {
 				// 对齐 PC UserFriendView：空 data 不冲掉已有列表（首连空则保持空）
@@ -2829,6 +2844,10 @@ const handle_message = (raw) => {
 				if (state.user_type == 'work' && state.receive_user && state.receive_user.id) {
 					rec_ai.visitor_cuid = parseInt(state.receive_user.id);
 				}
+				// 咨询端：去掉 visitor_cuid，结束态记到当前客服（active receive）
+				if (state.user_type == 'user') {
+					delete rec_ai.visitor_cuid;
+				}
 				// 对齐 admin：record.ai.is_chat_ended 用于进页发现「上一轮已结束」→ 页面静默 chat-continue
 				chat_apply_ai_mode(rec_ai, '');
 			} else if (state.user_type == 'user' && record_has_ai_reply(data.data && data.data.record)) {
@@ -2865,9 +2884,8 @@ const handle_message = (raw) => {
 			// 对齐 PC ChatAiOnChatAck
 			if (ack.ai != null) {
 				const ack_ai = { ...ack.ai };
-				// 发送回执里的 is_chat_ended=1 不可靠：发完消息后会把咨询端误判成已结束，
-				// 表现为 AI 栏消失、输入框无法点选，但加号/表情仍可用
-				if (state.user_type == 'user' && parseInt(ack_ai.is_chat_ended || 0) == 1) {
+				// 发送回执里的 is_chat_ended 不可靠：发完消息后会把咨询端误判成已结束
+				if (state.user_type == 'user' && typeof ack_ai.is_chat_ended != 'undefined') {
 					delete ack_ai.is_chat_ended;
 				}
 				chat_apply_ai_mode(ack_ai, '');
@@ -3336,7 +3354,11 @@ const handle_message = (raw) => {
 				? parseInt((data.data && data.data.visitor_cuid) || 0)
 				: parseInt((data.data && data.data.agent_cuid) || 0);
 			const end_active = active_contact_id();
-			const end_id = end_list > 0 ? end_list : end_active;
+			// 咨询端：以当前 receive_user（客服）为准，避免 agent_cuid 不一致导致结束态串键
+			let end_id = end_list > 0 ? end_list : end_active;
+			if (state.user_type == 'user' && end_active > 0) {
+				end_id = end_active;
+			}
 			if (end_id > 0) {
 				chat_session_ended_set(end_id, true);
 				// 对齐 PC：新一轮结束允许再次评价（按联系人清 rated）
@@ -3352,7 +3374,10 @@ const handle_message = (raw) => {
 				}
 			}
 			// 咨询端：结束/恢复类提示不在聊天区重复展示
-			const tip_active = end_list <= 0 || end_active <= 0 || end_list == end_active;
+			const tip_active = state.user_type == 'user'
+				|| end_list <= 0
+				|| end_active <= 0
+				|| end_list == end_active;
 			if (tip_active && data.content != null && !is_session_end_continue_tip(data.content)) {
 				emit('chat', {
 					content: data.content,
@@ -3406,7 +3431,11 @@ const handle_message = (raw) => {
 				? parseInt((data.data && data.data.visitor_cuid) || 0)
 				: parseInt((data.data && data.data.agent_cuid) || 0);
 			const cont_active = active_contact_id();
-			const cont_id = cont_list > 0 ? cont_list : cont_active;
+			// 咨询端：以当前客服 id 清结束态，与 chat-end / session_ended_map 键一致
+			let cont_id = cont_list > 0 ? cont_list : cont_active;
+			if (state.user_type == 'user' && cont_active > 0) {
+				cont_id = cont_active;
+			}
 			if (cont_id > 0) {
 				chat_session_ended_set(cont_id, false);
 				// 对齐 PC：继续聊天后本轮评价作废
@@ -3421,7 +3450,7 @@ const handle_message = (raw) => {
 					state.ai_mode_map[cont_active].is_chat_ended = 0;
 				}
 			}
-			if (cont_list <= 0 || cont_active <= 0 || cont_list == cont_active) {
+			if (state.user_type == 'user' || cont_list <= 0 || cont_active <= 0 || cont_list == cont_active) {
 				if (state.user_type == 'user') {
 					emit('chat_rating_close', { contact_id: cont_id || cont_active });
 				}
@@ -3618,11 +3647,14 @@ const reuse_ready_connection = () => {
 		&& !state._queue_from_server
 		&& !(state.queue_list && state.queue_list.length)
 		&& !state._did_queue_reconnect;
-	if (need_reauth || need_queue_retry) {
-		if (need_queue_retry && !need_reauth) {
+	// 咨询端无 receive：复用连接不会再走 init 分配客服，对齐 PC 需重连拿 success.receive
+	const need_user_assign = state.user_type == 'user'
+		&& !(parseInt((state.receive_user && state.receive_user.id) || 0) > 0);
+	if (need_reauth || need_queue_retry || need_user_assign) {
+		if (need_queue_retry && !need_reauth && !need_user_assign) {
 			state._did_queue_reconnect = true;
 		}
-		chat_log('reconnect', need_reauth ? 'identity mismatch' : 'queue retry');
+		chat_log('reconnect', need_reauth ? 'identity mismatch' : (need_user_assign ? 'user assign' : 'queue retry'));
 		chat_force_reconnect_reset();
 		return false;
 	}

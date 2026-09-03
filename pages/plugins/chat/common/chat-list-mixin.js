@@ -333,7 +333,7 @@ export default {
 			}
 			const receive = row.receive_user || { id: row.id, name: row.name, avatar: row.avatar };
 			chat_set_receive_user(receive);
-			url_open(chat_build_session_url(row.id, this.entry_params));
+			url_open(chat_build_session_url(row.id, { ...this.entry_params, from_list: 1 }));
 		},
 
 		chat_list_on_load(params) {

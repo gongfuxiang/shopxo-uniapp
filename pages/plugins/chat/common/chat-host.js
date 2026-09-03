@@ -316,6 +316,11 @@ export const chat_back_to_list_event = (entry = {}) => {
 	page_back_prev_event(build_chat_list_url(entry));
 };
 
+/** 关闭当前会话页并进入列表（redirect，列表返回不会再回到会话页） */
+export const chat_replace_to_list_event = (entry = {}) => {
+	url_open(build_chat_list_url(entry), true);
+};
+
 const append_chat_entry_source = (entry = {}) => {
 	if (!isEmpty(entry.source)) {
 		return entry;

@@ -91,10 +91,20 @@
 	flex-shrink: 0;
 }
 
+.nav-left {
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	flex-shrink: 0;
+	min-width: 64rpx;
+}
+
 .nav-right {
 	display: flex;
 	align-items: center;
 	flex-shrink: 0;
+	min-width: 64rpx;
+	justify-content: flex-end;
 }
 
 .nav-title {

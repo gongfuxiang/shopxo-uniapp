@@ -4,8 +4,17 @@
 		<view class="nav-wrap">
 			<view class="nav-status-bar" :style="nav_status_bar_style"></view>
 			<view class="nav-bar" :style="nav_bar_style">
-				<view class="nav-side nav-back" @tap.stop="back_event">
-					<iconfont name="icon-angle-left" size="36rpx" color="#191919"></iconfont>
+				<view class="nav-left">
+					<view class="nav-side nav-back" @tap.stop="back_event">
+						<iconfont name="icon-angle-left" size="36rpx" color="#191919"></iconfont>
+					</view>
+					<view
+						v-if="show_list_dot"
+						class="nav-side nav-list-dot"
+						@tap.stop="go_list_event"
+					>
+						<iconfont name="icon-list-dot" size="40rpx" color="#191919"></iconfont>
+					</view>
 				</view>
 				<text class="nav-title">{{ chat_title }}</text>
 				<view class="nav-right">

@@ -1,4 +1,4 @@
-import { isEmpty, showToast, page_back_prev_event, chat_back_to_list_event, get_global_data, get_config, get_default_avatar, open_web_view, get_chat_nav_layout_metrics, get_chat_client_type, get_menu_button_rect_safe } from '../common/chat-host.js';
+import { isEmpty, showToast, page_back_prev_event, chat_back_to_list_event, chat_replace_to_list_event, get_global_data, get_config, get_default_avatar, open_web_view, get_chat_nav_layout_metrics, get_chat_client_type, get_menu_button_rect_safe } from '../common/chat-host.js';
 import base64 from '@/common/js/lib/base64.js';
 import { ensure_chat_user_init, apply_chat_user_page_config } from '../common/chat-user-init.js';
 // #ifdef APP-PLUS
@@ -413,6 +413,8 @@ export default {
 			show_agent_transfer: false,
 			chat_id: '',
 			route_chat_id: '',
+			from_list_page: false,
+			show_list_dot: false,
 			chat_title: '会话',
 			status_bar_height: navInit.status_bar_height,
 			window_height: navInit.window_height,
@@ -3414,7 +3416,10 @@ export default {
 					chat_set_friend_base(payload.base);
 					this.sync_friend_base(payload.base);
 				}
-				this.sync_ai_state(payload?.ai ? { ai: payload.ai } : undefined);
+				// 对齐 admin-app：用 get_chat_state().ai（含 ended←session_ended_map），
+				// 勿传 record 原始 ai（仅有 is_chat_ended、无 ended），否则会误清结束态、跳过静默续聊，
+				// 发第一条消息后再被标成已结束并弹「是否继续」
+				this.sync_ai_state();
 				// 对齐 PC UserRecordView：init 后追加初始提示（含空会话）
 				if (payload?.mode == 'init') {
 					this.append_init_message();
@@ -4352,7 +4357,18 @@ export default {
 		sync_ai_state(payload) {
 			
 				const data = payload || get_chat_state();
-				const ai = data.ai || get_chat_state().ai || {};
+				const state_ai = get_chat_state().ai || {};
+				const raw = data.ai || state_ai;
+				// ended 以 session_ended_map（get_chat_state().ai.ended）为准；
+				// 原始包只有 is_chat_ended 时不能当成「未结束」
+				const ai = {
+					...state_ai,
+					...raw,
+					ended: !!state_ai.ended,
+					mode: raw.mode || state_ai.mode || 'human',
+					is_enable: raw.is_enable != null ? raw.is_enable : state_ai.is_enable,
+					switching: typeof raw.switching != 'undefined' ? raw.switching : state_ai.switching,
+				};
 				const prev_ai_mode = this.ai_mode;
 				this.ai_mode = ai.mode || 'human';
 				this.ai_enabled = parseInt(ai.is_enable || 0) == 1;
@@ -5771,6 +5787,14 @@ export default {
 		back_event() {
 			
 				page_back_prev_event();
+			
+		},
+
+		/** 非列表进线：关闭当前会话页并进入列表（列表返回上一级，不再回会话） */
+		go_list_event() {
+			
+				this.page_alive = false;
+				chat_replace_to_list_event(this.chat_entry_back_params());
 			
 		},
 
@@ -7569,8 +7593,25 @@ export default {
 				}
 				chat_apply_entry_params(entry);
 				this.route_chat_id = String(params.id || params.chat_id || '');
-				// 对齐 admin-app：进页先同步解析 receive_user
-				this.resolve_route_receive_user();
+				const from_list_param = params.from_list === true || params.from_list == 1 || params.from_list == '1';
+				let from_list = !!from_list_param;
+				if (!from_list) {
+					try {
+						const pages = getCurrentPages();
+						const prev = pages.length >= 2 ? pages[pages.length - 2] : null;
+						const route = String((prev && (prev.route || (prev.$page && prev.$page.fullPath))) || '');
+						from_list = route.indexOf('plugins/chat/list') >= 0;
+					} catch (e) {}
+				}
+				this.from_list_page = from_list;
+				this.show_list_dot = !from_list;
+				// 有 id：对齐 admin-app 先解析 receive；无 id：清空会话对象，等 success.receive 自动分配（对齐 PC）
+				if (parseInt(this.route_chat_id || 0, 10) > 0) {
+					this.resolve_route_receive_user();
+				} else {
+					chat_set_receive_user(null);
+					this.chat_id = '';
+				}
 				this.skip_auto_continue = false;
 				ended_choice_handled = false;
 				ended_choice_showing = false;
@@ -7627,8 +7668,13 @@ export default {
 					this.sync_emoji_list();
 					this.sync_tool_flags();
 					apply_chat_user_page_config();
-					if (before.connect_status === 1 && before.user_type == 'user') {
+					const need_fresh_assign = !(parseInt(this.route_chat_id || 0, 10) > 0);
+					// 无 id：chat_connect 在无 receive 时会强制重连 init，由 success.receive 分配客服
+					if (!need_fresh_assign && before.connect_status === 1 && before.user_type == 'user') {
 						chat_resume_connect();
+						if (before.receive_user?.id) {
+							this.sync_receive_user_ui(before.receive_user);
+						}
 					} else {
 						chat_connect({ user_type: 'user' });
 					}
@@ -7636,8 +7682,10 @@ export default {
 					this.connect_status = linked.connect_status || 0;
 					this.online_status = linked.online_status || 'off';
 					this.is_connecting = !!linked.is_connecting;
-					// 对齐 admin-app：仅连接成功后再拉 record
 					if (linked.connect_status === 1) {
+						if (need_fresh_assign && linked.receive_user?.id) {
+							this.sync_receive_user_ui(linked.receive_user);
+						}
 						this.load_chat_record_if_connected();
 					}
 					this.sync_tool_flags();
