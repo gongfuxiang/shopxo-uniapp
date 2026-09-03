@@ -429,7 +429,7 @@
 							v-for="item in rating_star_list"
 							:key="item"
 							class="rating-star"
-							:data-score="item"
+							:data-score="'' + item"
 							hover-class="rating-star-hover"
 							:hover-stay-time="80"
 							@tap.stop="select_rating_score_event"

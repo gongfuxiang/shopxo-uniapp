@@ -6084,8 +6084,11 @@ export default {
 				this.rating_score = 0;
 				this.rating_content = '';
 				this.rating_submitting = false;
-				this._rating_last_tap_at = 0;
-				this._rating_last_change_at = 0;
+				this._rating_tap_lock = false;
+				if (this._rating_tap_lock_timer) {
+					clearTimeout(this._rating_tap_lock_timer);
+					this._rating_tap_lock_timer = null;
+				}
 				// 避开 showModal 关闭后的穿透点击
 				this.rating_select_enable_at = Date.now() + 300;
 				this.panel_type = '';
@@ -6101,6 +6104,11 @@ export default {
 				}
 				this.show_rating_modal = false;
 				this.rating_submitting = false;
+				this._rating_tap_lock = false;
+				if (this._rating_tap_lock_timer) {
+					clearTimeout(this._rating_tap_lock_timer);
+					this._rating_tap_lock_timer = null;
+				}
 				if (this._rating_clear_timer) {
 					clearTimeout(this._rating_clear_timer);
 					this._rating_clear_timer = null;
@@ -6130,32 +6138,29 @@ export default {
 				if (now < Number(this.rating_select_enable_at || 0)) {
 					return;
 				}
-				// 合并 currentTarget / target，兼容微信小程序 dataset
-				const ds = Object.assign(
-					{},
-					(e && e.target && e.target.dataset) || {},
-					(e && e.currentTarget && e.currentTarget.dataset) || {}
-				);
+				// 微信同一次点击可能派发多次：加短锁，避免「选中立刻被取消」
+				if (this._rating_tap_lock) {
+					return;
+				}
+				const ds = (e && e.currentTarget && e.currentTarget.dataset)
+					|| (e && e.target && e.target.dataset)
+					|| {};
+				// 微信 dataset 均为字符串；用 parseInt 解析，避免 || 0 把合法值搞乱
 				const sc = parseInt(ds.score, 10);
 				if (!(sc >= 1 && sc <= 5)) {
 					return;
 				}
+				this._rating_tap_lock = true;
+				if (this._rating_tap_lock_timer) {
+					clearTimeout(this._rating_tap_lock_timer);
+				}
+				this._rating_tap_lock_timer = setTimeout(() => {
+					this._rating_tap_lock = false;
+					this._rating_tap_lock_timer = null;
+				}, 350);
 				const prev = Number(this.rating_score) || 0;
-				// 同一次点击的重复事件：忽略
-				if (now - Number(this._rating_last_tap_at || 0) < 280) {
-					return;
-				}
-				this._rating_last_tap_at = now;
-				if (prev === sc) {
-					// 再次点击取消：与上次改分间隔太短则视为重复事件，不取消
-					if (now - Number(this._rating_last_change_at || 0) < 400) {
-						return;
-					}
-					this.rating_score = 0;
-				} else {
-					this.rating_score = sc;
-				}
-				this._rating_last_change_at = now;
+				// 再点同一星级 → 取消；点其他星级 → 设为该分
+				this.rating_score = prev === sc ? 0 : sc;
 			
 		},
 
@@ -6170,7 +6175,7 @@ export default {
 				if (this.rating_submitting) {
 					return;
 				}
-				const score = parseInt(this.rating_score || 0) || 0;
+				const score = parseInt(this.rating_score || 0, 10) || 0;
 				if (!(score >= 1 && score <= 5)) {
 					showToast('请先选择星级');
 					return;
