@@ -74,11 +74,11 @@
                         <view class="popup-goods-choice-container">
                             <view class="nav-search oh br-b margin-top-sm padding-horizontal-main">
                                 <picker class="item br round fl padding-horizontal-main" @change="popup_goods_category_event" :value="popup_goods_cetagory_index" :range="goods_category_list" range-key="name">
-                                    <view :class="'picker ' + (popup_goods_cetagory_index == 0 ? 'cr-grey' : 'cr-base') + ' arrow-bottom'">
+                                    <view :class="'picker text-size-xs ' + (popup_goods_cetagory_index == 0 ? 'cr-grey' : 'cr-base') + ' arrow-bottom'">
                                         {{ popup_goods_cetagory_index == 0 ? $t('common.recommend_form_category') : goods_category_list[popup_goods_cetagory_index]['name'] }}
                                     </view>
                                 </picker>
-                                <input type="search" :value="popup_keywords_value" placeholder-class="cr-grey" class="cr-base item br round fl padding-horizontal-main margin-left-main" :placeholder="$t('recommend-form.enter_product_name')" @input="popup_keywords_value_event" @confirm="popup_goods_search_event" />
+                                <input type="search" :value="popup_keywords_value" placeholder-class="cr-grey text-size-xs" class="cr-base item br round fl padding-horizontal-main margin-left-main" :placeholder="$t('recommend-form.enter_product_name')" @input="popup_keywords_value_event" @confirm="popup_goods_search_event" />
                                 <button type="default" size="mini" class="bg-main br-main cr-white text-size-xs round fr" @tap="popup_goods_search_event">{{$t('common.search')}}</button>
                             </view>
                             <view class="view-goods-list padding-horizontal-main">
@@ -259,9 +259,19 @@
                     if ((this.recommend_data.detail_list || null) != null && this.recommend_data.detail_list.length > 0) {
                         var goods_data = [];
                         this.recommend_data.detail_list.forEach((item, index) => {
+                            // 提交纯key（本地spec带type/value仅用于展示）
+                            var submit_spec = '';
+                            if (item.spec != '' && item.spec != null) {
+                                try {
+                                    var spec_items = typeof item.spec == 'object' ? item.spec : JSON.parse(item.spec);
+                                    submit_spec = JSON.stringify(spec_items.map(function (v) { return { key: v.key }; }));
+                                } catch (e) {
+                                    submit_spec = item.spec;
+                                }
+                            }
                             goods_data.push({
                                 goods_id: item.goods_id,
-                                spec: item.spec || '',
+                                spec: submit_spec,
                             });
                         });
                         if (goods_data.length > 0) {

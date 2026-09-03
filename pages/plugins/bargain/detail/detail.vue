@@ -393,7 +393,7 @@
             },
 
             bargain_start_event(e) {
-                var spec = (e || {}).spec || [];
+                var spec = ((e || {}).spec || []).map(function (v) { return { key: v.key }; });
                 uni.request({
                     url: app.globalData.get_request_url('start', 'index', 'bargain'),
                     method: 'POST',

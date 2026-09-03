@@ -10,7 +10,7 @@
                 <view class="goods-spec-choice-content">
                     <!-- 商品规格 -->
                     <view v-if="spec.length > 0" class="goods-spec-choose">
-                        <view v-for="(item, key) in spec" :key="key" class="item padding-top-xxl padding-bottom-xxl">
+                        <view v-for="(item, key) in spec" :key="key" class="item padding-bottom-lg">
                             <view class="text-size-sm">{{item.name}}</view>
                             <view v-if="item.value.length > 0" class="spec margin-top-sm">
                                 <block v-for="(items, keys) in item.value" :key="keys">
@@ -128,14 +128,13 @@
                     return false;
                 }
 
-                // 获取规格值
+                // 获取规格值（接口纯key提交）
                 var spec = [];
                 for (var i in temp_spec) {
                     for (var k in temp_spec[i]['value']) {
                         if ((temp_spec[i]['value'][k]['is_active'] || null) != null) {
                             spec.push({
-                                type: temp_spec[i]['name'],
-                                value: temp_spec[i]['value'][k]['name']
+                                key: temp_spec[i]['value'][k]['key'] || ''
                             });
                             break;
                         }
@@ -164,7 +163,7 @@
                                     for (var k in temp_spec[i]['value']) {
                                         if (index == i) {
                                             temp_spec[i]['value'][k]['is_dont'] = '';
-                                            var temp_value = temp_spec[i]['value'][k]['name'];
+                                            var temp_value = temp_spec[i]['value'][k]['key'] || '';
                                             var temp_status = false;
                                             for (var t in spec_type) {
                                                 if (spec_type[t] == temp_value) {
@@ -229,14 +228,14 @@
 
             // 已选的商品规格
             goods_selected_spec() {
+                // 接口纯key提交
                 var spec = [];
                 var temp_spec = this.spec;
                 for (var i in temp_spec) {
                     for (var k in temp_spec[i]['value']) {
                         if ((temp_spec[i]['value'][k]['is_active'] || null) != null) {
                             spec.push({
-                                type: temp_spec[i]['name'],
-                                value: temp_spec[i]['value'][k]['name']
+                                key: temp_spec[i]['value'][k]['key'] || ''
                             });
                             break;
                         }
@@ -290,6 +289,7 @@
                             if ((temp_spec[i]['value'][k]['is_active'] || null) != null) {
                                 active_count++;
                                 spec.push({
+                                    key: temp_spec[i]['value'][k]['key'] || '',
                                     type: temp_spec[i]['name'],
                                     value: temp_spec[i]['value'][k]['name']
                                 });

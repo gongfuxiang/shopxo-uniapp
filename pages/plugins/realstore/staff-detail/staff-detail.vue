@@ -408,6 +408,7 @@
             goods_buy_back_event(e) {
                 var goods = e.goods || {};
                 var spec = e.spec || [];
+                var submit_spec = spec.map(function (v) { return { key: v.key }; });
                 var stock = parseInt(e.buy_number || 1) || 1;
                 var goods_id = parseInt(goods.goods_id || goods.id || 0);
                 if (goods_id <= 0) {
@@ -431,7 +432,7 @@
                 var goods_item = {
                     goods_id: goods_id,
                     stock: stock,
-                    spec: spec,
+                    spec: submit_spec,
                 };
                 var buy_data = {
                     buy_type: 'goods',

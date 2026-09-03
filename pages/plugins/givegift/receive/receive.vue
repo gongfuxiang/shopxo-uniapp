@@ -196,7 +196,7 @@
 
             // 规格确认回调事件
             spec_confirm_event(value) {
-                this.buy_handle(value.spec);
+                this.buy_handle((value.spec || []).map(function (v) { return { key: v.key }; }));
             },
 
             // 购买处理

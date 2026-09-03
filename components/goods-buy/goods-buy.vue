@@ -32,7 +32,7 @@
                     <scroll-view :scroll-y="true" class="goods-spec-choice-content">
                         <!-- 商品规格 -->
                         <view v-if="goods_spec_choose.length > 0" class="goods-spec-choose">
-                            <view v-for="(item, key) in goods_spec_choose" :key="key" class="item padding-top-xxl padding-bottom-xxl">
+                            <view v-for="(item, key) in goods_spec_choose" :key="key" class="item padding-bottom-lg">
                                 <view class="text-size-sm">{{ item.name }}</view>
                                 <view v-if="item.value.length > 0" class="spec margin-top-sm">
                                     <block v-for="(items, keys) in item.value" :key="keys">
@@ -533,10 +533,10 @@
                     // 获取规格详情
                     this.get_spec_detail();
 
-                    // 规格选择回调
+                    // 规格选择回调（展示数据带type/value、消费方用于已选文本回显）
                     this.$emit('SpecChoiceEvent', {
                         goods_id: this.goods.goods_id || this.goods.id,
-                        spec: this.choice_spec_data(),
+                        spec: this.choice_spec_show_data(),
                         goods_spec_choose: this.goods_spec_choose,
                     });
                 }
@@ -576,7 +576,7 @@
                                     for (var k in temp_spec[i]['value']) {
                                         if (index == i) {
                                             temp_spec[i]['value'][k]['is_dont'] = '';
-                                            var temp_value = temp_spec[i]['value'][k]['name'];
+                                            var temp_value = temp_spec[i]['value'][k]['key'] || '';
                                             var temp_status = false;
                                             for (var t in spec_type) {
                                                 if (spec_type[t] == temp_value) {
@@ -616,12 +616,31 @@
 
             // 选择规格数据
             choice_spec_data() {
+                // 接口纯key提交（规格值基础值md5、多语言下显示值会变key不变）
                 var spec = [];
                 var temp_spec = this.goods_spec_choose;
                 for (var i in temp_spec) {
                     for (var k in temp_spec[i]['value']) {
                         if ((temp_spec[i]['value'][k]['is_active'] || null) != null) {
                             spec.push({
+                                key: temp_spec[i]['value'][k]['key'] || '',
+                            });
+                            break;
+                        }
+                    }
+                }
+                return spec;
+            },
+
+            // 已选规格展示数据（key匹配 + type/value展示、供页面已选文本回显）
+            choice_spec_show_data() {
+                var spec = [];
+                var temp_spec = this.goods_spec_choose;
+                for (var i in temp_spec) {
+                    for (var k in temp_spec[i]['value']) {
+                        if ((temp_spec[i]['value'][k]['is_active'] || null) != null) {
+                            spec.push({
+                                key: temp_spec[i]['value'][k]['key'] || '',
                                 type: temp_spec[i]['name'],
                                 value: temp_spec[i]['value'][k]['name'],
                             });
@@ -717,14 +736,14 @@
 
             // 已选的商品规格
             goods_selected_spec() {
+                // 接口纯key提交
                 var spec = [];
                 var temp_spec = this.goods_spec_choose;
                 for (var i in temp_spec) {
                     for (var k in temp_spec[i]['value']) {
                         if ((temp_spec[i]['value'][k]['is_active'] || null) != null) {
                             spec.push({
-                                type: temp_spec[i]['name'],
-                                value: temp_spec[i]['value'][k]['name'],
+                                key: temp_spec[i]['value'][k]['key'] || '',
                             });
                             break;
                         }
@@ -874,6 +893,7 @@
                                 if ((temp_data[i]['value'][k]['is_active'] || null) != null) {
                                     active_count++;
                                     spec.push({
+                                        key: temp_data[i]['value'][k]['key'] || '',
                                         type: temp_data[i]['name'],
                                         value: temp_data[i]['value'][k]['name'],
                                     });
@@ -904,7 +924,7 @@
                             var goods_item = {
                                 goods_id: this.goods.goods_id || this.goods.id,
                                 stock: this.buy_number,
-                                spec: spec,
+                                spec: spec.map(function (v) { return { key: v.key }; }),
                             };
                             var data = {
                                 buy_type: 'goods',
@@ -958,7 +978,7 @@
             goods_cart_event(spec) {
                 var data = this.params;
                 data['goods_id'] = this.goods.goods_id || this.goods.id;
-                data['spec'] = JSON.stringify(spec);
+                data['spec'] = JSON.stringify(spec.map(function (v) { return { key: v.key }; }));
                 data['stock'] = this.buy_number;
                 uni.request({
                     url: app.globalData.get_request_url('save', 'cart'),
