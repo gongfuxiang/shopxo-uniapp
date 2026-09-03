@@ -426,13 +426,19 @@
 					<text class="rating-modal-tip">请对本次服务进行评价</text>
 					<view class="rating-stars">
 						<view
-							v-for="n in 5"
-							:key="n"
+							v-for="item in rating_star_list"
+							:key="item"
 							class="rating-star"
-							:data-score="n"
-							@tap="select_rating_score_event"
+							:data-score="item"
+							hover-class="rating-star-hover"
+							:hover-stay-time="80"
+							@tap.stop="select_rating_score_event"
 						>
-							<text class="rating-star-icon" :class="{ active: n <= rating_score }">★</text>
+							<text
+								class="iconfont rating-star-icon"
+								:class="(rating_score > 0 && item <= rating_score) ? 'icon-pointed' : 'icon-pointed-o'"
+								:style="'color:' + ((rating_score > 0 && item <= rating_score) ? '#f7ba2a' : '#d0d0d0')"
+							></text>
 						</view>
 					</view>
 					<textarea
@@ -446,7 +452,7 @@
 					<view
 						class="rating-submit-btn"
 						:class="{ 'is-disabled': rating_submitting }"
-						@tap="submit_rating_event"
+						@tap.stop="submit_rating_event"
 					>{{ rating_submitting ? '提交中...' : '提交评价' }}</view>
 				</view>
 			</view>

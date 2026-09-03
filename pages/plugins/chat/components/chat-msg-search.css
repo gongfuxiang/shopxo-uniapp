@@ -100,14 +100,6 @@
 	color: #999;
 }
 
-.msg-search-list ::v-deep .no-data-box {
-	padding: 60rpx 0 80rpx;
-}
-
-.msg-search-list ::v-deep .no-data-box .image {
-	width: 400rpx;
-}
-
 .msg-search-item {
 	padding: 24rpx 32rpx;
 	border-bottom: 1rpx solid #f5f5f5;

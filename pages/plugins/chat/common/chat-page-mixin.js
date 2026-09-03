@@ -484,6 +484,8 @@ export default {
 			rating_score: 0,
 			rating_content: '',
 			rating_submitting: false,
+			rating_select_enable_at: 0,
+			rating_star_list: [1, 2, 3, 4, 5],
 			friend_base: null,
 			consult_popup_type: '',
 			consult_popup_show: false,
@@ -5907,8 +5909,8 @@ export default {
 								}, 100);
 							}
 						};
-						// 等确认框关闭后立即执行（50ms），勿再等服务端 chat-rating-open
-						setTimeout(run_end, 50);
+						// 等确认框关闭后再执行，避开微信小程序点击穿透
+						setTimeout(run_end, 300);
 					},
 				});
 			
@@ -6082,6 +6084,10 @@ export default {
 				this.rating_score = 0;
 				this.rating_content = '';
 				this.rating_submitting = false;
+				this._rating_last_tap_at = 0;
+				this._rating_last_change_at = 0;
+				// 避开 showModal 关闭后的穿透点击
+				this.rating_select_enable_at = Date.now() + 300;
 				this.panel_type = '';
 				this.input_focus = false;
 				this.show_rating_modal = true;
@@ -6095,6 +6101,10 @@ export default {
 				}
 				this.show_rating_modal = false;
 				this.rating_submitting = false;
+				if (this._rating_clear_timer) {
+					clearTimeout(this._rating_clear_timer);
+					this._rating_clear_timer = null;
+				}
 				if (rating_submit_fallback_timer) {
 					clearTimeout(rating_submit_fallback_timer);
 					rating_submit_fallback_timer = null;
@@ -6116,8 +6126,36 @@ export default {
 
 		select_rating_score_event(e) {
 			
-				const score = e?.currentTarget?.dataset?.score;
-				this.rating_score = parseInt(score || 0) || 0;
+				const now = Date.now();
+				if (now < Number(this.rating_select_enable_at || 0)) {
+					return;
+				}
+				// 合并 currentTarget / target，兼容微信小程序 dataset
+				const ds = Object.assign(
+					{},
+					(e && e.target && e.target.dataset) || {},
+					(e && e.currentTarget && e.currentTarget.dataset) || {}
+				);
+				const sc = parseInt(ds.score, 10);
+				if (!(sc >= 1 && sc <= 5)) {
+					return;
+				}
+				const prev = Number(this.rating_score) || 0;
+				// 同一次点击的重复事件：忽略
+				if (now - Number(this._rating_last_tap_at || 0) < 280) {
+					return;
+				}
+				this._rating_last_tap_at = now;
+				if (prev === sc) {
+					// 再次点击取消：与上次改分间隔太短则视为重复事件，不取消
+					if (now - Number(this._rating_last_change_at || 0) < 400) {
+						return;
+					}
+					this.rating_score = 0;
+				} else {
+					this.rating_score = sc;
+				}
+				this._rating_last_change_at = now;
 			
 		},
 

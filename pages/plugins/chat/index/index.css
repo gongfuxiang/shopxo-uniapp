@@ -1,4 +1,5 @@
 @import '../common/chat-h5-layout.css';
+@import '@/static/icon/iconfont.css';
 
 .page-chat {
 	min-height: 100vh;
@@ -1199,7 +1200,8 @@
 	top: 0;
 	bottom: 0;
 	background: rgba(0, 0, 0, 0.45);
-	z-index: 10050;
+	/* 低于 H5 uni-toast（约 999），避免「请先选择星级」被挡住 */
+	z-index: 500;
 	display: flex;
 	align-items: center;
 	justify-content: center;
@@ -1351,14 +1353,13 @@
 	justify-content: center;
 }
 
-.rating-star-icon {
-	font-size: 64rpx;
-	line-height: 1;
-	color: #e5e5e5;
+.rating-star-hover {
+	opacity: 0.7;
 }
 
-.rating-star-icon.active {
-	color: #f7ba2a;
+.rating-star-icon {
+	font-size: 56rpx;
+	line-height: 1;
 }
 
 .rating-modal-input {
