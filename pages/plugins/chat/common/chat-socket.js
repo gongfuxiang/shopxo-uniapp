@@ -2191,7 +2191,7 @@ const map_friend_list = (list_data = {}) => {
 				id: receive.id,
 				name: receive.name || '用户',
 				avatar,
-				status: Number(receive.status),
+				status: Number(receive.status) === 1 ? 1 : 0,
 				ai_mode,
 				preview_tag: preview.tag,
 				preview_content: preview.content,
@@ -2544,6 +2544,7 @@ const handle_message = (raw) => {
 				if (receive.avatar) {
 					receive.avatar = absolutize_url(receive.avatar);
 				}
+				receive.status = Number(receive.status) === 1 ? 1 : 0;
 				chat_set_receive_user(receive);
 			}
 			if (data.data && data.data.user_list) {
@@ -2563,6 +2564,19 @@ const handle_message = (raw) => {
 				state.user_list = [];
 				state.user_list_page = 1;
 				state.user_list_page_total = 0;
+			}
+			// 列表已有对方在线状态时，回填到当前 receive，避免标题头仍显示默认离线
+			if (state.receive_user && state.receive_user.id) {
+				const hit = (state.user_list || []).find((row) => String(row.id) == String(state.receive_user.id));
+				if (hit) {
+					state.receive_user = {
+						...state.receive_user,
+						status: Number(hit.status) === 1 ? 1 : 0,
+					};
+					try {
+						uni.setStorageSync(CACHE_RECEIVE_USER_KEY, state.receive_user);
+					} catch (err) {}
+				}
 			}
 			// 快捷消息（对齐 PC QuickMessageView）
 			if (data.data && Array.isArray(data.data.quick_message)) {
@@ -2735,6 +2749,13 @@ const handle_message = (raw) => {
 							if (row.receive_user) {
 								row.receive_user = { ...row.receive_user, status: 1 };
 							}
+							if (state.receive_user && String(state.receive_user.id) == String(list_user_id)) {
+								state.receive_user = { ...state.receive_user, status: 1 };
+								try {
+									uni.setStorageSync(CACHE_RECEIVE_USER_KEY, state.receive_user);
+								} catch (err) {}
+								emit('friend_status', { friend: { id: list_user_id, status: 1 } });
+							}
 							if (is_active || from_self) {
 								row.unread = 0;
 							}
@@ -2750,6 +2771,13 @@ const handle_message = (raw) => {
 								ai_mode: is_ai_reply ? 'ai' : ((state.ai_mode_map[list_user_id] || {}).mode || ''),
 							}],
 						});
+						if (state.receive_user && String(state.receive_user.id) == String(list_user_id)) {
+							state.receive_user = { ...state.receive_user, status: 1 };
+							try {
+								uni.setStorageSync(CACHE_RECEIVE_USER_KEY, state.receive_user);
+							} catch (err) {}
+							emit('friend_status', { friend: { id: list_user_id, status: 1 } });
+						}
 					}
 				}
 				if (is_ai_reply) {
@@ -3103,13 +3131,29 @@ const handle_message = (raw) => {
 				const index = state.user_list.findIndex((row) => row.id == friend.id);
 				if (index >= 0) {
 					const fs_mode = ((state.ai_mode_map[friend.id] || {}).mode) || state.user_list[index].ai_mode || '';
-					state.user_list[index].status = friend.status;
+					const fs_status = Number(friend.status) === 1 ? 1 : 0;
+					state.user_list[index].status = fs_status;
 					state.user_list[index].ai_mode = fs_mode;
 					state.user_list[index].receive_user = {
 						...state.user_list[index].receive_user,
 						...friend,
+						status: fs_status,
 					};
 					emit('user_list', get_chat_state());
+				}
+				// 当前会话对方：同步 status，供标题头像状态点使用
+				if (state.receive_user && String(state.receive_user.id) == String(friend.id)) {
+					const next_status = friend.status != null && friend.status !== ''
+						? (Number(friend.status) === 1 ? 1 : 0)
+						: (Number(state.receive_user.status) === 1 ? 1 : 0);
+					state.receive_user = {
+						...state.receive_user,
+						...friend,
+						status: next_status,
+					};
+					try {
+						uni.setStorageSync(CACHE_RECEIVE_USER_KEY, state.receive_user);
+					} catch (err) {}
 				}
 			}
 			emit('friend_status', data.data);

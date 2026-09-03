@@ -2,7 +2,6 @@
 
 .page-chat {
 	min-height: 100vh;
-	background: #ededed;
 	box-sizing: border-box;
 }
 
@@ -24,7 +23,7 @@
 	top: 0;
 	bottom: 0;
 	z-index: 50;
-	background: #ededed;
+	background: #f8f8f8;
 }
 
 .nav-wrap {
@@ -73,6 +72,7 @@
 }
 
 .nav-bar {
+	position: relative;
 	height: 88rpx;
 	padding: 0 12rpx;
 	display: flex;
@@ -97,6 +97,8 @@
 	align-items: center;
 	flex-shrink: 0;
 	min-width: 64rpx;
+	position: relative;
+	z-index: 2;
 }
 
 .nav-right {
@@ -105,29 +107,89 @@
 	flex-shrink: 0;
 	min-width: 64rpx;
 	justify-content: flex-end;
+	position: relative;
+	z-index: 2;
+}
+
+.nav-title-wrap {
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	justify-content: center;
+	box-sizing: border-box;
+	overflow: hidden;
+	/* 非微信：相对整栏水平居中 */
+	position: absolute;
+	left: 50%;
+	transform: translateX(-50%);
+	max-width: 60%;
+	padding: 0 8rpx;
+	z-index: 1;
+	/* #ifdef MP-WEIXIN */
+	position: relative;
+	left: auto;
+	transform: none;
+	max-width: none;
+	flex: 1;
+	min-width: 0;
+	justify-content: flex-start;
+	/* #endif */
+}
+
+.nav-avatar-wrap {
+	position: relative;
+	width: 64rpx;
+	height: 64rpx;
+	flex-shrink: 0;
+	margin-right: 12rpx;
+}
+
+.nav-avatar {
+	width: 64rpx;
+	height: 64rpx;
+	border-radius: 50%;
+	background: #f2f2f2;
+	display: block;
+}
+
+.nav-title-wrap .friend-status-dot {
+	position: absolute;
+	right: -2rpx;
+	bottom: -2rpx;
+	width: 18rpx;
+	height: 18rpx;
+	border-radius: 50%;
+	border: 3rpx solid #fff;
+	box-sizing: border-box;
+	z-index: 2;
+}
+
+.nav-title-wrap .friend-status-dot.is-on {
+	background: #48d452;
+}
+
+.nav-title-wrap .friend-status-dot.is-ai {
+	background: #4c9dff;
+}
+
+.nav-title-wrap .friend-status-dot.is-off {
+	background: #999;
 }
 
 .nav-title {
-	flex: 1;
+	flex: 0 1 auto;
 	min-width: 0;
+	max-width: 100%;
 	font-weight: 400;
 	color: #000000;
 	line-height: 1;
 	overflow: hidden;
 	white-space: nowrap;
 	text-overflow: ellipsis;
-	padding: 0 8rpx;
-	/* #ifdef MP */
 	text-align: left;
 	font-size: 16px;
-	/* #endif */
-	/* #ifdef H5 */
-	text-align: center;
-	font-size: 16px;
-	/* #endif */
-	/* #ifdef APP-PLUS */
-	text-align: center;
-	font-size: 16px;
+	/* #ifdef MP-WEIXIN */
+	flex: 1;
 	/* #endif */
 }
 
@@ -175,7 +237,7 @@
 .footer {
 	flex-shrink: 0;
 	width: 100%;
-	background: #f7f7f7;
+	background: #f8f8f8;
 	border-top: 1rpx solid #d6d6d6;
 	padding-bottom: constant(safe-area-inset-bottom);
 	padding-bottom: env(safe-area-inset-bottom);
@@ -193,6 +255,7 @@
 	flex-direction: column;
 	box-sizing: border-box;
 	overflow: visible;
+	background: #f8f8f8;
 }
 
 /* 键盘弹起时去掉底部安全区，避免输入框与键盘之间出现灰带 */
@@ -212,7 +275,7 @@
 	position: relative;
 	flex-shrink: 0;
 	width: 100%;
-	background: #ededed;
+	background: #f8f8f8;
 	z-index: 42;
 }
 
@@ -737,7 +800,7 @@
 .panel-box {
 	height: 420rpx;
 	border-top: 1rpx solid #e5e5e5;
-	background: #f7f7f7;
+	background: #f8f8f8;
 	box-sizing: border-box;
 }
 
@@ -1407,5 +1470,5 @@
 	flex-shrink: 0;
 	height: 420rpx;
 	border-top: 1rpx solid #e5e5e5;
-	background: #f7f7f7;
+	background: #f8f8f8;
 }

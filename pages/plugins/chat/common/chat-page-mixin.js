@@ -442,6 +442,8 @@ export default {
 			default_avatar,
 			current_avatar: default_avatar,
 			receive_avatar: default_avatar,
+			/** 对方在线状态：1 在线 / 0 离线；未拿到状态时默认离线 */
+			receive_status: 0,
 			quote_draft: null,
 			playing_video_url: '',
 			playing_video_poster: '',
@@ -520,6 +522,17 @@ export default {
 				style += 'height:' + this.nav_content_h + 'px;';
 			}
 			return style;
+		},
+
+		/** 标题头像状态点：未拿到/离线灰 / 智能蓝 / 在线绿 */
+		nav_status_dot_class() {
+			if (Number(this.receive_status) !== 1) {
+				return 'is-off';
+			}
+			if ((this.ai_mode || '') == 'ai') {
+				return 'is-ai';
+			}
+			return 'is-on';
 		},
 
 		chat_main_style() {
@@ -4313,18 +4326,23 @@ export default {
 				}
 				const st = get_chat_state();
 				let receive = chat_get_receive_user_cache();
-				if ((!receive || !receive.id || String(receive.id) != String(id)) && st.user_list) {
-					const hit = st.user_list.find((row) => String(row.id) == String(id));
-					if (hit) {
-						receive = hit.receive_user || {
-							id: hit.id,
-							name: hit.name,
-							avatar: hit.avatar,
-						};
+				const hit = (st.user_list || []).find((row) => String(row.id) == String(id));
+				if (hit) {
+					const from_hit = hit.receive_user || {
+						id: hit.id,
+						name: hit.name,
+						avatar: hit.avatar,
+					};
+					if (!receive || !receive.id || String(receive.id) != String(id)) {
+						receive = { ...from_hit };
+					} else {
+						receive = { ...from_hit, ...receive, id: hit.id };
 					}
-				}
-				if ((!receive || !receive.id) && st.receive_user && parseInt(st.receive_user.id, 10) == id) {
-					receive = st.receive_user;
+					// 列表 status 更权威；未拿到则离线
+					receive.status = Number(hit.status) === 1 ? 1 : 0;
+				} else if ((!receive || !receive.id) && st.receive_user && parseInt(st.receive_user.id, 10) == id) {
+					receive = { ...st.receive_user };
+					receive.status = Number(receive.status) === 1 ? 1 : 0;
 				}
 				// 刷新丢缓存时：用路由 id 兜底，避免拉不到 record
 				if (!receive || !receive.id || String(receive.id) != String(id)) {
@@ -4332,7 +4350,10 @@ export default {
 						id,
 						name: (receive && receive.name) || this.chat_title || '在线客服',
 						avatar: (receive && receive.avatar) || this.default_avatar,
+						status: 0,
 					};
+				} else {
+					receive.status = Number(receive.status) === 1 ? 1 : 0;
 				}
 				if (st.receive_user && String(st.receive_user.id) != String(receive.id)) {
 					chat_leave_session();
@@ -4509,8 +4530,17 @@ export default {
 				if (!active_id || !friend || String(friend.id) != String(active_id)) {
 					return;
 				}
-				if (Number(friend.status) === 0) {
-					this.clear_typing_tip();
+				if (friend.status != null && friend.status !== '') {
+					this.receive_status = Number(friend.status) === 1 ? 1 : 0;
+					if (this.receive_status !== 1) {
+						this.clear_typing_tip();
+					}
+				}
+				if (friend.avatar) {
+					this.receive_avatar = friend.avatar || this.default_avatar;
+				}
+				if (friend.name) {
+					this.chat_title = friend.name || this.chat_title;
 				}
 			
 		},
@@ -4553,6 +4583,7 @@ export default {
 				this.route_chat_id = this.chat_id;
 				chat_set_receive_user(receive);
 				this.receive_avatar = receive.avatar || this.default_avatar;
+				this.receive_status = Number(receive.status) === 1 ? 1 : 0;
 				this.chat_title = receive.name || '在线客服';
 				try {
 					uni.setNavigationBarTitle({ title: this.chat_title });

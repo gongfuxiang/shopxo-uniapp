@@ -16,7 +16,13 @@
 						<iconfont name="icon-list-dot" size="40rpx" color="#191919"></iconfont>
 					</view>
 				</view>
-				<text class="nav-title">{{ chat_title }}</text>
+				<view class="nav-title-wrap">
+					<view class="nav-avatar-wrap">
+						<image class="nav-avatar" :src="receive_avatar || default_avatar" mode="aspectFill"></image>
+						<view class="friend-status-dot" :class="nav_status_dot_class"></view>
+					</view>
+					<text class="nav-title">{{ chat_title }}</text>
+				</view>
 				<view class="nav-right">
 					<view
 						v-if="show_msg_search_btn"

@@ -94,6 +94,8 @@ export default {
 					id: recv.id,
 					name: recv.name || '在线客服',
 					avatar: recv.avatar || this.default_avatar,
+					status: Number(recv.status) === 1 ? 1 : 0,
+					ai_mode: (recv.ai_mode || (get_chat_state().ai && get_chat_state().ai.mode) || ''),
 					preview_content: '',
 					time_text: '',
 					unread: 0,
@@ -331,7 +333,10 @@ export default {
 			if (!row || !row.id) {
 				return;
 			}
-			const receive = row.receive_user || { id: row.id, name: row.name, avatar: row.avatar };
+			const receive = {
+				...(row.receive_user || { id: row.id, name: row.name, avatar: row.avatar }),
+			};
+			receive.status = Number(row.status) === 1 ? 1 : 0;
 			chat_set_receive_user(receive);
 			url_open(chat_build_session_url(row.id, { ...this.entry_params, from_list: 1 }));
 		},
@@ -432,6 +437,18 @@ export default {
 		preview_text(row) {
 			const tag = row.preview_tag ? (row.preview_tag + ' ') : '';
 			return tag + (row.preview_content || row.last_message || '');
+		},
+
+		/** 对齐 admin chat-session-item：在线绿 / 智能蓝 / 离线灰；未拿到状态默认离线 */
+		status_dot_class(row) {
+			const item = row || {};
+			if (Number(item.status) !== 1) {
+				return 'is-off';
+			}
+			if ((item.ai_mode || '') == 'ai') {
+				return 'is-ai';
+			}
+			return 'is-on';
 		},
 
 		unread_text(row) {

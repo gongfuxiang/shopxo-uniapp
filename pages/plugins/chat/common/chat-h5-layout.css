@@ -19,4 +19,46 @@
 	max-width: 1600rpx;
 	box-sizing: border-box;
 }
+
+/* H5：可点击区域显示手型光标 */
+.page-chat .nav-side,
+.page-chat .ai-bar-btn,
+.page-chat .side-btn,
+.page-chat .input-expand-btn,
+.page-chat .input-emoji-btn,
+.page-chat .voice-hold-btn,
+.page-chat .send-btn,
+.page-chat .quote-bar-close,
+.page-chat .emoji-item,
+.page-chat .more-item,
+.page-chat .input-fs-collapse,
+.page-chat .input-fs-tool-btn,
+.page-chat .input-fs-send,
+.page-chat .rating-popup-close,
+.page-chat .rating-star,
+.page-chat .rating-submit-btn,
+.page-chat .consult-send-btn,
+.page-chat .ended-choice-btn,
+.page-chat .popup-close,
+.page-chat .message-reedit,
+.page-chat .msg-send-fail,
+.page-chat .bubble-image,
+.page-chat .video-poster,
+.page-chat .bubble-goods.is-clickable,
+.page-chat .bubble-audio,
+.page-chat .bubble-file,
+.page-chat .bubble-link,
+.page-chat .quote-block,
+.page-chat .video-fs-close,
+.chat-list-page .chat-list-nav-back,
+.chat-list-page .chat-list-search-clear,
+.chat-list-page .chat-list-item,
+.msg-search-clear,
+.msg-search-cancel,
+.msg-search-item,
+.msg-menu-item,
+.goods-chat-container,
+.online-service-event-submit {
+	cursor: pointer;
+}
 /* #endif */

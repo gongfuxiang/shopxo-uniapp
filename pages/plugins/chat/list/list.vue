@@ -53,6 +53,8 @@
 					>
 						<view class="chat-list-avatar-wrap">
 							<image class="chat-list-avatar" :src="item.avatar || default_avatar" mode="aspectFill"></image>
+							<view class="friend-status-dot" :class="status_dot_class(item)"></view>
+							<view v-if="Number(item.status) !== 1" class="offline-mask"></view>
 							<view v-if="unread_text(item)" class="chat-list-badge">{{ unread_text(item) }}</view>
 						</view>
 						<view class="chat-list-body-main">

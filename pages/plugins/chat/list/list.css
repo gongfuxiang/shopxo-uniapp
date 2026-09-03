@@ -2,7 +2,6 @@
 
 .chat-list-page {
 	min-height: 100vh;
-	background: #ededed;
 	box-sizing: border-box;
 }
 
@@ -75,7 +74,7 @@
 	min-height: 0;
 	align-items: center;
 	justify-content: center;
-	background: #fff;
+	background: #f8f8f8;
 	box-sizing: border-box;
 }
 
@@ -85,7 +84,6 @@
 	min-height: 0;
 	flex-direction: column;
 	box-sizing: border-box;
-	background: #ededed;
 	overflow: hidden;
 }
 
@@ -161,6 +159,41 @@
 	height: 96rpx;
 	border-radius: 12rpx;
 	background: #f2f2f2;
+}
+
+.friend-status-dot {
+	position: absolute;
+	right: -2rpx;
+	bottom: -2rpx;
+	width: 20rpx;
+	height: 20rpx;
+	border-radius: 50%;
+	border: 3rpx solid #fff;
+	box-sizing: border-box;
+	z-index: 2;
+}
+
+.friend-status-dot.is-on {
+	background: #48d452;
+}
+
+.friend-status-dot.is-ai {
+	background: #4c9dff;
+}
+
+.friend-status-dot.is-off {
+	background: #999;
+}
+
+.offline-mask {
+	position: absolute;
+	left: 0;
+	top: 0;
+	right: 0;
+	bottom: 0;
+	border-radius: 12rpx;
+	background: rgba(255, 255, 255, 0.45);
+	z-index: 1;
 }
 
 .chat-list-body-main {
