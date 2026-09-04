@@ -1,15 +1,15 @@
 var zh = {
-    pages: {
+    "pages": {
         "plugins-presale-index": "预售",
         "plugins-presale-buy": "订单确认",
         "plugins-presale-order": "预售订单"
     }
 };
 var en = {
-    pages: {
+    "pages": {
         "plugins-presale-index": "Presale",
-        "plugins-presale-buy": "Order Confirmation",
-        "plugins-presale-order": "Presale order"
+        "plugins-presale-buy": "Confirm Order",
+        "plugins-presale-order": "Presale Orders"
     }
 };
 var merged = false;

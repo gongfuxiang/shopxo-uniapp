@@ -586,7 +586,21 @@
 		"user": "User Center",
 		"diy": "",
 		"design": "",
-		"web-view": ""
+		"web-view": "",
+		"plugins-giftcard-index": "My Gift Cards",
+		"plugins-giftcard-form": "Redeem Gift Card",
+		"plugins-givegift-goods": "Buy Gift",
+		"plugins-givegift-receive": "Claim Gift",
+		"plugins-givegift-gift": "My Gifts",
+		"plugins-givegift-gift-detail": "Gift Details",
+		"plugins-givegift-code": "Gift Link",
+		"plugins-video-index": "Short Videos",
+		"plugins-video-detail": "Video Details",
+		"plugins-video-search": "Search Videos",
+		"plugins-video-search-record": "Search History",
+		"plugins-presale-index": "Presale",
+		"plugins-presale-buy": "Confirm Order",
+		"plugins-presale-order": "Presale Orders"
 	},
 	"login": {
 		"get_phone_number": "Get your phone number",

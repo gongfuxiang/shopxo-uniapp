@@ -18,20 +18,20 @@ var zh = {
 };
 var en = {
     "pages": {
-        "plugins-givegift-goods": "Buying Gifts",
-        "plugins-givegift-receive": "Gift collection",
-        "plugins-givegift-gift": "My gift",
-        "plugins-givegift-gift-detail": "gift details",
+        "plugins-givegift-goods": "Buy Gift",
+        "plugins-givegift-receive": "Claim Gift",
+        "plugins-givegift-gift": "My Gifts",
+        "plugins-givegift-gift-detail": "Gift Details",
         "plugins-givegift-code": "Gift Link"
     },
     "givegift-gift": {
-        "unlimited_collection": "Unlimited collection",
-        "message_reminder": "Message reminder",
-        "message_prompt_maximum_format_200_characters": "Message prompt, maximum format of 200 characters",
-        "leave_message_ta_express_gratitude": "Leave a message for Ta to express gratitude!"
+        "unlimited_collection": "Unlimited claims",
+        "message_reminder": "Message tip",
+        "message_prompt_maximum_format_200_characters": "Message tip, up to 200 characters",
+        "leave_message_ta_express_gratitude": "Leave a thank-you message!"
     },
     "givegift": {
-        "my_gift": "My gifts"
+        "my_gift": "My Gifts"
     }
 };
 var merged = false;

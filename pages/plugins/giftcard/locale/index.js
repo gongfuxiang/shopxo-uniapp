@@ -16,18 +16,18 @@ var zh = {
 };
 var en = {
     "pages": {
-        "plugins-giftcard-index": "My gift card",
-        "plugins-giftcard-form": "Gift card redemption"
+        "plugins-giftcard-index": "My Gift Cards",
+        "plugins-giftcard-form": "Redeem Gift Card"
     },
     "giftcard-index": {
         "card_type": "Card type",
-        "cami_key": "Cami key",
-        "card_security_data": "Card security data",
-        "redemption_time": "Redemption time",
-        "card_exchange": "Card exchange",
-        "use_data": "Use data",
-        "enter_card_password_key": "Please enter the card password key",
-        "card_exchange_closed_tips": "Card exchange is not enabled, please contact the administrator!"
+        "cami_key": "Card key",
+        "card_security_data": "Card data",
+        "redemption_time": "Redeemed at",
+        "card_exchange": "Redeem card",
+        "use_data": "Usage data",
+        "enter_card_password_key": "Enter card key",
+        "card_exchange_closed_tips": "Card redemption is not enabled. Please contact the administrator."
     }
 };
 var merged = false;
