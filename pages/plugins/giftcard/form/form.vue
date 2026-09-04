@@ -85,11 +85,37 @@
                         data_list_loding_msg: this.$t('common.please_login_first'),
                     });
                 } else {
-                    this.setData({
-                        data_list_loding_status: 3,
-                        data_list_loding_msg: '',
-                    });
+                    this.check_card_exchange();
                 }
+            },
+
+            // 校验是否开启卡密兑换入口
+            check_card_exchange() {
+                uni.request({
+                    url: app.globalData.get_request_url('exchangeinfo', 'index', 'giftcard'),
+                    method: 'POST',
+                    data: {},
+                    dataType: 'json',
+                    success: (res) => {
+                        if (res.data.code == 0) {
+                            this.setData({
+                                data_list_loding_status: 3,
+                                data_list_loding_msg: '',
+                            });
+                        } else {
+                            this.setData({
+                                data_list_loding_status: 0,
+                                data_list_loding_msg: res.data.msg || this.$t('giftcard-index.card_exchange_closed_tips'),
+                            });
+                        }
+                    },
+                    fail: () => {
+                        this.setData({
+                            data_list_loding_status: 2,
+                            data_list_loding_msg: this.$t('common.internet_error_tips'),
+                        });
+                    },
+                });
             },
             
             // 输入事件

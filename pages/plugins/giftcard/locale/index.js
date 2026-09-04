@@ -10,7 +10,8 @@ var zh = {
         "redemption_time": "兑换时间",
         "card_exchange": "卡密兑换",
         "use_data": "使用数据",
-        "enter_card_password_key": "请输入卡密key"
+        "enter_card_password_key": "请输入卡密key",
+        "card_exchange_closed_tips": "未开启卡密兑换、请联系管理员！"
     }
 };
 var en = {
@@ -25,7 +26,8 @@ var en = {
         "redemption_time": "Redemption time",
         "card_exchange": "Card exchange",
         "use_data": "Use data",
-        "enter_card_password_key": "Please enter the card password key"
+        "enter_card_password_key": "Please enter the card password key",
+        "card_exchange_closed_tips": "Card exchange is not enabled, please contact the administrator!"
     }
 };
 var merged = false;
