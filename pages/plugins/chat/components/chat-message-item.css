@@ -286,11 +286,11 @@
 }
 
 .msg-read-status.is-read {
-	color: #c0c0c0;
+	color: #52c41a;
 }
 
 .msg-read-status.is-unread {
-	color: #fa5151;
+	color: #bfbfbf;
 }
 
 .msg-send-loading {

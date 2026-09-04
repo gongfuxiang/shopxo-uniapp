@@ -4163,6 +4163,7 @@ export default {
 					return;
 				}
 				msg_search_jump_id = 0;
+				this.msg_search_hits = [];
 				this.msg_search_loading = true;
 				chat_search_record(kw);
 			
@@ -4180,6 +4181,9 @@ export default {
 					this.msg_search_clear_hits();
 					return;
 				}
+				// 输入即进入搜索中，避免 debounce 期间闪「无匹配」空态
+				this.msg_search_hits = [];
+				this.msg_search_loading = true;
 				msg_search_timer = setTimeout(() => {
 					msg_search_timer = null;
 					this.msg_search_request();
