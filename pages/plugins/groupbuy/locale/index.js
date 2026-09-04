@@ -43,7 +43,7 @@ var en = {
         "plugins-groupbuy-team": "Join group",
         "plugins-groupbuy-index": "Group buy",
         "plugins-groupbuy-detail": "Group buy details",
-        "plugins-groupbuy-order": "My group buy"
+        "plugins-groupbuy-order": "My Groupbuy"
     },
     "plugins-groupbuy-order": {
         "order": {
