@@ -20,10 +20,26 @@
     transform: translateY(-50%);
 }
 
+.vip-btn-actions {
+    align-items: flex-end;
+}
+
+.vip-btn-actions .submit-buy {
+    margin-left: auto !important;
+    margin-right: 0 !important;
+}
+
+.vip-btn-actions .submit-buy + .submit-buy {
+    margin-top: 12rpx;
+}
+
 .submit-buy {
     padding: 0 24rpx;
     background-color: rgba(0, 0, 0, 0.15) !important;
     border-radius: 200rpx 0 0 200rpx;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
 }
 
 .vip-badge {

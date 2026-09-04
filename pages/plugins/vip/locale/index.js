@@ -9,7 +9,29 @@ var zh = {
         "plugins-vip-profit-detail": "收益详情",
         "plugins-vip-poster": "推广奖励",
         "plugins-vip-team": "我的团队",
-        "plugins-vip-member-code": "会员码"
+        "plugins-vip-member-code": "会员码",
+        "plugins-vip-apply": "会员申请",
+        "plugins-vip-apply-form": "填写申请"
+    },
+    "apply": {
+        "vip_application_been_approved": "您的会员申请已通过",
+        "level": "，等级：",
+        "review_time": "审核时间：",
+        "application_time": "申请时间：",
+        "application_info": "申请信息",
+        "vip_application_under_review_wait_patie": "您的会员申请正在审核中，请耐心等待。",
+        "modify_info_submit_again": "可修改信息后重新提交申请",
+        "tap_go_fill_fill_application_info": "请点击去填写页面填写申请信息后提交审核",
+        "go_fill": "去填写",
+        "reapply": "重新申请",
+        "fill_application_form_now": "是否立即填写申请表单？",
+        "previous_application_not_approved": "上次申请未通过"
+    },
+    "apply-form": {
+        "modifications_resubmitted_review_confirm_info_co": "修改后将重新提交审核，请确认信息无误。",
+        "application_form_configured_yet_contact_administ": "申请表单暂未配置，请联系管理员",
+        "submit_application": "提交申请",
+        "save_changes": "保存修改"
     },
     "buy": {
         "card_type_selection": "卡种选择",
@@ -26,6 +48,7 @@ var zh = {
     "user": {
         "rebate_overview": "返利概况",
         "activate_membership": "开通会员",
+        "apply_vip": "会员申请",
         "renewal_membership": "续费会员",
         "continuous_activation": "连续开通",
         "promote_customers": "推广客户"
@@ -55,13 +78,35 @@ var en = {
         "plugins-vip-index": "Member VIP",
         "plugins-vip-buy": "Activate membership",
         "plugins-vip-user": "My Members",
-        "plugins-vip-order": "Open an order",
+        "plugins-vip-order": "VIP Order",
         "plugins-vip-order-detail": "Order details",
-        "plugins-vip-profit": "Revenue details",
+        "plugins-vip-profit": "Profit",
         "plugins-vip-profit-detail": "Revenue details",
-        "plugins-vip-poster": "Promotion rewards",
-        "plugins-vip-team": "My team",
-        "plugins-vip-member-code": "Member Code"
+        "plugins-vip-poster": "Promotion",
+        "plugins-vip-team": "My Team",
+        "plugins-vip-member-code": "Member Code",
+        "plugins-vip-apply": "VIP Apply",
+        "plugins-vip-apply-form": "Fill in application"
+    },
+    "apply": {
+        "vip_application_been_approved": "Your VIP application has been approved",
+        "level": ", level: ",
+        "review_time": "Review time: ",
+        "application_time": "Application time: ",
+        "application_info": "Application info",
+        "vip_application_under_review_wait_patie": "Your VIP application is under review. Please wait patiently.",
+        "modify_info_submit_again": "You can modify the info and submit again",
+        "tap_go_fill_fill_application_info": "Please tap \"Go fill in\" to fill in the application info and submit for review",
+        "go_fill": "Go fill in",
+        "reapply": "Reapply",
+        "fill_application_form_now": "Fill in the application form now?",
+        "previous_application_not_approved": "The previous application was not approved"
+    },
+    "apply-form": {
+        "modifications_resubmitted_review_confirm_info_co": "Modifications will be resubmitted for review. Please confirm the info is correct.",
+        "application_form_configured_yet_contact_administ": "The application form is not configured yet. Please contact the administrator",
+        "submit_application": "Submit application",
+        "save_changes": "Save changes"
     },
     "buy": {
         "card_type_selection": "Card type selection",
@@ -77,7 +122,8 @@ var en = {
     },
     "user": {
         "rebate_overview": "Rebate Overview",
-        "activate_membership": "Activate membership",
+        "activate_membership": "Join VIP",
+        "apply_vip": "VIP Apply",
         "renewal_membership": "Renewal of membership",
         "continuous_activation": "Continuous activation",
         "promote_customers": "Promote customers"
