@@ -20,7 +20,8 @@ var zh = {
         "delete_confirm": "确定删除该对话吗？",
         "no_answer": "暂时无法回答，请稍后再试。",
         "request_fail": "请求失败，请稍后再试。",
-        "no_question_regenerate": "没有找到对应的问题，无法重新生成"
+        "no_question_regenerate": "没有找到对应的问题，无法重新生成",
+        "network_error": "网络异常，请检查网络后重试。"
     }
 };
 var en = {
@@ -45,7 +46,34 @@ var en = {
         "delete_confirm": "Delete this conversation?",
         "no_answer": "Unable to answer right now, please try again later.",
         "request_fail": "Request failed, please try again later.",
-        "no_question_regenerate": "The original question was not found, cannot regenerate"
+        "no_question_regenerate": "The original question was not found, cannot regenerate",
+        "network_error": "Network error, please check your connection and try again."
+    }
+};
+var spa = {
+    "pages": {
+        "plugins-aichat-index": "Asistente de servicio al cliente IA"
+    },
+    "aichat": {
+        "disabled_title": "El servicio al cliente IA no está activado",
+        "disabled_desc": "Active la página de consulta en Admin → Servicio al cliente IA → Configuración básica",
+        "new_chat": "Nueva conversación",
+        "history": "Historial",
+        "history_empty": "Sin historial",
+        "revised_answer": "Regenerado",
+        "placeholder": "Pregúnteme lo que quiera",
+        "thinking": "Pensando, espere...",
+        "session_loading": "Cargando conversación...",
+        "new_session": "Nueva conversación",
+        "revision_prefix": "Versión",
+        "revision_suffix": "",
+        "load_session_fail": "No se pudo cargar la conversación",
+        "load_session_fail_retry": "No se pudo cargar la conversación, inténtelo más tarde",
+        "delete_confirm": "¿Eliminar esta conversación?",
+        "no_answer": "No se puede responder ahora, inténtelo más tarde.",
+        "request_fail": "La solicitud falló, inténtelo más tarde.",
+        "no_question_regenerate": "No se encontró la pregunta original, no se puede regenerar",
+        "network_error": "Error de red, compruebe la conexión e inténtelo de nuevo."
     }
 };
 var merged = false;
@@ -57,6 +85,7 @@ function usePluginLocale(i18n) {
     i18n.mergeLocaleMessage('zh', zh);
     i18n.mergeLocaleMessage('zh-Hans', zh);
     i18n.mergeLocaleMessage('en', en);
+    i18n.mergeLocaleMessage('spa', spa);
 }
 
 export default {

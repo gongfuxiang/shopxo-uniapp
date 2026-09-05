@@ -9,6 +9,11 @@ var zh = {
     "buy": {
         "text_5": "是否需要发票"
     },
+    "common": {
+        "text_2": "发票信息",
+        "text_6": "开发票",
+        "no_invoice": "不开发票"
+    },
     "order": {
         "merge_invoicing": "合并开票",
         "element_parameter_id_incorrect": "元素参数id有误"
@@ -75,6 +80,14 @@ var en = {
         "plugins-invoice-order": "Order invoicing",
         "plugins-invoice-business": "Business invoice"
     },
+    "buy": {
+        "text_5": "Need an invoice"
+    },
+    "common": {
+        "text_2": "Invoice information",
+        "text_6": "Request invoice",
+        "no_invoice": "No invoice"
+    },
     "order": {
         "merge_invoicing": "Merge invoicing",
         "element_parameter_id_incorrect": "The element parameter ID is incorrect"
@@ -133,6 +146,80 @@ var en = {
         "provide_recipient_address_maximum_230_characters": "Please provide the recipient's address, with a maximum of 230 characters"
     }
 };
+var spa = {
+    "pages": {
+        "plugins-invoice-invoice": "Lista de facturas",
+        "plugins-invoice-invoice-detail": "Detalles de factura",
+        "plugins-invoice-invoice-saveinfo": "Editar factura",
+        "plugins-invoice-order": "Factura de pedido",
+        "plugins-invoice-business": "Factura de negocio"
+    },
+    "buy": {
+        "text_5": "¿Necesita factura?"
+    },
+    "common": {
+        "text_2": "Información de factura",
+        "text_6": "Solicitar factura",
+        "no_invoice": "Sin factura"
+    },
+    "order": {
+        "merge_invoicing": "Facturación combinada",
+        "element_parameter_id_incorrect": "El ID del parámetro del elemento es incorrecto"
+    },
+    "invoice": {
+        "order_invoicing": "Factura de pedido",
+        "recharge_invoice": "Factura de recarga",
+        "apply_invoice": "Solicitar factura",
+        "select_invoice_type": "Seleccionar tipo de factura",
+        "application_type": "Tipo de solicitud",
+        "invoice_type": "Tipo de factura",
+        "invoice_amount": "Importe de factura",
+        "invoice_header": "Encabezado de factura",
+        "gift_invoice": "Factura de regalo",
+        "presale_invoice": "Factura de preventa",
+        "vip_invoice": "Factura de membresía VIP",
+        "scanpay_invoice": "Factura de pago por código QR"
+    },
+    "invoice-detail": {
+        "electronic_invoice": "Factura electrónica",
+        "click_invoice_name_copy_then_go": "Puede pulsar el nombre de la factura para copiarlo y abrir la dirección en el navegador para descargarla.",
+        "invoice_content": "Contenido de factura",
+        "name_bank_where_enterprise_opens_account": "Nombre del banco de la empresa",
+        "enterprise_account_opening": "Cuenta bancaria de la empresa",
+        "enterprise_contact_phone_number": "Teléfono de contacto de la empresa",
+        "registered_address_enterprise": "Dirección registrada de la empresa",
+        "recipient_name": "Nombre del destinatario",
+        "recipient_phone_number": "Teléfono del destinatario",
+        "recipient_address": "Dirección del destinatario"
+    },
+    "invoice-saveinfo": {
+        "unified_social_credit_code_tax_identification": "Código de crédito social unificado o número de identificación fiscal de la empresa",
+        "select_invoice_type": "Seleccione el tipo de factura",
+        "select_application_type": "Seleccione el tipo de solicitud",
+        "select_invoice_content": "Seleccione el contenido de la factura",
+        "invoice_header_up_200_characters_long": "Encabezado de factura, máximo 200 caracteres",
+        "unified_social_credit_code_tax_identification_2": "Código de crédito social unificado o número de identificación fiscal de la empresa, máximo 160 caracteres",
+        "enterprise_account_opening_bank_name_up": "Nombre del banco de la empresa, máximo 200 caracteres",
+        "enterprise_account_opening_maximum_160_character": "Cuenta bancaria de la empresa, máximo 160 caracteres",
+        "enterprise_contact_phone_number_15_characters": "Teléfono de contacto de la empresa, 6-15 caracteres",
+        "registered_address_enterprise_maximum_230_charac": "Dirección registrada de la empresa, máximo 230 caracteres",
+        "recipient_name_format_should_between_30": "El nombre del destinatario debe tener entre 2 y 30 caracteres",
+        "recipient_phone_number_15_characters_long": "Teléfono del destinatario, 6-15 caracteres",
+        "recipient_address_up_230_characters": "Dirección del destinatario, máximo 230 caracteres",
+        "email_up_60_characters": "Correo electrónico, máximo 60 caracteres",
+        "invoicing": "Facturar",
+        "invoice_amount_must_greater_than": "El importe de la factura debe ser mayor que 0",
+        "fill_invoice_header_maximum_200_characters": "Rellene el encabezado de factura, máximo 200 caracteres",
+        "fill_unified_social_credit_code_tax": "Rellene el código de crédito social unificado o el número de identificación fiscal de la empresa, máximo 160 caracteres",
+        "fill_name_company_account_opening_bank": "Rellene el nombre del banco de la empresa, máximo 200 caracteres",
+        "fill_enterprise_account_number_maximum_160": "Rellene el número de cuenta de la empresa, máximo 160 caracteres",
+        "fill_company_contact_phone_number_which": "Rellene el teléfono de contacto de la empresa, 6-15 caracteres",
+        "fill_registered_address_company_maximum_230": "Rellene la dirección registrada de la empresa, máximo 230 caracteres",
+        "fill_recipient_name_format_between_30": "Rellene el nombre del destinatario, entre 2 y 30 caracteres",
+        "fill_recipient_phone_number_which_should": "Rellene el teléfono del destinatario, 6-15 caracteres",
+        "provide_recipient_address_maximum_230_characters": "Rellene la dirección del destinatario, máximo 230 caracteres"
+    }
+};
 var merged = false;
 function usePluginLocale(i18n) {
     if (merged || !i18n || typeof i18n.mergeLocaleMessage != 'function') {
@@ -142,6 +229,7 @@ function usePluginLocale(i18n) {
     i18n.mergeLocaleMessage('zh', zh);
     i18n.mergeLocaleMessage('zh-Hans', zh);
     i18n.mergeLocaleMessage('en', en);
+    i18n.mergeLocaleMessage('spa', spa);
 }
 
 export default {

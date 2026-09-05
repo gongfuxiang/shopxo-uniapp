@@ -16,7 +16,8 @@ var zh = {
         "url_value_empty": "url值为空",
         "copy_value_empty": "复制值为空",
         "store_data_incorrect": "门店数据有误",
-        "event_not_processed": "事件未处理("
+        "event_not_processed": "事件未处理(",
+        "already_favor": "已收藏"
     },
     "goods-comments": {
         "administrator_reply": "管理员回复：",
@@ -41,7 +42,8 @@ var en = {
         "url_value_empty": "The URL value is empty",
         "copy_value_empty": "Copy value is empty",
         "store_data_incorrect": "Store data is incorrect",
-        "event_not_processed": "Event not processed（"
+        "event_not_processed": "Event not processed（",
+        "already_favor": "Favorited"
     },
     "goods-comments": {
         "administrator_reply": "Administrator's reply:",

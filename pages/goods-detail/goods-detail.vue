@@ -1343,7 +1343,7 @@
                     goods_photo: photo,
                     goods_content_app: goods.content_app || [],
                     nav_favor_button_info: {
-                        text: (goods.user_is_favor == 1 ? this.$t('common.already') : '') + this.$t('common.favor'),
+                        text: goods.user_is_favor == 1 ? this.$t('goods-detail.already_favor') : this.$t('common.favor'),
                         status: goods.user_is_favor,
                     },
                     goods_spec_base_price: goods.price,
@@ -1624,7 +1624,7 @@
                                 this.setData({
                                     'goods.user_is_favor': res.data.data.status,
                                     nav_favor_button_info: {
-                                        text: res.data.data.text,
+                                        text: res.data.data.status == 1 ? this.$t('goods-detail.already_favor') : this.$t('common.favor'),
                                         status: res.data.data.status,
                                     },
                                 });
