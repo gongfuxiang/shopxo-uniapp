@@ -20,7 +20,7 @@
                             </view>
                         </view>
                         <view class="form-gorup flex-row jc-sb align-c br-b-f9">
-                            <view class="form-gorup-title">{{ $t('hospital.mobile') }}<text class="form-group-tips-must">*</text></view>
+                            <view class="form-gorup-title">{{ $t('common.mobile_phone_number') }}<text class="form-group-tips-must">*</text></view>
                             <view class="flex-row align-c flex-1 flex-width">
                                 <input type="text" name="mobile" :value="data.mobile || ''" maxlength="30" placeholder-class="cr-grey-9" class="cr-base" :placeholder="$t('common.please_input_mobile')" />
                             </view>

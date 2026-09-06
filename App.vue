@@ -3366,8 +3366,11 @@
                         arr = arr.slice(1);
                         arr = arr.slice(0, -1);
                     var key = 'pages.'+arr.join('-');
-                    // 读取语言
+                    // 读取语言（分包页语言未合并进全局时会返回 key 本身，避免把 key 当标题）
                     var value = i18n.t(key);
+                    if(value === key) {
+                        value = '';
+                    }
                     // 首页则读取当前应用名称
                     if(this.app_tabbar_pages()[0] == '/'+url) {
                         value = this.get_application_title();

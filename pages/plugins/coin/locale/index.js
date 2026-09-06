@@ -1,3 +1,4 @@
+import { createPageLocaleMixin } from '@/locale/merge-page-locale.js';
 var zh = {
     "pages": {
         "plugins-coin-collection": "收款",
@@ -212,19 +213,111 @@ var en = {
         "enter_transfer_currency": "Please enter the transfer currency"
     }
 };
-var merged = false;
-function usePluginLocale(i18n) {
-    if (merged || !i18n || typeof i18n.mergeLocaleMessage != 'function') {
-        return;
-    }
-    merged = true;
-    i18n.mergeLocaleMessage('zh', zh);
-    i18n.mergeLocaleMessage('zh-Hans', zh);
-    i18n.mergeLocaleMessage('en', en);
-}
-
-export default {
-    beforeCreate() {
-        usePluginLocale(this.$i18n);
+var spa = {
+    "pages": {
+        "plugins-coin-collection": "Cobro",
+        "plugins-coin-user": "Moneda virtual",
+        "plugins-coin-recharge": "Recarga",
+        "plugins-coin-recharge-pay": "Pago de recarga",
+        "plugins-coin-convert": "Conversión",
+        "plugins-coin-cash": "Retiro",
+        "plugins-coin-detail": "Detalle",
+        "plugins-coin-transfer": "Transferencia",
+        "plugins-coin-transfer-list": "Detalle de transferencias",
+        "plugins-coin-transaction-list": "Detalle de transacciones",
+        "plugins-coin-cash-list": "Detalle de retiros",
+        "plugins-coin-convert-list": "Detalle de conversiones",
+        "plugins-coin-recharge-list": "Detalle de recargas"
+    },
+    "cash": {
+        "withdrawable_currency": "Moneda retirable",
+        "withdrawal_quantity": "Cantidad de retiro",
+        "all_withdrawals": "Retirar todo",
+        "withdrawal_address": "Dirección de retiro",
+        "withdrawal_network": "Red de retiro",
+        "network_data": "Sin datos de red",
+        "apply_withdrawal": "Solicitar retiro",
+        "enter_withdrawal_address": "Introduzca la dirección de retiro",
+        "enter_withdrawal_note_info": "Introduzca la nota de retiro",
+        "network_data_empty_contact_customer_service": "No hay datos de red, contacte al servicio de atención.",
+        "enter_withdrawal_quantity": "Introduzca la cantidad de retiro"
+    },
+    "cash-list": {
+        "withdrawal_number": "N.º de retiro:",
+        "platform": "Plataforma:",
+        "recharge_network": "Red de recarga:",
+        "recharge_address": "Dirección de recarga:",
+        "withdrawal_currency": "Moneda de retiro:",
+        "account_type": "Tipo de cuenta",
+        "withdrawal_type": "Tipo de retiro",
+        "network_type": "Tipo de red",
+        "sure_delete_withdrawal_order": "¿Eliminar este pedido de retiro?"
+    },
+    "collection": {
+        "scan_initiate_transfer_other_party_verify": "Escanee para iniciar una transferencia. Verifique la cuenta antes de confirmar."
+    },
+    "convert": {
+        "balance": "Saldo:",
+        "convert_now": "Convertir ahora",
+        "transfer_out_receive_selection_cannot_same": "La cuenta de origen y destino no pueden ser la misma",
+        "enter_conversion_currency": "Introduzca la moneda de conversión"
+    },
+    "convert-list": {
+        "transfer_account": "Cuenta de destino:",
+        "conversion_order_number": "N.º de conversión:",
+        "transfer_out_balance": "Saldo de origen:",
+        "transfer_out_account": "Cuenta de origen:",
+        "latest_currency": "Moneda más reciente:",
+        "remarks": "Nota:",
+        "initiate_account": "Cuenta de origen",
+        "receiving_account": "Cuenta de destino"
+    },
+    "recharge-list": {
+        "recharge_order_number": "N.º de recarga:",
+        "recharged_coins": "Monedas recargadas:",
+        "sure_delete_recharge_order": "¿Eliminar este pedido de recarga?"
+    },
+    "recharge-pay": {
+        "payment_voucher": "Comprobante de pago",
+        "upload_up_10_images": "(Hasta 10 imágenes)",
+        "payment_remarks": "Nota de pago",
+        "enter_note": "Introduzca una nota",
+        "upload_voucher": "Suba el comprobante"
+    },
+    "transaction-list": {
+        "currency_type": "Tipo de moneda:",
+        "operation_currency": "Moneda de operación:",
+        "original_currency": "Moneda original:",
+        "description": "Descripción:",
+        "currency_type_2": "Tipo de moneda"
+    },
+    "transfer-list": {
+        "transfer_order_number": "N.º de transferencia:",
+        "payee": "Beneficiario:",
+        "transfer_currency": "Moneda de transferencia:",
+        "transfer_remarks": "Nota de transferencia:"
+    },
+    "detail": {
+        "operation_type": "Tipo de operación:",
+        "number_operations": "Cantidad de operación:",
+        "original_quantity": "Cantidad original:",
+        "latest_quantity": "Cantidad más reciente:",
+        "view_more_details": "Ver más detalles",
+        "account_details": "Detalle de la cuenta"
+    },
+    "recharge": {
+        "recharge_address": "Dirección de recarga",
+        "coin_charging_network": "Red de recarga",
+        "choose_recharge_coins": "Elegir moneda de recarga",
+        "other_quantities": "Otras cantidades",
+        "recharge_instructions_2": "Instrucciones de recarga:",
+        "enter_recharge_quantity": "Introduzca la cantidad de recarga",
+        "select_enter_recharge_quantity": "Seleccione o introduzca la cantidad de recarga"
+    },
+    "transfer": {
+        "transfer_currency": "Moneda de transferencia",
+        "transfer_immediately": "Transferir ahora",
+        "enter_transfer_currency": "Introduzca la moneda de transferencia"
     }
 };
+export default createPageLocaleMixin({ zh, en, spa });

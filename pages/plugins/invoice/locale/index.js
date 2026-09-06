@@ -1,3 +1,4 @@
+import { createPageLocaleMixin } from '@/locale/merge-page-locale.js';
 var zh = {
     "pages": {
         "plugins-invoice-invoice": "开票列表",
@@ -220,20 +221,4 @@ var spa = {
         "provide_recipient_address_maximum_230_characters": "Rellene la dirección del destinatario, máximo 230 caracteres"
     }
 };
-var merged = false;
-function usePluginLocale(i18n) {
-    if (merged || !i18n || typeof i18n.mergeLocaleMessage != 'function') {
-        return;
-    }
-    merged = true;
-    i18n.mergeLocaleMessage('zh', zh);
-    i18n.mergeLocaleMessage('zh-Hans', zh);
-    i18n.mergeLocaleMessage('en', en);
-    i18n.mergeLocaleMessage('spa', spa);
-}
-
-export default {
-    beforeCreate() {
-        usePluginLocale(this.$i18n);
-    }
-};
+export default createPageLocaleMixin({ zh, en, spa });

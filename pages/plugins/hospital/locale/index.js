@@ -1,3 +1,4 @@
+import { createPageLocaleMixin } from '@/locale/merge-page-locale.js';
 var zh = {
     "pages": {
         "plugins-hospital-patient": "就诊人添加/编辑",
@@ -19,7 +20,6 @@ var zh = {
         "free_consult": "免费问诊开方",
         "please_select_patient": "请选择就诊人",
         "real_name": "真实姓名",
-        "mobile": "手机号码",
         "gender": "性别",
         "please_select_gender": "请选择请别",
         "age": "年龄",
@@ -64,7 +64,6 @@ var en = {
         "free_consult": "Free consultation",
         "please_select_patient": "Please select patient",
         "real_name": "Real name",
-        "mobile": "Mobile",
         "gender": "Gender",
         "please_select_gender": "Please select gender",
         "age": "Age",
@@ -88,19 +87,48 @@ var en = {
         "id_number": "ID number"
     }
 };
-var merged = false;
-function usePluginLocale(i18n) {
-    if (merged || !i18n || typeof i18n.mergeLocaleMessage != 'function') {
-        return;
-    }
-    merged = true;
-    i18n.mergeLocaleMessage('zh', zh);
-    i18n.mergeLocaleMessage('zh-Hans', zh);
-    i18n.mergeLocaleMessage('en', en);
-}
-
-export default {
-    beforeCreate() {
-        usePluginLocale(this.$i18n);
+var spa = {
+    "pages": {
+        "plugins-hospital-patient": "Añadir/editar paciente",
+        "plugins-hospital-patient-list": "Lista de pacientes",
+        "plugins-hospital-prescription": "Consulta y receta"
+    },
+    "hospital-patient": {
+        "fill_allergy_history": "Rellene los antecedentes de alergia",
+        "fill_disease_history": "Rellene los antecedentes médicos"
+    },
+    "hospital": {
+        "add_patient": "Añadir paciente",
+        "medicine_user": "Paciente",
+        "switch_patient": "Cambiar paciente",
+        "select_patient": "Seleccionar paciente",
+        "chief_complaint": "Motivo de consulta",
+        "chief_complaint_example": "p. ej. resfriado, gastritis, dolor de cabeza",
+        "chief_complaint_length": "Motivo de consulta, 1–230 caracteres",
+        "free_consult": "Consulta gratuita",
+        "please_select_patient": "Seleccione el paciente",
+        "real_name": "Nombre real",
+        "gender": "Sexo",
+        "please_select_gender": "Seleccione el sexo",
+        "age": "Edad",
+        "weight": "Peso",
+        "health_info": "Información de salud",
+        "health_info_placeholder": "Información de salud opcional",
+        "relation_tag": "Etiqueta de relación",
+        "relation_tag_placeholder": "Seleccione la etiqueta de relación",
+        "allergy_history": "Antecedentes de alergia",
+        "sickness_history": "Antecedentes médicos",
+        "liver_abnormal": "Función hepática anormal",
+        "kidney_abnormal": "Función renal anormal",
+        "pregnancy": "Embarazo / lactancia",
+        "allergy_history_label": "Antecedentes de alergia:",
+        "no_allergy": "Sin alergias",
+        "sickness_history_label": "Antecedentes médicos:",
+        "no_sickness": "Sin antecedentes médicos",
+        "no_liver_issue": "Sin problema hepático",
+        "no_kidney_issue": "Sin problema renal",
+        "pregnancy_label": "Embarazo / lactancia:",
+        "id_number": "Número de DNI"
     }
 };
+export default createPageLocaleMixin({ zh, en, spa });

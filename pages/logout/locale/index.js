@@ -1,3 +1,4 @@
+import { createPageLocaleMixin } from '@/locale/merge-page-locale.js';
 var zh = {
     "pages": {
         "logout": "账号注销"
@@ -16,19 +17,4 @@ var en = {
         "after_account_cancellation_cannot_restored_sure": "After account cancellation, it cannot be restored. Are you sure to continue?"
     }
 };
-var merged = false;
-function usePluginLocale(i18n) {
-    if (merged || !i18n || typeof i18n.mergeLocaleMessage != 'function') {
-        return;
-    }
-    merged = true;
-    i18n.mergeLocaleMessage('zh', zh);
-    i18n.mergeLocaleMessage('zh-Hans', zh);
-    i18n.mergeLocaleMessage('en', en);
-}
-
-export default {
-    beforeCreate() {
-        usePluginLocale(this.$i18n);
-    }
-};
+export default createPageLocaleMixin({ zh, en });

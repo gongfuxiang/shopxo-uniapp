@@ -1,3 +1,4 @@
+import { createPageLocaleMixin } from '@/locale/merge-page-locale.js';
 var zh = {
     "pages": {
         "plugins-seckill-index": "限时秒杀"
@@ -9,26 +10,20 @@ var zh = {
 };
 var en = {
     "pages": {
-        "plugins-seckill-index": "Limited time flash sale"
+        "plugins-seckill-index": "Flash Sale"
     },
     "index": {
-        "about_start_robbery": "We are about to start a robbery",
-        "second_price_reduction": "Second price reduction"
+        "about_start_robbery": "Coming soon",
+        "second_price_reduction": "Flash Price"
     }
 };
-var merged = false;
-function usePluginLocale(i18n) {
-    if (merged || !i18n || typeof i18n.mergeLocaleMessage != 'function') {
-        return;
-    }
-    merged = true;
-    i18n.mergeLocaleMessage('zh', zh);
-    i18n.mergeLocaleMessage('zh-Hans', zh);
-    i18n.mergeLocaleMessage('en', en);
-}
-
-export default {
-    beforeCreate() {
-        usePluginLocale(this.$i18n);
+var spa = {
+    "pages": {
+        "plugins-seckill-index": "Oferta relámpago"
+    },
+    "index": {
+        "about_start_robbery": "Próximamente",
+        "second_price_reduction": "Precio flash"
     }
 };
+export default createPageLocaleMixin({ zh, en, spa });

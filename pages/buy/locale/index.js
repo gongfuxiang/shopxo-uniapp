@@ -1,3 +1,4 @@
+import { createPageLocaleMixin } from '@/locale/merge-page-locale.js';
 var zh = {
     "pages": {
         "buy": "订单确认"
@@ -92,6 +93,8 @@ var en = {
         "no_invoice": "No invoice"
     },
     "buy": {
+        "payment_expand_all": "Show all payment methods",
+        "payment_collapse": "Collapse payment methods",
         "to": "to",
         "shipping_method": "shipping method",
         "coupons": "Coupons",
@@ -174,27 +177,34 @@ var spa = {
         "no_invoice": "Sin factura"
     },
     "buy": {
+        "payment_expand_all": "Mostrar todos los métodos de pago",
+        "payment_collapse": "Ocultar métodos de pago",
+        "to": " a ",
+        "shipping_method": "Método de envío",
+        "coupons": "Cupones",
+        "store_secondary_card": "Tarjeta de tienda",
+        "points": "puntos",
+        "quick_input": "Entrada rápida",
+        "display_type_does_allow_submission_orders": "El tipo de exhibición no permite enviar pedidos",
+        "select_shipping_address": "Seleccione la dirección de envío",
+        "select_pickup_address": "Seleccione la dirección de recogida",
+        "select_coupon": "Seleccione un cupón",
+        "enter_store_order": "Ir al pedido de la tienda",
+        "select_time": "Seleccionar hora",
+        "my_name": "Mi nombre",
+        "my_phone": "Mi teléfono",
+        "fill_name_phone_number": "Complete el nombre y el teléfono",
+        "optional_coupons": "Cupones disponibles",
+        "there_currently_available_coupons_available": "No hay cupones disponibles",
+        "select_address": "Seleccione una dirección",
         "modify": "Editar información de factura",
         "text_4": "Ver información de factura",
         "pay": "El pago con billetera no admite facturación",
         "pay_2": "El método de pago actual es billetera y no admite facturación",
+        "current_mode_does_allow_use_addresses": "El modo actual no permite usar direcciones",
+        "not_use_coupons": "No usar cupones",
+        "not_use_secondary_cards": "No usar tarjetas",
         "text_5": "¿Necesita factura?"
     }
 };
-var merged = false;
-function usePluginLocale(i18n) {
-    if (merged || !i18n || typeof i18n.mergeLocaleMessage != 'function') {
-        return;
-    }
-    merged = true;
-    i18n.mergeLocaleMessage('zh', zh);
-    i18n.mergeLocaleMessage('zh-Hans', zh);
-    i18n.mergeLocaleMessage('en', en);
-    i18n.mergeLocaleMessage('spa', spa);
-}
-
-export default {
-    beforeCreate() {
-        usePluginLocale(this.$i18n);
-    }
-};
+export default createPageLocaleMixin({ zh, en, spa });

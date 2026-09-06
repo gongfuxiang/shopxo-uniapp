@@ -1,3 +1,4 @@
+import { createPageLocaleMixin } from '@/locale/merge-page-locale.js';
 var zh = {
     "pages": {
         "plugins-complaint-form": "投诉/举报",
@@ -17,22 +18,18 @@ var en = {
     "complaint-form": {
         "complaint_report_type": "Complaint/Report Type",
         "select_type_complaint_report": "Please select the type of complaint/report",
-        "proof_image": "proof image"
+        "proof_image": "Proof image"
     }
 };
-var merged = false;
-function usePluginLocale(i18n) {
-    if (merged || !i18n || typeof i18n.mergeLocaleMessage != 'function') {
-        return;
-    }
-    merged = true;
-    i18n.mergeLocaleMessage('zh', zh);
-    i18n.mergeLocaleMessage('zh-Hans', zh);
-    i18n.mergeLocaleMessage('en', en);
-}
-
-export default {
-    beforeCreate() {
-        usePluginLocale(this.$i18n);
+var spa = {
+    "pages": {
+        "plugins-complaint-form": "Queja/Denuncia",
+        "plugins-complaint-user": "Lista de quejas/denuncias"
+    },
+    "complaint-form": {
+        "complaint_report_type": "Tipo de queja/denuncia",
+        "select_type_complaint_report": "Seleccione el tipo de queja/denuncia",
+        "proof_image": "Imagen de prueba"
     }
 };
+export default createPageLocaleMixin({ zh, en, spa });

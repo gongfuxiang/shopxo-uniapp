@@ -1,3 +1,4 @@
+import { createPageLocaleMixin } from '@/locale/merge-page-locale.js';
 var zh = {
     "pages": {
         "plugins-excellentbuyreturntocash-profit": "优购返现明细",
@@ -32,19 +33,21 @@ var en = {
         "settlement_time": "Settlement time"
     }
 };
-var merged = false;
-function usePluginLocale(i18n) {
-    if (merged || !i18n || typeof i18n.mergeLocaleMessage != 'function') {
-        return;
-    }
-    merged = true;
-    i18n.mergeLocaleMessage('zh', zh);
-    i18n.mergeLocaleMessage('zh-Hans', zh);
-    i18n.mergeLocaleMessage('en', en);
-}
-
-export default {
-    beforeCreate() {
-        usePluginLocale(this.$i18n);
+var spa = {
+    "pages": {
+        "plugins-excellentbuyreturntocash-profit": "Detalle de cashback",
+        "plugins-excellentbuyreturntocash-profit-detail": "Detalle de cashback"
+    },
+    "profit": {
+        "order_details": "Detalle del pedido",
+        "immediate_settlement": "Liquidar ahora",
+        "effect": "En vigor",
+        "effective_amount": "Importe válido",
+        "refund_amount": "Importe de cashback",
+        "order_id_incorrect": "El ID del pedido es incorrecto"
+    },
+    "profit-detail": {
+        "settlement_time": "Hora de liquidación"
     }
 };
+export default createPageLocaleMixin({ zh, en, spa });
