@@ -28,7 +28,7 @@
                             </view>
                             <scroll-view :scroll-y="true" class="cart-list goods-list">
                                 <uni-swipe-action ref="swipe_action">
-                                    <view v-for="(goods, index) in cart.data" :key="goods.id || index" class="item oh">
+                                    <view v-for="(goods, index) in cart.data" :key="index" class="item oh">
                                         <uni-swipe-action-item :right-options="swipe_options" @click="swipe_opt_event" @change="swipe_change($event, index)">
                                             <view class="padding-main" :data-index="index" @tap="goods_event">
                                                 <view class="flex-row jc-sb">

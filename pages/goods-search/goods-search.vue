@@ -144,10 +144,10 @@
                         <view class="map-nav br-b pr">
                             <text>{{$t('common.attribute')}}</text>
                         </view>
-                        <view v-for="(group, gi) in search_map_list.goods_params_list" :key="'params-'+gi" class="map-group margin-top-lg">
+                        <view v-for="(group, gi) in search_map_list.goods_params_list" :key="gi" class="map-group margin-top-lg">
                             <view class="map-group-title cr-grey text-size-xs">{{group.name}}</view>
                             <view class="map-content map-text-item goods-params-container oh margin-top-sm">
-                                <block v-for="(item, index) in group.options" :key="'params-'+gi+'-'+index">
+                                <block v-for="(item, index) in group.options" :key="index">
                                     <view :class="'item fl cr-base radius cp margin-right-sm ' + (item.active == 1 ? 'cr-main br-main' : '')" @tap="map_item_event" :data-index="index" :data-group="gi" data-field="goods_params_list">
                                         {{item.value}}</view>
                                 </block>
@@ -161,10 +161,10 @@
                         <view class="map-nav br-b pr">
                             <text>{{$t('common.spec')}}</text>
                         </view>
-                        <view v-for="(group, gi) in search_map_list.goods_spec_list" :key="'spec-'+gi" class="map-group margin-top-lg">
+                        <view v-for="(group, gi) in search_map_list.goods_spec_list" :key="gi" class="map-group margin-top-lg">
                             <view class="map-group-title cr-grey text-size-xs">{{group.name}}</view>
                             <view class="map-content map-text-item goods-spec-container oh margin-top-sm">
-                                <block v-for="(item, index) in group.options" :key="'spec-'+gi+'-'+index">
+                                <block v-for="(item, index) in group.options" :key="index">
                                     <view :class="'item fl cr-base radius cp margin-right-sm ' + (item.active == 1 ? 'cr-main br-main' : '')" @tap="map_item_event" :data-index="index" :data-group="gi" data-field="goods_spec_list">
                                         {{item.value}}</view>
                                 </block>
