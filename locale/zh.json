@@ -794,7 +794,22 @@
 	},
 	"goods-category": {
 		"subcategory_data": "没有子分类数据",
-		"select_product_first": "请先选购商品"
+		"select_product_first": "请先选购商品",
+		"goods-category": {
+			"ico62g": "已选商品",
+			"7e4m68": "没有子分类数据",
+			"5pj8ip": "请先选购商品",
+			"x69aow": "综合",
+			"at5p35": "销量",
+			"283ot0": "热度",
+			"g2u3lf": "价格",
+			"5p4ksj": "最新",
+			"gy7y0w": "不同规格的商品需在购物车减购",
+			"x46kbv": "购物车id有误",
+			"z1eh3v": "限购",
+			"1ox23z": "数量未改变",
+			"o6i1w2": "挑了这么久，真的要清空吗？"
+		}
 	},
 	"goods-list": {
 		"there_currently_source_goods_available": "暂无货源",
@@ -1135,5 +1150,16 @@
 	},
 	"friendpay": {
 		"pay_mode_title": "邀请朋友代付"
+	},
+	"goods-search": {
+		"goods-search": {
+			"j8o278": "筛选出",
+			"t9nikq": "条数据"
+		}
+	},
+	"customview": {
+		"customview": {
+			"726k7y": "输入商品名称搜索"
+		}
 	}
 }

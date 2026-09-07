@@ -25,4 +25,17 @@ var en = {
         "expiration_date": "Expiration date"
     }
 };
-export default createPageLocaleMixin({ zh, en });
+var spa = {
+    "pages": {
+        "plugins-certificate-userauth": "Certificado",
+        "plugins-certificate-userauth-saveinfo": "Editar certificado",
+        "plugins-certificate-userauth-detail": "Detalle del certificado"
+    },
+    "certificate-userauth": {
+        "go_authenticate": "Autenticar",
+        "certificate_name": "Nombre del certificado",
+        "id": "N.º de ID",
+        "expiration_date": "Fecha de vencimiento"
+    }
+};
+export default createPageLocaleMixin({ zh, en, spa });

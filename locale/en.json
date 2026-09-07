@@ -632,7 +632,22 @@
 	},
 	"goods-category": {
 		"subcategory_data": "No subcategory data",
-		"select_product_first": "Please select the product first"
+		"select_product_first": "Please select the product first",
+		"goods-category": {
+			"ico62g": "Selected product",
+			"7e4m68": "No subcategory data",
+			"5pj8ip": "Please select the product first",
+			"x69aow": "All",
+			"at5p35": "sales volume",
+			"283ot0": "heat",
+			"g2u3lf": "price",
+			"5p4ksj": "new",
+			"gy7y0w": "Products of different specifications need to be reduced in the shopping cart",
+			"x46kbv": "The cart ID is incorrect",
+			"z1eh3v": "Restricted purchase",
+			"1ox23z": "Quantity unchanged",
+			"o6i1w2": "After picking for so long, do you really want to clear it?"
+		}
 	},
 	"goods-list": {
 		"there_currently_source_goods_available": "There is currently no source of goods available",
@@ -973,5 +988,16 @@
 	},
 	"friendpay": {
 		"pay_mode_title": "Invite friend to pay"
+	},
+	"goods-search": {
+		"goods-search": {
+			"j8o278": "Filter out",
+			"t9nikq": "Piece of data"
+		}
+	},
+	"customview": {
+		"customview": {
+			"726k7y": "Enter product name to search for"
+		}
 	}
 }

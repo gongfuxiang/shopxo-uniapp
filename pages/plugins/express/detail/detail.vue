@@ -13,7 +13,12 @@
                 <image class="express-icon fl radius" :src="express_info.icon" mode="aspectFill"></image>
                 <view class="fl margin-left-lg">
                     <view class="cr-base fw-b">{{ express_info.name }}</view>
-                    <view class="cr-base margin-top-sm" data-event="copy" :data-value="express_info.number" @tap="text_event">{{ express_info.number }}</view>
+                    <view class="cr-base margin-top-sm flex-row align-c" data-event="copy" :data-value="express_info.number" @tap="text_event">
+                        <text>{{ express_info.number }}</text>
+                        <view v-if="(express_info.number || null) != null" class="dis-inline-block margin-left-sm">
+                            <iconfont name="icon-copy" size="28rpx" class="cr-grey"></iconfont>
+                        </view>
+                    </view>
                 </view>
             </view>
             <view v-if="(express_info.note || null) != null" class="cr-red spacing-mt">{{ express_info.note }}</view>

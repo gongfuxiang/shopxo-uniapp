@@ -13,8 +13,17 @@ var en = {
         "plugins-label-detail": "Label details"
     },
     "detail": {
-        "related_products_2": "Related products",
+        "related_products_2": "related goods",
         "label_data_does_exist": "The label data does not exist"
     }
 };
-export default createPageLocaleMixin({ zh, en });
+var spa = {
+    "pages": {
+        "plugins-label-detail": "Detalle de etiqueta"
+    },
+    "detail": {
+        "related_products_2": "productos relacionados",
+        "label_data_does_exist": "Los datos de la etiqueta no existen"
+    }
+};
+export default createPageLocaleMixin({ zh, en, spa });

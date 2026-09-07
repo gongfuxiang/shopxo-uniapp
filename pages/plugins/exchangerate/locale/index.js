@@ -6,7 +6,12 @@ var zh = {
 };
 var en = {
     pages: {
-        "plugins-exchangerate-currency": "Currency switching"
+        "plugins-exchangerate-currency": "Currency Switch"
     }
 };
-export default createPageLocaleMixin({ zh, en });
+var spa = {
+    pages: {
+        "plugins-exchangerate-currency": "Cambiar moneda"
+    }
+};
+export default createPageLocaleMixin({ zh, en, spa });

@@ -227,37 +227,7 @@
                 share_info: {},
                 // 排序导航
                 search_nav_sort_index: 0,
-                search_nav_sort_list: [{
-                        name: this.$t('common.goods_category_all'),
-                        field: 'default',
-                        sort: 'asc',
-                        icon: null
-                    },
-                    {
-                        name: this.$t('common.sales_volume'),
-                        field: 'sales_count',
-                        sort: 'asc',
-                        icon: 'default'
-                    },
-                    {
-                        name: this.$t('common.heat'),
-                        field: 'access_count',
-                        sort: 'asc',
-                        icon: 'default'
-                    },
-                    {
-                        name: this.$t('common.price'),
-                        field: 'min_price',
-                        sort: 'asc',
-                        icon: 'default'
-                    },
-                    {
-                        name: this.$t('common.latest'),
-                        field: 'id',
-                        sort: 'asc',
-                        icon: 'default'
-                    }
-                ],
+                search_nav_sort_list: [],
                 // 数据展示样式（0九方格、1图文）
                 data_show_type_value: 0,
                 // 基础配置
@@ -342,6 +312,9 @@
             // 调用公共事件方法
             app.globalData.page_event_onshow_handle();
 
+            // 排序文案（勿在 data() 内 $t，避免语言未就绪拿到 key）
+            this.set_resources_data();
+
             // 初始化配置
             this.init_config();
 
@@ -363,6 +336,44 @@
         },
 
         methods: {
+            // 资源文案
+            set_resources_data() {
+                this.setData({
+                    search_nav_sort_list: [
+                        {
+                            name: this.$t('common.goods_category_all'),
+                            field: 'default',
+                            sort: 'asc',
+                            icon: null
+                        },
+                        {
+                            name: this.$t('common.sales_volume'),
+                            field: 'sales_count',
+                            sort: 'asc',
+                            icon: 'default'
+                        },
+                        {
+                            name: this.$t('common.heat'),
+                            field: 'access_count',
+                            sort: 'asc',
+                            icon: 'default'
+                        },
+                        {
+                            name: this.$t('common.price'),
+                            field: 'min_price',
+                            sort: 'asc',
+                            icon: 'default'
+                        },
+                        {
+                            name: this.$t('common.latest'),
+                            field: 'id',
+                            sort: 'asc',
+                            icon: 'default'
+                        }
+                    ]
+                });
+            },
+
             // 初始化配置
             init_config(status) {
                 if ((status || false) == true) {

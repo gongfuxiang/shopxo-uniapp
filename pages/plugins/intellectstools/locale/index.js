@@ -15,4 +15,12 @@ var en = {
         "add_image": "Add image（"
     }
 };
-export default createPageLocaleMixin({ zh, en });
+var spa = {
+    "pages": {
+        "plugins-intellectstools-goods-comments": "Evaluación del producto"
+    },
+    "form": {
+        "add_image": "Añadir imagen ("
+    }
+};
+export default createPageLocaleMixin({ zh, en, spa });

@@ -15,4 +15,12 @@ var en = {
         "there_currently_logistics_info_available": "There is currently no logistics info available"
     }
 };
-export default createPageLocaleMixin({ zh, en });
+var spa = {
+    "pages": {
+        "plugins-express-detail": "Detalles de logística"
+    },
+    "detail": {
+        "there_currently_logistics_info_available": "No hay información de logística disponible"
+    }
+};
+export default createPageLocaleMixin({ zh, en, spa });
