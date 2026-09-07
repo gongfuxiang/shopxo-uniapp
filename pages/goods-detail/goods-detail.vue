@@ -309,10 +309,12 @@
                     </view>
                 </view>
 
-                <!-- 面板提示信息 -->
+                <!-- 面板提示信息（公共 plugins_view_panel_data，样式对齐返现 tip） -->
                 <view v-if="(goods.plugins_view_panel_data || null) != null && goods.plugins_view_panel_data.length > 0" class="goods-panel-container oh border-radius-main padding-horizontal-main padding-top-xs padding-bottom-xs bg-white text-size-xs spacing-mb">
                     <block v-for="(item, index) in goods.plugins_view_panel_data" :key="index">
-                        <view v-if="(item || null) != null">{{ item }}</view>
+                        <view v-if="(item || null) != null" class="goods-panel-tip-item flex-row align-c">
+                            <text class="cr-grey-9">{{ item }}</text>
+                        </view>
                     </block>
                 </view>
 
