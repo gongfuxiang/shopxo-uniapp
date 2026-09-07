@@ -1,14 +1,57 @@
 <template>
     <view :class="theme_view">
-        <!-- 导航 -->
-        <view class="nav-base bg-white">
-            <view v-for="(item, index) in nav_status_list" :key="index">
-                <view :class="'item fl tc ' + (nav_status_index == index ? 'cr-main nav-active-line' : '')" :data-index="index" @tap="nav_event">{{ item.name }}</view>
+        <!-- 自定义导航 + 搜索订单号 -->
+        <component-nav-back :propFixed="false" propClass="bg-white cr-black" propColor="#333" :propName="nav_title" :style="'padding-top:' + status_bar_height + 'px;'">
+            <template slot="right" :class="is_mp_env ? 'top-search-width' : ''">
+                <view class="margin-left-main" :class="is_mp_env ? '' : 'flex-1 flex-width'">
+                    <component-search
+                        @oninput="search_input_event"
+                        @onsearch="search_button_event"
+                        :propDefaultValue="search_keywords"
+                        :propIsOnInputEvent="true"
+                        :propIsOnEvent="true"
+                        :propIsRequired="false"
+                        :propPlaceholder="$t('profit.search_order_no')"
+                        propIconColor="#ccc"
+                        propPlaceholderClass="cr-grey-c"
+                        propBgColor="#f6f6f6"
+                    ></component-search>
+                </view>
+            </template>
+        </component-nav-back>
+
+        <!-- 公告（状态上方，点击查看完整内容） -->
+        <view v-if="notice_list.length > 0" class="bg-white padding-horizontal-main padding-top-sm">
+            <uni-notice-bar
+                class="padding-0 margin-0"
+                show-icon
+                show-get-more
+                scrollable
+                :text="notice_text"
+                background-color="transparent"
+                color="#666"
+                @click="notice_open_event"
+            />
+        </view>
+
+        <!-- 状态导航（可横向滚动） -->
+        <view class="profit-header bg-white">
+            <view v-if="nav_status_list.length > 0" class="nav-base profit-order-nav scroll-view-horizontal padding-horizontal-main">
+                <scroll-view :scroll-x="true" :show-scrollbar="false" :scroll-with-animation="true" :scroll-into-view="'profit-nav-' + nav_status_index">
+                    <block v-for="(item, index) in nav_status_list" :key="index">
+                        <view
+                            :id="'profit-nav-' + index"
+                            :class="'item tc ' + (nav_status_index == index ? 'cr-main nav-active-line' : 'cr-grey')"
+                            :data-index="index"
+                            @tap="nav_event"
+                        >{{ item.name }}</view>
+                    </block>
+                </scroll-view>
             </view>
         </view>
 
         <!-- 列表 -->
-        <scroll-view :scroll-y="true" class="scroll-box scroll-box-ece-nav" @scrolltolower="scroll_lower" lower-threshold="60">
+        <scroll-view :scroll-y="true" class="scroll-box-profit-order" :style="content_style" @scrolltolower="scroll_lower" lower-threshold="60">
             <view v-if="data_list.length > 0" class="data-list padding-horizontal-main padding-top-main">
                 <view v-for="(item, index) in data_list" :key="index" class="item padding-main border-radius-main oh bg-white spacing-mb">
                     <view class="base oh br-b padding-bottom-main">
@@ -39,6 +82,17 @@
             <component-bottom-line :propStatus="data_bottom_line_status"></component-bottom-line>
         </scroll-view>
 
+        <!-- 公告弹窗 -->
+        <component-popup v-if="notice_list.length > 0" :propShow="popup_notice_status" propPosition="bottom" @onclose="notice_close_event">
+            <view class="padding-main bg-white">
+                <view class="cr-black text-size-md fw-b margin-bottom-main">{{$t('common.warm_tips')}}</view>
+                <scroll-view :scroll-y="true" class="content-notice">
+                    <view v-for="(item, index) in notice_list" :key="index" class="cr-grey text-size-md padding-vertical-xs">{{ item }}</view>
+                </scroll-view>
+                <button type="default" class="bg-main cr-white round text-size-md wh-auto margin-top-lg" @tap="notice_close_event">{{$t('common.got')}}</button>
+            </view>
+        </component-popup>
+
         <!-- 公共 -->
         <component-common ref="common"></component-common>
     </view>
@@ -46,15 +100,32 @@
 <script>
     const app = getApp();
     import componentCommon from '@/components/common/common';
+    import componentNavBack from '@/components/nav-back/nav-back';
+    import componentSearch from '@/components/search/search';
     import componentNoData from "@/components/no-data/no-data";
     import componentBottomLine from "@/components/bottom-line/bottom-line";
+    import componentPopup from '@/components/popup/popup';
     import pluginLocale from '../locale/index.js';
+
+    // 状态栏高度
+    var bar_height = parseInt(app.globalData.get_system_info('statusBarHeight', 0, true));
+    // #ifdef MP-TOUTIAO || H5
+    bar_height = 0;
+    // #endif
 
     export default {
         mixins: [pluginLocale],
         data() {
             return {
                 theme_view: app.globalData.get_theme_value_view(),
+                client_type: app.globalData.application_client_type(),
+                status_bar_height: bar_height,
+                is_mp_env: false,
+                // #ifdef MP-WEIXIN || MP-BAIDU || MP-ALIPAY || MP-QQ || MP-KUAISHOU
+                is_mp_env: true,
+                // #endif
+                nav_title: '',
+                content_style: '',
                 data_list: [],
                 data_total: 0,
                 data_page_total: 0,
@@ -64,6 +135,9 @@
                 data_bottom_line_status: false,
                 data_is_loading: 0,
                 params: null,
+                search_keywords: '',
+                notice_list: [],
+                popup_notice_status: false,
                 nav_status_list: [
                     { name: this.$t('common.all'), value: "-1" },
                     { name: this.$t('common.profit_effective'), value: "0" },
@@ -82,10 +156,19 @@
             };
         },
 
+        computed: {
+            notice_text() {
+                return (this.notice_list || []).join(' ');
+            },
+        },
+
         components: {
             componentCommon,
+            componentNavBack,
+            componentSearch,
             componentNoData,
             componentBottomLine,
+            componentPopup,
         },
 
         onLoad(params) {
@@ -108,6 +191,9 @@
             this.setData({
                 params: params,
                 nav_status_index: nav_status_index,
+                search_keywords: params.keywords || params.order_no || '',
+                nav_title: this.$t('pages.plugins-excellentbuyreturntocash-profit'),
+                content_style: 'height: calc(100vh - 80rpx - ' + (this.status_bar_height + (this.client_type == 'h5' ? 55 : 50)) + 'px);',
             });
             this.init();
         },
@@ -182,6 +268,7 @@
                     data: {
                         page: this.data_page,
                         status: status,
+                        keywords: this.search_keywords || '',
                         is_more: 1,
                     },
                     dataType: "json",
@@ -192,6 +279,12 @@
                         uni.stopPullDownRefresh();
                         if (res.data.code == 0) {
                             var data = res.data.data;
+                            if (this.data_page <= 1) {
+                                var notice = data.user_cach_order_notice || [];
+                                this.setData({
+                                    notice_list: Array.isArray(notice) ? notice.filter(function(v){ return (v || '') !== ''; }) : [],
+                                });
+                            }
                             if (data.data.length > 0) {
                                 if (this.data_page <= 1) {
                                     var temp_data_list = data.data;
@@ -314,6 +407,39 @@
                     data_bottom_line_status: false
                 });
                 this.get_data_list(1);
+            },
+
+            // 搜索输入事件
+            search_input_event(e) {
+                this.setData({
+                    search_keywords: e
+                });
+            },
+
+            // 关键字搜索
+            search_button_event(e) {
+                this.setData({
+                    search_keywords: e,
+                    data_page: 1,
+                    data_list: [],
+                    data_list_loding_status: 1,
+                    data_bottom_line_status: false
+                });
+                this.get_data_list(1);
+            },
+
+            // 打开公告弹窗
+            notice_open_event() {
+                this.setData({
+                    popup_notice_status: true,
+                });
+            },
+
+            // 关闭公告弹窗
+            notice_close_event() {
+                this.setData({
+                    popup_notice_status: false,
+                });
             },
 
             // url事件
