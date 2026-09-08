@@ -74,8 +74,8 @@
                                                 <view :data-index="index" :data-value="item.goods_url" @tap="goods_event" class="cp">
                                                     <view :class="'cart-goods-title multi-text margin-bottom-sm fw-b ' + ((item.is_error || 0) == 1 ? 'cr-grey' : '')">{{ item.title }}</view>
                                                 </view>
-                                                <view v-if="item.spec != null" class="margin-bottom-sm">
-                                                    <block v-for="(sv, si) in item.spec" :key="si">
+                                                <view v-if="(item.spec_show || item.spec) != null" class="margin-bottom-sm">
+                                                    <block v-for="(sv, si) in (item.spec_show || item.spec)" :key="si">
                                                         <text v-if="si > 0" class="cr-grey padding-left-xs padding-right-xs">;</text>
                                                         <text class="cr-grey">{{ sv.value }}</text>
                                                     </block>
