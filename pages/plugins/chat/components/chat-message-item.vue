@@ -133,15 +133,32 @@
 									@error="emit_image_error"
 									@tap="emit_preview_image"
 								></image>
-								<!-- 视频气泡只用封面图，聊天列表不放 video，避免 App 原生组件盖住消息 -->
 								<image
-									v-else-if="item.data_type == 'video' && item.poster"
+									v-if="item.data_type == 'video' && item.poster"
 									class="video-poster"
 									:src="item.poster"
 									mode="aspectFill"
 									:data-key="item.key"
 									@error="emit_video_poster_error"
 								></image>
+								<!-- #ifdef H5 -->
+								<video
+									v-if="item.data_type == 'video' && !item.poster && (item.local_url || item.file_path || item.url)"
+									class="video-poster-video"
+									:src="item.local_url || item.file_path || item.url"
+									:controls="false"
+									:show-center-play-btn="false"
+									:show-play-btn="false"
+									:show-fullscreen-btn="false"
+									:show-progress="false"
+									:enable-progress-gesture="false"
+									object-fit="cover"
+									preload="auto"
+									:muted="true"
+									playsinline
+									webkit-playsinline
+								></video>
+								<!-- #endif -->
 								<view
 									v-if="item.data_type == 'video' && (item.url || item.local_url || item.file_path)"
 									class="video-cover-ui"

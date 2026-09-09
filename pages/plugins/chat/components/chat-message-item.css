@@ -510,7 +510,21 @@
 .video-poster-video {
 	pointer-events: none;
 	object-fit: cover;
+	z-index: 1;
 }
+
+/* #ifdef H5 */
+.video-poster-video ::v-deep .uni-video-container,
+.video-poster-video ::v-deep .uni-video-video,
+.video-poster-video ::v-deep video {
+	width: 100% !important;
+	height: 100% !important;
+	object-fit: cover !important;
+	border: none !important;
+	outline: none !important;
+	background: #2b2b2b;
+}
+/* #endif */
 
 .video-cover-ui {
 	position: absolute;
