@@ -173,9 +173,9 @@
 									<text v-if="item.duration_text" class="video-duration">{{ item.duration_text }}</text>
 								</view>
 								<view v-if="show_media_status_mask" class="media-percent-mask">
-									<view v-if="item.upload_status != 'fail'" class="media-progress" :style="media_progress_ring_style(item.upload_progress)">
+									<view v-if="item.upload_status != 'fail'" class="media-progress" :style="media_progress_style">
 										<view class="media-progress-hole">
-											<text class="media-percent-text">{{ media_progress_text(item.upload_progress) }}</text>
+											<text class="media-percent-text">{{ media_progress_label }}</text>
 										</view>
 									</view>
 									<text v-else class="media-fail-text">发送失败</text>
@@ -234,7 +234,7 @@
 								v-else-if="item.data_type == 'audio' && is_voice_message"
 								class="bubble-audio"
 								:class="{ 'is-playing': playingAudioKey == item.key }"
-								:style="audio_bubble_style(item)"
+								:style="audio_style"
 								:data-index="index"
 								@tap.stop="emit_toggle_audio"
 								@longpress.stop="emit_quote"
@@ -371,6 +371,15 @@
 				const item = this.item || {};
 				if (!item.is_self || item.media_ready || Number(item.record_id || 0) > 0) return false;
 				return item.upload_status == 'fail' || item.upload_status == 'uploading' || item.send_status == 'sending' || item.send_status == 'fail';
+			},
+			media_progress_style() {
+				return this.media_progress_ring_style(this.item && this.item.upload_progress);
+			},
+			media_progress_label() {
+				return this.media_progress_text(this.item && this.item.upload_progress);
+			},
+			audio_style() {
+				return this.audio_bubble_style(this.item);
 			},
 		},
 		methods: {

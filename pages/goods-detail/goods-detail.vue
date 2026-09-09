@@ -168,6 +168,10 @@
                 <!-- 聚合优惠数据 -->
                 <view v-if="
                     ((plugins_coupon_data || null) != null && plugins_coupon_data.data.length > 0) ||
+                    ((plugins_excellentbuyreturntocash_data || null) != null && (
+                        ((plugins_excellentbuyreturntocash_data.data || null) != null && plugins_excellentbuyreturntocash_data.data.length > 0) ||
+                        ((plugins_excellentbuyreturntocash_data.cash || null) != null)
+                    )) ||
                     ((plugins_fullreduce_data || null) != null && (plugins_fullreduce_data.data || null) != null) ||
                     ((plugins_fullgive_data || null) != null && (plugins_fullgive_data.data || null) != null && plugins_fullgive_data.data.length > 0) ||
                     ((plugins_npiecendis_data || null) != null && (plugins_npiecendis_data.data || null) != null && plugins_npiecendis_data.data.length > 0) ||
@@ -182,6 +186,15 @@
                                         <text class="nowrap">{{ item.desc || item.name }}</text>
                                         <text class="dis-inline-block nowrap margin-left-sm padding-left-sm divider-l" :data-index="index" :data-value="item.id" @tap.stop="coupon_receive_event">{{ item.status_operable_name }}</text>
                                     </view>
+                                </block>
+                            </block>
+                            <!-- 优购返现 / 返卡券 -->
+                            <block v-if="(plugins_excellentbuyreturntocash_data || null) != null">
+                                <view v-if="(plugins_excellentbuyreturntocash_data.cash || null) != null" class="discount-tag-item br-green cr-green bg-white radius padding-vertical-xss padding-horizontal-sm margin-right-sm">{{ plugins_excellentbuyreturntocash_data.cash.tag }}</view>
+                                <block v-if="(plugins_excellentbuyreturntocash_data.data || null) != null && plugins_excellentbuyreturntocash_data.data.length > 0">
+                                    <block v-for="(item, index) in plugins_excellentbuyreturntocash_data.data" :key="index">
+                                        <view class="discount-tag-item br-main cr-main bg-white radius padding-vertical-xss padding-horizontal-sm margin-right-sm">{{ item.desc || item.name }}</view>
+                                    </block>
                                 </block>
                             </block>
                             <!-- 满减满折 -->
@@ -296,10 +309,12 @@
                     </view>
                 </view>
 
-                <!-- 面板提示信息 -->
+                <!-- 面板提示信息（公共 plugins_view_panel_data，样式对齐返现 tip） -->
                 <view v-if="(goods.plugins_view_panel_data || null) != null && goods.plugins_view_panel_data.length > 0" class="goods-panel-container oh border-radius-main padding-horizontal-main padding-top-xs padding-bottom-xs bg-white text-size-xs spacing-mb">
                     <block v-for="(item, index) in goods.plugins_view_panel_data" :key="index">
-                        <view v-if="(item || null) != null">{{ item }}</view>
+                        <view v-if="(item || null) != null" class="goods-panel-tip-item flex-row align-c">
+                            <text class="cr-grey-9">{{ item }}</text>
+                        </view>
                     </block>
                 </view>
 
@@ -642,6 +657,25 @@
                                 <component-coupon-card :propData="item" :propStatusType="item.status_type" :propStatusOperableName="item.status_operable_name" :propIndex="index" propIsProgress @call-back="coupon_receive_back_event"></component-coupon-card>
                             </block>
                         </view>
+                        <!-- 优购返现 / 返卡券 -->
+                        <view v-if="(plugins_excellentbuyreturntocash_data || null) != null && (
+                            ((plugins_excellentbuyreturntocash_data.data || null) != null && plugins_excellentbuyreturntocash_data.data.length > 0) ||
+                            ((plugins_excellentbuyreturntocash_data.cash || null) != null)
+                        )" class="plugins-excellentbuyreturntocash-container spacing-mb">
+                            <view v-if="(plugins_excellentbuyreturntocash_data.cash || null) != null" class="padding-bottom-main">
+                                <view class="fw-b tc text-size-lg padding-bottom">{{ plugins_excellentbuyreturntocash_data.cash.icon || '返现' }}</view>
+                                <view class="margin-top-sm">
+                                    <view class="dis-inline-block br-green cr-green bg-white radius padding-vertical-xss padding-horizontal-sm margin-right-sm margin-bottom-sm">{{ plugins_excellentbuyreturntocash_data.cash.tag }}</view>
+                                </view>
+                                <view class="text-size-xs cr-grey-9 margin-top-sm">{{ plugins_excellentbuyreturntocash_data.cash.tip }}</view>
+                            </view>
+                            <block v-if="(plugins_excellentbuyreturntocash_data.data || null) != null && plugins_excellentbuyreturntocash_data.data.length > 0">
+                                <view class="fw-b tc text-size-lg padding-bottom">{{plugins_excellentbuyreturntocash_data.title}}</view>
+                                <block v-for="(item, index) in plugins_excellentbuyreturntocash_data.data" :key="index">
+                                    <component-coupon-card :propData="item" :propStatusType="item.status_type" :propStatusOperableName="item.status_operable_name" :propIndex="index" propIsProgress></component-coupon-card>
+                                </block>
+                            </block>
+                        </view>
                         <!-- 满减满折 -->
                         <view v-if="(plugins_fullreduce_data || null) != null && (plugins_fullreduce_data.data || null) != null" class="plugins-fullreduce-container spacing-mb">
                             <view class="fw-b tc text-size-lg padding-bottom">{{plugins_fullreduce_data.title}}</view>
@@ -980,6 +1014,8 @@
                 popup_discount_status: false,
                 // 优惠劵插件
                 plugins_coupon_data: null,
+                // 优购返现-返卡券
+                plugins_excellentbuyreturntocash_data: null,
                 // 满减满折插件
                 plugins_fullreduce_data: null,
                 // 满送插件
@@ -1233,6 +1269,7 @@
                                 guess_you_like: data.guess_you_like || [],
                                 quick_nav_cart_count: data.cart_total.buy_number || 0,
                                 plugins_coupon_data: data.plugins_coupon_data || null,
+                                plugins_excellentbuyreturntocash_data: data.plugins_excellentbuyreturntocash_data || null,
                                 plugins_fullreduce_data: data.plugins_fullreduce_data || null,
                                 plugins_fullgive_data: data.plugins_fullgive_data || null,
                                 plugins_npiecendis_data: data.plugins_npiecendis_data || null,
@@ -1343,7 +1380,7 @@
                     goods_photo: photo,
                     goods_content_app: goods.content_app || [],
                     nav_favor_button_info: {
-                        text: (goods.user_is_favor == 1 ? this.$t('common.already') : '') + this.$t('common.favor'),
+                        text: goods.user_is_favor == 1 ? this.$t('goods-detail.already_favor') : this.$t('common.favor'),
                         status: goods.user_is_favor,
                     },
                     goods_spec_base_price: goods.price,
@@ -1624,7 +1661,7 @@
                                 this.setData({
                                     'goods.user_is_favor': res.data.data.status,
                                     nav_favor_button_info: {
-                                        text: res.data.data.text,
+                                        text: res.data.data.status == 1 ? this.$t('goods-detail.already_favor') : this.$t('common.favor'),
                                         status: res.data.data.status,
                                     },
                                 });

@@ -2098,11 +2098,11 @@
                             } else {
                                 self.setData({ asking: false });
                             }
-                            app.globalData.showToast(this.$t('common.internet_error_tips'));
+                            app.globalData.showToast(this.$t('aichat.network_error'));
                             return;
                         }
                         var list = self.messages.filter((m) => m.role !== 'loading');
-                        var fail_text = this.$t('common.internet_error_tips');
+                        var fail_text = this.$t('aichat.network_error');
                         var fail_mid = self.use_remote ? '' : self.msg_uid();
                         list.push({
                             role: 'bot',

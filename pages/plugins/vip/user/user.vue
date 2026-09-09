@@ -76,12 +76,20 @@
                                 </block>
                                 <!-- 未开通会员 -->
                                 <block v-else>
-                                    <block v-if="(data_base || null) != null && (data_base.is_user_buy || 0) == 1">
-                                        <button data-value="/pages/plugins/vip/buy/buy" @tap="url_event" class="submit-buy cr-white pr" type="default" size="mini" hover-class="none">
-                                            <text>{{$t('user.activate_membership')}}</text>
-                                            <view class="dis-inline-block margin-left-sm"><iconfont name="icon-arrow-right" size="18rpx" propClass="pa right-icon"></iconfont></view>
-                                        </button>
-                                    </block>
+                                    <view class="vip-btn-actions flex-col align-e">
+                                        <block v-if="(data_base || null) != null && (data_base.is_enable_vip_apply || 0) == 1">
+                                            <button data-value="/pages/plugins/vip/apply/apply" @tap="url_event" class="submit-buy cr-white" type="default" size="mini" hover-class="none">
+                                                <text class="va-m">{{$t('user.apply_vip')}}</text>
+                                                <iconfont name="icon-arrow-right" size="18rpx" color="#fff" propClass="va-m margin-left-xs"></iconfont>
+                                            </button>
+                                        </block>
+                                        <block v-if="(data_base || null) != null && (data_base.is_user_buy || 0) == 1">
+                                            <button data-value="/pages/plugins/vip/buy/buy" @tap="url_event" class="submit-buy cr-white" type="default" size="mini" hover-class="none">
+                                                <text class="va-m">{{$t('user.activate_membership')}}</text>
+                                                <iconfont name="icon-arrow-right" size="18rpx" color="#fff" propClass="va-m margin-left-xs"></iconfont>
+                                            </button>
+                                        </block>
+                                    </view>
                                 </block>
                             </view>
                         </view>

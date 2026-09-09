@@ -1,3 +1,4 @@
+import { createPageLocaleMixin } from '@/locale/merge-page-locale.js';
 var zh = {
     pages: {
         "plugins-magic-detail": "详情"
@@ -5,22 +6,12 @@ var zh = {
 };
 var en = {
     pages: {
-        "plugins-magic-detail": "details"
+        "plugins-magic-detail": "Details"
     }
 };
-var merged = false;
-function usePluginLocale(i18n) {
-    if (merged || !i18n || typeof i18n.mergeLocaleMessage != 'function') {
-        return;
-    }
-    merged = true;
-    i18n.mergeLocaleMessage('zh', zh);
-    i18n.mergeLocaleMessage('zh-Hans', zh);
-    i18n.mergeLocaleMessage('en', en);
-}
-
-export default {
-    beforeCreate() {
-        usePluginLocale(this.$i18n);
+var spa = {
+    pages: {
+        "plugins-magic-detail": "Detalle"
     }
 };
+export default createPageLocaleMixin({ zh, en, spa });

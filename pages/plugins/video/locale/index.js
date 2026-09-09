@@ -1,3 +1,4 @@
+import { createPageLocaleMixin } from '@/locale/merge-page-locale.js';
 var zh = {
     "pages": {
         "plugins-video-index": "短视频列表",
@@ -19,36 +20,21 @@ var zh = {
 };
 var en = {
     "pages": {
-        "plugins-video-index": "Short Video List",
-        "plugins-video-detail": "Short video details",
-        "plugins-video-search": "Short video search",
-        "plugins-video-search-record": "Short video searchrecord"
+        "plugins-video-index": "Short Videos",
+        "plugins-video-detail": "Video Details",
+        "plugins-video-search": "Search Videos",
+        "plugins-video-search-record": "Search History"
     },
     "video-detail": {
-        "reason_reporting": "Reason for reporting",
-        "choose_specific_type": "Please choose a specific type",
-        "enter_wonderful_comment": "Please enter your wonderful comment",
+        "reason_reporting": "Report reason",
+        "choose_specific_type": "Please select a specific type",
+        "enter_wonderful_comment": "Write a comment",
         "already_first_video": "This is already the first video",
         "already_last_video": "This is already the last video"
     },
     "video-search": {
-        "release_time": "Release time",
-        "video_duration": "video duration"
+        "release_time": "Publish time",
+        "video_duration": "Video duration"
     }
 };
-var merged = false;
-function usePluginLocale(i18n) {
-    if (merged || !i18n || typeof i18n.mergeLocaleMessage != 'function') {
-        return;
-    }
-    merged = true;
-    i18n.mergeLocaleMessage('zh', zh);
-    i18n.mergeLocaleMessage('zh-Hans', zh);
-    i18n.mergeLocaleMessage('en', en);
-}
-
-export default {
-    beforeCreate() {
-        usePluginLocale(this.$i18n);
-    }
-};
+export default createPageLocaleMixin({ zh, en });

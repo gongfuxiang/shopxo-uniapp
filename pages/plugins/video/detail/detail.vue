@@ -1213,7 +1213,8 @@
                 let comment_text = this.comment_input_value;
                 if (!comment_text.trim()) {
                     app.globalData.showToast(this.$t('video-detail.enter_wonderful_comment'));
-                };
+                    return;
+                }
 
                 // video_id 视频id video_comments_id 父级评论id id 当前评论id
                 let new_video_comments_id = 0;

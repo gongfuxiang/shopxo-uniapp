@@ -1,3 +1,4 @@
+import { createPageLocaleMixin } from '@/locale/merge-page-locale.js';
 var zh = {
     "pages": {
         "plugins-excellentbuyreturntocash-profit": "优购返现明细",
@@ -9,7 +10,8 @@ var zh = {
         "effect": "生效中",
         "effective_amount": "有效金额",
         "refund_amount": "返现金额",
-        "order_id_incorrect": "订单id有误"
+        "order_id_incorrect": "订单id有误",
+        "search_order_no": "请输入订单号"
     },
     "profit-detail": {
         "settlement_time": "结算时间"
@@ -26,25 +28,29 @@ var en = {
         "effect": "In effect",
         "effective_amount": "Effective amount",
         "refund_amount": "Refund amount",
-        "order_id_incorrect": "Order ID is incorrect"
+        "order_id_incorrect": "Order ID is incorrect",
+        "search_order_no": "Enter order number"
     },
     "profit-detail": {
         "settlement_time": "Settlement time"
     }
 };
-var merged = false;
-function usePluginLocale(i18n) {
-    if (merged || !i18n || typeof i18n.mergeLocaleMessage != 'function') {
-        return;
-    }
-    merged = true;
-    i18n.mergeLocaleMessage('zh', zh);
-    i18n.mergeLocaleMessage('zh-Hans', zh);
-    i18n.mergeLocaleMessage('en', en);
-}
-
-export default {
-    beforeCreate() {
-        usePluginLocale(this.$i18n);
+var spa = {
+    "pages": {
+        "plugins-excellentbuyreturntocash-profit": "Detalle de cashback",
+        "plugins-excellentbuyreturntocash-profit-detail": "Detalle de cashback"
+    },
+    "profit": {
+        "order_details": "Detalle del pedido",
+        "immediate_settlement": "Liquidar ahora",
+        "effect": "En vigor",
+        "effective_amount": "Importe válido",
+        "refund_amount": "Importe de cashback",
+        "order_id_incorrect": "El ID del pedido es incorrecto",
+        "search_order_no": "Introduzca el número de pedido"
+    },
+    "profit-detail": {
+        "settlement_time": "Hora de liquidación"
     }
 };
+export default createPageLocaleMixin({ zh, en, spa });

@@ -166,7 +166,7 @@
                         <view class="flex-row align-s pt-4" :style="window_more_style">
                             <view class="flex-1 comment-input-content flex-col jc-c">
                                 <view class="flex-row align-s pr-16 box-border-box" @tap="add_comment">
-                                    <text :class="'flex-1 comment-input text-line-1 ' + (isEmpty(comment_input_value) ? 'cr-grey' : 'cr-black')">{{ isEmpty(comment_input_value) ? $t('video-detail.video-detail.enter_wonderful_comment') : comment_input_value }}</text>
+                                    <text :class="'flex-1 comment-input text-line-1 ' + (isEmpty(comment_input_value) ? 'cr-grey' : 'cr-black')">{{ isEmpty(comment_input_value) ? $t('video-detail.enter_wonderful_comment') : comment_input_value }}</text>
                                     <view class="pt-8" @tap="upload_tap">
                                         <component-upload :propMaxNum="propMaxNum" :propPathType="editor_path_type" propSlot propSingleCall propIsAllInfo @callBack="upload_images_event">
                                             <component-u-icon propName="layout-module-single-images" propSize="40rpx" propColor="#999"></component-u-icon>
@@ -192,13 +192,13 @@
         </view>
 
         <!-- 举报弹窗 -->
-        <component-u-popup ref="popupReportRef" propMode="bottom" propCloseType="text" :propWidth="'width:' +  windowWidth + 'px;'" propTitleBorder class="pointer-events-auto" :propTitle="$t('video-detail.video-detail.reason_reporting')" :propCloseable="true" @close="popup_report_close_event" @callBack="submit_report">
+        <component-u-popup ref="popupReportRef" propMode="bottom" propCloseType="text" :propWidth="'width:' +  windowWidth + 'px;'" propTitleBorder class="pointer-events-auto" :propTitle="$t('video-detail.reason_reporting')" :propCloseable="true" @close="popup_report_close_event" @callBack="submit_report">
             <view class="report-content">
                 <!-- 主要内容区域 -->
                 <view class="report-body">
                     <!-- 第一层：举报原因选择 -->
                     <view v-if="report_type_list && report_type_list.length > 0" class="report-section">
-                        <view class="report-label flex-row align-c">{{$t('video-detail.video-detail.reason_reporting')}}<text class="ml-10 report-required">*</text></view>
+                        <view class="report-label flex-row align-c">{{$t('video-detail.reason_reporting')}}<text class="ml-10 report-required">*</text></view>
                         <view class="flex-row align-c flex-wrap">
                             <radio-group class="flex-row align-c flex-wrap" :style="window_more_style" @change="select_main_reason">
                                 <label v-for="(mainItem, main_index) in report_type_list" :key="main_index" class="flex-row align-c mr-10">
@@ -213,7 +213,7 @@
                     
                     <!-- 第二层：具体类型选择（当有主类别选中时显示） -->
                     <view  class="report-section mt-20" v-if="current_main_index >= 0 && report_type_list[current_main_index] && report_type_list[current_main_index].data">
-                        <view class="report-label flex-row align-c">{{$t('video-detail.video-detail.choose_specific_type')}}<text class="ml-10 report-required">*</text></view>
+                        <view class="report-label flex-row align-c">{{$t('video-detail.choose_specific_type')}}<text class="ml-10 report-required">*</text></view>
                         <view class="flex-row align-c flex-wrap">
                             <radio-group class="flex-row align-c flex-wrap" :style="window_more_style" @change="select_sub_reason">
                                 <label v-for="(subItem, sub_index) in report_type_list[current_main_index].data" :key="sub_index" class="flex-row align-c mr-10">
@@ -239,7 +239,7 @@
                         </view>
                     </view>
                     <view class="flex-row align-c pr-16 box-border-box">
-                        <textarea ref="commentRef" :value="comment_input_value" :focus="is_add_comment" class="comment-input mr-10 cr-black" placeholder-class="cr-grey" auto-height maxlength="500" :show-confirm-bar="false" :adjust-position="false" :placeholder="$t('video-detail.video-detail.enter_wonderful_comment')" @input="comment_input_event" @confirm="send_comment" />
+                        <textarea ref="commentRef" :value="comment_input_value" :focus="is_add_comment" class="comment-input mr-10 cr-black" placeholder-class="cr-grey" auto-height maxlength="500" :show-confirm-bar="false" :adjust-position="false" :placeholder="$t('video-detail.enter_wonderful_comment')" @input="comment_input_event" @confirm="send_comment" />
                     </view>
                     <view v-if="form_images_list && form_images_list.length > 0" class="pr w h comment-input-img-container">
                         <view v-for="(item, index) in form_images_list" :key="index" class="comment-input-img pr">
@@ -1141,8 +1141,9 @@
                     this.active_dropdown_id = null;
                     let comment_text = this.comment_input_value;
                     if (!comment_text.trim()) {
-                        app.globalData.showToast('请填写评论内容');
-                    };
+                        app.globalData.showToast(this.$t('common.fill_comment_content'));
+                        return;
+                    }
                     // video_id 视频id video_comments_id 父级评论id id 当前评论id
                     let new_video_comments_id = 0;
                     let reply_comments_id = 0

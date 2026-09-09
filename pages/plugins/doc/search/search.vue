@@ -39,7 +39,7 @@
                 </view>
                 <view v-if="search_content_list.length > 0">
                     <view class="margin-bottom-sm">{{ $t('doc.search_group_content') }}</view>
-                    <view v-for="(item, index) in search_content_list" :key="'c' + index" class="padding-main bg-white border-radius-main spacing-mb" :data-value="item.url" @tap="url_event">
+                    <view v-for="(item, index) in search_content_list" :key="index" class="padding-main bg-white border-radius-main spacing-mb" :data-value="item.url" @tap="url_event">
                         <view class="fw-b">{{ item.title }}</view>
                         <view v-if="item.doc_name" class="cr-grey text-size-sm margin-top-xs">{{ item.doc_name }}</view>
                     </view>

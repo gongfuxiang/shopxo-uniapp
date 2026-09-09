@@ -1,7 +1,7 @@
 <template>
     <view :class="theme_view">
         <scroll-view :scroll-y="true" class="scroll-box" @scrolltolower="scroll_lower" lower-threshold="60">
-            <view class="page-bottom-fixed">
+            <view :class="(data_base || null) != null && parseInt(data_base.is_card_exchange || 0) == 1 ? 'page-bottom-fixed' : ''">
                 <view v-if="data_list.length > 0" class="data-list padding-horizontal-main padding-top-main">
                     <view v-for="(item, index) in data_list" :key="index" class="item padding-main border-radius-main oh bg-white spacing-mb">
                         <view class="content">
@@ -66,7 +66,7 @@
                 </view>
 
                 <!-- 兑换卡密 -->
-                <view class="bottom-fixed" :style="bottom_fixed_style">
+                <view v-if="(data_base || null) != null && parseInt(data_base.is_card_exchange || 0) == 1" class="bottom-fixed" :style="bottom_fixed_style">
                     <view class="bottom-line-exclude">
                         <button class="item round cr-main bg-white br-main text-size wh-auto sub-btn" type="default" hover-class="none" data-value="/pages/plugins/giftcard/form/form" @tap="url_event">{{$t('giftcard-index.card_exchange')}}</button>
                     </view>
@@ -201,7 +201,11 @@
                         }
                         uni.stopPullDownRefresh();
                         if (res.data.code == 0) {
-                            if (res.data.data.data_list.length > 0) {
+                            var data = res.data.data || {};
+                            this.setData({
+                                data_base: data.data_base || null,
+                            });
+                            if ((data.data_list || []).length > 0) {
                                 var data = res.data.data;
                                 if (this.data_page <= 1) {
                                     var temp_data_list = data.data_list;

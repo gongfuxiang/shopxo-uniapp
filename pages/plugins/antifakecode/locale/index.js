@@ -1,3 +1,4 @@
+import { createPageLocaleMixin } from '@/locale/merge-page-locale.js';
 var zh = {
     pages: {
         "plugins-antifakecode-index": "正品查询"
@@ -5,22 +6,12 @@ var zh = {
 };
 var en = {
     pages: {
-        "plugins-antifakecode-index": "Authentic inquiry"
+        "plugins-antifakecode-index": "Authenticity check"
     }
 };
-var merged = false;
-function usePluginLocale(i18n) {
-    if (merged || !i18n || typeof i18n.mergeLocaleMessage != 'function') {
-        return;
-    }
-    merged = true;
-    i18n.mergeLocaleMessage('zh', zh);
-    i18n.mergeLocaleMessage('zh-Hans', zh);
-    i18n.mergeLocaleMessage('en', en);
-}
-
-export default {
-    beforeCreate() {
-        usePluginLocale(this.$i18n);
+var spa = {
+    pages: {
+        "plugins-antifakecode-index": "Consulta de autenticidad"
     }
 };
+export default createPageLocaleMixin({ zh, en, spa });

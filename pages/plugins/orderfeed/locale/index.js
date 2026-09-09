@@ -1,3 +1,4 @@
+import { createPageLocaleMixin } from '@/locale/merge-page-locale.js';
 var zh = {
     "pages": {
         "plugins-orderfeed-user": "反馈数据列表",
@@ -18,19 +19,14 @@ var en = {
         "feedback_product": "Feedback on this product"
     }
 };
-var merged = false;
-function usePluginLocale(i18n) {
-    if (merged || !i18n || typeof i18n.mergeLocaleMessage != 'function') {
-        return;
-    }
-    merged = true;
-    i18n.mergeLocaleMessage('zh', zh);
-    i18n.mergeLocaleMessage('zh-Hans', zh);
-    i18n.mergeLocaleMessage('en', en);
-}
-
-export default {
-    beforeCreate() {
-        usePluginLocale(this.$i18n);
+var spa = {
+    "pages": {
+        "plugins-orderfeed-user": "Lista de comentarios",
+        "plugins-orderfeed-form": "Datos de comentarios"
+    },
+    "orderfeed-form": {
+        "choose_other_products": "Elegir otro producto",
+        "feedback_product": "Comentar este producto"
     }
 };
+export default createPageLocaleMixin({ zh, en, spa });

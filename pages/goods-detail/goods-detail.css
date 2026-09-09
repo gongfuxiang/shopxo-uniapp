@@ -349,17 +349,17 @@
 }
 
 /*
-* 面板
+* 面板提示（对齐优购返现 tip：白底灰字）
 */
 .goods-panel-container {
-    background: #fffbfc;
-    color: #d2354c;
+    background: #fff;
+    color: #999;
 }
-.goods-panel-container view {
+.goods-panel-container .goods-panel-tip-item {
     padding: 15rpx 0;
 }
-.goods-panel-container view:not(:first-child) {
-    border-top: 1px dashed #fff1f2;
+.goods-panel-container .goods-panel-tip-item:not(:first-child) {
+    border-top: 1px dashed #f0f0f0;
 }
 
 /**

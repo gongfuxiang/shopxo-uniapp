@@ -1,3 +1,4 @@
+import { createPageLocaleMixin } from '@/locale/merge-page-locale.js';
 var zh = {
     "pages": {
         "plugins-certificate-userauth": "资质认证",
@@ -24,19 +25,17 @@ var en = {
         "expiration_date": "Expiration date"
     }
 };
-var merged = false;
-function usePluginLocale(i18n) {
-    if (merged || !i18n || typeof i18n.mergeLocaleMessage != 'function') {
-        return;
-    }
-    merged = true;
-    i18n.mergeLocaleMessage('zh', zh);
-    i18n.mergeLocaleMessage('zh-Hans', zh);
-    i18n.mergeLocaleMessage('en', en);
-}
-
-export default {
-    beforeCreate() {
-        usePluginLocale(this.$i18n);
+var spa = {
+    "pages": {
+        "plugins-certificate-userauth": "Certificado",
+        "plugins-certificate-userauth-saveinfo": "Editar certificado",
+        "plugins-certificate-userauth-detail": "Detalle del certificado"
+    },
+    "certificate-userauth": {
+        "go_authenticate": "Autenticar",
+        "certificate_name": "Nombre del certificado",
+        "id": "N.º de ID",
+        "expiration_date": "Fecha de vencimiento"
     }
 };
+export default createPageLocaleMixin({ zh, en, spa });

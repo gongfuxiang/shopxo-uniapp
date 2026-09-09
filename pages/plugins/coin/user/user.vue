@@ -40,6 +40,10 @@
                         </view>
                     </view>
                 </view>
+                <!-- 用户中心公告 -->
+                <view v-if="(data_base.user_center_notice || null) != null && data_base.user_center_notice.length > 0" class="padding-horizontal-main margin-top-main">
+                    <uni-notice-bar class="padding-0" show-icon scrollable :text="data_base.user_center_notice.join('')" background-color="transparent" />
+                </view>
                 <view v-if="accounts_list.length > 0" class="coin-content padding-lg">
                     <view class="bg-white radius-lg padding-sm">
                         <view class="coin-item padding-main">

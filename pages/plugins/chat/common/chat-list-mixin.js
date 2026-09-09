@@ -71,10 +71,15 @@ export default {
 		filtered_list() {
 			const rows = this.display_list;
 			const kw = String(this.list_keyword || '').trim().toLowerCase();
-			if (!kw) {
-				return rows;
-			}
-			return rows.filter((row) => this.list_match_keyword(row, kw));
+			const list = !kw ? rows : rows.filter((row) => this.list_match_keyword(row, kw));
+			// 小程序 :class/:style 不支持方法调用，展示字段预计算到行上
+			return list.map((row) => {
+				const item = Object.assign({}, row);
+				item.status_dot_class = this.status_dot_class(row);
+				item.unread_badge = this.unread_text(row);
+				item.preview_display = this.preview_text(row) || ' ';
+				return item;
+			});
 		},
 		list_empty_text() {
 			const kw = String(this.list_keyword || '').trim();

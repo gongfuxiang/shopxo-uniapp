@@ -24,7 +24,7 @@
                                 propPlaceholderClass="cr-grey-c"
                                 propIconColor="#999"
                                 propBgColor="#fff"
-                                :propRightIcon="is_imagesearch == 1 ? 'icon-camera' : ''"
+                                :propRightIcon="imagesearch_right_icon"
                                 propRightIconColor="#999"
                                 @onrighticon="imagesearch_event"
                             ></component-search>
@@ -123,6 +123,12 @@
                 is_aichat_search: 0,
                 aichat_search_name: '问AI',
             };
+        },
+
+        computed: {
+            imagesearch_right_icon() {
+                return parseInt(this.is_imagesearch || 0) == 1 ? 'icon-camera' : '';
+            }
         },
 
         components: {

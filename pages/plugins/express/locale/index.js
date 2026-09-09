@@ -1,3 +1,4 @@
+import { createPageLocaleMixin } from '@/locale/merge-page-locale.js';
 var zh = {
     "pages": {
         "plugins-express-detail": "物流详情"
@@ -14,19 +15,12 @@ var en = {
         "there_currently_logistics_info_available": "There is currently no logistics info available"
     }
 };
-var merged = false;
-function usePluginLocale(i18n) {
-    if (merged || !i18n || typeof i18n.mergeLocaleMessage != 'function') {
-        return;
-    }
-    merged = true;
-    i18n.mergeLocaleMessage('zh', zh);
-    i18n.mergeLocaleMessage('zh-Hans', zh);
-    i18n.mergeLocaleMessage('en', en);
-}
-
-export default {
-    beforeCreate() {
-        usePluginLocale(this.$i18n);
+var spa = {
+    "pages": {
+        "plugins-express-detail": "Detalles de logística"
+    },
+    "detail": {
+        "there_currently_logistics_info_available": "No hay información de logística disponible"
     }
 };
+export default createPageLocaleMixin({ zh, en, spa });

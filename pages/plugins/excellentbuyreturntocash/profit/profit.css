@@ -1,6 +1,24 @@
 /*
-* 导航
+* 状态导航
 */
-.nav-base .item {
-    width: 16.66%;
+.profit-order-nav.nav-base {
+    height: auto;
+    line-height: normal;
+    padding-bottom: 10rpx;
+}
+
+.profit-order-nav .item {
+    display: inline-block;
+    height: 80rpx;
+    line-height: 80rpx;
+    padding: 0 28rpx;
+    white-space: nowrap;
+}
+
+.scroll-box-profit-order {
+    height: calc(100vh - 80rpx - 100px);
+}
+
+.content-notice {
+    max-height: 50vh;
 }
