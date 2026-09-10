@@ -173,12 +173,16 @@
                             var data = res.data.data || {};
                             var docs = data.doc_list || [];
                             var contents = data.content_list || [];
+                            var has_data = docs.length > 0 || contents.length > 0;
+                            var empty_msg = !(this.search_keywords_value || '').toString().trim()
+                                ? this.$t('doc.search_keywords_tips')
+                                : this.$t('doc.search_empty');
                             this.setData({
                                 search_doc_list: docs,
                                 search_content_list: contents,
-                                data_list_loding_status: docs.length > 0 || contents.length > 0 ? 3 : 0,
-                                data_list_loding_msg: docs.length > 0 || contents.length > 0 ? '' : this.$t('doc.search_empty'),
-                                data_bottom_line_status: docs.length > 0 || contents.length > 0,
+                                data_list_loding_status: has_data ? 3 : 0,
+                                data_list_loding_msg: has_data ? '' : empty_msg,
+                                data_bottom_line_status: has_data,
                                 data_is_loading: 0,
                             });
                         } else {
