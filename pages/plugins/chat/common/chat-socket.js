@@ -35,7 +35,7 @@ export const chat_default_config = {
 	request_url: 'https://new.shopxo.vip/',
 	static_url: 'https://new.shopxo.vip/',
 	ws_host: '',
-	ws_port: 9502,
+	ws_port: 9501,
 	is_wss: 1,
 	ping: 30,
 	/** 首次连接超时秒数（对齐 PC 约 30 次 × 1s） */
