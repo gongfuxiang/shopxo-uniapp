@@ -2419,10 +2419,12 @@
                 return str;
             },
 
-            // 进入客服
+            // 进入客服（优先原生 uniapp 客服页；无原生能力时再走 WebView）
             chat_entry_handle(url) {
                 if ((url || null) == null) {
                     this.showToast(i18n.t('run.customer_service_url_error'));
+                } else if (typeof this.chat_native_entry_handle == 'function') {
+                    this.chat_native_entry_handle(url);
                 } else {
                     // 拼接基础参数
                     url = this.request_params_handle(url);

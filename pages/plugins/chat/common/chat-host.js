@@ -76,6 +76,37 @@ export const get_chat_client_type = () => {
 };
 
 /**
+ * 当前前台语言（对齐 PC ChatClientLang；Socket 无 HTTP 上下文，需显式携带）
+ * 与 App.globalData.get_language_value / default_language_list 一致（如 zh-Hans→zh、es→spa）
+ */
+export const get_chat_client_lang = () => {
+	try {
+		const app = get_app();
+		if (app && app.globalData && typeof app.globalData.get_language_value == 'function') {
+			const lang = app.globalData.get_language_value();
+			if (lang) {
+				return String(lang);
+			}
+		}
+	} catch (e) {}
+	try {
+		let value = (typeof uni.getLocale == 'function' ? uni.getLocale() : '') || 'zh';
+		const app = get_app();
+		const list = (app && app.globalData && app.globalData.data && app.globalData.data.default_language_list) || {
+			'zh-Hans': 'zh',
+			'zh-Hant': 'cht',
+			'en-US': 'en',
+			'es': 'spa',
+		};
+		if (list[value]) {
+			value = list[value];
+		}
+		return String(value || 'zh');
+	} catch (e2) {}
+	return 'zh';
+};
+
+/**
  * 仅有真实胶囊的小程序才读菜单按钮；App/H5 上 API 虽存在但未实现，会刷警告
  */
 export const get_menu_button_rect_safe = () => {
@@ -338,7 +369,9 @@ const append_chat_entry_source = (entry = {}) => {
 };
 
 /**
- * 原生客服入口（列表 → 详情），不影响 chat_entry_handle / WebView chat.html
+ * 原生客服入口（默认进咨询会话页；to_list 时进列表）
+ * 对齐 PC：chat_user / chat_type / source / data_* 进线参数进会话页 → WS；
+ * id 仅为客服 cuid（列表点进），切勿把 chat_user（商城 user_id）当成 id。
  * @param {string|object} url_or_params chat_url 或进线参数 { data_id, data_type, chat_user, chat_type, source, id, to_list }
  */
 export const chat_native_entry_handle = (url_or_params) => {
@@ -346,25 +379,29 @@ export const chat_native_entry_handle = (url_or_params) => {
 	let entry = {};
 	if (typeof url_or_params == 'string') {
 		let url = url_or_params;
-		if (app && app.globalData && typeof app.globalData.request_params_handle == 'function') {
+		// 原生页路径不要走 request_params_handle（会拼 token 等 API 参数）
+		const is_page = String(url).indexOf('/pages/') === 0 || String(url).indexOf('pages/') === 0;
+		if (!is_page && app && app.globalData && typeof app.globalData.request_params_handle == 'function') {
 			url = app.globalData.request_params_handle(url);
 		}
 		entry = parse_chat_entry_from_url(url);
 	} else if (url_or_params && typeof url_or_params == 'object') {
 		entry = { ...url_or_params };
 		if (!isEmpty(entry.chat_url)) {
-			entry = { ...parse_chat_entry_from_url(entry.chat_url), ...entry };
+			const from_url = parse_chat_entry_from_url(entry.chat_url);
+			entry = { ...from_url, ...entry };
 			delete entry.chat_url;
 		}
 	}
 	entry = append_chat_entry_source(entry);
-	const agent_id = parseInt(entry.id || entry.chat_user || 0, 10) || 0;
+	// 仅路由 id（cuid）直达会话；指定客服用 chat_user（user_id）交给 WS 分配
+	const agent_id = parseInt(entry.id || 0, 10) || 0;
 	const to_list = entry.to_list === true || entry.to_list == 1 || entry.to_list == '1';
-	if (agent_id > 0 && !to_list) {
-		const { chat_build_session_url } = require('./chat-socket.js');
-		url_open(chat_build_session_url(agent_id, entry));
+	if (to_list) {
+		url_open(build_chat_list_url(entry));
 		return true;
 	}
-	url_open(build_chat_list_url(entry));
+	const { chat_build_session_url } = require('./chat-socket.js');
+	url_open(chat_build_session_url(agent_id, entry));
 	return true;
 };

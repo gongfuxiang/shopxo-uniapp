@@ -44,10 +44,10 @@
 		</view>
 		<view class="voice-cancel-btn" :class="{ 'is-active': willCancel }"></view>
 		<view class="voice-cancel-label">
-			<text class="voice-cancel-btn-text">{{ willCancel ? '松开取消' : '取消' }}</text>
+			<text class="voice-cancel-btn-text">{{ willCancel ? $t('chat.release_to_cancel') : $t('chat.cancel') }}</text>
 		</view>
 		<view class="voice-send-arc">
-			<text class="voice-send-arc-text">松开 发送</text>
+			<text class="voice-send-arc-text">{{$t('chat.release_send_arc')}}</text>
 		</view>
 	</view>
 </template>

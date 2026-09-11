@@ -33,12 +33,13 @@ pages/plugins/chat/
 
 ```javascript
 // 1. 全局方法（App.vue 已注册）
-app.globalData.chat_native_entry_handle();              // 进会话列表
-app.globalData.chat_native_entry_handle(chat_url);    // 解析 chat_url 进线（有 chat_user 则直进详情）
+app.globalData.chat_native_entry_handle();              // 进咨询会话页（自动分配客服）
+app.globalData.chat_native_entry_handle(chat_url);    // 解析 chat_url 进线（source/chat_user/chat_type/data_* → WS）
 app.globalData.chat_native_entry_handle({              // 显式参数
   data_id: '123',
   data_type: 'goods',
-  chat_user: '456',   // 有则直进详情；无则进列表
+  chat_user: '456',   // 指定客服商城 user_id（对齐 PC，由 WS init 分配）
+  chat_type: 'shop',
   to_list: 1,         // 强制先进列表
 });
 

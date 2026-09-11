@@ -584,6 +584,8 @@
 		"kuaishou": "Kwai"
 	},
 	"pages": {
+		"plugins-chat-list": "Customer Service",
+		"plugins-chat-index": "Customer Service",
 		"goods-category": "Product classification",
 		"cart": "shopping cart",
 		"buy": "Order confirmation",

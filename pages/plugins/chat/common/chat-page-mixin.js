@@ -1,3 +1,4 @@
+import { chat_t } from './chat-i18n.js';
 import { isEmpty, showToast, page_back_prev_event, chat_back_to_list_event, chat_replace_to_list_event, get_global_data, get_config, get_default_avatar, open_web_view, get_chat_nav_layout_metrics, get_chat_client_type, get_menu_button_rect_safe } from '../common/chat-host.js';
 import base64 from '@/common/js/lib/base64.js';
 import { ensure_chat_user_init, apply_chat_user_page_config } from '../common/chat-user-init.js';
@@ -82,7 +83,7 @@ const request_chat_media_auth = () => {
 				uni.authorize({
 					scope: 'scope.record',
 					fail() {
-						showToast('需要麦克风权限才能发送语音');
+						showToast(chat_t('mic_permission'));
 						setTimeout(() => {
 							try {
 								uni.openSetting({});
@@ -332,7 +333,7 @@ const RESEND_SPIN_MS = 480;
 
 const VOICE_MIN_MS = 1000;
 const VOICE_RELEASE_GRACE_MS = 200;
-const VOICE_TOO_SHORT_TIP = '录音不足 1 秒，请长按说话';
+const VOICE_TOO_SHORT_TIP = () => chat_t('voice_too_short');
 let voice_short_hinted = false;
 
 let recorder_mgr = null;
@@ -415,7 +416,7 @@ export default {
 			route_chat_id: '',
 			from_list_page: false,
 			show_list_dot: false,
-			chat_title: '会话',
+			chat_title: chat_t('session'),
 			status_bar_height: navInit.status_bar_height,
 			window_height: navInit.window_height,
 			nav_content_h: navInit.nav_content_h,
@@ -608,23 +609,23 @@ export default {
 		more_panel_items() {
 	const rows = [];
 	if (this.show_tool_images) {
-		rows.push({ key: 'images', name: '照片', icon: 'img', action: 'images', type: '' });
+		rows.push({ key: 'images', name: chat_t('photo'), icon: 'img', action: 'images', type: '' });
 	}
 	if (this.show_tool_video) {
-		rows.push({ key: 'video', name: '视频', icon: 'video', action: 'video', type: '' });
+		rows.push({ key: 'video', name: chat_t('video'), icon: 'video', action: 'video', type: '' });
 	}
 	if (this.show_tool_file) {
-		rows.push({ key: 'file', name: '附件', icon: 'annex', action: 'file', type: '' });
+		rows.push({ key: 'file', name: chat_t('annex'), icon: 'annex', action: 'file', type: '' });
 	}
 	if (this.show_tool_audio) {
-		rows.push({ key: 'audio', name: '音频', icon: 'audio', action: 'audio', type: '' });
+		rows.push({ key: 'audio', name: chat_t('audio'), icon: 'audio', action: 'audio', type: '' });
 	}
 	if (chat_site_logged_in()) {
 		const consult_items = [
-			{ key: 'goods', name: '商品', icon: 'admin-goods', action: '', type: 'goods' },
-			{ key: 'cart', name: '购物车', icon: 'cart', action: '', type: 'cart' },
-			{ key: 'order', name: '订单', icon: 'order', action: '', type: 'order' },
-			{ key: 'aftersale', name: '售后', icon: 'after-sales', action: '', type: 'aftersale' },
+			{ key: 'goods', name: chat_t('goods'), icon: 'layout-module-goods', action: '', type: 'goods' },
+			{ key: 'cart', name: chat_t('cart'), icon: 'cart', action: '', type: 'cart' },
+			{ key: 'order', name: chat_t('order'), icon: 'order', action: '', type: 'order' },
+			{ key: 'aftersale', name: chat_t('aftersale'), icon: 'after-sales', action: '', type: 'aftersale' },
 		];
 		consult_items.forEach((row) => rows.push(row));
 	}
@@ -670,26 +671,26 @@ export default {
 	if (this.ai_mode == 'ai') {
 		const client = get_chat_client_type();
 		if (['weixin', 'alipay', 'baidu', 'qq', 'kuaishou'].indexOf(client) !== -1) {
-			return this.show_float_ai_bar ? '智能客服接待中' : '点击「转人工客服」';
+			return this.show_float_ai_bar ? chat_t('ai_serving') : chat_t('click_transfer_human');
 		}
-		return '智能客服接待中，可点击「转人工客服」';
+		return chat_t('ai_serving_tip');
 	}
 	if (this.ai_enabled && this.ai_mode == 'human' && !this.session_ended_for_ui) {
-		return '人工客服接待中，可点击「切回智能客服」';
+		return chat_t('human_serving_tip');
 	}
 	if (this.connect_status !== 1) {
 		if (this.is_connecting || this.is_resume_hold || this.has_uploading_media) {
-			return '连接中...';
+			return chat_t('connecting');
 		}
-		return '未连接';
+		return chat_t('disconnected');
 	}
 	if (this.online_status == 'logout') {
-		return '您已退出';
+		return chat_t('you_exited');
 	}
 	if (this.online_status != 'online') {
-		return '您已离线';
+		return chat_t('you_offline');
 	}
-	return '请输入内容';
+	return chat_t('input_placeholder');
 },
 
 		input_placeholder_style() {
@@ -762,13 +763,13 @@ export default {
 	if (panel && panel.title) {
 		return String(panel.title);
 	}
-	const map = { goods: '商品', cart: '购物车', order: '订单', source: '轨迹', aftersale: '售后' };
-	return map[type] || '相关信息';
+	const map = { goods: chat_t('goods'), cart: chat_t('cart'), order: chat_t('order'), source: chat_t('source'), aftersale: chat_t('aftersale') };
+	return map[type] || chat_t('related_info');
 },
 
 		consult_empty_text() {
-	const map = { goods: '暂无浏览商品', cart: '暂无购物车商品', order: '暂无订单', source: '暂无轨迹', aftersale: '暂无售后' };
-	return map[this.consult_popup_type] || '暂无数据';
+	const map = { goods: chat_t('empty_goods'), cart: chat_t('empty_cart'), order: chat_t('empty_order'), source: chat_t('empty_source'), aftersale: chat_t('empty_aftersale') };
+	return map[this.consult_popup_type] || chat_t('no_data');
 },
 
 		consult_send_label() {
@@ -778,13 +779,13 @@ export default {
 		return String(panel.send_label);
 	}
 	if (type == 'goods' || type == 'cart') {
-		return '发送商品';
+		return chat_t('send_goods');
 	}
 	if (type == 'order') {
-		return '发送订单';
+		return chat_t('send_order');
 	}
 	if (type == 'aftersale') {
-		return '发送售后';
+		return chat_t('send_aftersale');
 	}
 	return '';
 },
@@ -881,13 +882,13 @@ export default {
 			const map = {
 				img: 'icon-images',
 				video: 'icon-video',
-				annex: 'icon-file',
+				annex: 'icon-annex',
 				audio: 'icon-audio',
-				'admin-goods': 'icon-admin-goods',
+				'layout-module-goods': 'icon-layout-module-goods',
 				cart: 'icon-cart',
-				order: 'icon-order',
+				order: 'icon-order-list',
 				location: 'icon-location',
-				'after-sales': 'icon-order',
+				'after-sales': 'icon-list-angle',
 			};
 			return map[icon] || 'icon-file';
 		},
@@ -1289,10 +1290,10 @@ export default {
 		recall_tip_text(raw, is_self) {
 			
 				if (is_self) {
-					return '你撤回了一条信息';
+					return chat_t('you_recalled');
 				}
 				const text = String(raw || '').trim();
-				return text || '撤回了一条消息';
+				return text || chat_t('recalled_msg');
 			
 		},
 
@@ -1420,7 +1421,7 @@ export default {
 			
 				const bits = [];
 				if (order.order_no) {
-					bits.push('订单号 ' + order.order_no);
+					bits.push(chat_t('order_no') + order.order_no);
 				}
 				if (order.status_name) {
 					bits.push(order.status_name);
@@ -1431,13 +1432,13 @@ export default {
 				if (order.add_time) {
 					bits.push(order.add_time);
 				}
-				return bits.join(' · ') || '订单';
+				return bits.join(' · ') || chat_t('order');
 			
 		},
 
 		aftersale_card_head(as = {}) {
 			
-				const bits = ['售后单'];
+				const bits = [chat_t('aftersale_sheet')];
 				if (as.type_name) {
 					bits.push(as.type_name);
 				}
@@ -1445,7 +1446,7 @@ export default {
 					bits.push(as.status_name);
 				}
 				if (as.order_no) {
-					bits.push('订单 ' + as.order_no);
+					bits.push(chat_t('order_prefix') + as.order_no);
 				}
 				if (as.price !== undefined && as.price !== null && as.price !== '') {
 					bits.push('¥' + as.price);
@@ -1541,10 +1542,10 @@ export default {
 			
 				const type = this.consult_popup_type;
 				if (type == 'goods' || type == 'cart') {
-					return item.title || '商品';
+					return item.title || chat_t('goods');
 				}
 				const rows = this.consult_goods_rows(item);
-				return (rows[0] && rows[0].title) || item.goods_title || (type == 'order' ? '商品' : '售后商品');
+				return (rows[0] && rows[0].title) || item.goods_title || (type == 'order' ? chat_t('goods') : chat_t('aftersale_goods'));
 			
 		},
 
@@ -1737,7 +1738,7 @@ export default {
 				// #ifndef H5
 				uni.setClipboardData({
 					data: url,
-					success: () => showToast('链接已复制'),
+					success: () => showToast(chat_t('link_copied')),
 				});
 				// #endif
 			
@@ -1755,7 +1756,7 @@ export default {
 				const item = this.consult_filtered_list[idx] || null;
 				const payload = this.build_consult_send_payload(type, item);
 				if (!payload) {
-					showToast('数据有误');
+					showToast(chat_t('data_error'));
 					return;
 				}
 				const row = this.append_local_message(payload, true, {
@@ -1825,8 +1826,8 @@ export default {
 					? ''
 					: (options.name
 						|| (is_self
-							? (chat_state.current_user?.name || '客服')
-							: (options.user?.name || (is_ai_reply ? '智能客服' : (chat_state.receive_user?.name || this.chat_title || '用户')))));
+							? (chat_state.current_user?.name || chat_t('agent'))
+							: (options.user?.name || (is_ai_reply ? chat_t('ai_bot') : (chat_state.receive_user?.name || this.chat_title || chat_t('user'))))));
 				// 对齐 PC：非纯提示/系统消息时双方都显示发送方名称
 				const show_sender = !is_pure && !is_ai_summary && !is_mode_tip && !is_system && !is_thinking && !!String(name || '').trim();
 				const body_text = is_ai_summary ? this.ai_summary_body_text(parsed.text) : parsed.text;
@@ -2751,7 +2752,7 @@ export default {
 
 		notify_send_fail(key) {
 			
-				create_chat_local_push('发送失败', '有一条信息没有发送成功', {
+				create_chat_local_push(chat_t('send_fail_title'), chat_t('send_fail_body'), {
 					type: 'chat_resend',
 					key,
 					chat_id: String(this.chat_id || ''),
@@ -2871,7 +2872,7 @@ export default {
 					}
 					if (!result || result.code != 0 || !result.data) {
 						this.mark_send_fail(row_key);
-						showToast((result && result.msg) || '上传失败');
+						showToast((result && result.msg) || chat_t('upload_fail'));
 						return;
 					}
 					const payload = {
@@ -2959,7 +2960,7 @@ export default {
 						return;
 					}
 					this.mark_send_fail(row_key);
-					showToast((err && err.message) || '上传失败');
+					showToast((err && err.message) || chat_t('upload_fail'));
 				} finally {
 					media_upload_inflight.delete(row_key);
 				}
@@ -3037,7 +3038,7 @@ export default {
 					const file_path = row.file_path || row.local_url || '';
 					if (isEmpty(file_path)) {
 						this.mark_send_fail(key);
-						showToast('附件已失效，请重新选择');
+						showToast(chat_t('annex_invalid'));
 						return;
 					}
 					this.upload_and_send_media_row(key, file_path, {
@@ -3055,7 +3056,7 @@ export default {
 					const file_path = row.file_path || row.local_url || '';
 					if (isEmpty(file_path)) {
 						this.mark_send_fail(key);
-						showToast('附件已失效，请重新选择');
+						showToast(chat_t('annex_invalid'));
 						return;
 					}
 					this.upload_and_send_media_row(key, file_path, {
@@ -3150,7 +3151,7 @@ export default {
 						this.has_more = false;
 						this.min_record_id = 0;
 					} else if (mode == 'around') {
-						showToast('未找到该消息');
+						showToast(chat_t('msg_not_found'));
 					} else if (mode == 'history') {
 						this.has_more = false;
 					}
@@ -3187,8 +3188,8 @@ export default {
 						const recall_at = can_reedit ? this.to_time_ms(msg.upd_time) : 0;
 						const is_read = is_self && !is_system && !is_mode_tip && !is_ai_summary && parseInt(msg.is_read || 0) == 1 ? 1 : 0;
 						const sender = is_self
-							? (get_chat_state().current_user?.name || '客服')
-							: (group_user?.name || (is_ai_reply ? '智能客服' : (get_chat_state().receive_user?.name || this.chat_title || '用户')));
+							? (get_chat_state().current_user?.name || chat_t('agent'))
+							: (group_user?.name || (is_ai_reply ? chat_t('ai_bot') : (get_chat_state().receive_user?.name || this.chat_title || chat_t('user'))));
 						const avatar = is_self
 							? (get_chat_state().current_user?.avatar || this.current_avatar || this.default_avatar)
 							: (group_user?.avatar || (is_ai_reply ? (chat_ai_bot_user()?.avatar || this.default_avatar) : (get_chat_state().receive_user?.avatar || this.receive_avatar || this.default_avatar)));
@@ -4019,12 +4020,12 @@ export default {
 					return;
 				}
 				if (is_quote_recalled(quote)) {
-					showToast('引用内容已撤回');
+					showToast(chat_t('quote_recalled_toast'));
 					return;
 				}
 				const rid = Number(quote.record_id || 0);
 				if (!(rid > 0)) {
-					showToast('原消息不可定位');
+					showToast(chat_t('origin_not_locate'));
 					return;
 				}
 				this.jump_to_record(rid, { silent: false });
@@ -4037,7 +4038,7 @@ export default {
 				const silent = !!opts.silent;
 				if (!(rid > 0)) {
 					if (!silent) {
-						showToast('原消息不可定位');
+						showToast(chat_t('origin_not_locate'));
 					}
 					return false;
 				}
@@ -4046,7 +4047,7 @@ export default {
 				));
 				if (tip_idx >= 0) {
 					if (!silent) {
-						showToast('引用内容已撤回');
+						showToast(chat_t('quote_recalled_toast'));
 					}
 					return 'recall';
 				}
@@ -4060,7 +4061,7 @@ export default {
 						return 'around';
 					}
 					if (!silent) {
-						showToast('原消息不在当前列表');
+						showToast(chat_t('origin_not_in_list'));
 					}
 					return false;
 				}
@@ -4243,9 +4244,9 @@ export default {
 				const local = rid > 0 ? this.message_list.find((row) => Number(row.record_id || 0) == rid) : null;
 				const user = item.user || item.send_user || {};
 				const chat_state = get_chat_state();
-				const self_name = chat_state.current_user?.name || '客服';
+				const self_name = chat_state.current_user?.name || chat_t('agent');
 				const self_avatar = chat_state.current_user?.avatar || this.current_avatar || this.default_avatar;
-				const other_name = chat_state.receive_user?.name || this.chat_title || '用户';
+				const other_name = chat_state.receive_user?.name || this.chat_title || chat_t('user');
 				const other_avatar = chat_state.receive_user?.avatar || this.receive_avatar || this.default_avatar;
 				let is_self = local != null ? !!local.is_self : null;
 				if (is_self == null) {
@@ -4286,7 +4287,7 @@ export default {
 				}
 				msg_search_jump_id = 0;
 				if (!data.record) {
-					showToast('未找到该消息');
+					showToast(chat_t('msg_not_found'));
 					return;
 				}
 				this.flatten_record(data.record, 'around');
@@ -4315,7 +4316,7 @@ export default {
 					}
 					const ok = this.jump_to_record(rid, { silent: true, allow_around: true });
 					if (ok === 'recall') {
-						showToast('该消息已撤回');
+						showToast(chat_t('msg_recalled'));
 					}
 				};
 				this.$nextTick(() => {
@@ -4354,7 +4355,7 @@ export default {
 				if (!receive || !receive.id || String(receive.id) != String(id)) {
 					receive = {
 						id,
-						name: (receive && receive.name) || this.chat_title || '在线客服',
+						name: (receive && receive.name) || this.chat_title || chat_t('online_service'),
 						avatar: (receive && receive.avatar) || this.default_avatar,
 						status: 0,
 					};
@@ -4458,13 +4459,13 @@ export default {
 				}
 				const user = payload.user || chat_ai_bot_user();
 				this.append_local_message(
-					{ data_type: 'text', content: payload.msg || '智能客服正在回复' },
+					{ data_type: 'text', content: payload.msg || chat_t('ai_replying') },
 					false,
 					{
 						key: THINKING_KEY,
 						is_thinking: true,
 						user,
-						name: user?.name || '智能客服',
+						name: user?.name || chat_t('ai_bot'),
 						avatar: user?.avatar || this.default_avatar,
 					}
 				);
@@ -4590,7 +4591,7 @@ export default {
 				chat_set_receive_user(receive);
 				this.receive_avatar = receive.avatar || this.default_avatar;
 				this.receive_status = Number(receive.status) === 1 ? 1 : 0;
-				this.chat_title = receive.name || '在线客服';
+				this.chat_title = receive.name || chat_t('online_service');
 				try {
 					uni.setNavigationBarTitle({ title: this.chat_title });
 				} catch (e) {}
@@ -4899,7 +4900,7 @@ export default {
 					return;
 				}
 				if (!this.show_tool_voice) {
-					showToast('未开启语音');
+					showToast(chat_t('voice_disabled'));
 					return;
 				}
 				if (this.voice_recording) {
@@ -4925,7 +4926,7 @@ export default {
 					return;
 				}
 				voice_short_hinted = true;
-				showToast(VOICE_TOO_SHORT_TIP);
+				showToast(VOICE_TOO_SHORT_TIP());
 			
 		},
 
@@ -5053,7 +5054,7 @@ export default {
 				this.reset_voice_ui();
 				const msg = String((err && err.message) || err || '').toLowerCase();
 				if (msg.indexOf('mic') >= 0 || msg.indexOf('permission') >= 0 || msg.indexOf('notallowed') >= 0 || msg.indexOf('denied') >= 0) {
-					showToast('请允许使用麦克风');
+					showToast(chat_t('allow_mic'));
 					// #ifdef MP-WEIXIN
 					setTimeout(() => {
 						try {
@@ -5063,7 +5064,7 @@ export default {
 					// #endif
 					return;
 				}
-				showToast('录音启动失败');
+				showToast(chat_t('record_start_fail'));
 			
 		},
 
@@ -5421,7 +5422,7 @@ export default {
 					const gate_ms = Math.max(hold_ms, dur_ms);
 					if (isEmpty(path)) {
 						if (hold_ms >= VOICE_MIN_MS) {
-							showToast('录音失败，请重试');
+							showToast(chat_t('record_fail_retry'));
 						} else {
 							this.hint_voice_too_short();
 						}
@@ -5448,7 +5449,7 @@ export default {
 						this.hint_voice_too_short();
 						return;
 					}
-					showToast('录音失败，请重试');
+					showToast(chat_t('record_fail_retry'));
 				});
 			
 		},
@@ -5517,7 +5518,7 @@ export default {
 				}
 				const mgr = this.ensure_recorder();
 				if (!mgr) {
-					showToast('当前环境暂不支持录音');
+					showToast(chat_t('record_unsupported'));
 					return;
 				}
 				const touch = this.pick_event_point(e);
@@ -5640,7 +5641,7 @@ export default {
 					if (hold_ms < VOICE_MIN_MS) {
 						this.hint_voice_too_short();
 					} else {
-						showToast('录音失败，请重试');
+						showToast(chat_t('record_fail_retry'));
 					}
 					return;
 				}
@@ -5660,7 +5661,7 @@ export default {
 						this.hint_voice_too_short();
 						return;
 					}
-					showToast('录音失败，请重试');
+					showToast(chat_t('record_fail_retry'));
 				}, 2500);
 			
 		},
@@ -5871,15 +5872,15 @@ export default {
 		end_session_event() {
 			
 				if (!this.can_end_session) {
-					showToast('未开启结束对话');
+					showToast(chat_t('end_chat_disabled'));
 					return;
 				}
 				if (this.session_ended) {
 					return;
 				}
 				uni.showModal({
-					title: '温馨提示',
-					content: '确认结束本次咨询吗？',
+					title: chat_t('warm_tips'),
+					content: chat_t('confirm_end'),
 					success: (res) => {
 						if (!res.confirm) {
 							return;
@@ -6062,7 +6063,7 @@ export default {
 				const ok = chat_continue_session();
 				if (!ok) {
 					ended_choice_handled = false;
-					showToast('继续聊天失败，请重试');
+					showToast(chat_t('continue_fail'));
 					this.$nextTick(() => {
 						this.prompt_ended_session_choice();
 					});
@@ -6181,7 +6182,7 @@ export default {
 				}
 				const score = parseInt(this.rating_score || 0, 10) || 0;
 				if (!(score >= 1 && score <= 5)) {
-					showToast('请先选择星级');
+					showToast(chat_t('select_star'));
 					return;
 				}
 				const agent_cuid = parseInt(get_chat_state().receive_user?.id || 0) || 0;
@@ -6270,7 +6271,7 @@ export default {
 			
 				const id = this.agent_transfer_selected_id;
 				if (isEmpty(id)) {
-					showToast('请选择要转接的客服');
+					showToast(chat_t('select_transfer_agent'));
 					return;
 				}
 				this.close_agent_transfer_event();
@@ -6308,7 +6309,7 @@ export default {
 				}
 				const tool_key = (data_type == 'audio' && parseInt(extra.voice || 0) == 1) ? 'voice' : data_type;
 				if (['images', 'video', 'audio', 'voice', 'file'].indexOf(tool_key) >= 0 && !chat_can_use_tool(tool_key)) {
-					showToast('后台未开启该功能');
+					showToast(chat_t('feature_disabled'));
 					return;
 				}
 				if (isEmpty(file_path)) {
@@ -6445,7 +6446,7 @@ export default {
 					}
 					const file_name = name || this.file_name_from_path(path);
 					if (this.chat_file_ext(file_name) !== '' && CHAT_VIDEO_ALLOW_EXT.indexOf(this.chat_file_ext(file_name)) < 0) {
-						showToast('暂仅支持 MP4 视频');
+						showToast(chat_t('mp4_only'));
 						return;
 					}
 					this.send_media_message('video', path, extra);
@@ -6579,7 +6580,7 @@ export default {
 				const file_name = name || this.file_name_from_path(path);
 				const ext = this.chat_file_ext(file_name) || this.chat_file_ext(path);
 				if (CHAT_FILE_ALLOW_EXT.indexOf(ext) < 0) {
-					showToast('暂不支持该附件格式（pdf/doc/xls/ppt/txt/zip 等）');
+					showToast(chat_t('annex_format_unsupported'));
 					return;
 				}
 				this.send_media_message('file', path, { file_name });
@@ -6652,14 +6653,14 @@ export default {
 						this.end_file_pick();
 						const msg = String((err && err.errMsg) || '');
 						if (msg.indexOf('type') >= 0) {
-							showToast('暂不支持该附件格式（pdf/doc/xls/ppt/txt/zip 等）');
+							showToast(chat_t('annex_format_unsupported'));
 							return;
 						}
 						if (msg.indexOf('无法打开文件管理器') >= 0) {
-							showToast('无法打开文件管理器');
+							showToast(chat_t('file_manager_fail'));
 							return;
 						}
-						showToast('附件读取失败，请重试');
+						showToast(chat_t('annex_read_fail'));
 					},
 				});
 			
@@ -6677,7 +6678,7 @@ export default {
 					}
 					const file_name = name || this.file_name_from_path(path, 'audio.mp3');
 					if (CHAT_AUDIO_ALLOW_EXT.indexOf(this.chat_file_ext(file_name)) < 0 && CHAT_AUDIO_ALLOW_EXT.indexOf(this.chat_file_ext(path)) < 0) {
-						showToast('暂仅支持 MP3 音频');
+						showToast(chat_t('mp3_only'));
 						return;
 					}
 					this.send_media_message('audio', path, { file_name });
@@ -6694,14 +6695,14 @@ export default {
 						this.end_file_pick();
 						const msg = String((err && err.errMsg) || '');
 						if (msg.indexOf('type') >= 0) {
-							showToast('暂仅支持 MP3 音频');
+							showToast(chat_t('mp3_only'));
 							return;
 						}
 						if (msg.indexOf('无法打开文件管理器') >= 0) {
-							showToast('无法打开文件管理器');
+							showToast(chat_t('file_manager_fail'));
 							return;
 						}
-						showToast('附件读取失败，请重试');
+						showToast(chat_t('annex_read_fail'));
 					},
 				});
 			
@@ -6797,7 +6798,7 @@ export default {
 		on_fs_video_error() {
 			
 				this.hide_fs_video_loading();
-				showToast('播放失败');
+				showToast(chat_t('play_fail'));
 			
 		},
 
@@ -6809,7 +6810,7 @@ export default {
 				const poster = this.to_media_src(ds.poster || '');
 				const play_url = remote_url || local_url;
 				if (isEmpty(play_url)) {
-					showToast('视频无效');
+					showToast(chat_t('video_invalid'));
 					return;
 				}
 				this.clear_fs_video_loading_timer();
@@ -6822,7 +6823,7 @@ export default {
 						return;
 					}
 					this.playing_video_loading = false;
-					showToast('视频加载失败');
+					showToast(chat_t('video_load_fail'));
 				}, wait_ms);
 				this.$nextTick(() => {
 					this.play_fs_video();
@@ -6863,7 +6864,7 @@ export default {
 				}
 				const url = item.url || item.file?.url || item.file_path || item.local_url || '';
 				if (isEmpty(url)) {
-					showToast('音频无效');
+					showToast(chat_t('audio_invalid'));
 					return;
 				}
 				if (this.playing_audio_key == item.key) {
@@ -6872,7 +6873,7 @@ export default {
 				}
 				this.stop_audio_play();
 				if (typeof uni.createInnerAudioContext != 'function') {
-					showToast('当前环境暂不支持播放音频');
+					showToast(chat_t('audio_play_unsupported'));
 					return;
 				}
 				audio_ctx = uni.createInnerAudioContext();
@@ -6895,7 +6896,7 @@ export default {
 				});
 				audio_ctx.onError(() => {
 					this.stop_audio_play();
-					showToast('播放失败');
+					showToast(chat_t('play_fail'));
 				});
 			
 		},
@@ -6916,7 +6917,7 @@ export default {
 				if (!/^https?:\/\//i.test(value)) {
 					uni.setClipboardData({
 						data: value,
-						success: () => showToast('链接已复制'),
+						success: () => showToast(chat_t('link_copied')),
 					});
 					return;
 				}
@@ -6944,7 +6945,7 @@ export default {
 				// pages/ 路径：复制便于排查（管理端未必有对应商城页）
 				uni.setClipboardData({
 					data: url,
-					success: () => showToast('链接已复制'),
+					success: () => showToast(chat_t('link_copied')),
 				});
 			
 		},
@@ -7029,11 +7030,11 @@ export default {
 		apply_quote_from_item(item) {
 			
 				if (!this.can_quote_item(item)) {
-					showToast('该消息无法引用');
+					showToast(chat_t('cannot_quote'));
 					return false;
 				}
 				const dt = item.data_type || 'text';
-				const sender = item.name || (item.is_self ? '客服' : (this.chat_title || '用户'));
+				const sender = item.name || (item.is_self ? '客服' : (this.chat_title || chat_t('user')));
 				const raw = {
 					record_id: item.record_id || 0,
 					send_name: sender,
@@ -7070,7 +7071,7 @@ export default {
 				}
 				const quote = normalize_quote(raw);
 				if (!quote || is_quote_recalled(quote)) {
-					showToast('该消息无法引用');
+					showToast(chat_t('cannot_quote'));
 					return false;
 				}
 				this.quote_draft = quote;
@@ -7086,12 +7087,12 @@ export default {
 				this.close_msg_menu_event();
 				const text = this.get_msg_copy_text(item);
 				if (isEmpty(text)) {
-					showToast('暂无可复制内容');
+					showToast(chat_t('nothing_to_copy'));
 					return;
 				}
 				uni.setClipboardData({
 					data: text,
-					success: () => showToast('已复制'),
+					success: () => showToast(chat_t('copied')),
 				});
 			
 		},
@@ -7132,21 +7133,21 @@ export default {
 					return;
 				}
 				if (!chat_can_recall()) {
-					showToast('未开启消息撤回');
+					showToast(chat_t('recall_disabled'));
 					return;
 				}
 				const rid = Number(item.record_id || 0);
 				if (!(rid > 0)) {
-					showToast('消息尚未同步，请稍后再试');
+					showToast(chat_t('msg_not_synced'));
 					return;
 				}
 				const limit = chat_recall_seconds();
 				if (!chat_recall_still_valid(item.add_time)) {
-					showToast('超过' + limit + '秒不可撤回');
+					showToast(chat_t('recall_timeout', { n: limit }));
 					return;
 				}
 				uni.showModal({
-					title: '温馨提示',
+					title: chat_t('warm_tips'),
 					content: '撤回这条消息、确认撤回吗？',
 					confirmText: '撤回',
 					success: (res) => {
@@ -7670,6 +7671,7 @@ export default {
 					} catch (e) {}
 				}
 				chat_apply_entry_params(entry);
+				// 仅 cuid；chat_user 是商城 user_id，留给 WS 指定客服，不能当路由 id
 				this.route_chat_id = String(params.id || params.chat_id || '');
 				const from_list_param = params.from_list === true || params.from_list == 1 || params.from_list == '1';
 				let from_list = !!from_list_param;
@@ -7683,7 +7685,7 @@ export default {
 				}
 				this.from_list_page = from_list;
 				this.show_list_dot = !from_list;
-				// 有 id：对齐 admin-app 先解析 receive；无 id：清空会话对象，等 success.receive 自动分配（对齐 PC）
+				// 有 id：对齐 admin-app 先解析 receive；无 id：清空会话对象，等 success.receive 按 chat_user/系统客服自动分配（对齐 PC）
 				if (parseInt(this.route_chat_id || 0, 10) > 0) {
 					this.resolve_route_receive_user();
 				} else {
@@ -7717,7 +7719,7 @@ export default {
 				bind_chat_push();
 				this.measure_chrome();
 				apply_chat_user_page_config();
-				this.chat_title = '在线客服';
+				this.chat_title = chat_t('online_service');
 				try {
 					uni.setNavigationBarTitle({ title: this.chat_title });
 				} catch (e) {}

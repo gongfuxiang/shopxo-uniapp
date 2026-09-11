@@ -24,7 +24,7 @@
 							type="text"
 							confirm-type="search"
 							:value="list_keyword_input"
-							placeholder="搜索联系人或聊天记录"
+							:placeholder="$t('chat.search_contact_placeholder')"
 							placeholder-class="chat-list-search-placeholder"
 							@input="list_search_input_event"
 							@confirm="list_search_confirm_event"
@@ -59,7 +59,7 @@
 						</view>
 						<view class="chat-list-body-main">
 							<view class="chat-list-row">
-								<text class="chat-list-name">{{ item.name || '在线客服' }}</text>
+								<text class="chat-list-name">{{ item.name || $t('chat.online_service') }}</text>
 								<text class="chat-list-time">{{ item.time_text || '' }}</text>
 							</view>
 							<view class="chat-list-row chat-list-row-preview">
@@ -80,12 +80,13 @@
 	import componentCommon from '@/components/common/common';
 	import componentNoData from '@/components/no-data/no-data';
 	import chatListMixin from '../common/chat-list-mixin.js';
+	import pluginLocale from '../locale/index.js';
 	import { get_chat_nav_layout_metrics } from '../common/chat-host.js';
 
 	const listNavInit = get_chat_nav_layout_metrics(88);
 
 	export default {
-		mixins: [chatListMixin],
+		mixins: [pluginLocale, chatListMixin],
 		components: {
 			componentCommon,
 			componentNoData,

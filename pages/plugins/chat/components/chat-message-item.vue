@@ -9,7 +9,7 @@
 					<view class="message-pure-card">
 						<view class="message-pure-hd">
 							<text class="message-pure-hd-icon">!</text>
-							<text class="message-pure-hd-text">温馨提示</text>
+							<text class="message-pure-hd-text">{{$t('chat.warm_tips')}}</text>
 						</view>
 						<text class="message-pure-bd" user-select>{{ item.text }}</text>
 					</view>
@@ -28,7 +28,7 @@
 					<view class="message-ai-summary-card">
 						<view class="message-ai-summary-hd">
 							<iconfont name="icon-file" size="28rpx" color="#666"></iconfont>
-							<text class="message-ai-summary-hd-text">AI接待摘要</text>
+							<text class="message-ai-summary-hd-text">{{$t('chat.ai_summary')}}</text>
 						</view>
 						<text class="message-ai-summary-bd" user-select>{{ item.text }}</text>
 						<text v-if="item.time_text" class="message-ai-summary-time">{{ item.time_text }}</text>
@@ -43,17 +43,17 @@
 						class="message-reedit"
 						:data-index="index"
 						@tap.stop="emit_reedit"
-					>重新编辑</text>
+					>{{$t('chat.reedit')}}</text>
 				</view>
 
 				<!-- 对齐 PC ChatAiThinkingView -->
 				<view v-else-if="item.is_thinking" :id="msg_dom_id(item, index)" class="message-row is-other">
 					<image class="msg-avatar" :src="item.avatar || defaultAvatar" mode="aspectFill"></image>
 					<view class="bubble-wrap">
-						<text class="msg-sender-name">{{ item.name || '智能客服' }}</text>
+						<text class="msg-sender-name">{{ item.name || $t('chat.ai_bot') }}</text>
 						<view class="bubble bubble-other">
 							<view class="ai-thinking">
-								<text class="ai-thinking-text">{{ item.text || '智能客服正在回复' }}</text>
+								<text class="ai-thinking-text">{{ item.text || $t('chat.ai_replying') }}</text>
 								<view class="ai-thinking-dots">
 									<view class="ai-thinking-dot"></view>
 									<view class="ai-thinking-dot"></view>
@@ -104,7 +104,7 @@
 								v-else-if="show_msg_read_status(item)"
 								class="msg-read-status"
 								:class="item.is_read == 1 ? 'is-read' : 'is-unread'"
-							>{{ item.is_read == 1 ? '已读' : '未读' }}</text>
+							>{{ item.is_read == 1 ? $t('chat.read') : $t('chat.unread') }}</text>
 							<view
 								class="bubble"
 								:class="[
@@ -178,7 +178,7 @@
 											<text class="media-percent-text">{{ media_progress_label }}</text>
 										</view>
 									</view>
-									<text v-else class="media-fail-text">发送失败</text>
+									<text v-else class="media-fail-text">{{$t('chat.send_fail')}}</text>
 								</view>
 							</view>
 							<view
@@ -190,7 +190,7 @@
 							>
 								<image class="goods-cover" :src="item.goods.images || defaultAvatar" mode="aspectFill"></image>
 								<view class="goods-meta">
-									<text class="goods-title">{{ item.goods.title || '商品' }}</text>
+									<text class="goods-title">{{ item.goods.title || $t('chat.goods') }}</text>
 									<text v-if="!isEmpty(item.goods.price)" class="goods-price">¥{{ item.goods.price }}</text>
 								</view>
 							</view>
@@ -210,7 +210,7 @@
 										mode="aspectFill"
 									></image>
 									<view class="order-goods-meta">
-										<text class="order-goods-title">{{ (item.order.items && item.order.items[0] && item.order.items[0].title) || item.order.goods_title || '商品' }}</text>
+										<text class="order-goods-title">{{ (item.order.items && item.order.items[0] && item.order.items[0].title) || item.order.goods_title || $t('chat.goods') }}</text>
 										<text v-if="!isEmpty(item.order.total_price)" class="order-goods-price">¥{{ item.order.total_price }}</text>
 									</view>
 								</view>
@@ -224,7 +224,7 @@
 								<view v-if="item.aftersale.goods_title || item.aftersale.images" class="order-goods-row">
 									<image class="order-cover" :src="item.aftersale.images || defaultAvatar" mode="aspectFill"></image>
 									<view class="order-goods-meta">
-										<text class="order-goods-title">{{ item.aftersale.goods_title || '售后商品' }}</text>
+										<text class="order-goods-title">{{ item.aftersale.goods_title || $t('chat.aftersale_goods') }}</text>
 										<text v-if="!isEmpty(item.aftersale.price)" class="order-goods-price">¥{{ item.aftersale.price }}</text>
 									</view>
 								</view>
@@ -275,13 +275,13 @@
 								:data-url="item.file.url || item.url"
 								@tap="emit_open_file"
 							>
-								<text class="bubble-file-icon">文</text>
+								<text class="bubble-file-icon">{{$t('chat.file_short')}}</text>
 								<view class="bubble-file-meta">
-									<text class="bubble-file-name">{{ item.file.name || item.text || '附件' }}</text>
+									<text class="bubble-file-name">{{ item.file.name || item.text || $t('chat.file') }}</text>
 									<text v-if="item.file.unit" class="bubble-file-size">{{ item.file.unit }}</text>
 								</view>
 							</view>
-							<view v-else-if="item.goods_id > 0 && !item.goods" class="bubble-goods-loading">商品信息解析中...</view>
+							<view v-else-if="item.goods_id > 0 && !item.goods" class="bubble-goods-loading">{{$t('chat.goods_loading')}}</view>
 							<view v-else class="bubble-text-wrap" :class="{ 'is-emoji-only': item.is_emoji_only }">
 								<block v-for="(seg, si) in (item.text_segments || [{ type: 'text', value: item.text }])" :key="si">
 									<text
@@ -312,8 +312,8 @@
 								:src="item.quote.url"
 								mode="aspectFill"
 							></image>
-							<text v-if="is_quote_recalled(item.quote)" class="quote-text">引用内容已撤回</text>
-							<text v-else class="quote-text">{{ item.quote.name || item.quote.send_name || '用户' }}：{{ item.quote.preview || item.quote.content || '' }}</text>
+							<text v-if="is_quote_recalled(item.quote)" class="quote-text">{{$t('chat.quote_recalled')}}</text>
+							<text v-else class="quote-text">{{ item.quote.name || item.quote.send_name || $t('chat.user') }}：{{ item.quote.preview || item.quote.content || '' }}</text>
 						</view>
 					</view>
 				</view>
@@ -321,6 +321,7 @@
 </template>
 
 <script>
+	import { chat_t } from '../common/chat-i18n.js';
 	import { isEmpty } from '../common/chat-host.js';
 	import { is_quote_recalled } from '../common/chat-socket.js';
 
@@ -352,9 +353,9 @@
 			},
 			audio_file_display_name() {
 				const item = this.item || {};
-				let name = (item.file && item.file.name) || item.text || '音频';
+				let name = (item.file && item.file.name) || item.text || chat_t('audio');
 				name = String(name || '').replace(/^\[音频\]\s*/, '').replace(/^【音频】\s*/, '').trim();
-				return name || '音频';
+				return name || chat_t('audio');
 			},
 			audio_file_size_text() {
 				const item = this.item || {};
@@ -416,17 +417,17 @@
 			},
 			order_card_head(order = {}) {
 				const bits = [];
-				if (order.order_no) bits.push('订单号 ' + order.order_no);
+				if (order.order_no) bits.push(chat_t('order_no') + order.order_no);
 				if (order.status_name) bits.push(order.status_name);
 				if (order.total_price !== undefined && order.total_price !== null && order.total_price !== '') bits.push('¥' + order.total_price);
 				if (order.add_time) bits.push(order.add_time);
-				return bits.join(' · ') || '订单';
+				return bits.join(' · ') || chat_t('order');
 			},
 			order_card_meta_primary(order = {}) {
 				const bits = [];
-				if (order.order_no) bits.push('订单号 ' + order.order_no);
+				if (order.order_no) bits.push(chat_t('order_no') + order.order_no);
 				if (order.status_name) bits.push(order.status_name);
-				if (!bits.length) return '订单';
+				if (!bits.length) return chat_t('order');
 				return bits.join(' · ') + ' ·';
 			},
 			order_card_meta_sub(order = {}) {
@@ -436,10 +437,10 @@
 				return bits.join('  ');
 			},
 			aftersale_card_head(as = {}) {
-				const bits = ['售后单'];
+				const bits = [chat_t('aftersale_sheet')];
 				if (as.type_name) bits.push(as.type_name);
 				if (as.status_name) bits.push(as.status_name);
-				if (as.order_no) bits.push('订单 ' + as.order_no);
+				if (as.order_no) bits.push(chat_t('order_prefix') + as.order_no);
 				if (as.price !== undefined && as.price !== null && as.price !== '') bits.push('¥' + as.price);
 				if (as.add_time) bits.push(as.add_time);
 				return bits.join(' · ');

@@ -14,22 +14,22 @@
 					<view class="msg-menu-icon">
 						<iconfont name="icon-copy-square" size="40rpx" color="#ffffff"></iconfont>
 					</view>
-					<text class="msg-menu-label">复制</text>
+					<text class="msg-menu-label">{{$t('chat.copy')}}</text>
 				</view>
 				<view class="msg-menu-item" @tap="emit_quote">
 					<view class="msg-menu-icon">
 						<iconfont name="icon-quote" size="40rpx" color="#ffffff"></iconfont>
 					</view>
-					<text class="msg-menu-label">引用</text>
+					<text class="msg-menu-label">{{$t('chat.quote')}}</text>
 				</view>
 				<view v-if="menu.can_recall" class="msg-menu-item" @tap="emit_recall">
 					<view class="msg-menu-icon">
 						<iconfont name="icon-back" size="40rpx" color="#ffffff"></iconfont>
 					</view>
-					<text class="msg-menu-label">撤回</text>
+					<text class="msg-menu-label">{{$t('chat.recall')}}</text>
 				</view>
 			</view>
-			<view class="msg-menu-time">{{ menu.time_text || '时间未知' }}</view>
+			<view class="msg-menu-time">{{ menu.time_text || $t('chat.time_unknown') }}</view>
 			<view class="msg-menu-arrow"></view>
 		</view>
 	</view>

@@ -17,7 +17,7 @@
 						confirm-type="search"
 						:focus="focus"
 						:value="keyword"
-						placeholder="搜索聊天记录"
+						:placeholder="$t('chat.search_msg_placeholder')"
 						@input="emit_input"
 						@confirm="emit_confirm"
 					/>
@@ -29,16 +29,16 @@
 						<iconfont name="icon-close-round" size="32rpx" color="#c0c0c0"></iconfont>
 					</view>
 				</view>
-				<text class="msg-search-cancel" @tap="emit_close">取消</text>
+				<text class="msg-search-cancel" @tap="emit_close">{{$t('chat.cancel')}}</text>
 			</view>
 		</view>
 		<scroll-view class="msg-search-list" scroll-y :style="{ height: listHeight + 'px' }" @touchmove.stop="emit_prevent">
-			<view v-if="loading" class="msg-search-empty">搜索中...</view>
-			<view v-else-if="isEmpty(keyword)" class="msg-search-empty">输入关键词搜索聊天记录</view>
+			<view v-if="loading" class="msg-search-empty">{{$t('chat.searching')}}</view>
+			<view v-else-if="isEmpty(keyword)" class="msg-search-empty">{{$t('chat.search_msg_hint')}}</view>
 			<component-no-data
 				v-else-if="hits.length === 0"
 				:propStatus="0"
-				propMsg="无匹配消息"
+				:propMsg="$t('chat.no_match_msg')"
 			></component-no-data>
 			<view
 				v-for="(hit, hit_idx) in hits"

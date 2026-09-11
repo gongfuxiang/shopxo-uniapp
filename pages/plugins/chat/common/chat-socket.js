@@ -13,6 +13,7 @@ import {
 	request_uuid,
 	refresh_request_uuid,
 	get_application_client_type,
+	get_chat_client_lang,
 	isEmpty,
 	showToast,
 	url_open,
@@ -21,6 +22,7 @@ import {
 import { notify_incoming_chat } from './chat-push.js';
 import $api from './chat-request.js';
 import { CHAT_USER_API } from './chat-request.js';
+import { chat_t } from './chat-i18n.js';
 
 const CACHE_RECEIVE_USER_KEY = 'cache_chat_receive_user_key';
 const CACHE_FRIEND_BASE_KEY = 'cache_chat_friend_base_key';
@@ -154,7 +156,7 @@ export const chat_open_goods = (goods = {}) => {
 	const path_tpl = String(runtime_config.goods_detail_path || '').trim();
 	if (path_tpl) {
 		if (!(id > 0) && path_tpl.indexOf('{id}') >= 0) {
-			showToast('商品信息有误');
+			showToast(chat_t('goods_info_error'));
 			return false;
 		}
 		const path = path_tpl.replace(/\{goods_id\}/g, String(id)).replace(/\{id\}/g, String(id));
@@ -283,7 +285,7 @@ const active_ai_snapshot = () => {
 		is_enable: parseInt(merged.is_enable || 0) == 1 ? 1 : 0,
 		show_transfer: parseInt(merged.show_transfer || 0) == 1 ? 1 : 0,
 		bot_cuid: parseInt(merged.bot_cuid || 0) || 0,
-		bot_name: merged.bot_name || '智能客服',
+		bot_name: merged.bot_name || chat_t('ai_bot'),
 		bot_avatar: merged.bot_avatar || '',
 		visitor_cuid: parseInt(merged.visitor_cuid || vid) || 0,
 		switching: !!state.ai_switching,
@@ -760,20 +762,20 @@ export const format_list_message_preview = (data) => {
 		return { tag: '', content: String(data.content || '').replace(/\n+/g, ' ').trim() };
 	}
 	if (dt == 'goods') {
-		return { tag: '[商品]', content: String(data.title || data.content || '').trim() };
+		return { tag: chat_t('tag_goods'), content: String(data.title || data.content || '').trim() };
 	}
 	if (dt == 'order') {
-		return { tag: '[订单]', content: String(data.order_no || data.content || '').trim() };
+		return { tag: chat_t('tag_order'), content: String(data.order_no || data.content || '').trim() };
 	}
 	if (dt == 'aftersale') {
-		return { tag: '[售后]', content: String(data.order_no || data.content || '').trim() };
+		return { tag: chat_t('tag_aftersale'), content: String(data.order_no || data.content || '').trim() };
 	}
 	if (dt == 'audio' && (parseInt(data.voice || 0) == 1 || data.voice === true || data.voice === 'true')) {
 		const vd = parseInt(data.duration || 0) || 0;
-		return { tag: '[语音]', content: vd > 0 ? (vd + '"') : '' };
+		return { tag: chat_t('tag_voice'), content: vd > 0 ? (vd + '"') : '' };
 	}
 	if (dt == 'images') {
-		return { tag: '[图片]', content: '' };
+		return { tag: chat_t('tag_image'), content: '' };
 	}
 	if (dt == 'video') {
 		let content = String(data.duration_text || '').trim();
@@ -787,17 +789,17 @@ export const format_list_message_preview = (data) => {
 				content = name;
 			}
 		}
-		return { tag: '[视频]', content };
+		return { tag: chat_t('tag_video'), content };
 	}
 	if (dt == 'audio') {
 		let name = String(data.name || data.content || '').trim();
 		name = name.replace(/^\[音频\]\s*/, '').replace(/^【音频】\s*/, '');
-		return { tag: '[音频]', content: name };
+		return { tag: chat_t('tag_audio'), content: name };
 	}
 	if (dt == 'file') {
 		let name = String(data.name || data.content || '').trim();
 		name = name.replace(/^\[文件\]\s*/, '').replace(/^【文件】\s*/, '');
-		return { tag: '[文件]', content: name };
+		return { tag: chat_t('tag_file'), content: name };
 	}
 	return { tag: '', content: '' };
 };
@@ -866,60 +868,60 @@ export const format_quote_preview = (quote = null) => {
 		return '';
 	}
 	if (is_quote_recalled(quote)) {
-		return '引用内容已撤回';
+		return chat_t('quote_recalled');
 	}
 	const data_type = quote.data_type || 'text';
 	if (data_type == 'images') {
-		return '[图片]';
+		return chat_t('tag_image');
 	}
 	if (data_type == 'video') {
-		return '[视频]';
+		return chat_t('tag_video');
 	}
 	if (data_type == 'goods') {
 		const title = String(quote.content || quote.title || '').trim();
 		if (!title) {
-			return '[商品]';
+			return chat_t('tag_goods');
 		}
-		return title.indexOf('[商品]') == 0 ? title : ('[商品] ' + title);
+		return title.indexOf(chat_t('tag_goods')) == 0 ? title : (chat_t('tag_goods') + ' ' + title);
 	}
 	if (data_type == 'order') {
 		const no = String(quote.content || quote.order_no || '').trim();
 		if (!no) {
-			return '[订单]';
+			return chat_t('tag_order');
 		}
-		return no.indexOf('[订单]') == 0 ? no : ('[订单] ' + no);
+		return no.indexOf(chat_t('tag_order')) == 0 ? no : (chat_t('tag_order') + ' ' + no);
 	}
 	if (data_type == 'aftersale') {
 		const no = String(quote.content || quote.order_no || '').trim();
 		if (!no) {
-			return '[售后]';
+			return chat_t('tag_aftersale');
 		}
-		return no.indexOf('[售后]') == 0 ? no : ('[售后] ' + no);
+		return no.indexOf(chat_t('tag_aftersale')) == 0 ? no : (chat_t('tag_aftersale') + ' ' + no);
 	}
 	if (data_type == 'file') {
 		const name = String(quote.content || quote.name || '').trim();
 		if (!name) {
-			return '[文件]';
+			return chat_t('tag_file');
 		}
-		return name.indexOf('[文件]') == 0 ? name : ('[文件] ' + name);
+		return name.indexOf(chat_t('tag_file')) == 0 ? name : (chat_t('tag_file') + ' ' + name);
 	}
 	if (data_type == 'audio' && (parseInt(quote.voice || 0) == 1 || quote.voice === true || quote.voice === 'true')) {
 		const vd = parseInt(quote.duration || 0) || 0;
 		if (vd > 0) {
-			return '[语音] ' + vd + '"';
+			return chat_t('tag_voice') + ' ' + vd + '"';
 		}
 		const text = String(quote.content || '').trim();
-		if (text.indexOf('[语音]') == 0) {
+		if (text.indexOf(chat_t('tag_voice')) == 0) {
 			return text;
 		}
-		return '[语音]';
+		return chat_t('tag_voice');
 	}
 	if (data_type == 'audio') {
 		const name = String(quote.content || quote.name || '').trim();
 		if (!name) {
-			return '[音频]';
+			return chat_t('tag_audio');
 		}
-		return name.indexOf('[音频]') == 0 ? name : ('[音频] ' + name);
+		return name.indexOf(chat_t('tag_audio')) == 0 ? name : (chat_t('tag_audio') + ' ' + name);
 	}
 	const text = String(quote.content != null ? quote.content : '').replace(/\s+/g, ' ').trim();
 	if (text.length > 80) {
@@ -964,8 +966,8 @@ export const normalize_quote = (raw) => {
 		// 对齐 PC ChatQuoteBlockHtml：不展示发送方名，正文固定「引用内容已撤回」
 		quote.name = '';
 		quote.url = '';
-		quote.content = '引用内容已撤回';
-		quote.preview = '引用内容已撤回';
+		quote.content = chat_t('quote_recalled');
+		quote.preview = chat_t('quote_recalled');
 		return quote;
 	}
 	quote.preview = format_quote_preview(quote);
@@ -999,7 +1001,7 @@ export const parse_message_content = (content) => {
 		if (data_type == 'goods') {
 			return {
 				data_type: 'goods',
-				text: String(content.title || content.content || '[商品]'),
+				text: String(content.title || content.content || chat_t('tag_goods')),
 				url: absolutize_url(content.images || content.url || ''),
 				goods_id: Number(content.id || content.goods_id || 0),
 				goods: {
@@ -1017,7 +1019,7 @@ export const parse_message_content = (content) => {
 			const first = list[0] || {};
 			return {
 				data_type: 'order',
-				text: first.order_no ? ('订单 ' + first.order_no) : '[订单]',
+				text: first.order_no ? (chat_t('order_prefix') + first.order_no) : chat_t('tag_order'),
 				url: '',
 				goods_id: 0,
 				order: {
@@ -1045,7 +1047,7 @@ export const parse_message_content = (content) => {
 			const first = list[0] || {};
 			return {
 				data_type: 'aftersale',
-				text: first.order_no ? ('售后 ' + first.order_no) : '[售后]',
+				text: first.order_no ? (chat_t('aftersale_prefix') + first.order_no) : chat_t('tag_aftersale'),
 				url: '',
 				goods_id: 0,
 				aftersale: {
@@ -1071,7 +1073,7 @@ export const parse_message_content = (content) => {
 				? 1 : 0;
 			return {
 				data_type,
-				text: String(content.name || content.content || (voice ? '[语音]' : (data_type == 'audio' ? '[音频]' : '[文件]'))),
+				text: String(content.name || content.content || (voice ? chat_t('tag_voice') : (data_type == 'audio' ? chat_t('tag_audio') : chat_t('tag_file')))),
 				url: absolutize_url(content.url || ''),
 				goods_id: 0,
 				duration,
@@ -1125,7 +1127,9 @@ export const is_obsolete_phase_divider = (content) => {
 	const tip = String(content.content || '');
 	// 对齐 PC ChatIsObsoletePhaseDivider：文案是「回答」不是「回复」
 	return tip === '智能客服回答' || tip === '人工客服回答'
-		|| tip === '智能客服回复' || tip === '人工客服回复';
+		|| tip === '智能客服回复' || tip === '人工客服回复'
+		|| tip === chat_t('ai_answer') || tip === chat_t('human_answer')
+		|| tip === chat_t('ai_reply') || tip === chat_t('human_reply');
 };
 
 export const is_ai_summary_message = (content) => {
@@ -1178,7 +1182,7 @@ export const is_recall_message = (content) => {
 
 export const chat_ai_bot_user = () => {
 	const snap = active_ai_snapshot();
-	const name = snap.bot_name || '智能客服';
+	const name = snap.bot_name || chat_t('ai_bot');
 	const avatar = absolutize_url(snap.bot_avatar || '');
 	if (snap.bot_cuid > 0 || avatar) {
 		return { id: snap.bot_cuid, name, avatar, is_ai_bot: 1 };
@@ -1386,21 +1390,21 @@ export const chat_try_open_rating = (data = {}) => {
 /** 提交评价 chat-rating */
 export const chat_submit_rating = ({ score, content, agent_cuid, end_by } = {}) => {
 	if (state.connect_status !== 1) {
-		showToast('未连接');
+		showToast(chat_t('disconnected'));
 		return false;
 	}
 	if (!chat_can_rating()) {
-		showToast('未开启会话评价');
+		showToast(chat_t('rating_disabled'));
 		return false;
 	}
 	const sc = parseInt(score || 0);
 	if (!(sc >= 1 && sc <= 5)) {
-		showToast('请先选择星级');
+		showToast(chat_t('select_star'));
 		return false;
 	}
 	const aid = parseInt(agent_cuid || 0) || active_contact_id();
 	if (aid > 0 && chat_session_is_rated(aid)) {
-		showToast('您已评价过本次服务');
+		showToast(chat_t('already_rated'));
 		emit('chat_rating_close', { contact_id: aid });
 		return false;
 	}
@@ -1629,57 +1633,51 @@ const build_connect_query_string = () => {
 	return parts.length > 0 ? ('?' + parts.join('&')) : '';
 };
 
-/** 页面 onLoad 进线参数 → runtime_config（连接前调用） */
+/** 页面 onLoad 进线参数 → runtime_config（连接前调用；每次整页覆盖，避免上次 chat_user 残留） */
 export const chat_apply_entry_params = (params = {}) => {
-	const patch = {};
-	if (params.source != null && String(params.source) !== '') {
-		patch.entry_source = String(params.source);
-	}
-	if (params.data_id != null && String(params.data_id) !== '') {
-		patch.entry_data_id = String(params.data_id);
-	}
-	if (params.data_type != null && String(params.data_type) !== '') {
-		patch.entry_data_type = String(params.data_type);
-	}
-	if (params.chat_user != null && String(params.chat_user) !== '') {
-		patch.entry_chat_user = String(params.chat_user);
-	}
-	if (params.chat_type != null && String(params.chat_type) !== '') {
-		patch.entry_chat_type = String(params.chat_type);
-	}
-	if (Object.keys(patch).length > 0) {
-		chat_set_config(patch);
-	}
+	const src = params || {};
+	const patch = {
+		entry_source: src.source != null && String(src.source) !== '' ? String(src.source) : '',
+		entry_data_id: src.data_id != null && String(src.data_id) !== '' ? String(src.data_id) : '',
+		entry_data_type: src.data_type != null && String(src.data_type) !== '' ? String(src.data_type) : '',
+		entry_chat_user: src.chat_user != null && String(src.chat_user) !== '' ? String(src.chat_user) : '',
+		entry_chat_type: src.chat_type != null && String(src.chat_type) !== '' ? String(src.chat_type) : '',
+	};
+	chat_set_config(patch);
 	return patch;
 };
 
-/** 原生会话页 URL（列表 → 详情，携带进线参数） */
+/** 原生会话页 URL（咨询进线 / 列表 → 详情，携带进线参数） */
 export const chat_build_session_url = (id, entry = {}) => {
 	const agent_id = parseInt(id || 0, 10) || 0;
-	if (!(agent_id > 0)) {
-		return '/pages/plugins/chat/index/index';
-	}
 	const src = entry || {};
-	let url = '/pages/plugins/chat/index/index?id=' + encodeURIComponent(String(agent_id));
+	let url = '/pages/plugins/chat/index/index';
+	const qs = [];
+	if (agent_id > 0) {
+		qs.push('id=' + encodeURIComponent(String(agent_id)));
+	}
 	if (!isEmpty(src.source)) {
-		url += '&source=' + encodeURIComponent(String(src.source));
+		qs.push('source=' + encodeURIComponent(String(src.source)));
 	}
 	if (!isEmpty(src.data_type)) {
-		url += '&data_type=' + encodeURIComponent(String(src.data_type));
+		qs.push('data_type=' + encodeURIComponent(String(src.data_type)));
 		if (src.data_id != null && String(src.data_id) !== '') {
-			url += '&data_id=' + encodeURIComponent(String(src.data_id));
+			qs.push('data_id=' + encodeURIComponent(String(src.data_id)));
 		} else {
-			url += '&data_id=0';
+			qs.push('data_id=0');
 		}
 	}
 	if (!isEmpty(src.chat_user)) {
-		url += '&chat_user=' + encodeURIComponent(String(src.chat_user));
+		qs.push('chat_user=' + encodeURIComponent(String(src.chat_user)));
 	}
 	if (!isEmpty(src.chat_type)) {
-		url += '&chat_type=' + encodeURIComponent(String(src.chat_type));
+		qs.push('chat_type=' + encodeURIComponent(String(src.chat_type)));
 	}
 	if (src.from_list === true || src.from_list == 1 || src.from_list == '1') {
-		url += '&from_list=1';
+		qs.push('from_list=1');
+	}
+	if (qs.length > 0) {
+		url += '?' + qs.join('&');
 	}
 	return url;
 };
@@ -1814,7 +1812,7 @@ export const build_send_payload = (type = 'chat', params = {}) => {
 	} else if (payload_data && typeof payload_data == 'object' && !Array.isArray(payload_data)) {
 		payload_data = { ...payload_data, user_type: page_user_type };
 	}
-	return {
+	const payload = {
 		token: auth.token,
 		user_id: auth.user_id,
 		uuid: auth.uuid,
@@ -1822,6 +1820,8 @@ export const build_send_payload = (type = 'chat', params = {}) => {
 		// 对齐 PC MessageSendDataHandle；client_type 跟商城终端一致（h5/weixin/app 等）
 		application: 'web',
 		application_client_type: get_application_client_type(),
+		// 对齐 PC：Socket 无 HTTP 语言上下文，每条消息显式带当前语言
+		lang: get_chat_client_lang(),
 		type: type || 'chat',
 		content: params.content || '',
 		fd: params.fd,
@@ -1830,6 +1830,27 @@ export const build_send_payload = (type = 'chat', params = {}) => {
 		current_user,
 		receive_user,
 	};
+	// 进线参数：PC 靠 WS URL query；这里消息里再带一份，保证指定客服 chat_user 不丢
+	const entry_params = {};
+	if (!isEmpty(runtime_config.entry_source)) {
+		entry_params.source = String(runtime_config.entry_source);
+	}
+	if (!isEmpty(runtime_config.entry_data_id) || !isEmpty(runtime_config.entry_data_type)) {
+		if (!isEmpty(runtime_config.entry_data_type)) {
+			entry_params.data_type = String(runtime_config.entry_data_type);
+			entry_params.data_id = !isEmpty(runtime_config.entry_data_id) ? String(runtime_config.entry_data_id) : '0';
+		}
+	}
+	if (!isEmpty(runtime_config.entry_chat_user)) {
+		entry_params.chat_user = String(runtime_config.entry_chat_user);
+	}
+	if (!isEmpty(runtime_config.entry_chat_type)) {
+		entry_params.chat_type = String(runtime_config.entry_chat_type);
+	}
+	if (Object.keys(entry_params).length > 0) {
+		payload.params = entry_params;
+	}
+	return payload;
 };
 
 export const chat_send = (type = 'chat', params = {}) => {
@@ -2193,7 +2214,7 @@ const map_friend_list = (list_data = {}) => {
 			const preview = format_list_message_preview(maybe_parse_json(item.content));
 			return {
 				id: receive.id,
-				name: receive.name || '用户',
+				name: receive.name || chat_t('user'),
 				avatar,
 				status: Number(receive.status) === 1 ? 1 : 0,
 				ai_mode,
@@ -2232,11 +2253,11 @@ const map_queue_list = (payload = {}) => {
 			pending = m ? parseInt(m[1]) : 0;
 		}
 		const preview_obj = format_list_message_preview(maybe_parse_json(row.content));
-		const preview = row.preview || format_message_tips(row.content) || '等待回复';
+		const preview = row.preview || format_message_tips(row.content) || chat_t('waiting_reply');
 		rows.push({
 			visitor_cuid: vid,
 			id: vid,
-			name: row.name || receive.name || ('访客' + vid),
+			name: row.name || receive.name || (chat_t('visitor') + vid),
 			avatar: absolutize_url(row.avatar || receive.avatar || ''),
 			preview_tag: preview_obj.tag,
 			preview_content: preview_obj.content,
@@ -2482,7 +2503,7 @@ const handle_message = (raw) => {
 
 		case 'success-fail':
 			state.connect_status = 1;
-			state.error_msg = res.msg || '初始化失败';
+			state.error_msg = res.msg || chat_t('init_failed');
 			state.online_status = 'off';
 			set_connecting(false);
 			emit('success_fail', { msg: state.error_msg, res });
@@ -2518,7 +2539,7 @@ const handle_message = (raw) => {
 					break;
 				}
 				state._identity_retry = 0;
-				showToast('客服身份异常，请重新登录');
+				showToast(chat_t('agent_auth_error'));
 			} else {
 				state._identity_retry = 0;
 			}
@@ -3081,9 +3102,9 @@ const handle_message = (raw) => {
 				const base = { ...(state.friend_base || {}) };
 				base.friend = { ...(base.friend || {}), remark: data.data.data || '' };
 				chat_set_friend_base(base);
-				showToast(data.data.msg || '修改成功');
+				showToast(data.data.msg || chat_t('modify_ok'));
 			} else {
-				showToast((data.data && data.data.msg) || '修改失败');
+				showToast((data.data && data.data.msg) || chat_t('modify_fail'));
 			}
 			emit('user_remark_edit', data.data);
 			break;
@@ -3110,9 +3131,9 @@ const handle_message = (raw) => {
 					state.user_list[idx].name = name;
 					emit('user_list', get_chat_state());
 				}
-				showToast(data.data.msg || '修改成功');
+				showToast(data.data.msg || chat_t('modify_ok'));
 			} else {
-				showToast((data.data && data.data.msg) || '修改失败');
+				showToast((data.data && data.data.msg) || chat_t('modify_fail'));
 			}
 			emit('user_name_edit', data.data);
 			break;
@@ -3122,9 +3143,9 @@ const handle_message = (raw) => {
 				const base = { ...(state.friend_base || {}) };
 				base.friend = { ...(base.friend || {}), label: normalize_label_list(data.data.data) };
 				chat_set_friend_base(base);
-				showToast(data.data.msg || '修改成功');
+				showToast(data.data.msg || chat_t('modify_ok'));
 			} else {
-				showToast((data.data && data.data.msg) || '修改失败');
+				showToast((data.data && data.data.msg) || chat_t('modify_fail'));
 			}
 			emit('user_label_edit', data.data);
 			break;
@@ -3193,9 +3214,9 @@ const handle_message = (raw) => {
 				if (!exists) {
 					state.quick_message = [{ id: row.id, content: String(row.content || '') }].concat(state.quick_message);
 				}
-				showToast(data.data.msg || '添加成功');
+				showToast(data.data.msg || chat_t('add_ok'));
 			} else {
-				showToast((data.data && data.data.msg) || '添加失败');
+				showToast((data.data && data.data.msg) || chat_t('add_fail'));
 			}
 			emit('quick_message', state.quick_message);
 			break;
@@ -3204,9 +3225,9 @@ const handle_message = (raw) => {
 			if (data.data && data.data.code == 0) {
 				const del_id = data.data.data;
 				state.quick_message = state.quick_message.filter((item) => String(item.id) != String(del_id));
-				showToast(data.data.msg || '删除成功');
+				showToast(data.data.msg || chat_t('delete_ok'));
 			} else {
-				showToast((data.data && data.data.msg) || '删除失败');
+				showToast((data.data && data.data.msg) || chat_t('delete_fail'));
 			}
 			emit('quick_message', state.quick_message);
 			break;
@@ -3216,11 +3237,11 @@ const handle_message = (raw) => {
 			const ar = data.data || {};
 			if (ar.code == 0) {
 				apply_auto_reply_config(ar.data || {});
-				showToast(ar.msg || '保存成功');
+				showToast(ar.msg || chat_t('save_ok'));
 				emit('auto_reply_save', { ok: true, data: state.auto_reply_config });
 			} else {
-				showToast(ar.msg || '保存失败');
-				emit('auto_reply_save', { ok: false, msg: ar.msg || '保存失败' });
+				showToast(ar.msg || chat_t('save_fail'));
+				emit('auto_reply_save', { ok: false, msg: ar.msg || chat_t('save_fail') });
 			}
 			break;
 		}
@@ -3264,7 +3285,7 @@ const handle_message = (raw) => {
 				if (think_id <= 0 || think_id == active_contact_id()) {
 					emit('ai_thinking', {
 						show: true,
-						msg: data.data.msg || '智能客服正在回复',
+						msg: data.data.msg || chat_t('ai_replying'),
 						contact_id: think_id,
 						user: chat_ai_bot_user(),
 					});
@@ -3318,7 +3339,7 @@ const handle_message = (raw) => {
 			chat_ai_set_waiting(parseInt(back_ai.visitor_cuid || 0), false);
 			emit('ai_thinking', { show: false });
 			if (state.user_type == 'work' && (res.msg || data.msg)) {
-				showToast(res.msg || data.msg || '用户已切换为智能客服接待');
+				showToast(res.msg || data.msg || chat_t('ai_enabled_switch'));
 			}
 			if (state.ai_switching) {
 				chat_ai_switch_unlock();
@@ -3457,7 +3478,7 @@ const handle_message = (raw) => {
 			const is_active = !!(related || self_involved);
 			emit('chat_recall', {
 				record_id,
-				content: data.content || { data_type: 'recall', content: '撤回了一条消息' },
+				content: data.content || { data_type: 'recall', content: chat_t('recalled_msg') },
 				send_cuid,
 				receive_cuid,
 				is_active,
@@ -3589,7 +3610,7 @@ const bind_socket_events = (task, ping_seconds, gen) => {
 			return;
 		}
 		console.log('[chat_socket] error');
-		state.error_msg = '连接失败';
+		state.error_msg = chat_t('connect_fail');
 		state.connect_status = 0;
 		state.online_status = 'off';
 		state.socket_opened = false;
@@ -3646,7 +3667,7 @@ const connect_once = () => {
 		return true;
 	} catch (err) {
 		console.error('[chat_socket] connect fail', err);
-		state.error_msg = '服务器连接失败';
+		state.error_msg = chat_t('server_connect_fail');
 		set_connecting(false);
 		emit('error', { msg: state.error_msg });
 		return false;
@@ -3658,7 +3679,7 @@ const start_fail_reconnect = () => {
 		return;
 	}
 	state.reconnect_count = 0;
-	state.error_msg = '连接失败';
+	state.error_msg = chat_t('connect_fail');
 	set_connecting(false);
 	emit('error', { msg: state.error_msg });
 	connect_once();
@@ -3666,7 +3687,7 @@ const start_fail_reconnect = () => {
 		state.reconnect_count += 1;
 		if (state.reconnect_count >= 150) {
 			clear_reconnect();
-			state.error_msg = '连接失败';
+			state.error_msg = chat_t('connect_fail');
 			set_connecting(false);
 			emit('error', { msg: state.error_msg });
 			return;
@@ -3735,7 +3756,7 @@ const start_connect_loop = () => {
 				clearInterval(state.connect_timer);
 				state.connect_timer = null;
 				if (state.connect_status !== 1) {
-					state.error_msg = '连接失败';
+					state.error_msg = chat_t('connect_fail');
 					set_connecting(false);
 					emit('error', { msg: state.error_msg, timeout: true });
 					start_fail_reconnect();
@@ -3974,7 +3995,7 @@ export const chat_load_user_history = (page = 1, opts = {}) => {
 export const chat_search_users = (keywords = '') => {
 	const kw = String(keywords || '').trim();
 	if (kw !== '' && state.connect_status !== 1) {
-		showToast('请先连接后再搜索');
+		showToast(chat_t('connect_first_search'));
 		return false;
 	}
 	state.friend_search.keyword = kw;
@@ -4016,11 +4037,11 @@ export const chat_search_record = (keywords = '') => {
 		return true;
 	}
 	if (!state.receive_user || !state.receive_user.id) {
-		showToast(state.user_type == 'work' ? '请先选择联系人' : '请先进入会话');
+		showToast(state.user_type == 'work' ? chat_t('select_session_user') : chat_t('enter_session_first'));
 		return false;
 	}
 	if (state.connect_status !== 1) {
-		showToast('请先上线后再搜索');
+		showToast(chat_t('online_first_search'));
 		return false;
 	}
 	return chat_send('record-search', { data: { keywords: kw } });
@@ -4122,7 +4143,7 @@ export const chat_can_show_input_message = () => {
 export const chat_quick_message_add = (content) => {
 	const text = String(content || '').trim();
 	if (isEmpty(text)) {
-		showToast('请先输入内容');
+		showToast(chat_t('input_first'));
 		return false;
 	}
 	return chat_send('quick-message-add', { data: text });
@@ -4139,11 +4160,11 @@ export const chat_quick_message_del = (id) => {
 /** 保存工作台离线/超时自动回复（对齐 PC auto-reply-config-save） */
 export const chat_save_auto_reply_config = (cfg = {}) => {
 	if (state.connect_status !== 1) {
-		showToast('未连接');
+		showToast(chat_t('disconnected'));
 		return false;
 	}
 	if (parseInt((state.chat_features || {}).is_offline_auto_reply || 0) != 1) {
-		showToast('后台未开启离线自动回复');
+		showToast(chat_t('offline_reply_disabled'));
 		return false;
 	}
 	auto_reply_saving = true;
@@ -4200,24 +4221,24 @@ export const msg_plain_text_handle = (msg) => {
  */
 export const chat_send_message = (content) => {
 	if (state.connect_status !== 1) {
-		showToast('发送失败');
+		showToast(chat_t('send_fail'));
 		return false;
 	}
 	if (state.online_status != 'online') {
-		showToast('您已离线');
+		showToast(chat_t('you_offline'));
 		return false;
 	}
 	if (!state.receive_user || !state.receive_user.id) {
-		showToast('请先选择会话用户');
+		showToast(chat_t('select_session_user'));
 		return false;
 	}
 	const vid = active_contact_id();
 	if (state.user_type == 'work' && active_ai_snapshot().mode == 'ai') {
-		showToast('用户当前由智能客服接待，请先点击「接管人工」后再发送');
+		showToast(chat_t('ai_takeover_before_send'));
 		return false;
 	}
 	if (!content || !content.data_type) {
-		showToast('消息数据有误');
+		showToast(chat_t('msg_data_error'));
 		return false;
 	}
 	const tool_key = (content.data_type == 'audio' && parseInt(content.voice || 0) == 1)
@@ -4225,20 +4246,20 @@ export const chat_send_message = (content) => {
 		: content.data_type;
 	if (['emoji', 'images', 'video', 'audio', 'voice', 'file'].indexOf(tool_key) >= 0) {
 		if (!chat_can_use_tool(tool_key)) {
-			showToast('后台未开启该功能');
+			showToast(chat_t('feature_disabled'));
 			return false;
 		}
 	}
 	if (content.data_type == 'text') {
 		const text = msg_plain_text_handle(content.content);
 		if (isEmpty(text)) {
-			showToast('请输入内容');
+			showToast(chat_t('input_placeholder'));
 			return false;
 		}
 		content = { ...content, content: text };
 	}
 	if ((content.data_type == 'images' || content.data_type == 'video' || content.data_type == 'audio' || content.data_type == 'file') && isEmpty(content.url)) {
-		showToast('附件数据有误');
+		showToast(chat_t('annex_data_error'));
 		return false;
 	}
 	if (vid > 0 && parseInt(state.session_ended_map[vid] || 0) == 1) {
@@ -4254,7 +4275,7 @@ export const chat_send_message = (content) => {
 		pending_send_after_continue = pending_send_after_continue.filter((item) => item.id !== queued.id);
 		if (parseInt(state.session_ended_map[vid] || 0) == 1) {
 			// 结束态由页内「是否继续」弹窗处理；对齐 admin 提示
-			showToast('对话已结束');
+			showToast(chat_t('chat_ended'));
 			return false;
 		}
 	}
@@ -4273,11 +4294,11 @@ export const chat_work_active_ai_mode = () => active_ai_snapshot().mode;
 
 export const chat_transfer_human = () => {
 	if (state.connect_status !== 1) {
-		showToast('未连接');
+		showToast(chat_t('disconnected'));
 		return false;
 	}
 	if (!state.receive_user || !state.receive_user.id) {
-		showToast('请先选择要接管的用户');
+		showToast(chat_t('select_takeover_user'));
 		return false;
 	}
 	if (state.ai_switching) {
@@ -4293,15 +4314,15 @@ export const chat_transfer_human = () => {
 
 export const chat_transfer_ai = () => {
 	if (state.connect_status !== 1) {
-		showToast('未连接');
+		showToast(chat_t('disconnected'));
 		return false;
 	}
 	if (parseInt(active_ai_snapshot().is_enable || 0) != 1) {
-		showToast('未开启智能客服');
+		showToast(chat_t('ai_not_enabled'));
 		return false;
 	}
 	if (!state.receive_user || !state.receive_user.id) {
-		showToast(state.user_type == 'user' ? '当前会话无效' : '请先选择要交回的用户');
+		showToast(state.user_type == 'user' ? chat_t('session_invalid') : chat_t('select_handback_user'));
 		return false;
 	}
 	if (state.ai_switching) {
@@ -4317,19 +4338,19 @@ export const chat_transfer_ai = () => {
 
 export const chat_load_agent_online_list = () => {
 	if (state.connect_status !== 1) {
-		showToast('未连接');
+		showToast(chat_t('disconnected'));
 		return false;
 	}
 	if (active_ai_snapshot().mode == 'ai') {
-		showToast('用户当前由智能客服接待，请先接管人工后再转接');
+		showToast(chat_t('ai_takeover_before_transfer'));
 		return false;
 	}
 	if (parseInt(state.agent_online_others || 0) <= 0) {
-		showToast('当前没有其他在线客服可转接');
+		showToast(chat_t('no_other_online_agent'));
 		return false;
 	}
 	if (!state.receive_user || !state.receive_user.id) {
-		showToast('请先选择用户');
+		showToast(chat_t('select_user_first'));
 		return false;
 	}
 	return chat_send('agent-online-list');
@@ -4356,7 +4377,7 @@ export const chat_upsert_queue_visitor = (row = {}) => {
 		data: [{
 			receive_user: {
 				id: vid,
-				name: row.name || ('访客' + vid),
+				name: row.name || (chat_t('visitor') + vid),
 				avatar: row.avatar || '',
 				status: 1,
 			},
@@ -4383,15 +4404,15 @@ export const chat_can_end = () => {
 /** 对齐 PC .chat-end-btn：结束当前会话（不弹评价，评价仅咨询端） */
 export const chat_end_session = () => {
 	if (state.connect_status !== 1) {
-		showToast('未连接');
+		showToast(chat_t('disconnected'));
 		return false;
 	}
 	if (!chat_can_end()) {
-		showToast('未开启结束对话');
+		showToast(chat_t('end_chat_disabled'));
 		return false;
 	}
 	if (!state.receive_user || !state.receive_user.id) {
-		showToast('请先选择对话对象');
+		showToast(chat_t('select_chat_target'));
 		return false;
 	}
 	const vid = active_contact_id();
@@ -4422,13 +4443,13 @@ export const chat_continue_session = (opts = {}) => {
 	const silent = !!(opts && opts.silent);
 	if (state.connect_status !== 1) {
 		if (!silent) {
-			showToast('未连接');
+			showToast(chat_t('disconnected'));
 		}
 		return false;
 	}
 	if (!state.receive_user || !state.receive_user.id) {
 		if (!silent) {
-			showToast('请先选择对话对象');
+			showToast(chat_t('select_chat_target'));
 		}
 		return false;
 	}
@@ -4507,11 +4528,11 @@ export const chat_recall_seconds = () => {
 export const chat_recall_message = (record_id) => {
 	const rid = parseInt(record_id || 0) || 0;
 	if (!(rid > 0)) {
-		showToast('消息尚未同步，请稍后再试');
+		showToast(chat_t('msg_not_synced'));
 		return false;
 	}
 	if (!chat_can_recall()) {
-		showToast('未开启消息撤回');
+		showToast(chat_t('recall_disabled'));
 		return false;
 	}
 	return chat_send('chat-recall', { data: { record_id: rid } });

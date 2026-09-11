@@ -40,7 +40,7 @@
 		<view class="chat-main" :style="chat_main_style" @tap="hide_panel_event">
 			<view v-if="history_loading" class="history-more">
 				<view class="history-more-spin"></view>
-				<text class="history-more-text">加载中</text>
+				<text class="history-more-text">{{$t('chat.loading')}}</text>
 			</view>
 			<view class="message-list">
 					<block v-for="(item, index) in message_list" :key="item.key">
@@ -74,19 +74,19 @@
 						v-if="show_end_btn"
 						class="ai-bar-btn"
 						@tap="end_session_event"
-					><text class="ai-bar-btn-text">结束对话</text></view>
+					><text class="ai-bar-btn-text">{{$t('chat.end_chat')}}</text></view>
 					<view
 						v-if="show_transfer_human_btn"
 						class="ai-bar-btn"
 						:class="{ 'is-disabled': ai_switching }"
 						@tap="transfer_human_event"
-					><text class="ai-bar-btn-text">转人工客服</text></view>
+					><text class="ai-bar-btn-text">{{$t('chat.transfer_human')}}</text></view>
 					<view
 						v-if="show_back_ai_btn"
 						class="ai-bar-btn"
 						:class="{ 'is-disabled': ai_switching }"
 						@tap="back_ai_event"
-					><text class="ai-bar-btn-text">切回智能客服</text></view>
+					><text class="ai-bar-btn-text">{{$t('chat.back_ai')}}</text></view>
 				</view>
 			</view>
 
@@ -148,7 +148,7 @@
 							@touchmove="voice_press_move"
 							@touchend="voice_press_end"
 							@touchcancel="voice_press_end"
-						>{{ voice_recording ? (voice_will_cancel ? '松开取消' : '松开发送') : '按住说话' }}</view>
+						>{{ voice_recording ? (voice_will_cancel ? $t('chat.release_to_cancel') : $t('chat.release_to_send')) : $t('chat.hold_to_talk') }}</view>
 						<!-- #endif -->
 						<!-- #ifndef MP-WEIXIN -->
 						<view
@@ -166,7 +166,7 @@
 							@mousedown.stop.prevent="voice_press_start"
 							@mouseup.stop.prevent="voice_press_end"
 							@contextmenu.prevent="prevent_default_event"
-						>{{ voice_recording ? (voice_will_cancel ? '松开取消' : '松开发送') : '按住说话' }}</view>
+						>{{ voice_recording ? (voice_will_cancel ? $t('chat.release_to_cancel') : $t('chat.release_to_send')) : $t('chat.hold_to_talk') }}</view>
 						<!-- #endif -->
 						<view v-if="!is_voice_input && show_tool_emoji" class="input-emoji-btn" @tap="toggle_emoji_event">
 							<iconfont
@@ -184,7 +184,7 @@
 						@tap="toggle_goods_panel_event"
 					>
 						<iconfont
-							name="icon-admin-goods"
+							name="icon-layout-module-goods"
 							size="44rpx"
 							:color="consult_popup_show && consult_popup_type == 'goods' ? '#07c160' : '#191919'"
 						></iconfont>
@@ -213,7 +213,7 @@
 							class="send-btn"
 							:class="{ 'is-show': can_send && !is_voice_input }"
 							@tap="send_event"
-						>发送</view>
+						>{{$t('chat.send')}}</view>
 					</view>
 					</view>
 
@@ -227,7 +227,7 @@
 									:src="quote_draft.url"
 									mode="aspectFill"
 								></image>
-								<text class="quote-bar-text">{{ quote_draft.name || '用户' }}：{{ quote_draft.preview || quote_draft.content || '' }}</text>
+								<text class="quote-bar-text">{{ quote_draft.name || $t('chat.user') }}：{{ quote_draft.preview || quote_draft.content || '' }}</text>
 							</view>
 							<view class="quote-bar-close" @tap="clear_quote_event">
 								<text class="quote-bar-close-x">×</text>
@@ -240,7 +240,7 @@
 			<view v-if="panel_type == 'emoji'" class="panel-box">
 				<scroll-view class="emoji-scroll" scroll-y>
 					<view v-if="recent_emoji_list.length > 0" class="emoji-section">
-						<view class="emoji-section-title">最近使用</view>
+						<view class="emoji-section-title">{{$t('chat.recent_emoji')}}</view>
 						<view class="emoji-grid">
 							<view
 								v-for="(emoji, idx) in recent_emoji_list"
@@ -252,7 +252,7 @@
 						</view>
 					</view>
 					<view class="emoji-section">
-						<view class="emoji-section-title">所有表情</view>
+						<view class="emoji-section-title">{{$t('chat.all_emoji')}}</view>
 						<view class="emoji-grid">
 							<view
 								v-for="(emoji, idx) in emoji_list"
@@ -329,12 +329,12 @@
 							></iconfont>
 						</view>
 					</view>
-					<view v-if="can_send" class="input-fs-send" @tap="send_event">发送</view>
+					<view v-if="can_send" class="input-fs-send" @tap="send_event">{{$t('chat.send')}}</view>
 				</view>
 				<view v-if="panel_type == 'emoji'" class="input-fs-emoji">
 					<scroll-view class="emoji-scroll" scroll-y>
 						<view v-if="recent_emoji_list.length > 0" class="emoji-section">
-							<view class="emoji-section-title">最近使用</view>
+							<view class="emoji-section-title">{{$t('chat.recent_emoji')}}</view>
 							<view class="emoji-grid">
 								<view
 									v-for="(emoji, idx) in recent_emoji_list"
@@ -346,7 +346,7 @@
 							</view>
 						</view>
 						<view class="emoji-section">
-							<view class="emoji-section-title">所有表情</view>
+							<view class="emoji-section-title">{{$t('chat.all_emoji')}}</view>
 							<view class="emoji-grid">
 								<view
 									v-for="(emoji, idx) in emoji_list"
@@ -417,13 +417,13 @@
 		<view v-if="show_rating_modal" class="prompt-modal-mask" @tap="close_rating_modal_event">
 			<view class="rating-popup-wrap prompt-modal rating-modal" @tap.stop="prevent_touch_move">
 				<view class="rating-popup-hd">
-					<text class="rating-popup-title">服务评价</text>
+					<text class="rating-popup-title">{{$t('chat.rating_title')}}</text>
 					<view class="rating-popup-close" @tap.stop="close_rating_modal_event">
 						<iconfont name="icon-close-line" size="28rpx" color="#999"></iconfont>
 					</view>
 				</view>
 				<view class="rating-popup-body">
-					<text class="rating-modal-tip">请对本次服务进行评价</text>
+					<text class="rating-modal-tip">{{$t('chat.rating_tip')}}</text>
 					<view class="rating-stars">
 						<view
 							v-for="item in rating_star_list"
@@ -444,7 +444,7 @@
 					<textarea
 						class="rating-modal-input"
 						:value="rating_content"
-						placeholder="可选：说说您的感受"
+						:placeholder="$t('chat.rating_placeholder')"
 						placeholder-class="consult-search-placeholder"
 						:maxlength="200"
 						@input="rating_content_input_event"
@@ -453,7 +453,7 @@
 						class="rating-submit-btn"
 						:class="{ 'is-disabled': rating_submitting }"
 						@tap.stop="submit_rating_event"
-					>{{ rating_submitting ? '提交中...' : '提交评价' }}</view>
+					>{{ rating_submitting ? $t('chat.rating_submitting') : $t('chat.rating_submit') }}</view>
 				</view>
 			</view>
 		</view>
@@ -480,7 +480,7 @@
 							confirm-type="search"
 							:adjust-position="false"
 							:value="consult_keyword_input"
-							placeholder="请输入关键字搜索"
+							:placeholder="$t('chat.search_keyword_placeholder')"
 							placeholder-class="consult-search-placeholder"
 							@input="consult_search_input_event"
 							@confirm="consult_search_confirm_event"
@@ -498,7 +498,7 @@
 					<component-no-data
 						v-else-if="consult_filtered_list.length == 0"
 						:propStatus="0"
-						propMsg="暂无数据"
+						:propMsg="$t('chat.no_data')"
 					></component-no-data>
 					<view
 						v-else
@@ -514,7 +514,7 @@
 							></image>
 							<view class="consult-meta">
 								<view class="consult-title-row">
-									<text v-if="item.is_current == 1" class="consult-tag-current">当前</text>
+									<text v-if="item.is_current == 1" class="consult-tag-current">{{$t('chat.current')}}</text>
 									<view class="consult-title">
 										<text class="consult-title-text">{{ consult_row_title(item) }}</text>
 									</view>
@@ -522,7 +522,7 @@
 								<text v-if="consult_popup_type == 'order'" class="consult-sub">{{ order_card_head(item) }}</text>
 								<text v-else-if="consult_popup_type == 'aftersale'" class="consult-sub">{{ aftersale_card_head(item) }}</text>
 								<text v-else-if="consult_popup_type == 'cart' && item.spec_text" class="consult-sub">{{ item.spec_text }}</text>
-								<text v-if="consult_popup_type == 'aftersale' && item.reason" class="consult-reason">申请原因：{{ item.reason }}</text>
+								<text v-if="consult_popup_type == 'aftersale' && item.reason" class="consult-reason">{{$t('chat.apply_reason')}}{{ item.reason }}</text>
 								<text v-if="consult_row_price(item)" class="consult-price">{{ consult_row_price(item) }}</text>
 							</view>
 						</view>
@@ -554,11 +554,11 @@
 			@touchmove.stop.prevent="prevent_touch_move"
 		>
 			<view class="ended-choice-modal" @tap.stop="prevent_touch_move">
-				<text class="ended-choice-title">温馨提示</text>
-				<text class="ended-choice-content">当前对话已结束，是否继续聊天？</text>
+				<text class="ended-choice-title">{{$t('chat.warm_tips')}}</text>
+				<text class="ended-choice-content">{{$t('chat.ended_continue_ask')}}</text>
 				<view class="ended-choice-actions">
-					<view class="ended-choice-btn ended-choice-cancel" @tap.stop="ended_choice_exit_event">退出</view>
-					<view class="ended-choice-btn ended-choice-confirm" @tap.stop="ended_choice_continue_event">继续聊天</view>
+					<view class="ended-choice-btn ended-choice-cancel" @tap.stop="ended_choice_exit_event">{{$t('chat.exit')}}</view>
+					<view class="ended-choice-btn ended-choice-confirm" @tap.stop="ended_choice_continue_event">{{$t('chat.continue_chat')}}</view>
 				</view>
 			</view>
 		</view>
@@ -590,6 +590,7 @@
 	import componentCommon from '@/components/common/common';
 	import componentNoData from '@/components/no-data/no-data';
 	import ChatUPopup from '../components/u-popup/u-popup.vue';
+	import pluginLocale from '../locale/index.js';
 	import chatPageMixin from '../common/chat-page-mixin.js';
 	import ChatMessageItem from '../components/chat-message-item.vue';
 	import ChatVoiceMask from '../components/chat-voice-mask.vue';
@@ -601,7 +602,7 @@
 	const chatNavInit = get_chat_nav_layout_metrics(88);
 
 	export default {
-		mixins: [chatPageMixin],
+		mixins: [pluginLocale, chatPageMixin],
 		components: {
 			componentCommon,
 			componentNoData,

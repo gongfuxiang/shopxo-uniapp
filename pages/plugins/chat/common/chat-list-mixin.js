@@ -1,3 +1,4 @@
+import { chat_t } from './chat-i18n.js';
 import base64 from '@/common/js/lib/base64.js';
 import { isEmpty, showToast, get_default_avatar, page_back_prev_event, url_open, get_config, get_chat_nav_layout_metrics, get_menu_button_rect_safe } from '../common/chat-host.js';
 import { ensure_chat_user_init, apply_chat_user_page_config } from '../common/chat-user-init.js';
@@ -37,7 +38,7 @@ export default {
 			nav_occupy_h: navInit.nav_occupy_h,
 			nav_right_pad: navInit.nav_right_pad,
 			window_height: navInit.window_height,
-			list_page_title: '在线客服',
+			list_page_title: chat_t('online_service'),
 			list_nav_layout_ready: false,
 		};
 	},
@@ -84,9 +85,9 @@ export default {
 		list_empty_text() {
 			const kw = String(this.list_keyword || '').trim();
 			if (kw) {
-				return '未找到匹配的会话';
+				return chat_t('empty_search');
 			}
-			return '暂无会话，稍后再试';
+			return chat_t('empty_session');
 		},
 		display_list() {
 			const rows = Array.isArray(this.user_list) ? this.user_list : [];
@@ -97,7 +98,7 @@ export default {
 			if (recv && recv.id) {
 				return [{
 					id: recv.id,
-					name: recv.name || '在线客服',
+					name: recv.name || chat_t('online_service'),
 					avatar: recv.avatar || this.default_avatar,
 					status: Number(recv.status) === 1 ? 1 : 0,
 					ai_mode: (recv.ai_mode || (get_chat_state().ai && get_chat_state().ai.mode) || ''),
@@ -270,7 +271,7 @@ export default {
 					return String(text);
 				}
 			}
-			return '在线客服';
+			return chat_t('online_service');
 		},
 
 		apply_list_page_title(source) {
@@ -380,7 +381,7 @@ export default {
 					return;
 				}
 				if (!ret.ok) {
-					showToast(ret.msg || '咨询端初始化失败');
+					showToast(ret.msg || chat_t('init_fail'));
 				}
 				this.page_user_inited = true;
 				apply_chat_user_page_config();

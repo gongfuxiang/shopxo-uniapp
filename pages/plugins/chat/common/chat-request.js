@@ -1,3 +1,4 @@
+import { chat_t } from './chat-i18n.js';
 import { get_request_api_url, showToast } from './chat-host.js';
 
 /** 咨询端 HTTP 路径（对齐 admin-app 逗号格式；商城走 plugins/index，非 seller 分发） */
@@ -46,7 +47,7 @@ const chat_post = (api_path, data = {}, options = {}) => {
 			fail: (err) => {
 				api_log('← fail', { api_path, url, err });
 				if (!silent) {
-					showToast('网络异常');
+					showToast(chat_t('network_error'));
 				}
 				reject(err || { msg: '网络异常' });
 			},
