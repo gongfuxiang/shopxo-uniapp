@@ -33,7 +33,7 @@
 			</view>
 		</view>
 		<scroll-view class="msg-search-list" scroll-y :style="{ height: listHeight + 'px' }" @touchmove.stop="emit_prevent">
-			<view v-if="loading && hits.length === 0" class="msg-search-empty">搜索中...</view>
+			<view v-if="loading" class="msg-search-empty">搜索中...</view>
 			<view v-else-if="isEmpty(keyword)" class="msg-search-empty">输入关键词搜索聊天记录</view>
 			<component-no-data
 				v-else-if="hits.length === 0"

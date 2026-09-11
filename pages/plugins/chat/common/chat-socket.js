@@ -52,6 +52,10 @@ export const chat_default_config = {
 	is_chat_end: 1,
 	/** 对齐 PC chat_features.is_chat_rating：会话评价（socket 未带字段时用页面默认） */
 	is_chat_rating: 1,
+	/** 对齐 PC chat_features.is_chat_read：己方消息已读/未读（socket 未带字段时用页面默认） */
+	is_chat_read: 1,
+	/** 对齐 PC chat_features.is_chat_read_user：咨询端展示已读/未读 */
+	is_chat_read_user: 1,
 	/** 对齐 PC data-is-input-status：检测输入状态 */
 	is_input_status: 1,
 	/** 对齐 PC data-is-user-input-message：工作台展示对方正在输入的正文 */
