@@ -4503,7 +4503,7 @@ export default {
 				if (msg === '') {
 					return;
 				}
-				this.input_status_text = '客服正在输入...';
+				this.input_status_text = chat_t('typing');
 				// 对齐 PC is-user-input-message：开才展示正文；'input' 是占位符不算正文
 				if (chat_can_show_input_message() && msg != 'input') {
 					this.input_status_msg = msg;
@@ -4634,9 +4634,12 @@ export default {
 				}
 				const data = payload || {};
 				const pos = parseInt(data.position || data.queue_position || 0) || 0;
-				const total = parseInt(data.total || data.queue_total || 0) || 0;
 				if (pos > 0) {
-					this.queue_status_text = total > 0 ? ('排队中，您前面还有 ' + Math.max(0, pos - 1) + ' 人') : ('排队中，当前第 ' + pos + ' 位');
+					// 对齐 PC ChatQueueTipText：按位次本地化，避免服务端/本地中文直出
+					const ahead = Math.max(0, pos - 1);
+					this.queue_status_text = ahead <= 0
+						? chat_t('queue_first_tip')
+						: chat_t('queue_ahead_tip', { n: pos, ahead });
 					return;
 				}
 				const tip = String(data.msg || data.content || data.tips || '').trim();

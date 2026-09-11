@@ -1,5 +1,5 @@
 <template>
-	<view :class="theme_view + ' chat-list-page'">
+	<view :class="theme_view + ' chat-list-page'" :style="list_page_style">
 		<view class="chat-list-nav">
 			<view class="chat-list-status-bar" :style="list_status_bar_style"></view>
 			<view class="chat-list-nav-bar" :style="list_nav_bar_style">
@@ -38,7 +38,8 @@
 						</view>
 					</view>
 				</view>
-				<scroll-view class="chat-list-scroll" scroll-y>
+				<!-- Safari/H5：scroll-view 必须有明确 px 高度，仅靠 flex+height:0 会塌成不可见 -->
+				<scroll-view class="chat-list-scroll" scroll-y :style="list_scroll_style">
 					<component-no-data
 						v-if="filtered_list.length == 0"
 						:propStatus="0"

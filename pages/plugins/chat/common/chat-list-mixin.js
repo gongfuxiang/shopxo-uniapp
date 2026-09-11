@@ -56,17 +56,62 @@ export default {
 			}
 			return style;
 		},
-		list_main_style() {
-			const occupy = this.nav_occupy_h || this.nav_bar_h || 0;
-			if (!(occupy > 0)) {
-				return 'box-sizing:border-box;';
+		/** Safari 对 min-height:100vh + flex 子项 height:0 易塌陷，整页用窗口像素高度锁死 */
+		list_page_style() {
+			const h = Number(this.window_height || 0);
+			if (!(h > 0)) {
+				return {};
 			}
-			return 'padding-top:' + occupy + 'px;box-sizing:border-box;';
+			return {
+				height: h + 'px',
+				minHeight: h + 'px',
+				boxSizing: 'border-box',
+				display: 'flex',
+				flexDirection: 'column',
+				overflow: 'hidden',
+			};
+		},
+		list_main_style() {
+			const occupy = Number(this.nav_occupy_h || this.nav_bar_h || 0);
+			const win = Number(this.window_height || 0);
+			const style = {
+				boxSizing: 'border-box',
+				display: 'flex',
+				flexDirection: 'column',
+				flex: '1',
+				minHeight: '0',
+				overflow: 'hidden',
+			};
+			if (occupy > 0) {
+				style.paddingTop = occupy + 'px';
+			}
+			if (win > 0) {
+				style.height = win + 'px';
+			}
+			return style;
 		},
 		list_body_style() {
 			return {
 				flex: '1',
 				minHeight: '0',
+				height: '100%',
+				display: 'flex',
+				flexDirection: 'column',
+				overflow: 'hidden',
+			};
+		},
+		/** 对齐 uni 文档：竖向 scroll-view 需固定高度；Safari 下仅 flex 不可靠 */
+		list_scroll_style() {
+			const win = Number(this.window_height || 0);
+			const occupy = Number(this.nav_occupy_h || this.nav_bar_h || 0);
+			const search = this.rpx_to_px(16 + 72 + 16) + 1;
+			let h = win - occupy - search;
+			if (!(h > 80)) {
+				h = 200;
+			}
+			return {
+				height: h + 'px',
+				flex: 'none',
 			};
 		},
 		filtered_list() {

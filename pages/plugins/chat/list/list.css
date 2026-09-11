@@ -1,8 +1,12 @@
 @import '../common/chat-h5-layout.css';
 
 .chat-list-page {
+	/* 实际高度由 list_page_style 像素锁定；此处仅作非 H5 / 未量到高度时的兜底 */
 	min-height: 100vh;
 	box-sizing: border-box;
+	display: flex;
+	flex-direction: column;
+	overflow: hidden;
 }
 
 .chat-list-nav {
@@ -65,7 +69,9 @@
 	box-sizing: border-box;
 	display: flex;
 	flex-direction: column;
-	min-height: 100vh;
+	flex: 1;
+	min-height: 0;
+	overflow: hidden;
 }
 
 .chat-list-loading {
@@ -132,11 +138,22 @@
 }
 
 .chat-list-scroll {
-	flex: 1;
-	height: 0;
+	/* 高度以 list_scroll_style 的 px 为准；勿再依赖 height:0（Safari 常塌成不可见） */
+	width: 100%;
 	min-height: 0;
 	box-sizing: border-box;
 }
+
+/* #ifdef H5 */
+/* uni scroll-view 内层在 WebKit 下偶发高度/overflow 异常，强制铺满外层给定高度 */
+.chat-list-scroll >>> .uni-scroll-view,
+.chat-list-scroll >>> .uni-scroll-view-content {
+	height: 100% !important;
+}
+.chat-list-scroll >>> .uni-scroll-view {
+	-webkit-overflow-scrolling: touch;
+}
+/* #endif */
 
 .chat-list-item {
 	display: flex;
