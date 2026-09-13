@@ -162,3 +162,100 @@
 .extraction-take-next {
     right: 0;
 }
+
+/*
+* 散客制作进度
+*/
+.make-progress-steps {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    justify-content: space-between;
+}
+.make-progress-step {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-width: 0;
+}
+.make-progress-node {
+    width: 100%;
+    height: 36rpx;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.make-progress-dot {
+    width: 36rpx;
+    height: 36rpx;
+    border-radius: 50%;
+    background: #e8e8e8;
+    z-index: 1;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-sizing: border-box;
+}
+.make-progress-dot-num,
+.make-progress-dot-check {
+    font-size: 20rpx;
+    line-height: 1;
+    color: #fff;
+}
+.make-progress-dot-num {
+    color: #999;
+}
+.make-progress-line {
+    position: absolute;
+    left: 50%;
+    right: -50%;
+    top: 50%;
+    height: 4rpx;
+    margin-top: -2rpx;
+    background: #e8e8e8;
+    z-index: 0;
+}
+.make-progress-name {
+    margin-top: 12rpx;
+    font-size: 24rpx;
+    color: #999;
+    text-align: center;
+    line-height: 1.3;
+}
+.make-progress-tip {
+    padding: 16rpx 20rpx;
+    background: #fafafa;
+    border-radius: 12rpx;
+}
+.make-progress-tip-text {
+    font-size: 24rpx;
+    line-height: 1.5;
+    color: #666;
+}
+.make-progress-step.is-done .make-progress-dot,
+.make-progress-step.is-active .make-progress-dot {
+    background: var(--color-main, #e22c08);
+}
+.make-progress-step.is-done .make-progress-dot-num,
+.make-progress-step.is-active .make-progress-dot-num,
+.make-progress-step.is-done .make-progress-dot-check,
+.make-progress-step.is-active .make-progress-dot-check {
+    color: #fff;
+}
+.make-progress-step.is-done .make-progress-line {
+    background: var(--color-main, #e22c08);
+}
+.make-progress-step.is-done .make-progress-name,
+.make-progress-step.is-active .make-progress-name {
+    color: #333;
+    font-weight: 500;
+}
+.make-progress-step.is-active .make-progress-name {
+    color: var(--color-main, #e22c08);
+}
+.make-progress-step.is-active .make-progress-tip-text {
+    color: var(--color-main, #e22c08);
+}

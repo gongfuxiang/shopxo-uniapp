@@ -62,7 +62,12 @@ var zh = {
     },
     "orderallot-detail": {
         "order_type": "订单类型",
-        "booking_data": "预约数据"
+        "booking_data": "预约数据",
+        "make_progress_title": "制作进度",
+        "make_tip_pending": "订单待商家确认，确认后开始制作",
+        "make_tip_making": "商家正在为您制作，请耐心等待",
+        "make_tip_made": "已制作完成，请到店领取或确认收货",
+        "make_tip_done": "本单已完成，欢迎再次光临"
     },
     "orderallot-list": {
         "service": "服务中",
@@ -132,7 +137,12 @@ var en = {
     },
     "orderallot-detail": {
         "order_type": "Order type",
-        "booking_data": "Booking data"
+        "booking_data": "Booking data",
+        "make_progress_title": "Preparation progress",
+        "make_tip_pending": "Waiting for the store to confirm, then preparation will start",
+        "make_tip_making": "The store is preparing your order, please wait",
+        "make_tip_made": "Ready now. Please pick up in store or confirm receipt",
+        "make_tip_done": "This order is completed. See you next time"
     },
     "orderallot-list": {
         "service": "In service",

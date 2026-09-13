@@ -2,6 +2,74 @@
     <view :class="theme_view">
         <block v-if="detail != null">
             <view class="padding-horizontal-main padding-top-main">
+                <!-- 状态与操作（对齐系统订单详情） -->
+                <view class="bg-white padding-main border-radius-main tc spacing-mb">
+                    <view class="padding-vertical-xl">
+                        <block v-if="status_progress_style == 'danger'">
+                            <view class="dis-inline-block va-m">
+                                <iconfont name="icon-sigh-o" size="68rpx" propClass="cr-red"></iconfont>
+                            </view>
+                            <text class="text-size-xl margin-top-sm va-m margin-left-sm cr-red">{{ status_progress_name }}</text>
+                        </block>
+                        <block v-else-if="status_progress_style == 'success'">
+                            <view class="dis-inline-block va-m">
+                                <iconfont name="icon-enable" size="68rpx" propClass="cr-green"></iconfont>
+                            </view>
+                            <text class="text-size-xl margin-top-sm va-m margin-left-sm cr-green">{{ status_progress_name }}</text>
+                        </block>
+                        <block v-else-if="status_progress_style == 'primary'">
+                            <view class="dis-inline-block va-m">
+                                <iconfont name="icon-inventroy-manage" size="68rpx" propClass="cr-blue"></iconfont>
+                            </view>
+                            <text class="text-size-xl margin-top-sm va-m margin-left-sm cr-blue">{{ status_progress_name }}</text>
+                        </block>
+                        <block v-else-if="status_progress_style == 'warning'">
+                            <view class="dis-inline-block va-m">
+                                <iconfont name="icon-wait-receive-delivery" size="68rpx" propClass="cr-yellow"></iconfont>
+                            </view>
+                            <text class="text-size-xl margin-top-sm va-m margin-left-sm cr-yellow">{{ status_progress_name }}</text>
+                        </block>
+                        <block v-else>
+                            <view class="dis-inline-block va-m">
+                                <iconfont name="icon-wait-payment" size="68rpx"></iconfont>
+                            </view>
+                            <text class="text-size-xl margin-top-sm va-m margin-left-sm">{{ status_progress_name }}</text>
+                        </block>
+                        <view v-if="((detail.operate_data || {}).is_pay || 0) == 1" class="cr-price fw-b margin-top-sm">
+                            <text class="text-size">{{ (detail.currency_data || {}).currency_symbol || payment_currency_symbol }}</text>
+                            <text class="text-size-xl margin-left-xs">{{ detail.total_price }}</text>
+                        </view>
+                        <view v-if="status_progress_tips" class="cr-grey text-size-xs margin-top-sm">{{ status_progress_tips }}</view>
+                        <view v-if="status_progress_steps.length > 0" class="make-progress-steps margin-top-main">
+                            <view
+                                v-for="(step, index) in status_progress_steps"
+                                :key="step.key"
+                                class="make-progress-step"
+                                :class="make_step_class(index)"
+                            >
+                                <view class="make-progress-node">
+                                    <view class="make-progress-dot">
+                                        <text v-if="make_step_done(index)" class="make-progress-dot-check">✓</text>
+                                        <text v-else class="make-progress-dot-num">{{ index + 1 }}</text>
+                                    </view>
+                                    <view v-if="index < status_progress_steps.length - 1" class="make-progress-line"></view>
+                                </view>
+                                <text class="make-progress-name">{{ step.name }}</text>
+                            </view>
+                        </view>
+                    </view>
+                    <view v-if="show_detail_operate" class="item-operation margin-top-sm tc">
+                        <button v-if="((detail.operate_data || {}).is_cancel || 0) == 1" class="round bg-white cr-yellow br-yellow" type="default" size="mini" @tap="cancel_event" hover-class="none">{{$t('common.cancel')}}</button>
+                        <button v-if="((detail.operate_data || {}).is_pay || 0) == 1" class="round bg-white cr-green br-green" type="default" size="mini" @tap="pay_event" hover-class="none">{{$t('common.pay')}}</button>
+                        <button v-if="((detail.operate_data || {}).is_collect || 0) == 1" class="round bg-white cr-green br-green" type="default" size="mini" @tap="collect_event" hover-class="none">{{$t('common.receiving_goods')}}</button>
+                        <button v-if="((detail.operate_data || {}).is_order_batch || 0) == 1" class="round bg-white cr-blue br-blue" type="default" size="mini" @tap="url_event" :data-value="'/pages/plugins/realstore/batchorder-list/batchorder-list?oid=' + detail.order_id" hover-class="none">{{$t('common.batch')}}</button>
+                        <button v-if="((detail.operate_data || {}).is_order_frequencycard || 0) == 1" class="round bg-white cr-green br-green" type="default" size="mini" @tap="url_event" :data-value="'/pages/plugins/realstore/frequencycard-list/frequencycard-list?oid=' + detail.order_id" hover-class="none">{{$t('common.secondary_card')}}</button>
+                        <button v-if="(detail.express_data || null) != null && detail.express_data.length > 0" class="round bg-white cr-main br-main" type="default" size="mini" @tap="url_event" :data-value="'/pages/plugins/express/detail/detail?oid=' + detail.id + '&action_type=realstore'" hover-class="none">{{$t('common.logistics')}}</button>
+                        <button v-if="(detail.plugins_delivery_data || 0) > 0" class="round bg-white cr-main br-main" type="default" size="mini" @tap="url_event" :data-value="'/pages/plugins/delivery/logistics/logistics?id=' + detail.plugins_delivery_data" hover-class="none">{{$t('common.logistics')}}</button>
+                        <button v-if="(detail.plugins_ordergoodsform_data || 0) == 1" class="round bg-white cr-blue br-blue" type="default" size="mini" @tap="url_event" :data-value="'/pages/plugins/ordergoodsform/order/order?id=' + detail.order_id" hover-class="none">{{$t('common.form')}}</button>
+                    </view>
+                </view>
+
                 <!-- 取货信息 -->
                 <view v-if="(detail.extraction_data || null) != null" class="extraction-take panel-item padding-main border-radius-main bg-white spacing-mb">
                     <view class="br-b padding-bottom-main fw-b text-size">{{$t('common.take_info_title')}}</view>
@@ -198,6 +266,24 @@
             <component-no-data :propStatus="data_list_loding_status" :propMsg="data_list_loding_msg"></component-no-data>
         </block>
 
+        <!-- 支付组件 -->
+        <component-payment
+            ref="payment"
+            :propCurrencySymbol="payment_currency_symbol"
+            :propPayUrl="pay_url"
+            :propQrcodeUrl="qrcode_url"
+            :propPaymentList="payment_list"
+            propPayDataKey="ids"
+            :propTempPayValue="temp_pay_value"
+            :propTempPayIndex="temp_pay_index"
+            :propPaymentId="payment_id"
+            :propDefaultPaymentId="default_payment_id"
+            :propPayPrice="pay_price"
+            :propIsShowPayment="is_show_payment_popup"
+            @close-payment-popup="payment_popup_event_close"
+            @pay-success="order_item_pay_success_handle"
+        ></component-payment>
+
         <!-- 公共 -->
         <component-common ref="common"></component-common>
     </view>
@@ -207,6 +293,7 @@
     import componentCommon from '@/components/common/common';
     import componentNoData from "@/components/no-data/no-data";
     import componentBottomLine from "@/components/bottom-line/bottom-line";
+    import componentPayment from '@/components/payment/payment';
     import pluginLocale from '../locale/index.js';
 
     var common_static_url = app.globalData.get_static_url("common");
@@ -224,6 +311,19 @@
                 detail_list: [],
                 site_fictitious: null,
                 extraction_take_index: 0,
+                // 支付
+                payment_currency_symbol: app.globalData.currency_symbol(),
+                pay_price: 0,
+                pay_url: '',
+                qrcode_url: '',
+                payment_list: [],
+                temp_pay_value: '',
+                temp_pay_index: 0,
+                payment_id: 0,
+                default_payment_id: 0,
+                is_show_payment_popup: false,
+                is_order_pay_only_can_buy_payment: 0,
+                original_payment_list: [],
             };
         },
 
@@ -231,6 +331,50 @@
             componentCommon,
             componentNoData,
             componentBottomLine,
+            componentPayment,
+        },
+
+        computed: {
+            status_progress() {
+                const d = this.detail || {};
+                return d.status_progress || d.make_progress || null;
+            },
+
+            status_progress_name() {
+                const sp = this.status_progress || {};
+                return sp.status_name || sp.current_name || ((this.detail || {}).status_name) || '';
+            },
+
+            status_progress_tips() {
+                return String(((this.status_progress || {}).tips) || '');
+            },
+
+            status_progress_style() {
+                return String(((this.status_progress || {}).style) || 'default');
+            },
+
+            status_progress_steps() {
+                const steps = ((this.status_progress || {}).steps) || null;
+                return (steps != null && steps.length > 0) ? steps : [];
+            },
+
+            show_detail_operate() {
+                const d = this.detail || null;
+                if (d == null) {
+                    return false;
+                }
+                const op = d.operate_data || {};
+                return (
+                    Number(op.is_cancel || 0) +
+                    Number(op.is_pay || 0) +
+                    Number(op.is_collect || 0) +
+                    Number(d.plugins_delivery_data || 0) +
+                    Number(d.plugins_ordergoodsform_data || 0) +
+                    Number(op.is_order_batch || 0) +
+                    Number(op.is_order_frequencycard || 0) +
+                    (((d.express_data || null) != null && d.express_data.length > 0) ? 1 : 0)
+                ) > 0;
+            },
         },
 
         onLoad(params) {
@@ -268,11 +412,41 @@
         },
 
         methods: {
+            make_step_class(index) {
+                const cur = Number(((this.status_progress || {}).current) || 0);
+                if (index < cur) {
+                    return 'is-done';
+                }
+                if (index === cur) {
+                    return 'is-active';
+                }
+                return 'is-wait';
+            },
+
+            make_step_done(index) {
+                const cur = Number(((this.status_progress || {}).current) || 0);
+                return index < cur;
+            },
+
+            // 初始化配置
+            init_config(status) {
+                if ((status || false) == true) {
+                    this.setData({
+                        is_order_pay_only_can_buy_payment: parseInt(app.globalData.get_config('plugins_base.intellectstools.data.is_order_pay_only_can_buy_payment', 0)),
+                    });
+                } else {
+                    app.globalData.is_config(this, 'init_config');
+                }
+            },
+
             // 获取数据
             init() {
                 this.setData({
                     data_list_loding_status: 1,
+                    pay_url: app.globalData.get_request_url('pay', 'order'),
+                    qrcode_url: app.globalData.get_request_url('paycheck', 'order'),
                 });
+                this.init_config();
                 uni.request({
                     url: app.globalData.get_request_url("detail", "orderallot", "realstore"),
                     method: "POST",
@@ -299,6 +473,9 @@
                                         { name: this.$t('common.cancel_time'), value: data.data.cancel_time || '' },
                                     ],
                                     site_fictitious: data.site_fictitious || null,
+                                    original_payment_list: data.payment_list || [],
+                                    payment_list: data.payment_list || [],
+                                    default_payment_id: data.default_payment_id || 0,
                                     data_list_loding_status: 3,
                                     data_bottom_line_status: true,
                                     data_list_loding_msg: '',
@@ -328,6 +505,132 @@
                             data_list_loding_msg: this.$t('common.internet_error_tips'),
                         });
                         app.globalData.showToast(this.$t('common.internet_error_tips'));
+                    },
+                });
+            },
+
+            // 支付
+            pay_event() {
+                const detail = this.detail || null;
+                if (detail == null) {
+                    return;
+                }
+                const payment_id = (((detail.main_order_data || null) == null) ? 0 : (detail.main_order_data.payment_id || 0));
+                var payment_list = this.original_payment_list || [];
+                if (this.is_order_pay_only_can_buy_payment == 1) {
+                    payment_list = [];
+                    (this.original_payment_list || []).forEach((v) => {
+                        if (v.id == payment_id) {
+                            payment_list.push(v);
+                        }
+                    });
+                }
+                this.setData({
+                    is_show_payment_popup: true,
+                    payment_list: payment_list,
+                    payment_currency_symbol: (((detail.currency_data || null) == null) ? app.globalData.currency_symbol() : (detail.currency_data.currency_symbol || app.globalData.currency_symbol())),
+                    temp_pay_value: detail.order_id,
+                    temp_pay_index: 0,
+                    payment_id: payment_id,
+                    pay_price: detail.total_price,
+                });
+            },
+
+            // 支付弹窗关闭
+            payment_popup_event_close() {
+                this.setData({
+                    is_show_payment_popup: false,
+                });
+            },
+
+            // 支付成功后刷新详情
+            order_item_pay_success_handle() {
+                this.setData({
+                    is_show_payment_popup: false,
+                });
+                this.init();
+            },
+
+            // 取消
+            cancel_event() {
+                const detail = this.detail || null;
+                if (detail == null) {
+                    return;
+                }
+                uni.showModal({
+                    title: this.$t('common.warm_tips'),
+                    content: this.$t('common.cancel_confirm_tips'),
+                    confirmText: this.$t('common.confirm'),
+                    cancelText: this.$t('common.no'),
+                    success: (result) => {
+                        if (result.confirm) {
+                            uni.showLoading({
+                                title: this.$t('common.processing_in_text'),
+                            });
+                            uni.request({
+                                url: app.globalData.get_request_url("cancel", "orderallot", "realstore"),
+                                method: 'POST',
+                                data: {
+                                    id: detail.id,
+                                },
+                                dataType: 'json',
+                                success: (res) => {
+                                    uni.hideLoading();
+                                    if (res.data.code == 0) {
+                                        app.globalData.showToast(res.data.msg, 'success');
+                                        this.init();
+                                    } else {
+                                        app.globalData.showToast(res.data.msg);
+                                    }
+                                },
+                                fail: () => {
+                                    uni.hideLoading();
+                                    app.globalData.showToast(this.$t('common.internet_error_tips'));
+                                },
+                            });
+                        }
+                    },
+                });
+            },
+
+            // 收货
+            collect_event() {
+                const detail = this.detail || null;
+                if (detail == null) {
+                    return;
+                }
+                uni.showModal({
+                    title: this.$t('common.warm_tips'),
+                    content: this.$t('common.confirm_goods_been_received_completed_cannot'),
+                    confirmText: this.$t('common.confirm'),
+                    cancelText: this.$t('common.no'),
+                    success: (result) => {
+                        if (result.confirm) {
+                            uni.showLoading({
+                                title: this.$t('common.processing_in_text'),
+                            });
+                            uni.request({
+                                url: app.globalData.get_request_url("collect", "orderallot", "realstore"),
+                                method: "POST",
+                                data: {
+                                    id: detail.id,
+                                },
+                                dataType: "json",
+                                success: (res) => {
+                                    uni.hideLoading();
+                                    if (res.data.code == 0) {
+                                        app.globalData.showToast(res.data.msg, "success");
+                                        this.init();
+                                    } else {
+                                        app.globalData.showToast(res.data.msg);
+                                    }
+                                },
+                                fail: () => {
+                                    uni.hideLoading();
+                                    app.globalData.showToast(this.$t('common.internet_error_tips'));
+                                },
+                            });
+                        }
                     },
                 });
             },
