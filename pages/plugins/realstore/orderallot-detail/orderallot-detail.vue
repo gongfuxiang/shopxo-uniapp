@@ -48,13 +48,13 @@
                                 :class="make_step_class(index)"
                             >
                                 <view class="make-progress-node">
-                                    <view class="make-progress-dot">
-                                        <text v-if="make_step_done(index)" class="make-progress-dot-check">✓</text>
-                                        <text v-else class="make-progress-dot-num">{{ index + 1 }}</text>
+                                    <view class="make-progress-dot" :class="make_step_done(index) || make_step_active(index) ? 'bg-main' : ''">
+                                        <text v-if="make_step_done(index)" class="make-progress-dot-check cr-white">✓</text>
+                                        <text v-else class="make-progress-dot-num" :class="make_step_active(index) ? 'cr-white' : 'cr-grey'">{{ index + 1 }}</text>
                                     </view>
-                                    <view v-if="index < status_progress_steps.length - 1" class="make-progress-line"></view>
+                                    <view v-if="index < status_progress_steps.length - 1" class="make-progress-line" :class="make_step_done(index) ? 'bg-main' : ''"></view>
                                 </view>
-                                <text class="make-progress-name">{{ step.name }}</text>
+                                <text class="make-progress-name" :class="make_step_active(index) ? 'cr-main' : (make_step_done(index) ? 'cr-base' : 'cr-grey')">{{ step.name }}</text>
                             </view>
                         </view>
                     </view>
@@ -413,11 +413,10 @@
 
         methods: {
             make_step_class(index) {
-                const cur = Number(((this.status_progress || {}).current) || 0);
-                if (index < cur) {
+                if (this.make_step_done(index)) {
                     return 'is-done';
                 }
-                if (index === cur) {
+                if (this.make_step_active(index)) {
                     return 'is-active';
                 }
                 return 'is-wait';
@@ -426,6 +425,11 @@
             make_step_done(index) {
                 const cur = Number(((this.status_progress || {}).current) || 0);
                 return index < cur;
+            },
+
+            make_step_active(index) {
+                const cur = Number(((this.status_progress || {}).current) || 0);
+                return index === cur;
             },
 
             // 初始化配置

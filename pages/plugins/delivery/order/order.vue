@@ -2,15 +2,23 @@
     <view :class="theme_view">
         <view v-if="nav_type_list.length > 0" class="header bg-white">
             <!-- 导航 -->
-            <view class="nav-base">
-                <block v-for="(item, index) in nav_type_list" :key="index">
-                    <view :class="'item fl tc pr ' + (nav_type_index == index ? 'cr-main' : '')" :data-index="index" @tap="nav_event">
-                        <text>{{ item.name }}</text>
-                        <view class="badge-icon pa">
-                            <component-badge :propNumber="item.count || 0"></component-badge>
+            <view class="nav-base delivery-order-nav scroll-view-horizontal padding-horizontal-main">
+                <scroll-view :scroll-x="true" :show-scrollbar="false" :scroll-with-animation="true" :scroll-into-view="'delivery-nav-' + nav_type_index">
+                    <block v-for="(item, index) in nav_type_list" :key="index">
+                        <view :id="'delivery-nav-' + index" :class="'item tc ' + (nav_type_index == index ? 'cr-main nav-active-line' : 'cr-grey')" :data-index="index" @tap="nav_event">
+                            <view class="item-name">
+                                <text>{{ item.name }}</text>
+                                <view class="badge-icon">
+                                    <component-badge :propNumber="item.count || 0"></component-badge>
+                                </view>
+                            </view>
                         </view>
-                    </view>
-                </block>
+                    </block>
+                </scroll-view>
+            </view>
+            <view class="padding-horizontal-main padding-bottom-sm oh" v-if="(work_status || 0) > 0">
+                <text class="cr-grey">{{ work_status == 3 ? $t('order.work_rest') : $t('order.work_online') }}</text>
+                <switch class="fr" :checked="work_status == 1" color="#67C23A" @change="work_status_event" />
             </view>
             <!-- 关键字搜索 -->
             <view class="padding-horizontal-main padding-bottom-main margin-top-xs pr nav-search">
@@ -104,7 +112,10 @@
                         </view>
                         <view class="item-operation tr br-t padding-top-main margin-top-main">
                             <button class="round bg-white br-base cr-base" type="default" size="mini" hover-class="none" :data-value="'/pages/plugins/delivery/order-detail/order-detail?id=' + item.id" @tap="url_event">{{$t('order.details')}}</button>
+                            <button v-if="item.status == 0" class="round bg-white br-green cr-green" type="default" size="mini" hover-class="none" :data-index="index" @tap="accept_order_event">{{$t('order.accept_order')}}</button>
+                            <button v-if="item.status == 0" class="round bg-white br-red cr-red" type="default" size="mini" hover-class="none" :data-index="index" @tap="reject_order_event">{{$t('order.reject_order')}}</button>
                             <button v-if="item.status == 1" class="round bg-white br-blue cr-blue" type="default" size="mini" hover-class="none" :data-index="index" @tap="start_delivery_event">{{$t('order.start_delivery')}}</button>
+                            <button v-if="item.status == 1" class="round bg-white br-yellow cr-yellow" type="default" size="mini" hover-class="none" :data-index="index" @tap="transfer_order_event">{{$t('order.transfer_order')}}</button>
                             <button v-if="item.status == 4" class="round bg-white br-main cr-main" type="default" size="mini" hover-class="none" :data-index="index" @tap="start_delivery_event">{{$t('order.redelivery')}}</button>
                             <block v-if="item.status == 2">
                                 <button class="round bg-white br-green cr-green" type="default" size="mini" hover-class="none" :data-index="index" @tap="popup_success_content_event">{{$t('order.complete_delivery')}}</button>
@@ -263,6 +274,7 @@
                 form_delivery_success_images_max_count: 30,
                 editor_path_type: "",
                 show_type: 0,
+            work_status: 0,
                 scale: 10,
                 markers: [],
                 markers_active_data: []
@@ -307,6 +319,7 @@
             if ((this.$refs.common || null) != null) {
                 this.$refs.common.on_show();
             }
+            this.load_work_info();
         },
 
         methods: {
@@ -620,6 +633,95 @@
                 });
             },
 
+
+            // 接单状态
+            load_work_info() {
+                uni.request({
+                    url: app.globalData.get_request_url("workinfo", "user", "delivery"),
+                    method: "POST",
+                    data: {},
+                    dataType: "json",
+                    success: (res) => {
+                        if (res.data.code == 0 && (res.data.data || null) != null) {
+                            this.setData({ work_status: parseInt(res.data.data.status || 0) });
+                        }
+                    }
+                });
+            },
+            work_status_event(e) {
+                var status = e.detail.value ? 1 : 3;
+                uni.request({
+                    url: app.globalData.get_request_url("workstatus", "user", "delivery"),
+                    method: "POST",
+                    data: { status: status },
+                    dataType: "json",
+                    success: (res) => {
+                        if (res.data.code == 0) {
+                            this.setData({ work_status: status });
+                            app.globalData.showToast(res.data.msg, "success");
+                        } else {
+                            app.globalData.showToast(res.data.msg);
+                            this.load_work_info();
+                        }
+                    }
+                });
+            },
+            accept_order_event(e) {
+                uni.showModal({
+                    title: this.$t('common.warm_tips'),
+                    content: this.$t('order.sure_accept_order'),
+                    confirmText: this.$t('common.confirm'),
+                    cancelText: this.$t('common.not_yet'),
+                    success: (result) => {
+                        if (result.confirm) {
+                            this.order_status_handle({
+                                index: e.currentTarget.dataset.index,
+                                new_status: 1,
+                                status_name: this.$t('order.start_delivery'),
+                                action: "accept",
+                            });
+                        }
+                    },
+                });
+            },
+            reject_order_event(e) {
+                uni.showModal({
+                    title: this.$t('common.warm_tips'),
+                    content: this.$t('order.sure_reject_order'),
+                    confirmText: this.$t('common.confirm'),
+                    cancelText: this.$t('common.not_yet'),
+                    success: (result) => {
+                        if (result.confirm) {
+                            this.order_status_handle({
+                                index: e.currentTarget.dataset.index,
+                                new_status: -1,
+                                status_name: '',
+                                action: "reject",
+                                remove: true,
+                            });
+                        }
+                    },
+                });
+            },
+            transfer_order_event(e) {
+                uni.showModal({
+                    title: this.$t('common.warm_tips'),
+                    content: this.$t('order.sure_transfer_order'),
+                    confirmText: this.$t('common.confirm'),
+                    cancelText: this.$t('common.not_yet'),
+                    success: (result) => {
+                        if (result.confirm) {
+                            this.order_status_handle({
+                                index: e.currentTarget.dataset.index,
+                                new_status: -1,
+                                status_name: '',
+                                action: "transfer",
+                                remove: true,
+                            });
+                        }
+                    },
+                });
+            },
             // 开始配送
             start_delivery_event(e) {
                 uni.showModal({
@@ -691,16 +793,23 @@
                         uni.hideLoading();
                         if (res.data.code == 0) {
                             var temp_nav = this.nav_type_list;
+                            var old_status = temp_data[params.index]["status"];
                             for (var i in temp_nav) {
-                                if (temp_nav[i]["value"] == temp_data[params.index]["status"] && (temp_nav[i]["count"] || 0) != 0) {
+                                // 原状态角标减一（全部 value=-1 不会命中）
+                                if (temp_nav[i]["value"] == old_status && (temp_nav[i]["count"] || 0) != 0) {
                                     temp_nav[i]["count"] = parseInt(temp_nav[i]["count"]) - 1;
                                 }
-                                if (temp_nav[i]["value"] == params.new_status) {
+                                // 转单/拒单等移除单不给「全部」加角标；已完成也不展示角标
+                                if (!params.remove && params.new_status >= 0 && params.new_status != 3 && temp_nav[i]["value"] == params.new_status) {
                                     temp_nav[i]["count"] = parseInt(temp_nav[i]["count"] || 0) + 1;
                                 }
                             }
-                            temp_data[params.index]["status"] = params.new_status;
-                            temp_data[params.index]["status_name"] = params.status_name;
+                            if (params.remove) {
+                                temp_data.splice(params.index, 1);
+                            } else {
+                                temp_data[params.index]["status"] = params.new_status;
+                                temp_data[params.index]["status_name"] = params.status_name;
+                            }
                             this.setData({
                                 data_list: temp_data,
                                 nav_type_list: temp_nav,

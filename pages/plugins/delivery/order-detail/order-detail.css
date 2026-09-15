@@ -46,3 +46,72 @@
 .images-list .item-images:not(:last-child) {
     margin-right: 10rpx;
 }
+
+/**
+ * 状态步骤条
+ */
+.make-progress-steps {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    justify-content: space-between;
+}
+.make-progress-step {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-width: 0;
+}
+.make-progress-node {
+    width: 100%;
+    height: 36rpx;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.make-progress-dot {
+    width: 36rpx;
+    height: 36rpx;
+    border-radius: 50%;
+    background: #e8e8e8;
+    z-index: 1;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-sizing: border-box;
+}
+.make-progress-dot-num,
+.make-progress-dot-check {
+    font-size: 20rpx;
+    line-height: 1;
+}
+.make-progress-line {
+    position: absolute;
+    left: 50%;
+    right: -50%;
+    top: 50%;
+    height: 4rpx;
+    margin-top: -2rpx;
+    background: #e8e8e8;
+    z-index: 0;
+}
+.make-progress-name {
+    margin-top: 12rpx;
+    font-size: 24rpx;
+    text-align: center;
+    line-height: 1.3;
+}
+.make-progress-step.is-done .make-progress-name,
+.make-progress-step.is-active .make-progress-name {
+    font-weight: 500;
+}
+
+/**
+ * 顶部操作按钮
+ */
+.item-operation button {
+    margin: 0 8rpx 12rpx;
+}

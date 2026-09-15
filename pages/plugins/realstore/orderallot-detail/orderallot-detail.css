@@ -203,10 +203,6 @@
 .make-progress-dot-check {
     font-size: 20rpx;
     line-height: 1;
-    color: #fff;
-}
-.make-progress-dot-num {
-    color: #999;
 }
 .make-progress-line {
     position: absolute;
@@ -221,7 +217,6 @@
 .make-progress-name {
     margin-top: 12rpx;
     font-size: 24rpx;
-    color: #999;
     text-align: center;
     line-height: 1.3;
 }
@@ -235,27 +230,7 @@
     line-height: 1.5;
     color: #666;
 }
-.make-progress-step.is-done .make-progress-dot,
-.make-progress-step.is-active .make-progress-dot {
-    background: var(--color-main, #e22c08);
-}
-.make-progress-step.is-done .make-progress-dot-num,
-.make-progress-step.is-active .make-progress-dot-num,
-.make-progress-step.is-done .make-progress-dot-check,
-.make-progress-step.is-active .make-progress-dot-check {
-    color: #fff;
-}
-.make-progress-step.is-done .make-progress-line {
-    background: var(--color-main, #e22c08);
-}
 .make-progress-step.is-done .make-progress-name,
 .make-progress-step.is-active .make-progress-name {
-    color: #333;
     font-weight: 500;
-}
-.make-progress-step.is-active .make-progress-name {
-    color: var(--color-main, #e22c08);
-}
-.make-progress-step.is-active .make-progress-tip-text {
-    color: var(--color-main, #e22c08);
 }
