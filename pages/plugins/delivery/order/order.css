@@ -1,8 +1,20 @@
 /*
+* 页面布局
+*/
+.page-delivery-order {
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    box-sizing: border-box;
+}
+
+/*
 * 头部
 */
 .header {
     height: auto;
+    flex-shrink: 0;
 }
 .nav-base.delivery-order-nav {
     height: auto;
@@ -36,19 +48,43 @@
     z-index: 2;
     pointer-events: none;
 }
-.nav-search .search-keywords {
-    margin-right: 80rpx;
+.nav-search {
+    display: flex;
+    align-items: center;
 }
+.nav-search .search-keywords {
+    flex: 1;
+    min-width: 0;
+    margin-right: 12rpx;
+}
+.nav-search .nav-search-actions {
+    display: flex;
+    align-items: center;
+    flex-shrink: 0;
+    height: 66rpx;
+}
+.nav-search .search-action-line {
+    width: 2rpx;
+    height: 36rpx;
+    background: #e5e5e5;
+    margin: 0 8rpx;
+}
+.nav-search .profit-submit,
 .nav-search .map-submit {
-    top: 0;
-    right: 20rpx;
+    width: 56rpx;
+    height: 56rpx;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 /**
  * 数据列表
  */
 .scroll-box {
-    height: calc(100vh - 240rpx);
+    flex: 1;
+    height: 0;
+    min-height: 0;
 }
 .data-list .address-info {
     width: calc(100% - 58rpx);
@@ -67,7 +103,9 @@
  * 地图
  */
 .map-container {
-    height: calc(100vh - 240rpx);
+    flex: 1;
+    height: 0;
+    min-height: 0;
 }
 .map-container .map-markers-active-data {
     background-color: rgb(255 255 255 / 0.85);

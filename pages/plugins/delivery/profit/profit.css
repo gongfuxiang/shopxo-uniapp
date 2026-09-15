@@ -1,0 +1,36 @@
+/*
+* 页面布局
+*/
+.page-delivery-profit {
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    box-sizing: border-box;
+}
+.header {
+    flex-shrink: 0;
+}
+
+/*
+* 汇总
+*/
+.summary .item {
+    width: 33.33%;
+}
+
+/*
+* 导航
+*/
+.nav-base .item {
+    width: 33.33%;
+}
+
+/**
+ * 数据列表
+ */
+.scroll-box {
+    flex: 1;
+    height: 0;
+    min-height: 0;
+}

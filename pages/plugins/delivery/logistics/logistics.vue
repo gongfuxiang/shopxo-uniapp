@@ -69,8 +69,10 @@
                 markers: [],
                 polyline: [],
                 team: null,
+                status: 0,
                 start_delivery_time: null,
                 success_delivery_time: null,
+                poll_timer: null,
             };
         },
 
@@ -104,6 +106,10 @@
             }
         },
 
+        onUnload() {
+            this.clear_poll_timer();
+        },
+
         methods: {
             // 初始化
             init() {
@@ -118,11 +124,32 @@
                 }
             },
 
+            // 清理轮询
+            clear_poll_timer() {
+                if (this.poll_timer != null) {
+                    clearInterval(this.poll_timer);
+                    this.poll_timer = null;
+                }
+            },
+
+            // 配送中 15 秒轮询
+            start_poll_timer() {
+                this.clear_poll_timer();
+                if (parseInt(this.status || 0) != 2) {
+                    return;
+                }
+                this.poll_timer = setInterval(() => {
+                    this.get_data(true);
+                }, 15000);
+            },
+
             // 获取数据
-            get_data() {
-                this.setData({
-                    data_list_loding_status: 1,
-                });
+            get_data(is_poll) {
+                if (!(is_poll || false)) {
+                    this.setData({
+                        data_list_loding_status: 1,
+                    });
+                }
                 // 获取数据
                 uni.request({
                     url: app.globalData.get_request_url("logistics", "order", "delivery"),
@@ -139,25 +166,37 @@
                                 polyline: data.polyline || [],
                                 scale: data.scale || 10,
                                 team: data.team || null,
+                                status: data.status || 0,
                                 start_delivery_time: data.start_delivery_time || null,
                                 success_delivery_time: data.success_delivery_time || null,
                                 data_list_loding_status: 3,
                                 data_list_loding_msg: ''
                             });
+                            if (parseInt(data.status || 0) == 2) {
+                                if (!(is_poll || false) || this.poll_timer == null) {
+                                    this.start_poll_timer();
+                                }
+                            } else {
+                                this.clear_poll_timer();
+                            }
                         } else {
                             this.setData({
                                 data_list_loding_status: 0,
                                 data_list_loding_msg: res.data.msg
                             });
-                            app.globalData.showToast(res.data.msg);
+                            if (!(is_poll || false)) {
+                                app.globalData.showToast(res.data.msg);
+                            }
                         }
                     },
                     fail: () => {
-                        this.setData({
-                            data_list_loding_status: 2,
-                            data_list_loding_msg: this.$t('common.internet_error_tips')
-                        });
-                        app.globalData.showToast(this.$t('common.internet_error_tips'));
+                        if (!(is_poll || false)) {
+                            this.setData({
+                                data_list_loding_status: 2,
+                                data_list_loding_msg: this.$t('common.internet_error_tips')
+                            });
+                            app.globalData.showToast(this.$t('common.internet_error_tips'));
+                        }
                     },
                 });
             },

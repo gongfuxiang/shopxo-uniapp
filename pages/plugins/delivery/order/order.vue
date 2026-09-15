@@ -1,5 +1,5 @@
 <template>
-    <view :class="theme_view">
+    <view :class="[theme_view, 'page-delivery-order']">
         <view v-if="nav_type_list.length > 0" class="header bg-white">
             <!-- 导航 -->
             <view class="nav-base delivery-order-nav scroll-view-horizontal padding-horizontal-main">
@@ -16,12 +16,12 @@
                     </block>
                 </scroll-view>
             </view>
-            <view class="padding-horizontal-main padding-bottom-sm oh" v-if="(work_status || 0) > 0">
+            <view class="padding-horizontal-main padding-bottom-sm oh" v-if="nav_type_list.length > 0 && (work_status || 0) > 0">
                 <text class="cr-grey">{{ work_status == 3 ? $t('order.work_rest') : $t('order.work_online') }}</text>
                 <switch class="fr" :checked="work_status == 1" color="#67C23A" @change="work_status_event" />
             </view>
             <!-- 关键字搜索 -->
-            <view class="padding-horizontal-main padding-bottom-main margin-top-xs pr nav-search">
+            <view class="padding-horizontal-main padding-bottom-main margin-top-xs nav-search">
                 <view class="search-keywords">
                     <component-search
                         @onsearch="search_submit_event"
@@ -38,9 +38,17 @@
                         :propIsIconOnEvent="true"
                         <!-- #endif -->
                     ></component-search>
-                    <view class="map-submit pa" data-event="copy" @tap="map_show_type_event">
-                        <uni-icons :type="(show_type == 0) ? 'map' : 'list'" size="56rpx" color="#999"></uni-icons>
+                </view>
+                <view class="nav-search-actions">
+                    <view class="map-submit" @tap="map_show_type_event">
+                        <iconfont :name="(show_type == 0) ? 'icon-map-location' : 'icon-list-dot'" size="40rpx" color="#999"></iconfont>
                     </view>
+                    <block v-if="is_enable_profit == 1">
+                        <view class="search-action-line"></view>
+                        <view class="profit-submit" data-value="/pages/plugins/delivery/profit/profit" @tap="url_event">
+                            <iconfont name="icon-wallet-recharge" size="40rpx" color="#999"></iconfont>
+                        </view>
+                    </block>
                 </view>
             </view>
         </view>
@@ -274,7 +282,8 @@
                 form_delivery_success_images_max_count: 30,
                 editor_path_type: "",
                 show_type: 0,
-            work_status: 0,
+                work_status: 0,
+                is_enable_profit: 0,
                 scale: 10,
                 markers: [],
                 markers_active_data: []
@@ -464,6 +473,7 @@
                             this.setData({
                                 editor_path_type: data.editor_path_type || "",
                                 nav_type_list: data.nav_type_list || [],
+                                is_enable_profit: parseInt(data.is_enable_profit || 0),
                                 markers: temp_markers,
                                 data_list: temp_data_list,
                                 data_total: data.total,

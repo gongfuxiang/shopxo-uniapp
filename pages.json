@@ -1802,6 +1802,13 @@
                         "enablePullDownRefresh": false,
                         "navigationBarTitleText": ""
                     }
+                },
+                {
+                    "path": "profit/profit",
+                    "style": {
+                        "enablePullDownRefresh": true,
+                        "navigationBarTitleText": ""
+                    }
                 }
             ]
         },

@@ -3,7 +3,8 @@ var zh = {
     "pages": {
         "plugins-delivery-order": "配送订单",
         "plugins-delivery-order-detail": "订单详情",
-        "plugins-delivery-logistics": "物流信息"
+        "plugins-delivery-logistics": "物流信息",
+        "plugins-delivery-profit": "配送收入"
     },
     "logistics": {
         "delivery_time": "配送时间：",
@@ -41,7 +42,8 @@ var zh = {
         "delivery": "配送中",
         "upload_photos_2": "请上传照片",
         "delivered": "已配送",
-        "fill_reason": "请填写原因"
+        "fill_reason": "请填写原因",
+        "my_profit": "我的收入"
     },
     "order-detail": {
         "merchant_name": "商户名称",
@@ -51,13 +53,28 @@ var zh = {
         "complete_photos": "完成照片",
         "abnormal_time": "异常时间",
         "dispatch_time": "派单时间"
+    },
+    "profit": {
+        "tab_wait": "待结算",
+        "tab_settled": "已结算",
+        "tab_invalid": "无效",
+        "wait_price": "待结算金额",
+        "settled_price": "已结算金额",
+        "invalid_price": "无效金额",
+        "order_no": "订单号",
+        "distance_km": "距离(km)",
+        "total_price": "配送费",
+        "platform_price": "平台抽成",
+        "profit_price": "收入",
+        "settle_time": "结算时间"
     }
 };
 var en = {
     "pages": {
         "plugins-delivery-order": "Delivery order",
         "plugins-delivery-order-detail": "Order details",
-        "plugins-delivery-logistics": "Logistics info"
+        "plugins-delivery-logistics": "Logistics info",
+        "plugins-delivery-profit": "Delivery income"
     },
     "logistics": {
         "delivery_time": "Delivery time:",
@@ -95,7 +112,8 @@ var en = {
         "delivery": "In delivery",
         "upload_photos_2": "Please upload photos",
         "delivered": "Delivered",
-        "fill_reason": "Please fill in the reason"
+        "fill_reason": "Please fill in the reason",
+        "my_profit": "My income"
     },
     "order-detail": {
         "merchant_name": "Merchant name",
@@ -105,6 +123,20 @@ var en = {
         "complete_photos": "Complete photos",
         "abnormal_time": "Abnormal time",
         "dispatch_time": "Dispatch time"
+    },
+    "profit": {
+        "tab_wait": "Await settle",
+        "tab_settled": "Settled",
+        "tab_invalid": "Invalid",
+        "wait_price": "Pending amount",
+        "settled_price": "Settled amount",
+        "invalid_price": "Invalid amount",
+        "order_no": "Order no.",
+        "distance_km": "Distance(km)",
+        "total_price": "Delivery fee",
+        "platform_price": "Platform fee",
+        "profit_price": "Income",
+        "settle_time": "Settle time"
     }
 };
 export default createPageLocaleMixin({ zh, en });
