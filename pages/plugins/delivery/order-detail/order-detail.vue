@@ -222,6 +222,30 @@
             </view>
         </component-popup>
 
+        <!-- 拒单/转单原因弹窗 -->
+        <component-popup :propShow="popup_reason_content_status" propPosition="bottom" @onclose="popup_reason_content_close_event">
+            <view class="padding-horizontal-main padding-top-main bg-white">
+                <view class="close oh">
+                    <view class="fr" @tap.stop="popup_reason_content_close_event">
+                        <iconfont name="icon-close-line" size="28rpx" color="#999"></iconfont>
+                    </view>
+                </view>
+                <form @submit="form_reason_submit_event" class="form-container">
+                    <view class="form-container">
+                        <view class="form-gorup">
+                            <view class="form-gorup-title">{{popup_reason_action == 'transfer' ? $t('order.transfer_reason') : $t('order.reject_reason')}}<text class="form-group-tips-must">*</text></view>
+                            <view class="br padding-main radius margin-top">
+                                <textarea placeholder-class="cr-grey" class="cr-base margin-0" :placeholder="$t('order.reason_up_200_characters_long')" maxlength="200" :auto-height="true" :value="form_reason_msg_value" @input="form_reason_msg_event"></textarea>
+                            </view>
+                        </view>
+                        <view class="form-gorup form-gorup-submit bottom-line-exclude">
+                            <button class="bg-main br-main cr-white round text-size" type="default" form-type="submit" hover-class="none">{{$t('common.confirm')}}</button>
+                        </view>
+                    </view>
+                </form>
+            </view>
+        </component-popup>
+
         <!-- 公共 -->
         <component-common ref="common"></component-common>
     </view>
@@ -250,6 +274,9 @@
                 detail_list: [],
                 popup_abnormal_content_status: false,
                 form_delivery_abnormal_msg_value: "",
+                popup_reason_content_status: false,
+                popup_reason_action: "",
+                form_reason_msg_value: "",
                 popup_success_content_status: false,
                 form_delivery_success_msg_value: "",
                 form_delivery_success_images_list: [],
@@ -464,37 +491,45 @@
             },
 
             reject_order_event() {
-                uni.showModal({
-                    title: this.$t('common.warm_tips'),
-                    content: this.$t('order.sure_reject_order'),
-                    confirmText: this.$t('common.confirm'),
-                    cancelText: this.$t('common.not_yet'),
-                    success: (result) => {
-                        if (result.confirm) {
-                            this.order_status_handle({
-                                action: "reject",
-                                back: true,
-                            });
-                        }
-                    },
+                this.setData({
+                    popup_reason_content_status: true,
+                    popup_reason_action: "reject",
+                    form_reason_msg_value: "",
                 });
             },
 
             transfer_order_event() {
-                uni.showModal({
-                    title: this.$t('common.warm_tips'),
-                    content: this.$t('order.sure_transfer_order'),
-                    confirmText: this.$t('common.confirm'),
-                    cancelText: this.$t('common.not_yet'),
-                    success: (result) => {
-                        if (result.confirm) {
-                            this.order_status_handle({
-                                action: "transfer",
-                                back: true,
-                            });
-                        }
-                    },
+                this.setData({
+                    popup_reason_content_status: true,
+                    popup_reason_action: "transfer",
+                    form_reason_msg_value: "",
                 });
+            },
+
+            popup_reason_content_close_event() {
+                this.setData({
+                    popup_reason_content_status: false,
+                });
+            },
+
+            form_reason_msg_event(e) {
+                this.setData({
+                    form_reason_msg_value: e.detail.value || "",
+                });
+            },
+
+            form_reason_submit_event() {
+                var msg = (this.form_reason_msg_value || "").trim();
+                if (!msg) {
+                    app.globalData.showToast(this.$t("order.fill_reason"));
+                    return false;
+                }
+                this.order_status_handle({
+                    action: this.popup_reason_action,
+                    msg: msg,
+                    back: true,
+                });
+                this.popup_reason_content_close_event();
             },
 
             start_delivery_event() {
