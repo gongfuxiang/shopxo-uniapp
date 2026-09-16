@@ -159,11 +159,22 @@
 
             // 规格/库存接口请求参数（插件活动页 init 覆盖 goods.id 为活动 id）
             get_spec_request_data(extend) {
-                extend = extend || {};
                 var data = {
                     id: parseInt((this.goods || {}).id || 0),
                     is_lang: 0,
                 };
+                // 来源参数
+                var params = this.params || {};
+                // 门店id realstore_id
+                if ((params.realstore_id || null) != null) {
+                    data['realstore_id'] = params.realstore_id;
+                }
+                // 门店下单类型
+                if ((params.buy_use_type_data_index || null) != null && params.buy_use_type_data_index !== '') {
+                    data['buy_use_type_data_index'] = params.buy_use_type_data_index;
+                }
+                // 扩展参数
+                extend = extend || {};
                 for (var key in extend) {
                     if (extend[key] !== undefined && extend[key] !== null) {
                         data[key] = extend[key];

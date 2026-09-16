@@ -161,3 +161,81 @@ page {
 .box-shadow {
     box-shadow: 0px 2px 4px 0px rgba(0, 0, 0, 0.05);
 }
+
+/**
+ * 优惠聚合（对齐商品详情）
+ */
+.goods-discount-aggregate {
+    width: 100%;
+    box-sizing: border-box;
+}
+.goods-discount-aggregate-row {
+    width: 100%;
+    min-width: 0;
+}
+.goods-discount-tags-scroll {
+    flex: 1;
+    min-width: 0;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+}
+.goods-discount-tags-scroll::-webkit-scrollbar {
+    width: 0;
+    height: 0;
+    display: none;
+}
+.goods-discount-tags-scroll .discount-tag-item,
+.goods-discount-tags-scroll .mini-coupon {
+    flex-shrink: 0;
+    white-space: nowrap;
+}
+.goods-discount-aggregate-more {
+    flex-shrink: 0;
+}
+.mini-coupon {
+    position: relative;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    height: 40rpx;
+    line-height: 40rpx;
+    border-radius: 4rpx;
+    padding: 0 16rpx;
+}
+.mini-coupon::before,
+.mini-coupon::after {
+    content: '';
+    width: 14rpx;
+    height: 14rpx;
+    border-radius: 50%;
+    background-color: #fff;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+}
+.mini-coupon::before {
+    left: -8rpx;
+}
+.mini-coupon::after {
+    right: -8rpx;
+}
+.mini-coupon-br::before,
+.mini-coupon-br::after {
+    border: 1px solid #FE5500;
+}
+.received-coupon {
+    background: #FFEBE0;
+    border: 2rpx solid #FE5500;
+    color: #FE5500;
+}
+.not-received-coupon {
+    background: #FE5500;
+    border: 2rpx solid #FE5500;
+    color: #fff;
+}
+.received-coupon .divider-l::before {
+    background: red;
+}
+.not-received-coupon .divider-l::before {
+    background: #fff;
+}

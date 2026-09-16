@@ -50,7 +50,9 @@ var zh = {
     "detail": {
         "business_hours": "营业时间：",
         "map": "导航",
-        "product_search": "商品搜索"
+        "product_search": "商品搜索",
+        "realstore_coupon": "门店优惠券",
+        "platform_coupon": "平台优惠券"
     },
     "frequencycard-list": {
         "usage_records": "使用记录",
@@ -125,7 +127,9 @@ var en = {
     "detail": {
         "business_hours": "Business hours:",
         "map": "Map",
-        "product_search": "Product search"
+        "product_search": "Product search",
+        "realstore_coupon": "Store Coupons",
+        "platform_coupon": "Platform Coupons"
     },
     "frequencycard-list": {
         "usage_records": "Usage records",

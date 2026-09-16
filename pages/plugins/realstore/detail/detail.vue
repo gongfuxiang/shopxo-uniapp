@@ -93,6 +93,26 @@
                                     </view>
                                 </view>
                             </view>
+                            <!-- 优惠聚合（优惠券等，后续促销可扩展） -->
+                            <view v-if="has_discount_aggregate" class="goods-discount-aggregate margin-top-sm padding-main border-radius-main bg-white text-size-xs">
+                                <view class="goods-discount-aggregate-row flex-row align-c" @tap="popup_discount_event">
+                                    <view class="goods-discount-tags-scroll flex-row flex-nowrap margin-right-main cp">
+                                        <block v-if="(plugins_coupon_data || null) != null && (plugins_coupon_data.data || null) != null && plugins_coupon_data.data.length > 0">
+                                            <block v-for="(item, index) in plugins_coupon_data.data" :key="'agg-coupon-' + (item.id || index)">
+                                                <view class="discount-tag-item mini-coupon flex-row flex-nowrap margin-right-sm" :class="item.status_type === 2 ? 'received-coupon mini-coupon-br' : 'not-received-coupon'">
+                                                    <text class="nowrap">{{ item.desc || item.name }}</text>
+                                                    <text v-if="item.status_type === 0" class="dis-inline-block nowrap margin-left-sm padding-left-sm divider-l" :data-index="index" :data-value="item.id" @tap.stop="coupon_receive_event">{{ item.status_operable_name }}</text>
+                                                    <text v-else class="dis-inline-block nowrap margin-left-sm padding-left-sm divider-l">{{ item.status_operable_name }}</text>
+                                                </view>
+                                            </block>
+                                        </block>
+                                    </view>
+                                    <view class="goods-discount-aggregate-more flex-shrink">
+                                        <text class="text-size-xs cr-grey-9">{{$t('common.view_text')}}</text>
+                                        <iconfont name="icon-arrow-right" color="#999" propClass="va-m"></iconfont>
+                                    </view>
+                                </view>
+                            </view>
                         </view>
                     </view>
 
@@ -241,6 +261,33 @@
             </block>
         </view>
 
+        <!-- 优惠聚合弹层 -->
+        <component-popup :propShow="popup_discount_status" propPosition="bottom" @onclose="popup_discount_close_event">
+            <view class="padding-horizontal-main padding-top-main bg-white">
+                <view class="close oh padding-bottom-sm">
+                    <view class="fr" @tap.stop="popup_discount_close_event">
+                        <iconfont name="icon-close-line" size="28rpx" color="#999"></iconfont>
+                    </view>
+                </view>
+                <scroll-view :scroll-y="true" class="max-h-8h">
+                    <!-- 门店优惠券 -->
+                    <view v-if="(plugins_coupon_data || null) != null && (plugins_coupon_data.realstore_data || null) != null && plugins_coupon_data.realstore_data.length > 0" class="plugins-coupon-container spacing-mb">
+                        <view class="fw-b tc text-size-lg padding-bottom">{{$t('detail.realstore_coupon')}}</view>
+                        <block v-for="(item, index) in plugins_coupon_data.realstore_data" :key="'rs-coupon-' + (item.id || index)">
+                            <component-coupon-card :propData="item" :propStatusType="item.status_type" :propStatusOperableName="item.status_operable_name" :propIndex="index" propIsProgress @call-back="coupon_receive_back_event"></component-coupon-card>
+                        </block>
+                    </view>
+                    <!-- 平台优惠券 -->
+                    <view v-if="(plugins_coupon_data || null) != null && (plugins_coupon_data.platform_data || null) != null && plugins_coupon_data.platform_data.length > 0" class="plugins-coupon-container spacing-mb">
+                        <view class="fw-b tc text-size-lg padding-bottom">{{$t('detail.platform_coupon')}}</view>
+                        <block v-for="(item, index) in plugins_coupon_data.platform_data" :key="'pf-coupon-' + (item.id || index)">
+                            <component-coupon-card :propData="item" :propStatusType="item.status_type" :propStatusOperableName="item.status_operable_name" :propIndex="index" propIsProgress @call-back="coupon_receive_back_event"></component-coupon-card>
+                        </block>
+                    </view>
+                </scroll-view>
+            </view>
+        </component-popup>
+
         <!-- 门店购物车 -->
         <component-realstore-cart ref="realstore_cart" :propIsBaseMode="is_base_mode == 1" :propCurrencySymbol="currency_symbol" :propStatus="is_cart_nav" v-on:CartSuccessEvent="goods_opt_cart_back_event" v-on:BuyTypeSwitchEvent="buy_type_switch_event" v-on:CartDataBackEvent="cart_data_back_event"></component-realstore-cart>
 
@@ -306,6 +353,7 @@
     import componentPopup from '@/components/popup/popup';
     import componentRealstoreCart from '@/pages/plugins/realstore/components/realstore-cart/realstore-cart';
     import componentSharePopup from '@/components/share-popup/share-popup';
+    import componentCouponCard from '@/pages/plugins/coupon/components/coupon-card/coupon-card';
     import pluginLocale from '../locale/index.js';
 
     var common_static_url = app.globalData.get_static_url('common');
@@ -412,6 +460,9 @@
                 is_realstore_top_search_scan: app.globalData.data.is_realstore_top_search_scan || 0,
                 // 底部菜单高度
                 footer_height_value: 0,
+                // 优惠聚合
+                popup_discount_status: false,
+                plugins_coupon_data: null,
             };
         },
 
@@ -425,6 +476,14 @@
             componentPopup,
             componentRealstoreCart,
             componentSharePopup,
+            componentCouponCard,
+        },
+
+        computed: {
+            // 是否有优惠聚合信息（优惠券等，后续可扩展其他促销）
+            has_discount_aggregate() {
+                return (this.plugins_coupon_data || null) != null && (this.plugins_coupon_data.data || null) != null && this.plugins_coupon_data.data.length > 0;
+            },
         },
 
         onLoad(params) {
@@ -550,10 +609,11 @@
                                 info: data.info || null,
                                 goods_category: data.goods_category || [],
                                 favor_user: data.favor_user || [],
-                                tablecode: data.tablecode || null
+                                tablecode: data.tablecode || null,
+                                plugins_coupon_data: data.plugins_coupon_data || null,
                             });
                             
-                            // 样式处理
+                            // 样式处理（含优惠条高度）
                             this.content_actual_size_handle();
 
                             // 收藏处理
@@ -759,6 +819,10 @@
                 // 桌码
                 if(this.tablecode != null) {
                     value += 44;
+                }
+                // 优惠聚合条（有数据时占用高度，商品区需再减）
+                if(this.has_discount_aggregate) {
+                    value += 90;
                 }
 
                 // 减去内容高度、底部菜单高度
@@ -1139,7 +1203,92 @@
                     footer_height_value: value
                 });
                 this.content_actual_size_handle();
-            }
+            },
+
+            // 优惠聚合弹层
+            popup_discount_event() {
+                this.setData({
+                    popup_discount_status: true,
+                });
+            },
+            popup_discount_close_event() {
+                this.setData({
+                    popup_discount_status: false,
+                });
+            },
+
+            // 优惠券领取（登录回调）
+            coupon_receive_back_event() {
+                let user = app.globalData.get_user_info(this, 'coupon_receive_back_event');
+                if (user != false) {
+                    let res = uni.getStorageSync('cache_plugins_coupon_receive_key') || null;
+                    if (res != null) {
+                        this.coupon_receive_handle(res);
+                    }
+                }
+            },
+            // 优惠券领取
+            coupon_receive_event(e) {
+                let user = app.globalData.get_user_info(this, 'coupon_receive_event', e);
+                if (user != false) {
+                    this.coupon_receive_handle(e.currentTarget.dataset);
+                }
+            },
+            // 优惠券领取处理（按 id 更新，兼容弹窗分区列表）
+            coupon_receive_handle(params) {
+                let value = params.value;
+                if ((this.plugins_coupon_data || null) == null || (this.plugins_coupon_data.data || null) == null) {
+                    return false;
+                }
+                // 仅未领取可请求（0-领取，1-已领取，2-已抢完…），与弹窗 coupon-card 一致
+                let coupon = (this.plugins_coupon_data.data || []).find(function(item) {
+                    return item.id == value;
+                });
+                if ((coupon || null) == null || coupon.status_type != 0) {
+                    return false;
+                }
+                uni.showLoading({
+                    title: this.$t('common.processing_in_text'),
+                });
+                uni.request({
+                    url: app.globalData.get_request_url('receive', 'coupon', 'coupon'),
+                    method: 'POST',
+                    data: {
+                        coupon_id: value,
+                    },
+                    dataType: 'json',
+                    success: (res) => {
+                        uni.hideLoading();
+                        if (res.data.code == 0) {
+                            app.globalData.showToast(res.data.msg, 'success');
+                            var coupon_data = res.data.data.coupon;
+                            var temp = this.plugins_coupon_data;
+                            var sync_list = function(list) {
+                                if ((list || null) == null || list.length == 0) {
+                                    return list || [];
+                                }
+                                return list.map(function(item) {
+                                    return item.id == coupon_data.id ? coupon_data : item;
+                                });
+                            };
+                            temp.data = sync_list(temp.data);
+                            temp.platform_data = sync_list(temp.platform_data);
+                            temp.realstore_data = sync_list(temp.realstore_data);
+                            this.setData({
+                                plugins_coupon_data: temp,
+                            });
+                        } else {
+                            if (app.globalData.is_login_check(res.data, this, 'coupon_receive_handle', params)) {
+                                app.globalData.showToast(res.data.msg);
+                            }
+                        }
+                    },
+                    fail: () => {
+                        uni.hideLoading();
+                        app.globalData.showToast(this.$t('common.internet_error_tips'));
+                    },
+                });
+            },
         },
     };
 </script>
