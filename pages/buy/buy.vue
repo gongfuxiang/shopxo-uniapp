@@ -168,7 +168,7 @@
                             </block>
                         </view>
                         <!-- 扩展数据展示 -->
-                        <view v-if="group.order_base.extension_data.length > 0" class="extension-list radius margin-top-lg">
+                        <view v-if="group.order_base.extension_data.length > 0" class="extension-list radius margin-top-xs">
                             <view v-for="(item, index2) in group.order_base.extension_data" :key="index2">
                                 <view v-if="index2 <= 4 || group.order_base.extension_data_max_show" class="item oh padding-vertical-xs padding-horizontal-sm">
                                     <text class="cr-base fl">{{ item.name }}</text>
