@@ -30,7 +30,15 @@ var zh = {
         "current_effective_amount": "当前有效金额",
         "minimum_cash_amount": "提现最低金额",
         "verification_code_format_digits": "验证码格式 4 位数字",
-        "choose_authentication_method": "请选择认证方式"
+        "choose_authentication_method": "请选择认证方式",
+        "login_pwd_label": "登录密码",
+        "login_pwd_placeholder": "请输入登录密码",
+        "login_pwd_message": "请输入登录密码",
+        "auth_pwd_tip_1": "1. 请输入您的登录密码完成提现安全验证。",
+        "auth_pwd_tip_2_before": "2. 若尚未设置登录密码，请先",
+        "auth_pwd_tip_2_after": "后再进行提现。",
+        "auth_pwd_tip_3": "3. 验证成功后，请在规定时间内完成提现申请。",
+        "set_login_pwd_link_text": "设置登录密码"
     },
     "cash-create": {
         "withdrawal_amount": "提现金额",
@@ -152,7 +160,15 @@ var en = {
         "current_effective_amount": "Current effective amount",
         "minimum_cash_amount": "Minimum cash amount",
         "verification_code_format_digits": "Verification code format with 4 digits",
-        "choose_authentication_method": "Please choose the authentication method"
+        "choose_authentication_method": "Please choose the authentication method",
+        "login_pwd_label": "Login password",
+        "login_pwd_placeholder": "Please enter login password",
+        "login_pwd_message": "Please enter login password",
+        "auth_pwd_tip_1": "1. Enter your login password to complete withdrawal security verification.",
+        "auth_pwd_tip_2_before": "2. If you have not set a login password, please",
+        "auth_pwd_tip_2_after": "before withdrawing.",
+        "auth_pwd_tip_3": "3. After successful verification, submit the withdrawal within the allowed time.",
+        "set_login_pwd_link_text": "set login password"
     },
     "cash-create": {
         "withdrawal_amount": "Withdrawal amount",

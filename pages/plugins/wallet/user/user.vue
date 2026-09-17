@@ -96,7 +96,7 @@
                                 <view class="bottom-line-exclude">
                                     <view class="flex-row jc-sb align-c gap-10">
                                         <button v-if="(data_base || null) != null && (data_base.is_enable_recharge || 0) == 1" class="item round cr-white bg-main br-main text-size wh-auto" type="default" hover-class="none" data-value="/pages/plugins/wallet/recharge/recharge" @tap="url_event">{{$t('common.recharge')}}</button>
-                                        <button v-if="(data_base || null) != null && (data_base.is_enable_cash || 0) == 1" class="item round cr-main bg-white br-main text-size wh-auto" type="default" hover-class="none" data-value="/pages/plugins/wallet/cash-auth/cash-auth" @tap="url_event">{{$t('common.withdraw')}}</button>
+                                        <button v-if="(data_base || null) != null && (data_base.is_enable_cash || 0) == 1" class="item round cr-main bg-white br-main text-size wh-auto" type="default" hover-class="none" :data-value="(data_base.is_cash_auth || 0) == 1 ? '/pages/plugins/wallet/cash-auth/cash-auth' : '/pages/plugins/wallet/cash-create/cash-create'" @tap="url_event">{{$t('common.withdraw')}}</button>
                                     </view>
                                 </view>
                             </view>
