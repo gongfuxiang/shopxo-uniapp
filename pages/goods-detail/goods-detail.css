@@ -659,3 +659,12 @@
     color: #fff;
     background: linear-gradient(135deg, #ff6b6b 0%, #ee3a3a 100%);
 }
+/* 购买导航弹窗 */
+.buy-nav-popup-body {
+    max-height: 70vh;
+    min-height: 120rpx;
+}
+.buy-nav-popup-body img {
+    max-width: 100%;
+    height: auto;
+}

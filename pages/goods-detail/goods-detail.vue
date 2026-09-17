@@ -841,6 +841,20 @@
                 </view>
             </component-popup>
 
+            <!-- 购买导航弹窗 -->
+            <component-popup :propShow="buy_nav_popup_status" propPosition="bottom" @onclose="buy_nav_popup_close_event">
+                <view class="padding-horizontal-main padding-top-main bg-white">
+                    <view class="close oh pa top-0 right-0 z-i-deep">
+                        <view class="fr padding-top padding-right padding-left-sm padding-bottom-sm" @tap.stop="buy_nav_popup_close_event">
+                            <iconfont name="icon-close-line" size="28rpx" color="#999"></iconfont>
+                        </view>
+                    </view>
+                    <view class="padding-bottom-xl buy-nav-popup-body">
+                        <mp-html :content="buy_nav_popup_content"></mp-html>
+                    </view>
+                </view>
+            </component-popup>
+
             <!-- 购买记录 -->
             <view v-if="(plugins_salerecords_tips_content || null) != null" :class="'plugins-salerecords-tips' + plugins_salerecords_tips_ent">
                 <image mode="widthFix" :src="plugins_salerecords_tips_content.user.avatar" class="va-m br"></image>
@@ -1045,6 +1059,9 @@
                 // 商品服务插件
                 plugins_goodsservice_data: null,
                 popup_goodsservice_status: false,
+                // 商品高级购买弹窗
+                buy_nav_popup_status: false,
+                buy_nav_popup_content: '',
                 // 商品批量下单插件
                 plugins_batchbuy_data: null,
                 // 问答插件
@@ -1554,6 +1571,33 @@
                         }
                         app.globalData.text_copy_event(value);
                         break;
+                    // 提示
+                    case 'tips':
+                        if (value == null) {
+                            app.globalData.showToast(this.$t('goods-detail.url_value_empty'));
+                            return false;
+                        }
+                        app.globalData.showToast(value);
+                        break;
+                    // 弹窗（HTML 在 value）
+                    case 'popup':
+                        if (value == null || value == '') {
+                            app.globalData.showToast(this.$t('goods-detail.url_value_empty'));
+                            return false;
+                        }
+                        this.setData({
+                            buy_nav_popup_status: true,
+                            buy_nav_popup_content: value,
+                        });
+                        break;
+                    // 打开地图（value=map://名称|地址|经度|纬度，与 url_open 一致）
+                    case 'map':
+                        if (value == null || String(value).indexOf('map://') != 0) {
+                            app.globalData.showToast(this.$t('goods-detail.url_value_empty'));
+                            return false;
+                        }
+                        app.globalData.url_open(value);
+                        break;
                     // 门店
                     case 'plugins-realstore':
                         if((this.plugins_realstore_data || null) == null || (this.plugins_realstore_data.data || null) == null) {
@@ -1890,6 +1934,13 @@
             popup_goodsservice_close_event(e) {
                 this.setData({
                     popup_goodsservice_status: false,
+                });
+            },
+
+            // 购买导航弹窗关闭
+            buy_nav_popup_close_event(e) {
+                this.setData({
+                    buy_nav_popup_status: false,
                 });
             },
 
