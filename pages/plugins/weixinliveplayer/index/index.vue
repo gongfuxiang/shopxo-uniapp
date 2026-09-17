@@ -1,8 +1,8 @@
 <template>
     <view :class="theme_view">
 		<!-- 轮播 -->
-		<block v-if="banner_list.length > 0">
-			<component-banner :propData="banner_list" propMode="round" propRadius=""></component-banner>
+		<block v-if="slider_list.length > 0">
+			<component-banner :propData="slider_list" propMode="round" propRadius=""></component-banner>
 		</block>
 
 		<view class="spacing-mt" v-if="data_list.length > 0">
@@ -94,7 +94,7 @@
 				data_list_loding_msg: '',
 				data_list: [],
 				data_base: null,
-				banner_list: [],
+				slider_list: [],
 				// 自定义分享信息
 				share_info: {}
 			};
@@ -156,7 +156,7 @@
 							var status = (data.data || null) == null || data.data.length == 0;
 							this.setData({
 								data_base: data.base || null,
-								banner_list: data.banner_list || [],
+								slider_list: data.slider_list || [],
 								data_list: data.data,
 								data_list_loding_status: status ? 0 : 3,
 								data_bottom_line_status: !status
@@ -169,7 +169,7 @@
 										title: this.data_base.seo_title || this.data_base.application_name,
 										desc: this.data_base.seo_desc,
 										path: '/pages/plugins/weixinliveplayer/index/index',
-										img: ((this.banner_list || null) != null && this.banner_list.length > 0) ? this.banner_list[0]['images_url'] : ''
+										img: ((this.slider_list || null) != null && this.slider_list.length > 0) ? this.slider_list[0]['images_url'] : ''
 									}
 								});
 

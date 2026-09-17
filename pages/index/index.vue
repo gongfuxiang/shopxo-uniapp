@@ -35,7 +35,7 @@
                 <!-- 自动和手动模式 -->
                 <block v-else>
                     <!-- 顶部内容、如果没有轮播和导航则使用矮的浮动导航背景样式，则使用高的背景样式 -->
-                    <view v-if="load_status == 1" class="home-top-nav-content pr" :style="(banner_list.length > 0 || navigation.length > 0 ? top_content_bg_color : top_content_search_bg_color) + top_content_style">
+                    <view v-if="load_status == 1" class="home-top-nav-content pr" :style="(slider_list.length > 0 || navigation.length > 0 ? top_content_bg_color : top_content_search_bg_color) + top_content_style">
                         <!-- 顶部背景图片 -->
                         <view class="pa top-0 left-0 right-0">
                             <image class="bg-img wh-auto" mode="widthFix" :src="static_url + 'nav-top.png'"></image>
@@ -102,8 +102,8 @@
                         </view>
 
                         <!-- 轮播 -->
-                        <view class="banner-content padding-horizontal-main margin-top-xs" v-if="banner_list.length > 0">
-                            <component-banner :propData="banner_list" @changeBanner="change_banner"></component-banner>
+                        <view class="banner-content padding-horizontal-main margin-top-xs" v-if="slider_list.length > 0">
+                            <component-banner :propData="slider_list" @changeBanner="change_banner"></component-banner>
                         </view>
                         <!-- 导航 -->
                         <view v-if="navigation.length > 0" class="spacing-mt" :class="load_status == 1 && (common_shop_notice || null) != null ? '' : ' spacing-mb'">
@@ -398,7 +398,7 @@
                 is_aichat_search: 0,
                 aichat_search_name: '问AI',
                 data_list: [],
-                banner_list: [],
+                slider_list: [],
                 navigation: [],
                 article_list: [],
                 cart_total: 0,
@@ -620,7 +620,7 @@
                                 random_value: Math.random(),
                                 page_load_status: 1,
                                 data_bottom_line_status: true,
-                                banner_list: data.banner_list || [],
+                                slider_list: data.slider_list || [],
                                 navigation: data.navigation || [],
                                 article_list: data.article_list || [],
                                 data_mode: data.data_mode || 0,
@@ -708,7 +708,7 @@
 
                 // 轮播数据处理
                 if (this.load_status == 0 || (this.top_content_search_bg_color || null) == null) {
-                    var color = this.banner_list && this.banner_list.length > 0 && (this.banner_list[0]['bg_color'] || null) != null ? this.banner_list[0]['bg_color'] : theme_color;
+                    var color = this.slider_list && this.slider_list.length > 0 && (this.slider_list[0]['bg_color'] || null) != null ? this.slider_list[0]['bg_color'] : theme_color;
                     this.change_banner(color);
                 }
 

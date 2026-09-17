@@ -7,8 +7,8 @@
             </view>
 
             <!-- 轮播 -->
-            <view v-if="slide_list.length > 0" class="padding-horizontal-main spacing-mb">
-                <component-banner :propData="slide_list"></component-banner>
+            <view v-if="slider_list.length > 0" class="padding-horizontal-main spacing-mb">
+                <component-banner :propData="slider_list"></component-banner>
             </view>
 
             <!-- 分类导航 -->
@@ -151,7 +151,7 @@
                 data_base: null,
                 category: [],
                 data_list: [],
-                slide_list: [],
+                slider_list: [],
                 goods_list: [],
                 hot_list: [],
                 right_list: [],
@@ -227,7 +227,7 @@
                                 data_base: data.base || null,
                                 category: data.category || [],
                                 data_list: data.data_list || [],
-                                slide_list: data.slide_list || [],
+                                slider_list: data.slider_list || [],
                                 goods_list: data.goods_list || [],
                                 hot_list: data.hot_list || [],
                                 right_list: data.right_list || [],
@@ -244,7 +244,7 @@
                                     title: title,
                                     desc: this.data_base.seo_desc,
                                     path: '/pages/plugins/blog/index/index',
-                                    img: (this.slide_list || null) != null && this.slide_list.length > 0 ? this.slide_list[0]['images_url'] : '',
+                                    img: (this.slider_list || null) != null && this.slider_list.length > 0 ? this.slider_list[0]['images_url'] : '',
                                 },
                             });
                         } else {
