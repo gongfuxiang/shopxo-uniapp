@@ -336,12 +336,25 @@
                 </view>
 
                 <!-- 规格选择 -->
-                <view v-if="!plugins_realstore_cart_nav_status && goods.is_exist_many_spec == 1 && (buy_button || null) != null && (buy_button.is_buy || 0) + (buy_button.is_cart || 0) + (buy_button.is_show || 0) > 0" class="spec-container-view oh padding-horizontal-main padding-main border-radius-main bg-white text-size-xs spacing-mb">
+                <view v-if="!plugins_realstore_cart_nav_status && !is_spec_page_inline && goods.is_exist_many_spec == 1 && (buy_button || null) != null && (buy_button.is_buy || 0) + (buy_button.is_cart || 0) + (buy_button.is_show || 0) > 0" class="spec-container-view oh padding-horizontal-main padding-main border-radius-main bg-white text-size-xs spacing-mb">
                     <view class="fl item-title">{{$t('common.spec')}}</view>
                     <view class="fr column-right-view border-radius-main single-text cp" @tap="nav_buy_submit_event" :data-type="(buy_button.is_buy || 0) == 1 ? 'buy' : (buy_button.is_cart || 0) == 1 ? 'cart' : 'spec-show'">
                         <text class="text-size-xs cr-grey-9">{{ goods_spec_selected_text }}</text>
                         <iconfont name="icon-arrow-right" color="#999" propClass="va-m"></iconfont>
                     </view>
+                </view>
+
+                <!-- 规格内页直选 -->
+                <view v-if="is_spec_page_inline" class="spacing-mb">
+                    <component-goods-buy
+                        ref="goods_buy_page"
+                        :propPageMode="true"
+                        :propParams="params"
+                        :propCurrencySymbol="currency_symbol"
+                        v-on:BackReleaseEvent="goods_buy_back_release_event"
+                        v-on:BackSuccessEvent="goods_buy_back_success_event"
+                        v-on:SpecChoiceEvent="goods_spec_back_event"
+                    ></component-goods-buy>
                 </view>
 
                 <!-- 订单商品表单插件 -->
@@ -991,6 +1004,7 @@
                 common_app_is_use_mobile_detail: 0,
                 common_is_goods_detail_content_show_photo: 0,
                 common_is_goods_detail_show_comments: 1,
+                common_goods_detail_spec_page_show: 0,
                 common_app_customer_service_tel: null,
                 // 是否单页预览
                 is_single_page: app.globalData.is_current_single_page() || 0,
@@ -1210,7 +1224,48 @@
             }
         },
 
+        computed: {
+            // 是否规格内页直选（配置1仅一层；配置2多层也内页）
+            is_spec_page_inline() {
+                var mode = parseInt(this.common_goods_detail_spec_page_show || 0);
+                if (mode <= 0 || (this.goods || null) == null) {
+                    return false;
+                }
+                if (parseInt(this.goods.is_exist_many_spec || 0) != 1) {
+                    return false;
+                }
+                var choose = ((this.goods.specifications || null) != null && (this.goods.specifications.choose || null) != null) ? this.goods.specifications.choose : [];
+                var level = choose.length || 0;
+                if (level <= 0) {
+                    return false;
+                }
+                if (mode == 1) {
+                    return level == 1;
+                }
+                if (mode == 2) {
+                    return level >= 1;
+                }
+                return false;
+            },
+        },
+
         methods: {
+            // 规格内页直选初始化
+            init_goods_buy_page() {
+                var self = this;
+                this.$nextTick(function () {
+                    if (!self.is_spec_page_inline || (self.$refs.goods_buy_page || null) == null || (self.goods || null) == null) {
+                        return;
+                    }
+                    self.$refs.goods_buy_page.init(self.goods, {
+                        buy_event_type: self.buy_event_type || 'buy',
+                        buy_button: self.buy_button,
+                        is_init: 1,
+                        ...self.params,
+                    });
+                });
+            },
+
             // 初始化配置
             init_config(status) {
                 if ((status || false) == true) {
@@ -1219,6 +1274,7 @@
                         common_app_is_use_mobile_detail: app.globalData.get_config('config.common_app_is_use_mobile_detail'),
                         common_is_goods_detail_content_show_photo: app.globalData.get_config('config.common_is_goods_detail_content_show_photo'),
                         common_is_goods_detail_show_comments: app.globalData.get_config('config.common_is_goods_detail_show_comments'),
+                        common_goods_detail_spec_page_show: parseInt(app.globalData.get_config('config.common_goods_detail_spec_page_show', 0) || 0),
                         common_app_customer_service_tel: app.globalData.get_config('config.common_app_customer_service_tel'),
                         plugins_is_goods_detail_poster: app.globalData.get_config('plugins_base.distribution.data.is_goods_detail_poster'),
                     };
@@ -1309,12 +1365,15 @@
                             });
 
                             // 如果已默认开启购买弹窗，库存为0则不开启
-                            if (this.popup_buy_status && parseInt(goods.inventory) > 0) {
+                            if (this.popup_buy_status && parseInt(goods.inventory) > 0 && !this.is_spec_page_inline) {
                                 if ((this.$refs.goods_buy || null) != null) {
                                     this.$refs.goods_buy.init(this.goods, {...{buy_event_type: this.buy_event_type, buy_button: this.buy_button}, ...this.params});
                                     this.setData({is_loading_goods_buy_popup: 1});
                                 }
                             }
+
+                            // 规格内页直选初始化
+                            this.init_goods_buy_page();
 
                             // 是否展示门店购物车导航
                             if((this.plugins_realstore_data || null) != null && (this.$refs.realstore_cart || null) != null) {
@@ -1549,6 +1608,15 @@
                     case 'buy':
                     case 'cart':
                         this.setData({ buy_event_type: type });
+                        // 内页已选全则直接确认；否则走弹层
+                        if (this.is_spec_page_inline && (this.$refs.goods_buy_page || null) != null) {
+                            if (this.$refs.goods_buy_page.is_spec_selected_complete()) {
+                                this.$refs.goods_buy_page.page_buy_submit(type);
+                                return false;
+                            }
+                            app.globalData.showToast(this.$t('common.please_select_spec'));
+                            return false;
+                        }
                         if ((this.$refs.goods_buy || null) != null) {
                             this.$refs.goods_buy.init(this.goods, {...{buy_event_type: this.buy_event_type, buy_button: this.buy_button, is_init: this.is_loading_goods_buy_popup == 0 ? 1 : 0}, ...this.params});
                             this.setData({is_loading_goods_buy_popup: 1});

@@ -1,6 +1,57 @@
 <template>
-    <view :class="theme_view" class="z-i-deep">
-        <component-popup :propShow="popup_status" propPosition="bottom" @onclose="popup_close_event" :propIndex="propIndex">
+    <view :class="[theme_view, propPageMode ? '' : 'z-i-deep']">
+        <!-- 页内直选 -->
+        <view v-if="propPageMode && page_ready" class="goods-spec-page-container bg-white border-radius-main padding-main">
+            <block v-if="(goods.is_exist_many_spec || 0) == 1 && goods_spec_choose.length == 0">
+                <view class="padding-top-lg padding-bottom-lg tc cr-red">{{ $t('goods-buy.incorrect_specification_data') }}</view>
+            </block>
+            <block v-else>
+                <view v-if="goods_spec_choose.length > 0" class="goods-spec-choose">
+                    <!-- 页内规格统一卡片：单层自带价；多层最后一层在选完前置规格后带价 -->
+                    <view v-for="(item, key) in goods_spec_choose" :key="key" class="item padding-bottom-lg">
+                        <view v-if="goods_spec_choose.length > 1" class="text-size-sm padding-bottom-xs">{{ item.name }}</view>
+                        <view v-if="item.value.length > 0" class="spec-card-list flex-row flex-wrap">
+                            <block v-for="(items, keys) in item.value" :key="keys">
+                                <view
+                                    @tap.stop="goods_spec_choice_event"
+                                    :data-key="key"
+                                    :data-keys="keys"
+                                    :class="'spec-card ' + (items.is_active ? 'br-main bg-main-light' : '') + ' ' + (items.is_dont || '') + ' ' + (items.is_disabled || '')"
+                                >
+                                    <view class="flex-row align-c">
+                                        <image v-if="(items.images || null) != null" :src="items.images" mode="aspectFill" class="spec-card-images radius margin-right-xs"></image>
+                                        <view class="spec-card-name text-size-sm cr-base flex-1 flex-width">{{ items.name }}</view>
+                                    </view>
+                                    <view v-if="items.price != null && items.price !== ''" class="spec-card-price margin-top-xs">
+                                        <text class="sales-price fw-b">{{ goods.show_price_symbol || propCurrencySymbol }}{{ items.price }}</text>
+                                        <text v-if="(items.inventory_unit || null) != null && items.inventory_unit != ''" class="cr-grey text-size-xs"> / {{ items.inventory_unit }}</text>
+                                    </view>
+                                </view>
+                            </block>
+                        </view>
+                    </view>
+                </view>
+                <!-- 购买数量 -->
+                <view class="goods-buy-number oh pr flex-row align-c jc-sb">
+                    <view class="flex-shrink">{{ $t('goods-buy.purchase_quantity') }}</view>
+                    <view class="flex-row align-c">
+                        <view class="spec-stock text-size-xs margin-right-sm">
+                            <text class="cr-grey">{{ $t('common.stock') }}</text>
+                            <text class="cr-base margin-left-xs">{{ goods_spec_base_inventory }}</text>
+                            <text class="cr-grey">{{ goods_spec_base_inventory_unit }}</text>
+                        </view>
+                        <view class="number-content tc oh round">
+                            <view @tap="goods_buy_number_event" class="number-submit tc cr-grey fl va-m" data-type="0">-</view>
+                            <input @blur="goods_buy_number_blur" class="number-input tc cr-grey bg-white fl va-m radius-0" type="number" :value="buy_number" />
+                            <view @tap="goods_buy_number_event" class="number-submit tc cr-grey fl va-m" data-type="1">+</view>
+                        </view>
+                    </view>
+                </view>
+            </block>
+        </view>
+
+        <!-- 弹层选择 -->
+        <component-popup v-if="!propPageMode" :propShow="popup_status" propPosition="bottom" @onclose="popup_close_event" :propIndex="propIndex">
             <view class="goods-spec-choice-container padding-main bg-white pr">
                 <view class="close oh pa top-0 right-0 z-i-deep">
                     <view class="fr padding-top padding-right padding-left-sm padding-bottom-sm" @tap.stop="popup_close_event">
@@ -102,6 +153,8 @@
                 goods_cover_class: '',
                 is_exist_many_spec: false,
                 spec_confirm_btn_disabled_status: true,
+                // 页内模式已初始化
+                page_ready: false,
                 // 弹窗打开时的默认价格库存（未选完规格时恢复展示）
                 default_spec_display: null,
                 // 选中规格临时定时变量
@@ -136,6 +189,11 @@
             propPluginsName: {
                 type: String,
                 default: '',
+            },
+            // 页内直选（不弹层）
+            propPageMode: {
+                type: Boolean,
+                default: false,
             },
         },
 
@@ -223,8 +281,8 @@
                 var init_params = Object.assign({}, params);
                 delete init_params.data_params;
 
-                // 状态默认开启弹窗
-                var status = true;
+                // 状态默认开启弹窗；页内模式不弹层
+                var status = this.propPageMode ? false : true;
                 // 商品可选规格
                 var goods_spec_choose = this.goods_spec_choose_init(goods);
                 // 是否存在多规格
@@ -272,6 +330,7 @@
                 // 设置数据
                 this.setData({
                     popup_status: status,
+                    page_ready: this.propPageMode ? true : false,
                     params: init_params || {},
                     buy_data_params: buy_data_params,
                     back_data: back_data,
@@ -565,6 +624,8 @@
                 // 获取规格值
                 var spec = this.choice_spec_data();
                 if (spec.length <= 0) {
+                    // 前置规格取消后，清掉后续层价格
+                    this.clear_spec_option_price(active_index);
                     return false;
                 }
 
@@ -580,6 +641,7 @@
                     success: (res) => {
                         if (res.data.code == 0) {
                             var spec_type = res.data.data.spec_type;
+                            var spec_option_base = res.data.data.spec_option_base || {};
                             var spec_count = spec.length;
                             var index = spec_count > 0 ? spec_count : 0;
                             if (index < sku_count) {
@@ -600,6 +662,18 @@
                                             } else {
                                                 temp_spec[i]['value'][k]['is_disabled'] = 'spec-items-disabled';
                                             }
+                                            // 最后一层：写入卡片价格；非最后一层：清价
+                                            if (index == sku_count - 1 && (spec_option_base[temp_value] || null) != null) {
+                                                temp_spec[i]['value'][k]['price'] = spec_option_base[temp_value]['price'];
+                                                temp_spec[i]['value'][k]['original_price'] = spec_option_base[temp_value]['original_price'] || 0;
+                                            } else {
+                                                temp_spec[i]['value'][k]['price'] = null;
+                                                temp_spec[i]['value'][k]['original_price'] = null;
+                                            }
+                                        } else if (parseInt(i) > index) {
+                                            // 更后层价格失效
+                                            temp_spec[i]['value'][k]['price'] = null;
+                                            temp_spec[i]['value'][k]['original_price'] = null;
                                         }
                                     }
                                 }
@@ -622,6 +696,31 @@
                     fail: () => {
                         app.globalData.showToast(this.$t('common.internet_error_tips'));
                     },
+                });
+            },
+
+            // 清空从指定层起的规格卡片价格（多层页内用）
+            clear_spec_option_price(from_index) {
+                var temp_spec = this.goods_spec_choose || [];
+                if (temp_spec.length <= 0) {
+                    return;
+                }
+                from_index = parseInt(from_index || 0);
+                for (var i in temp_spec) {
+                    if (parseInt(i) < from_index) {
+                        continue;
+                    }
+                    for (var k in temp_spec[i]['value']) {
+                        // 单层规格初始化自带价，不清
+                        if ((temp_spec[i]['value'][k]['is_only_level_one'] || null) != null) {
+                            continue;
+                        }
+                        temp_spec[i]['value'][k]['price'] = null;
+                        temp_spec[i]['value'][k]['original_price'] = null;
+                    }
+                }
+                this.setData({
+                    goods_spec_choose: temp_spec,
                 });
             },
 
@@ -889,6 +988,27 @@
                 }
             },
 
+            // 规格是否已选全
+            is_spec_selected_complete() {
+                var sku_count = this.goods_spec_choose.length;
+                if (sku_count <= 0) {
+                    return true;
+                }
+                return this.goods_selected_spec().length >= sku_count;
+            },
+
+            // 页内模式：底部购买/加购直接确认
+            page_buy_submit(type = 'buy') {
+                this.buy_event_type = type || 'buy';
+                return this.spec_confirm_event({
+                    currentTarget: {
+                        dataset: {
+                            type: type || 'buy',
+                        },
+                    },
+                });
+            },
+
             // 规格确认事件
             spec_confirm_event(e = null) {
                 var user = app.globalData.get_user_info(this, 'spec_confirm_event');
@@ -1127,5 +1247,83 @@
     }
     .goods-spec-choice-container .buy-nav-btn-number-4 .item {
         width: 25% !important;
+    }
+
+    /* 页内一层规格卡片 */
+    .goods-spec-page-container .spec-card-list {
+        margin: 0 -8rpx;
+    }
+    .goods-spec-page-container .spec-card {
+        width: calc(33.33% - 16rpx);
+        margin: 8rpx;
+        padding: 20rpx 16rpx;
+        border: 2rpx solid #eee;
+        border-radius: 12rpx;
+        box-sizing: border-box;
+        background: #fff;
+    }
+    .goods-spec-page-container .spec-card.spec-items-disabled,
+    .goods-spec-page-container .spec-card.spec-dont-choose {
+        opacity: 0.45;
+    }
+    .goods-spec-page-container .spec-card-name {
+        line-height: 1.3;
+    }
+    .goods-spec-page-container .spec-card-images {
+        width: 40rpx;
+        height: 40rpx;
+        flex-shrink: 0;
+    }
+    .goods-spec-page-container .item .spec .spec-btn {
+        background-color: #f5f5f5;
+        color: #666;
+        border: 1px solid #ccc;
+        margin: 0 16rpx 16rpx 0;
+    }
+    .goods-spec-page-container .item .spec .spec-btn .spec-images {
+        width: 40rpx;
+        height: 40rpx !important;
+    }
+    .goods-spec-page-container .spec-dont-choose {
+        color: #b4b3b3 !important;
+        background-color: #ffffff !important;
+        border: 1px solid #ebeaea !important;
+    }
+    .goods-spec-page-container .spec-dont-choose .spec-images {
+        opacity: 0.5;
+    }
+    .goods-spec-page-container .spec-items-disabled {
+        color: #d2cfcf !important;
+        background-color: #ffffff !important;
+        border: 1px dashed #d5d5d5 !important;
+    }
+    .goods-spec-page-container .spec-items-disabled .spec-images {
+        opacity: 0.3;
+    }
+    .goods-spec-page-container .goods-buy-number {
+        min-height: 70rpx;
+    }
+    .goods-spec-page-container .number-content {
+        position: relative;
+        right: auto;
+        top: auto;
+        background: #eee;
+        border: 1px solid #eee;
+    }
+    .goods-spec-page-container .spec-stock {
+        white-space: nowrap;
+    }
+    .goods-spec-page-container .number-content .number-submit {
+        width: 80rpx;
+        font-weight: bold;
+    }
+    .goods-spec-page-container .number-content .number-input {
+        width: 50px;
+    }
+    .goods-spec-page-container .number-content .number-submit,
+    .goods-spec-page-container .number-content .number-input {
+        padding: 0;
+        height: 60rpx;
+        line-height: 60rpx;
     }
 </style>
