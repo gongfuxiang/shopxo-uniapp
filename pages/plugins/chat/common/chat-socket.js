@@ -1697,7 +1697,7 @@ const get_connect_params = () => {
 		is_wss = is_https ? 1 : 0;
 	}
 	const host = cfg.ws_host || parse_host_from_request_url(request_url) || '127.0.0.1';
-	const port = Number(cfg.ws_port || 9502);
+	const port = Number(cfg.ws_port || 9501);
 	const ws = is_wss === 1 ? 'wss' : 'ws';
 	if (is_https && ws != 'wss') {
 		return { error: 'https站点请开启wss连接方式' };
