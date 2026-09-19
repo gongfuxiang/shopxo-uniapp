@@ -16,20 +16,27 @@
     background: #f5f5f5;
 }
 .staff-item-content {
-    position: relative;
-    min-height: 120rpx;
+    min-width: 0;
 }
-.staff-booking-count {
-    position: absolute;
-    top: 0;
-    right: 0;
-    z-index: 1;
+.staff-title-row {
+    min-width: 0;
+    width: 100%;
 }
 .staff-info-name {
     margin-right: 12rpx;
 }
-.staff-name-row {
-    padding-right: 120rpx;
+.staff-stat-row {
+    min-width: 0;
+    width: 100%;
+}
+.staff-distance {
+    margin-left: 12rpx;
+}
+.staff-rating-tag {
+    line-height: 36rpx;
+    padding: 0 12rpx;
+    color: #8b5a2b;
+    background: #f5e6d3;
 }
 .staff-position-tag {
     line-height: 36rpx;
@@ -39,13 +46,27 @@
     text-overflow: ellipsis;
     white-space: nowrap;
 }
+.staff-specialty-tag {
+    line-height: 32rpx;
+    padding: 0 10rpx;
+}
+.staff-store-row {
+    min-width: 0;
+}
+.staff-store-meta .staff-meta-icon + .staff-meta-icon {
+    margin-left: 28rpx;
+}
+.staff-meta-icon {
+    line-height: 1;
+}
+.staff-bottom-row {
+    min-width: 0;
+}
+.staff-meta {
+    min-width: 0;
+    padding-right: 16rpx;
+}
 .staff-book-btn {
-    flex-shrink: 0;
     margin: 0;
     line-height: 50rpx;
-}
-.staff-book-btn-br {
-    position: absolute;
-    right: 0;
-    bottom: 0;
 }

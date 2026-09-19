@@ -3204,6 +3204,19 @@
                 }
                 // 默认名称
                 var default_name = i18n.t('run.location_not_selected');
+                var current_location_name = i18n.t('run.current_location');
+                // 自动定位占位名（含历史缓存的各语言文案 / key）统一按当前语言刷新
+                var current_location_placeholders = [
+                    '__CURRENT_LOCATION__',
+                    'run.current_location',
+                    'current location',
+                    'Current Location',
+                    '当前位置',
+                    current_location_name,
+                ];
+                if ((user_location.name || '') != '' && current_location_placeholders.indexOf(user_location.name) != -1) {
+                    user_location.name = (current_location_name && current_location_name != 'run.current_location') ? current_location_name : '当前位置';
+                }
                 // 位置选择失败的状态，名称和默认名称不一致则认为是成功的
                 if(user_location.status == 3 && user_location.name != default_name) {
                     user_location.status = 1;
@@ -3268,7 +3281,8 @@
                                     type: 'wgs84',
                                     success: function (res) {
                                         var address = {
-                                            name: i18n.t('run.current_location'),
+                                            // 占位标记，展示时按当前语言解析为「当前位置」
+                                            name: '__CURRENT_LOCATION__',
                                             address: '',
                                             lat: res.latitude || null,
                                             lng: res.longitude || null,
@@ -3276,7 +3290,7 @@
                                         };
                                         uni.setStorageSync(cache_key, address);
                                         if (typeof object === 'object' && (method || null) != null) {
-                                            object[method](address);
+                                            object[method](self.choice_user_location_init());
                                         }
                                     }
                                 });

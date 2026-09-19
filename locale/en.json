@@ -751,7 +751,7 @@
 		"please_get_authorization_first": "Please obtain authorization first",
 		"location_select_not_supported": "Geographic location selection is not supported!",
 		"location_not_selected": "No location selected",
-		"current_location": "current location",
+		"current_location": "Current Location",
 		"staff_booking_load_failed": "Staff booking failed to load, please try again later",
 		"wechat_original_id_configured_background": "WeChat original ID is not configured in the background",
 		"open_wechat_mini_program": "Please open it in the WeChat mini program",

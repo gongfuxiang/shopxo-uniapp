@@ -4,28 +4,27 @@
             <view v-if="data_list.length > 0" class="data-list padding-horizontal-main padding-top-main">
                 <view v-for="(item, index) in data_list" :key="index" class="item padding-main border-radius-main oh bg-white spacing-mb">
                     <view class="base oh br-b padding-bottom-main">
-                        <text class="cr-base">{{ item.add_time_time || '' }}</text>
-                        <text class="fr cr-main">{{ item.rating_text || '' }}</text>
+                        <text class="cr-base">{{ item.add_time_time || item.add_time || '' }}</text>
+                        <text class="fr cr-main">{{ item.comment_type_name || '' }}</text>
                     </view>
                     <view class="margin-top">
-                        <view v-if="(item.goods || null) != null" class="oh" :data-value="item.goods.goods_url || ('/pages/goods-detail/goods-detail?id=' + item.goods.id)" @tap="url_event">
-                            <image v-if="(item.goods.images || '') != ''" :src="item.goods.images" mode="aspectFill" class="radius goods-images fl"></image>
+                        <view v-if="(item.target || null) != null" class="oh" :data-value="target_url(item)" @tap="url_event">
+                            <image v-if="(item.target.images || '') != ''" :src="item.target.images" mode="aspectFill" class="radius goods-images fl"></image>
                             <view class="goods-title fr">
-                                <view class="multi-text">{{ item.goods.title || '' }}</view>
-                                <view class="cr-grey text-size-xs margin-top-xs">
-                                    <text v-if="(item.goods.spec_text || item.msg || '') != ''" class="margin-right-sm">{{ item.goods.spec_text || item.msg }}</text>
-                                    <text v-if="item.goods.price !== undefined && item.goods.price !== null && item.goods.price !== ''" class="sales-price margin-right-sm">{{ currency_symbol }}{{ item.goods.price }}</text>
-                                    <text v-if="(item.goods.buy_number || 0) > 0">x{{ item.goods.buy_number }}</text>
+                                <view class="multi-text">{{ item.target.title || '' }}</view>
+                                <view v-if="item.comment_type == 'goods'" class="cr-grey text-size-xs margin-top-xs">
+                                    <text v-if="(item.target.spec_text || '') != ''" class="margin-right-sm">{{ item.target.spec_text }}</text>
+                                    <text v-if="item.target.price !== undefined && item.target.price !== null && item.target.price !== ''" class="sales-price margin-right-sm">{{ currency_symbol }}{{ item.target.price }}</text>
+                                    <text v-if="(item.target.buy_number || 0) > 0">x{{ item.target.buy_number }}</text>
                                 </view>
                             </view>
                         </view>
                         <view class="content margin-top-main">
-                            <component-panel-content :propData="item" :propDataField="field_list" propExcludeField="add_time_time,rating_text" :propIsTerse="true"></component-panel-content>
+                            <component-panel-content :propData="item" :propDataField="field_list" propExcludeField="add_time_time,comment_type_name,target_title" :propIsTerse="true"></component-panel-content>
                         </view>
                     </view>
                     <view class="item-operation tr br-t padding-top-main margin-top-main">
-                        <button :data-value="'/pages/user-goods-comments-form/user-goods-comments-form?id=' + item.id" @tap="url_event" class="round bg-white br-main cr-main margin-left-lg" type="default" size="mini" hover-class="none">{{ $t('common.edit') }}</button>
-                        <button class="round bg-white br-red cr-red margin-left-lg" type="default" size="mini" hover-class="none" @tap="delete_event" :data-index="index" :data-value="item.id">{{ $t('common.del') }}</button>
+                        <button class="round bg-white cr-red br-red" type="default" size="mini" @tap="delete_event" :data-value="item.id" :data-index="index" hover-class="none">{{ $t('common.del') }}</button>
                     </view>
                 </view>
                 <component-bottom-line :propStatus="data_bottom_line_status"></component-bottom-line>
@@ -43,7 +42,7 @@
     import componentNoData from '@/components/no-data/no-data';
     import componentBottomLine from '@/components/bottom-line/bottom-line';
     import componentPanelContent from '@/components/panel-content/panel-content';
-    import pluginLocale from './locale/index.js';
+    import pluginLocale from '../locale/index.js';
 
     export default {
         mixins: [pluginLocale],
@@ -60,7 +59,6 @@
                 data_list_loding_msg: '',
                 data_bottom_line_status: false,
                 data_is_loading: 0,
-                params: null,
             };
         },
         components: {
@@ -72,20 +70,15 @@
         onLoad(params) {
             params = app.globalData.launch_params_handle(params);
             app.globalData.page_event_onload_handle(params);
-            this.setData({
-                params: params,
-            });
+            this.init_title();
         },
         onShow() {
             app.globalData.page_event_onshow_handle();
-            uni.$off('refresh');
             this.init();
-            uni.$on('refresh', () => {
-                this.init();
-            });
             if ((this.$refs.common || null) != null) {
                 this.$refs.common.on_show();
             }
+            app.globalData.page_share_handle();
         },
         onPullDownRefresh() {
             this.setData({
@@ -94,6 +87,27 @@
             this.get_data_list(1);
         },
         methods: {
+            // 对象跳转地址
+            target_url(item) {
+                if ((item || null) == null || (item.target || null) == null) {
+                    return '';
+                }
+                var target = item.target;
+                if ((target.goods_url || '') != '') {
+                    return target.goods_url;
+                }
+                if ((target.url || '') != '') {
+                    return target.url;
+                }
+                if (item.comment_type == 'goods' && (target.id || 0) > 0) {
+                    return '/pages/goods-detail/goods-detail?id=' + target.id;
+                }
+                if (item.comment_type == 'staff' && (target.id || 0) > 0) {
+                    return '/pages/plugins/realstore/staff-detail/staff-detail?id=' + target.id;
+                }
+                return '';
+            },
+            // 初始化
             init() {
                 var user = app.globalData.get_user_info(this, 'init');
                 if (user != false) {
@@ -103,13 +117,28 @@
                         data_bottom_line_status: false,
                     });
                     this.get_data_list(1);
-                } else {
-                    this.setData({
-                        data_list_loding_status: 0,
-                        data_bottom_line_status: false,
-                    });
                 }
             },
+            // 标题
+            init_title() {
+                uni.request({
+                    url: app.globalData.get_request_url('config', 'usercomments', 'realstore'),
+                    method: 'POST',
+                    data: {},
+                    dataType: 'json',
+                    success: (res) => {
+                        if (res.data.code == 0 && (res.data.data || null) != null && (res.data.data.name || '') != '') {
+                            uni.setNavigationBarTitle({ title: res.data.data.name });
+                        } else {
+                            uni.setNavigationBarTitle({ title: this.$t('pages.plugins-realstore-user-service-comments') });
+                        }
+                    },
+                    fail: () => {
+                        uni.setNavigationBarTitle({ title: this.$t('pages.plugins-realstore-user-service-comments') });
+                    },
+                });
+            },
+            // 获取数据
             get_data_list(is_mandatory) {
                 if ((is_mandatory || 0) == 0) {
                     if (this.data_bottom_line_status == true) {
@@ -130,7 +159,7 @@
                     });
                 }
                 uni.request({
-                    url: app.globalData.get_request_url('index', 'usergoodscomments'),
+                    url: app.globalData.get_request_url('index', 'usercomments', 'realstore'),
                     method: 'POST',
                     data: {
                         page: this.data_page,
@@ -189,12 +218,8 @@
                     },
                 });
             },
-            scroll_lower() {
-                this.get_data_list();
-            },
+            // 删除
             delete_event(e) {
-                var index = e.currentTarget.dataset.index || 0;
-                var value = e.currentTarget.dataset.value || 0;
                 uni.showModal({
                     title: this.$t('common.warm_tips'),
                     content: this.$t('common.delete_confirm_tips'),
@@ -202,13 +227,17 @@
                     cancelText: this.$t('common.no'),
                     success: (result) => {
                         if (result.confirm) {
+                            var value = e.currentTarget.dataset.value;
+                            var index = e.currentTarget.dataset.index;
                             uni.showLoading({
                                 title: this.$t('common.processing_in_text'),
                             });
                             uni.request({
-                                url: app.globalData.get_request_url('delete', 'usergoodscomments'),
+                                url: app.globalData.get_request_url('delete', 'usercomments', 'realstore'),
                                 method: 'POST',
-                                data: { ids: value },
+                                data: {
+                                    ids: value,
+                                },
                                 dataType: 'json',
                                 success: (res) => {
                                     uni.hideLoading();
@@ -238,6 +267,11 @@
                     },
                 });
             },
+            // 滚动加载
+            scroll_lower() {
+                this.get_data_list();
+            },
+            // url事件
             url_event(e) {
                 app.globalData.url_event(e);
             },
@@ -245,5 +279,14 @@
     };
 </script>
 <style>
-@import './user-goods-comments.css';
+.scroll-box {
+    height: 100vh;
+}
+.goods-images {
+    width: 76rpx;
+    height: 76rpx;
+}
+.goods-title {
+    width: calc(100% - 90rpx);
+}
 </style>

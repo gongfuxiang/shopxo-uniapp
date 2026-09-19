@@ -12,7 +12,10 @@ var zh = {
         "plugins-realstore-frequencycard-used": "次卡使用记录",
         "plugins-realstore-check": "订单核销",
         "plugins-realstore-staff-list": "服务人员",
-        "plugins-realstore-staff-detail": "预约服务"
+        "plugins-realstore-staff-detail": "预约服务",
+        "plugins-realstore-orderallot-comments": "服务评价",
+        "plugins-realstore-service-comments": "门店服务评论",
+        "plugins-realstore-user-service-comments": "服务评论"
     },
     "batchorder-list": {
         "progress": "进行中"
@@ -36,7 +39,43 @@ var zh = {
         "bookable_services": "可预约服务",
         "selected": "已选择",
         "bookable_services_2": "暂无可预约服务",
-        "search_staff_name": "搜索服务人员姓名"
+        "search_staff_name": "搜索服务人员姓名",
+        "work_years_prefix": "从业",
+        "work_years_unit": "年",
+        "specialty": "擅长",
+        "earliest": "最早可约",
+        "rating": "评分",
+        "served": "已服务",
+        "served_unit": "单",
+        "intro_tag": "简介",
+        "base_info": "基础信息",
+        "join": "入驻",
+        "gender": "性别",
+        "age": "年龄",
+        "height": "身高",
+        "nation": "民族",
+        "zodiac": "属相",
+        "native_place": "籍贯",
+        "constellation": "星座",
+        "collapse": "收起",
+        "expand": "展开",
+        "go_order": "去下单",
+        "book_now": "立即预约TA",
+        "select_service": "选择服务",
+        "favor": "收藏",
+        "favored": "已收藏",
+        "comments": "评价",
+        "view_all_comments": "查看全部评论",
+        "positive_rate": "好评率",
+        "no_comments": "暂无评价",
+        "belong_store": "所属门店"
+    },
+    "orderallot-comments": {
+        "goods_comments": "商品评价",
+        "staff_comments": "服务人员评价",
+        "staff_content_placeholder": "说说服务体验吧",
+        "score_unit": "分",
+        "reply": "商家回复："
     },
     "goods-detail": {
         "store_introduction": "门店介绍",
@@ -45,7 +84,7 @@ var zh = {
     "index": {
         "select_location": "选择位置",
         "enter_store_name": "输入门店名称",
-        "latest_stores": "最新门店"
+        "latest_stores": "附近门店"
     },
     "detail": {
         "business_hours": "营业时间：",
@@ -89,7 +128,10 @@ var en = {
         "plugins-realstore-frequencycard-used": "Secondary Card Usage Record",
         "plugins-realstore-check": "Order verification",
         "plugins-realstore-staff-list": "Service Staff",
-        "plugins-realstore-staff-detail": "Book Service"
+        "plugins-realstore-staff-detail": "Book Service",
+        "plugins-realstore-orderallot-comments": "Service Review",
+        "plugins-realstore-service-comments": "Store Service Reviews",
+        "plugins-realstore-user-service-comments": "Service Comments"
     },
     "batchorder-list": {
         "progress": "In progress"
@@ -113,7 +155,43 @@ var en = {
         "bookable_services": "Bookable Services",
         "selected": "Selected",
         "bookable_services_2": "No bookable services",
-        "search_staff_name": "Search staff name"
+        "search_staff_name": "Search staff name",
+        "work_years_prefix": "",
+        "work_years_unit": " yrs",
+        "specialty": "Skills",
+        "earliest": "Earliest ",
+        "rating": "Rating",
+        "served": "Served",
+        "served_unit": "",
+        "intro_tag": "Bio",
+        "base_info": "Profile",
+        "join": "Joined",
+        "gender": "Gender",
+        "age": "Age",
+        "height": "Height",
+        "nation": "Ethnicity",
+        "zodiac": "Zodiac",
+        "native_place": "Hometown",
+        "constellation": "Sign",
+        "collapse": "Collapse",
+        "expand": "Expand",
+        "go_order": "Order",
+        "book_now": "Book Now",
+        "select_service": "Select Service",
+        "favor": "Favorite",
+        "favored": "Saved",
+        "comments": "Reviews",
+        "view_all_comments": "View all",
+        "positive_rate": "Positive ",
+        "no_comments": "No reviews yet",
+        "belong_store": "Store"
+    },
+    "orderallot-comments": {
+        "goods_comments": "Product Reviews",
+        "staff_comments": "Staff Reviews",
+        "staff_content_placeholder": "Share your service experience",
+        "score_unit": "",
+        "reply": "Reply: "
     },
     "goods-detail": {
         "store_introduction": "Store Introduction",
@@ -122,7 +200,7 @@ var en = {
     "index": {
         "select_location": "Select location",
         "enter_store_name": "Enter store name",
-        "latest_stores": "Latest stores"
+        "latest_stores": "Nearby stores"
     },
     "detail": {
         "business_hours": "Business hours:",

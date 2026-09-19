@@ -1757,6 +1757,27 @@
                             "component-realstore-cart": "view"
                         }
                     }
+                },
+                {
+                    "path": "orderallot-comments/orderallot-comments",
+                    "style": {
+                        "enablePullDownRefresh": true,
+                        "navigationBarTitleText": ""
+                    }
+                },
+                {
+                    "path": "service-comments/service-comments",
+                    "style": {
+                        "enablePullDownRefresh": true,
+                        "navigationBarTitleText": ""
+                    }
+                },
+                {
+                    "path": "user-service-comments/user-service-comments",
+                    "style": {
+                        "enablePullDownRefresh": true,
+                        "navigationBarTitleText": ""
+                    }
                 }
             ]
         },

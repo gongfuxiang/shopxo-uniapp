@@ -1,6 +1,6 @@
 <template>
     <view :class="theme_view">
-        <block v-if="detail != null">
+        <block v-if="(detail || null) != null">
             <view class="padding-horizontal-main padding-top-main">
                 <!-- 状态与操作（对齐系统订单详情） -->
                 <view class="bg-white padding-main border-radius-main tc spacing-mb">
@@ -35,8 +35,8 @@
                             </view>
                             <text class="text-size-xl margin-top-sm va-m margin-left-sm">{{ status_progress_name }}</text>
                         </block>
-                        <view v-if="((detail.operate_data || {}).is_pay || 0) == 1" class="cr-price fw-b margin-top-sm">
-                            <text class="text-size">{{ (detail.currency_data || {}).currency_symbol || payment_currency_symbol }}</text>
+                        <view v-if="(detail.operate_data || null) != null && (detail.operate_data.is_pay || 0) == 1" class="cr-price fw-b margin-top-sm">
+                            <text class="text-size">{{ ((detail.currency_data || null) == null) ? payment_currency_symbol : (detail.currency_data.currency_symbol || payment_currency_symbol) }}</text>
                             <text class="text-size-xl margin-left-xs">{{ detail.total_price }}</text>
                         </view>
                         <view v-if="status_progress_tips" class="cr-grey text-size-xs margin-top-sm">{{ status_progress_tips }}</view>
@@ -59,11 +59,12 @@
                         </view>
                     </view>
                     <view v-if="show_detail_operate" class="item-operation margin-top-sm tc">
-                        <button v-if="((detail.operate_data || {}).is_cancel || 0) == 1" class="round bg-white cr-yellow br-yellow" type="default" size="mini" @tap="cancel_event" hover-class="none">{{$t('common.cancel')}}</button>
-                        <button v-if="((detail.operate_data || {}).is_pay || 0) == 1" class="round bg-white cr-green br-green" type="default" size="mini" @tap="pay_event" hover-class="none">{{$t('common.pay')}}</button>
-                        <button v-if="((detail.operate_data || {}).is_collect || 0) == 1" class="round bg-white cr-green br-green" type="default" size="mini" @tap="collect_event" hover-class="none">{{$t('common.receiving_goods')}}</button>
-                        <button v-if="((detail.operate_data || {}).is_order_batch || 0) == 1" class="round bg-white cr-blue br-blue" type="default" size="mini" @tap="url_event" :data-value="'/pages/plugins/realstore/batchorder-list/batchorder-list?oid=' + detail.order_id" hover-class="none">{{$t('common.batch')}}</button>
-                        <button v-if="((detail.operate_data || {}).is_order_frequencycard || 0) == 1" class="round bg-white cr-green br-green" type="default" size="mini" @tap="url_event" :data-value="'/pages/plugins/realstore/frequencycard-list/frequencycard-list?oid=' + detail.order_id" hover-class="none">{{$t('common.secondary_card')}}</button>
+                        <button v-if="(detail.operate_data || null) != null && (detail.operate_data.is_cancel || 0) == 1" class="round bg-white cr-yellow br-yellow" type="default" size="mini" @tap="cancel_event" hover-class="none">{{$t('common.cancel')}}</button>
+                        <button v-if="(detail.operate_data || null) != null && (detail.operate_data.is_pay || 0) == 1" class="round bg-white cr-green br-green" type="default" size="mini" @tap="pay_event" hover-class="none">{{$t('common.pay')}}</button>
+                        <button v-if="(detail.operate_data || null) != null && (detail.operate_data.is_collect || 0) == 1" class="round bg-white cr-green br-green" type="default" size="mini" @tap="collect_event" hover-class="none">{{$t('common.receiving_goods')}}</button>
+                        <button v-if="(detail.operate_data || null) != null && (detail.operate_data.is_comments || 0) == 1" class="round bg-white cr-main br-main" type="default" size="mini" @tap="url_event" :data-value="'/pages/plugins/realstore/orderallot-comments/orderallot-comments?id=' + detail.id" hover-class="none">{{$t('common.comment')}}</button>
+                        <button v-if="(detail.operate_data || null) != null && (detail.operate_data.is_order_batch || 0) == 1" class="round bg-white cr-blue br-blue" type="default" size="mini" @tap="url_event" :data-value="'/pages/plugins/realstore/batchorder-list/batchorder-list?oid=' + detail.order_id" hover-class="none">{{$t('common.batch')}}</button>
+                        <button v-if="(detail.operate_data || null) != null && (detail.operate_data.is_order_frequencycard || 0) == 1" class="round bg-white cr-green br-green" type="default" size="mini" @tap="url_event" :data-value="'/pages/plugins/realstore/frequencycard-list/frequencycard-list?oid=' + detail.order_id" hover-class="none">{{$t('common.secondary_card')}}</button>
                         <button v-if="(detail.express_data || null) != null && detail.express_data.length > 0" class="round bg-white cr-main br-main" type="default" size="mini" @tap="url_event" :data-value="'/pages/plugins/express/detail/detail?oid=' + detail.id + '&action_type=realstore'" hover-class="none">{{$t('common.logistics')}}</button>
                         <button v-if="(detail.plugins_delivery_data || 0) > 0" class="round bg-white cr-main br-main" type="default" size="mini" @tap="url_event" :data-value="'/pages/plugins/delivery/logistics/logistics?id=' + detail.plugins_delivery_data" hover-class="none">{{$t('common.logistics')}}</button>
                         <button v-if="(detail.plugins_ordergoodsform_data || 0) == 1" class="round bg-white cr-blue br-blue" type="default" size="mini" @tap="url_event" :data-value="'/pages/plugins/ordergoodsform/order/order?id=' + detail.order_id" hover-class="none">{{$t('common.form')}}</button>
@@ -138,7 +139,7 @@
                         <image class="icon fl" :src="common_static_url + 'map-icon.png'" mode="widthFix"></image>
                         <view class="text fr">
                             <text>{{ detail.address_data.province_name }}{{ detail.address_data.city_name }}{{ detail.address_data.county_name }}{{ detail.address_data.address }}</text>
-                            <text v-if="detail.order_model == 2 && (detail.address_data.lng || 0) != 0 && (detail.address_data.lat || (0 && detail.address_data.lng != 0 && detail.address_data.lat != 0)) != 0" class="address-map-submit cr-base br round bg-white margin-left-sm text-size-xs" @tap="address_map_event">{{$t('common.view_location')}}</text>
+                            <text v-if="detail.order_model == 2 && (detail.address_data.lng || 0) != 0 && (detail.address_data.lat || 0) != 0" class="address-map-submit cr-base br round bg-white margin-left-sm text-size-xs" @tap="address_map_event">{{$t('common.view_location')}}</text>
                         </view>
                     </view>
                     <view class="address-divider spacing-mb"></view>
@@ -335,29 +336,35 @@
         },
 
         computed: {
+            // 订单状态进度数据
             status_progress() {
                 const d = this.detail || {};
                 return d.status_progress || d.make_progress || null;
             },
 
+            // 状态进度标题
             status_progress_name() {
                 const sp = this.status_progress || {};
                 return sp.status_name || sp.current_name || ((this.detail || {}).status_name) || '';
             },
 
+            // 状态进度提示文案
             status_progress_tips() {
                 return String(((this.status_progress || {}).tips) || '');
             },
 
+            // 状态进度样式（danger/success/primary/warning/default）
             status_progress_style() {
                 return String(((this.status_progress || {}).style) || 'default');
             },
 
+            // 状态进度步骤列表
             status_progress_steps() {
                 const steps = ((this.status_progress || {}).steps) || null;
                 return (steps != null && steps.length > 0) ? steps : [];
             },
 
+            // 是否展示详情操作按钮区
             show_detail_operate() {
                 const d = this.detail || null;
                 if (d == null) {
@@ -368,6 +375,7 @@
                     Number(op.is_cancel || 0) +
                     Number(op.is_pay || 0) +
                     Number(op.is_collect || 0) +
+                    Number(op.is_comments || 0) +
                     Number(d.plugins_delivery_data || 0) +
                     Number(d.plugins_ordergoodsform_data || 0) +
                     Number(op.is_order_batch || 0) +
@@ -412,6 +420,7 @@
         },
 
         methods: {
+            // 进度步骤样式类
             make_step_class(index) {
                 if (this.make_step_done(index)) {
                     return 'is-done';
@@ -422,11 +431,13 @@
                 return 'is-wait';
             },
 
+            // 进度步骤是否已完成
             make_step_done(index) {
                 const cur = Number(((this.status_progress || {}).current) || 0);
                 return index < cur;
             },
 
+            // 进度步骤是否当前步骤
             make_step_active(index) {
                 const cur = Number(((this.status_progress || {}).current) || 0);
                 return index === cur;

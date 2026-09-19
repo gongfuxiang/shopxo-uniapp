@@ -5,6 +5,13 @@
                 <component-banner :propData="slider_list"></component-banner>
             </view>
 
+            <!-- 员工列表导航 -->
+            <view v-if="icon_list.length > 0" class="padding-horizontal-main" :class="slider_list.length > 0 ? 'spacing-mb' : 'padding-top-main spacing-mb'">
+                <view class="bg-white border-radius-main">
+                    <component-icon-nav :propData="{...{data: icon_list}, ...{random: random_value}}"></component-icon-nav>
+                </view>
+            </view>
+
             <view class="staff-header-row flex-row align-c padding-horizontal-main padding-top-main padding-bottom-main bg-white spacing-mb">
                 <view class="fw-b text-size staff-title flex-shrink-0">{{ $t('pages.plugins-realstore-staff-list') }}</view>
                 <view class="flex-1 flex-width margin-left-main staff-search">
@@ -13,19 +20,49 @@
             </view>
 
             <view v-if="data_list.length > 0" class="padding-horizontal-main">
-                <view v-for="(item, index) in data_list" :key="index" class="staff-item padding-main border-radius-main bg-white spacing-mb flex-row cp" :data-value="'/pages/plugins/realstore/staff-detail/staff-detail?id=' + item.id" @tap="url_event">
-                    <image v-if="(item.avatar || null) != null && item.avatar != ''" class="staff-avatar-large circle br margin-right-main" :src="item.avatar" mode="aspectFill"></image>
-                    <view v-else class="staff-avatar-large staff-avatar-placeholder circle br margin-right-main">
-                        <iconfont name="icon-user" size="48rpx" color="#ccc"></iconfont>
-                    </view>
-                    <view class="flex-1 flex-width staff-item-content">
-                        <view v-if="(item.booking_count || 0) > 0" class="staff-booking-count cr-grey text-size-xs">{{ $t('realstore-staff.booked') }}{{ item.booking_count }}</view>
-                        <view class="flex-row align-c staff-name-row">
-                            <view class="fw-b text-size staff-info-name flex-shrink-0">{{ item.alias }}</view>
-                            <view v-if="(item.position_name || null) != null && item.position_name != ''" class="staff-position-tag round bg-white br-yellow cr-yellow text-size-xs flex-shrink-0">{{ item.position_name }}</view>
+                <view v-for="(item, index) in data_list" :key="index" class="staff-item padding-main border-radius-main bg-white spacing-mb cp" :data-value="'/pages/plugins/realstore/staff-detail/staff-detail?id=' + item.id" @tap="url_event">
+                    <view class="flex-row">
+                        <image v-if="(item.avatar || null) != null && item.avatar != ''" class="staff-avatar-large circle br margin-right-main" :src="item.avatar" mode="aspectFill"></image>
+                        <view v-else class="staff-avatar-large staff-avatar-placeholder circle br margin-right-main">
+                            <iconfont name="icon-user" size="48rpx" color="#ccc"></iconfont>
                         </view>
-                        <view v-if="(item.realstore || null) != null && (item.realstore.name || '') != ''" class="cr-grey text-size-xs margin-top-xs single-text">{{ item.realstore.name }}</view>
-                        <button class="staff-book-btn staff-book-btn-br round text-size-xs bg-main cr-white br-main" type="default" size="mini" hover-class="none" :data-value="'/pages/plugins/realstore/staff-detail/staff-detail?id=' + item.id" @tap.stop="url_event">{{ $t('realstore-staff.book') }}</button>
+                        <view class="flex-1 flex-width staff-item-content">
+                            <view class="staff-title-row flex-row align-c flex-wrap">
+                                <view class="fw-b text-size staff-info-name flex-shrink-0">{{ item.alias }}</view>
+                                <view v-if="(item.position_name || null) != null && item.position_name != ''" class="staff-position-tag round bg-white br-grey cr-grey text-size-xs flex-shrink-0">{{ item.position_name }}</view>
+                                <view class="flex-1 flex-width"></view>
+                                <text v-if="(item.distance || '') != ''" class="staff-distance cr-grey text-size-xs flex-shrink-0">{{ item.distance }}</text>
+                            </view>
+                            <view v-if="staff_earliest_show(item) != '' || (item.rating || 0) > 0 || (item.service_count || item.booking_count || 0) > 0" class="staff-stat-row margin-top-xs flex-row align-c flex-wrap">
+                                <view v-if="staff_earliest_show(item) != ''" class="staff-specialty-tag round text-size-xss cr-main bg-main-light flex-shrink-0 margin-right-sm">{{ $t('realstore-staff.earliest') }}{{ staff_earliest_show(item) }}</view>
+                                <view v-if="(item.rating || 0) > 0 || (item.service_count || item.booking_count || 0) > 0" class="staff-rating-tag round text-size-xss margin-right-sm flex-shrink-0">{{ $t('realstore-staff.rating') }} {{ (item.rating || 0) > 0 ? item.rating : '5.0' }}</view>
+                                <text v-if="(item.service_count || item.booking_count || 0) > 0" class="cr-grey text-size-xs flex-shrink-0">{{ $t('realstore-staff.served') }}{{ item.service_count || item.booking_count }}{{ $t('realstore-staff.served_unit') }}</text>
+                            </view>
+                            <view class="staff-store-row margin-top-xs flex-row align-c">
+                                <text v-if="(item.realstore || null) != null && (item.realstore.name || '') != ''" class="single-text flex-1 flex-width cr-grey text-size-xs">{{ item.realstore.name }}</text>
+                                <view v-else class="flex-1 flex-width"></view>
+                                <view class="staff-store-meta flex-row align-c flex-shrink-0">
+                                    <view class="staff-meta-icon flex-row align-c">
+                                        <iconfont name="icon-message-o" size="24rpx" color="#ccc"></iconfont>
+                                        <text class="cr-grey text-size-xs margin-left-xs">{{ item.comments_count || 0 }}</text>
+                                    </view>
+                                    <view class="staff-meta-icon flex-row align-c">
+                                        <iconfont name="icon-heart-o" size="24rpx" color="#ccc"></iconfont>
+                                        <text class="cr-grey text-size-xs margin-left-xs">{{ item.favor_count || 0 }}</text>
+                                    </view>
+                                </view>
+                            </view>
+                        </view>
+                    </view>
+                    <view class="staff-bottom-row margin-top-sm flex-row align-c">
+                        <view class="staff-meta flex-1 flex-width flex-row align-c flex-wrap">
+                            <view v-if="(item.work_years || 0) > 0" class="text-size-xs cr-base margin-right">{{ $t('realstore-staff.work_years_prefix') }}{{ item.work_years }}{{ $t('realstore-staff.work_years_unit') }}</view>
+                            <block v-if="(item.specialty_list || null) != null && item.specialty_list.length > 0">
+                                <text class="text-size-xs cr-grey margin-right-xs">{{ $t('realstore-staff.specialty') }}</text>
+                                <view v-for="(tag, tindex) in item.specialty_list.slice(0, 3)" :key="tindex" class="staff-specialty-tag round text-size-xss cr-grey bg-grey-f5 margin-right-xs">{{ tag }}</view>
+                            </block>
+                        </view>
+                        <button class="staff-book-btn round text-size-xs bg-main cr-white br-main flex-shrink-0" type="default" size="mini" hover-class="none" :data-value="'/pages/plugins/realstore/staff-detail/staff-detail?id=' + item.id" @tap.stop="url_event">{{ $t('realstore-staff.book') }}</button>
                     </view>
                 </view>
             </view>
@@ -48,6 +85,7 @@
     import componentBottomLine from '@/components/bottom-line/bottom-line';
     import componentBanner from '@/components/slider/slider';
     import componentSearch from '@/components/search/search';
+    import componentIconNav from '@/components/icon-nav/icon-nav';
     import pluginLocale from '../locale/index.js';
 
     export default {
@@ -56,6 +94,8 @@
             return {
                 theme_view: app.globalData.get_theme_value_view(),
                 slider_list: [],
+                icon_list: [],
+                random_value: 0,
                 is_index_init: false,
                 index_loding_status: 1,
                 index_loding_msg: '',
@@ -80,6 +120,7 @@
             componentBottomLine,
             componentBanner,
             componentSearch,
+            componentIconNav,
         },
 
         onLoad(params) {
@@ -142,6 +183,8 @@
                             var data = res.data.data || {};
                             this.setData({
                                 slider_list: data.slider_list || [],
+                                icon_list: data.icon_list || [],
+                                random_value: Math.random(),
                                 is_index_init: true,
                                 index_loding_status: 3,
                                 data_page: 1,
@@ -213,10 +256,18 @@
                 uni.request({
                     url: app.globalData.get_request_url('datalist', 'staff', 'realstore'),
                     method: 'POST',
-                    data: {
-                        page: this.data_page,
-                        keywords: this.search_keywords_value || '',
-                    },
+                    data: (() => {
+                        var post = {
+                            page: this.data_page,
+                            keywords: this.search_keywords_value || '',
+                        };
+                        var loc = app.globalData.choice_user_location_init() || {};
+                        if ((loc.lng || 0) != 0 && (loc.lat || 0) != 0) {
+                            post.lng = loc.lng;
+                            post.lat = loc.lat;
+                        }
+                        return post;
+                    })(),
                     dataType: 'json',
                     success: (res) => {
                         uni.stopPullDownRefresh();
@@ -307,6 +358,25 @@
                     data_bottom_line_status: false,
                 });
                 this.get_data_list(1);
+            },
+
+            // 最早可约短文案（今天仅时刻，其它带日标签，如 Tomorrow08:00）
+            staff_earliest_show(item) {
+                var booking = (item || {}).earliest_booking || null;
+                if (booking == null) {
+                    return '';
+                }
+                var time = booking.start_time || '';
+                if (time == '' && (booking.time_text || '') != '') {
+                    time = String(booking.time_text).split(/[\s\-–—]/)[0] || '';
+                }
+                if (time == '') {
+                    return booking.text || item.earliest_booking_text || '';
+                }
+                if (parseInt(booking.is_today || 0) == 1 || (booking.day_label || '') == '') {
+                    return time;
+                }
+                return booking.day_label + time;
             },
 
             // url事件

@@ -4,15 +4,16 @@
             <view v-if="detail != null">
                 <form @submit="form_submit" class="form-container">
                     <view v-for="(item, index) in detail.items" :key="index" class="form-gorup oh border-radius-main spacing-mb">
-                        <view class="oh">
-                            <view :data-value="item.goods_url" @tap="url_event" class="cp">
-                                <image class="goods-image fl radius br margin-right-sm" :src="item.images" mode="aspectFill"></image>
-                            </view>
-                            <view class="item-base fl margin-top-sm">
-                                <block v-for="(tv, ti) in [1, 2, 3, 4, 5]" :key="ti">
-                                    <image class="star-icon va-m" :src="common_static_url + 'stars' + (form_rating_list[index] != undefined && form_rating_list[index] >= tv ? '-active' : '') + '-icon.png'" mode="aspectFill" @tap="rating_event" :data-index="index" :data-value="tv"></image>
-                                </block>
-                                <text v-if="form_rating_list[index] != undefined" class="cr-grey va-m margin-left-xs">{{ rating_msg[form_rating_list[index] - 1] }}</text>
+                        <view class="flex-row">
+                            <view class="flex-row flex-1 flex-width cp" :data-value="item.goods_url" @tap="url_event">
+                                <image class="goods-image radius br margin-right flex-shrink-0" :src="item.images" mode="aspectFill"></image>
+                                <view class="item-base flex-1 flex-width">
+                                    <view class="text-size-sm multi-text margin-bottom-xs">{{ item.title }}</view>
+                                    <block v-for="(tv, ti) in [1, 2, 3, 4, 5]" :key="ti">
+                                        <image class="star-icon va-m margin-right" :src="common_static_url + 'stars' + (form_rating_list[index] != undefined && form_rating_list[index] >= tv ? '-active' : '') + '-icon.png'" mode="aspectFill" @tap.stop="rating_event" :data-index="index" :data-value="tv"></image>
+                                    </block>
+                                    <text v-if="form_rating_list[index] != undefined" class="cr-grey va-m text-size-xss">{{ rating_msg[form_rating_list[index] - 1] }}</text>
+                                </view>
                             </view>
                         </view>
                         <view class="margin-top-main br-t">

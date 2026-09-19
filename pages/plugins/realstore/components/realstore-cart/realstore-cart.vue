@@ -235,7 +235,7 @@
                 </scroll-view>
 
                 <view class="padding-main">
-                    <button type="default" hover-class="none" :loading="staff_booking_submit_loading" :disabled="staff_booking_submit_loading || staff_booking_init_loading_status != 3" class="radius bg-main cr-white text-size-md wh-auto" @tap="staff_booking_submit_event">
+                    <button type="default" hover-class="none" :loading="staff_booking_submit_loading" :disabled="staff_booking_submit_loading || staff_booking_init_loading_status != 3" class="round bg-main cr-white text-size-md wh-auto" @tap="staff_booking_submit_event">
                         {{$t('realstore-cart.confirm_checkout')}}
                     </button>
                 </view>
