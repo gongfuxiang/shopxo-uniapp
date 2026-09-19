@@ -1,6 +1,15 @@
 /*
 * 导航
 */
+.nav-base {
+    height: 80rpx;
+    line-height: 80rpx;
+}
+.nav-base .item {
+    display: inline-block;
+    padding: 0 28rpx;
+    font-size: 26rpx;
+}
 .scroll-box-ece-nav.top-notice {
     height: calc(100vh - 154rpx);
 }

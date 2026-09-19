@@ -1,4 +1,17 @@
 /*
+* 导航
+*/
+.nav-base {
+    height: 80rpx;
+    line-height: 80rpx;
+}
+.nav-base .item {
+    display: inline-block;
+    padding: 0 28rpx;
+    font-size: 26rpx;
+}
+
+/*
 * 商品信息
 */
 .goods-cover {

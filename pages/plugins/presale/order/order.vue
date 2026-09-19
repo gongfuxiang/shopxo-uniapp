@@ -1,10 +1,12 @@
 <template>
     <view :class="theme_view">
         <!-- 导航 -->
-        <view v-if="nav_status_list.length > 0" class="nav-base bg-white flex-row jc-sa align-c">
-            <block v-for="(item, index) in nav_status_list" :key="index">
-                <view :class="'item tc ' + (nav_status_index == index ? 'cr-main nav-active-line' : '')" :data-index="index" @tap="nav_event">{{ item.name }}</view>
-            </block>
+        <view v-if="nav_status_list.length > 0" class="nav-base bg-white scroll-view-horizontal">
+            <scroll-view :scroll-x="true" :show-scrollbar="false" :scroll-with-animation="true">
+                <block v-for="(item, index) in nav_status_list" :key="index">
+                    <view :class="'item tc ' + (nav_status_index == index ? 'cr-main nav-active-line' : '')" :data-index="index" @tap="nav_event">{{ item.name }}</view>
+                </block>
+            </scroll-view>
         </view>
         <!-- 列表 -->
         <scroll-view :scroll-y="true" class="scroll-box-ece-nav" @scrolltolower="scroll_lower" lower-threshold="60">

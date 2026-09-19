@@ -13,6 +13,8 @@ var zh = {
         "plugins-realstore-check": "订单核销",
         "plugins-realstore-staff-list": "服务人员",
         "plugins-realstore-staff-detail": "预约服务",
+        "plugins-realstore-staff-order": "门店服务订单",
+        "plugins-realstore-staff-order-detail": "服务订单详情",
         "plugins-realstore-orderallot-comments": "服务评价",
         "plugins-realstore-service-comments": "门店服务评论",
         "plugins-realstore-user-service-comments": "服务评论"
@@ -113,6 +115,32 @@ var zh = {
     "orderallot-list": {
         "service": "服务中",
         "received": "已接收"
+    },
+    "staff-order": {
+        "receive": "接收",
+        "service_done": "服务",
+        "take": "核验",
+        "delivery": "快递",
+        "make_done": "制作",
+        "not_staff": "您不是门店员工",
+        "status_pending": "待接收",
+        "status_received": "已接收",
+        "confirm_receive": "确认接收该订单？",
+        "confirm_make_done": "确认制作完成？",
+        "service_msg": "服务完成说明",
+        "service_msg_placeholder": "选填，说说完成情况",
+        "service_proof": "服务证明图片",
+        "verify_number": "核销数量",
+        "verify_number_placeholder": "请输入核销数量",
+        "please_select_express": "请选择快递公司",
+        "express_number_placeholder": "请输入快递单号",
+        "express_add": "添加快递",
+        "express_empty_tips": "暂无快递信息",
+        "express_remove_confirm": "移除后保存生效，确认继续吗？",
+        "staff_data": "服务人员",
+        "self_tag": "自己",
+        "settle_info": "结算 ",
+        "search_placeholder": "订单号/联系人/联系电话"
     }
 };
 var en = {
@@ -129,6 +157,8 @@ var en = {
         "plugins-realstore-check": "Order verification",
         "plugins-realstore-staff-list": "Service Staff",
         "plugins-realstore-staff-detail": "Book Service",
+        "plugins-realstore-staff-order": "Store Service Orders",
+        "plugins-realstore-staff-order-detail": "Service Order Detail",
         "plugins-realstore-orderallot-comments": "Service Review",
         "plugins-realstore-service-comments": "Store Service Reviews",
         "plugins-realstore-user-service-comments": "Service Comments"
@@ -227,8 +257,34 @@ var en = {
         "make_tip_done": "This order is completed. See you next time"
     },
     "orderallot-list": {
-        "service": "In service",
+        "service": "Serving",
         "received": "Received"
+    },
+    "staff-order": {
+        "receive": "Accept",
+        "service_done": "Service",
+        "take": "Verify",
+        "delivery": "Express",
+        "make_done": "Make",
+        "not_staff": "You are not a store staff member",
+        "status_pending": "Pending",
+        "status_received": "Accepted",
+        "confirm_receive": "Accept this order?",
+        "confirm_make_done": "Confirm ready?",
+        "service_msg": "Service note",
+        "service_msg_placeholder": "Optional note",
+        "service_proof": "Proof photos",
+        "verify_number": "Verify qty",
+        "verify_number_placeholder": "Enter verify quantity",
+        "please_select_express": "Select express company",
+        "express_number_placeholder": "Enter tracking number",
+        "express_add": "Add express",
+        "express_empty_tips": "No express info",
+        "express_remove_confirm": "Takes effect after save. Continue?",
+        "staff_data": "Service staff",
+        "self_tag": "Me",
+        "settle_info": "Settle ",
+        "search_placeholder": "Order no./Contact/Phone"
     }
 };
 export default createPageLocaleMixin({ zh, en });
