@@ -14,6 +14,7 @@ var zh = {
         "plugins-realstore-staff-list": "服务人员",
         "plugins-realstore-staff-detail": "预约服务",
         "plugins-realstore-staff-order": "门店服务订单",
+        "plugins-realstore-staff-profile": "修改员工资料",
         "plugins-realstore-staff-order-detail": "服务订单详情",
         "plugins-realstore-orderallot-comments": "服务评价",
         "plugins-realstore-service-comments": "门店服务评价",
@@ -140,7 +141,37 @@ var zh = {
         "staff_data": "服务人员",
         "self_tag": "自己",
         "settle_info": "结算 ",
-        "search_placeholder": "订单号/联系人/联系电话"
+        "search_placeholder": "订单号/联系人/联系电话",
+        "edit_profile": "修改资料"
+    },
+    "staff-profile": {
+        "page_title": "修改员工资料",
+        "avatar": "员工头像",
+        "photo": "员工相册",
+        "photo_tips": "建议尺寸一致800*800px，最多30张",
+        "alias": "员工别名",
+        "alias_placeholder": "请填写别名",
+        "specialty": "擅长",
+        "specialty_placeholder": "请填写擅长项目",
+        "work_years": "从业年限",
+        "work_years_placeholder": "请填写从业年限",
+        "work_years_unit": "年",
+        "introduce": "员工简介",
+        "introduce_placeholder": "请填写员工简介",
+        "gender": "性别",
+        "select_gender": "请选择性别",
+        "birthday": "生日",
+        "select_birthday": "请选择生日",
+        "height": "身高",
+        "height_placeholder": "请填写身高",
+        "nation": "民族",
+        "nation_placeholder": "请填写民族",
+        "native_place": "籍贯",
+        "native_place_placeholder": "请填写籍贯",
+        "mobile": "手机",
+        "mobile_placeholder": "请填写手机号码",
+        "email": "邮箱",
+        "email_placeholder": "请填写邮箱"
     }
 };
 var en = {
@@ -158,6 +189,7 @@ var en = {
         "plugins-realstore-staff-list": "Service Staff",
         "plugins-realstore-staff-detail": "Book Service",
         "plugins-realstore-staff-order": "Store Service Orders",
+        "plugins-realstore-staff-profile": "Edit Staff Profile",
         "plugins-realstore-staff-order-detail": "Service Order Detail",
         "plugins-realstore-orderallot-comments": "Service Review",
         "plugins-realstore-service-comments": "Store Service Reviews",
@@ -284,7 +316,37 @@ var en = {
         "staff_data": "Service staff",
         "self_tag": "Me",
         "settle_info": "Settle ",
-        "search_placeholder": "Order no./Contact/Phone"
+        "search_placeholder": "Order no./Contact/Phone",
+        "edit_profile": "Edit profile"
+    },
+    "staff-profile": {
+        "page_title": "Edit Staff Profile",
+        "avatar": "Avatar",
+        "photo": "Gallery",
+        "photo_tips": "Recommended 800*800px, max 30",
+        "alias": "Alias",
+        "alias_placeholder": "Enter alias",
+        "specialty": "Skills",
+        "specialty_placeholder": "Enter skills",
+        "work_years": "Years",
+        "work_years_placeholder": "Years of experience",
+        "work_years_unit": "yrs",
+        "introduce": "Bio",
+        "introduce_placeholder": "Enter staff bio",
+        "gender": "Gender",
+        "select_gender": "Select gender",
+        "birthday": "Birthday",
+        "select_birthday": "Select birthday",
+        "height": "Height",
+        "height_placeholder": "Enter height",
+        "nation": "Nation",
+        "nation_placeholder": "Enter nation",
+        "native_place": "Hometown",
+        "native_place_placeholder": "Enter hometown",
+        "mobile": "Mobile",
+        "mobile_placeholder": "Enter mobile",
+        "email": "Email",
+        "email_placeholder": "Enter email"
     }
 };
 export default createPageLocaleMixin({ zh, en });

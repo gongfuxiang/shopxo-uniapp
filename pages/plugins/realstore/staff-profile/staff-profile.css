@@ -1,0 +1,11 @@
+.form-gorup {
+    padding: 28rpx 24rpx;
+    border-bottom: 1px solid #f5f5f5;
+}
+.form-gorup:last-child {
+    border-bottom: 0;
+}
+.form-gorup textarea {
+    width: 100%;
+    min-height: 160rpx;
+}

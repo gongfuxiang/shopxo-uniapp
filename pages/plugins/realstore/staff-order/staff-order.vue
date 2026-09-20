@@ -3,19 +3,29 @@
         <!-- 搜索 -->
         <component-nav-back :propFixed="false" propClass="bg-white cr-black" propColor="#333" :style="'padding-top:' + status_bar_height + 'px;'">
             <template slot="right" :class="is_mp_env ? 'top-search-width' : ''">
-                <view class="margin-left-main" :class="is_mp_env ? '' : 'flex-1 flex-width'">
-                    <component-search
-                        @oninput="search_input_event"
-                        :propIsOnInputEvent="true"
-                        @onsearch="search_button_event"
-                        :propIsOnEvent="true"
-                        :propDefaultValue="search_keywords"
-                        :propIsRequired="false"
-                        :propPlaceholder="$t('staff-order.search_placeholder')"
-                        propIconColor="#ccc"
-                        propPlaceholderClass="cr-grey-c"
-                        propBgColor="#f6f6f6"
-                    ></component-search>
+                <view class="margin-left-main flex-row align-c" :class="is_mp_env ? '' : 'flex-1 flex-width'">
+                    <view class="flex-1 flex-width">
+                        <component-search
+                            @oninput="search_input_event"
+                            :propIsOnInputEvent="true"
+                            @onsearch="search_button_event"
+                            :propIsOnEvent="true"
+                            :propDefaultValue="search_keywords"
+                            :propIsRequired="false"
+                            :propPlaceholder="$t('staff-order.search_placeholder')"
+                            propIconColor="#ccc"
+                            propPlaceholderClass="cr-grey-c"
+                            propBgColor="#f6f6f6"
+                        ></component-search>
+                    </view>
+                    <view
+                        v-if="is_edit_staff_profile == 1"
+                        class="staff-profile-entry flex-row align-c jc-c"
+                        @tap="url_event"
+                        data-value="/pages/plugins/realstore/staff-profile/staff-profile"
+                    >
+                        <iconfont name="icon-user-setup" size="40rpx" color="#333"></iconfont>
+                    </view>
                 </view>
             </template>
         </component-nav-back>
@@ -129,6 +139,7 @@
                 last_location_report_time: 0,
                 express_list: [],
                 editor_path_type: '',
+                is_edit_staff_profile: 0,
             };
         },
         components: {
@@ -185,6 +196,7 @@
                                 location_report_interval: Math.max(0, parseInt(res.data.data.staff_location_report_interval || 60)),
                                 express_list: res.data.data.express_list || [],
                                 editor_path_type: res.data.data.editor_path_type || '',
+                                is_edit_staff_profile: parseInt(res.data.data.is_edit_staff_profile || 0),
                             });
                         } else if (res.data.code == -400) {
                             this.setData({

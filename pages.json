@@ -1773,6 +1773,13 @@
                     }
                 },
                 {
+                    "path": "staff-profile/staff-profile",
+                    "style": {
+                        "enablePullDownRefresh": false,
+                        "navigationBarTitleText": ""
+                    }
+                },
+                {
                     "path": "staff-order-detail/staff-order-detail",
                     "style": {
                         "enablePullDownRefresh": true,

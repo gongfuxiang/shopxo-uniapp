@@ -27,3 +27,9 @@
     border-radius: 8rpx;
     vertical-align: middle;
 }
+.staff-profile-entry {
+    flex-shrink: 0;
+    width: 56rpx;
+    height: 56rpx;
+    margin-left: 12rpx;
+}
