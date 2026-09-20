@@ -312,6 +312,8 @@
                 show_type: 0,
                 work_status: 0,
                 is_enable_profit: 0,
+                location_report_interval: 5,
+                last_location_report_time: 0,
                 scale: 10,
                 markers: [],
                 markers_active_data: []
@@ -374,7 +376,7 @@
                 }
             },
 
-            // 位置实时监听
+            // 位置实时监听（按配置间隔节流）
             start_location_update(e = null) {
                 if (e == null) {
                     app.globalData.start_location_update(0, this, "start_location_update");
@@ -385,6 +387,13 @@
                             latitude: e.lat,
                             longitude: e.lng,
                         });
+                        // 间隔节流：未到间隔则不上报
+                        var now = parseInt(Date.now() / 1000);
+                        var interval = Math.max(0, parseInt(this.location_report_interval || 5));
+                        if (interval > 0 && this.last_location_report_time > 0 && now - this.last_location_report_time < interval) {
+                            return;
+                        }
+                        this.last_location_report_time = now;
                         // 位置上报
                         uni.request({
                             url: app.globalData.get_request_url("locationreport", "user", "delivery"),
@@ -502,6 +511,7 @@
                                 editor_path_type: data.editor_path_type || "",
                                 nav_type_list: data.nav_type_list || [],
                                 is_enable_profit: parseInt(data.is_enable_profit || 0),
+                                location_report_interval: Math.max(0, parseInt((data.team_location_report_interval === undefined || data.team_location_report_interval === null || data.team_location_report_interval === '') ? 5 : data.team_location_report_interval)),
                                 markers: temp_markers,
                                 data_list: temp_data_list,
                                 data_total: data.total,

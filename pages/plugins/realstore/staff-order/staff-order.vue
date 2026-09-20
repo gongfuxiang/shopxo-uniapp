@@ -134,7 +134,7 @@
                 content_style: '',
                 nav_status_list: [],
                 nav_status_index: 0,
-                location_report_interval: 60,
+                location_report_interval: 5,
                 last_location_report_time: 0,
                 express_list: [],
                 editor_path_type: '',
@@ -192,7 +192,7 @@
                         if (res.data.code == 0 && (res.data.data || null) != null) {
                             this.setData({
                                 nav_status_list: res.data.data.order_status_list || [],
-                                location_report_interval: Math.max(0, parseInt(res.data.data.staff_location_report_interval || 60)),
+                                location_report_interval: Math.max(0, parseInt(res.data.data.staff_location_report_interval || 5)),
                                 express_list: res.data.data.express_list || [],
                                 editor_path_type: res.data.data.editor_path_type || '',
                                 is_edit_staff_profile: parseInt(res.data.data.is_edit_staff_profile || 0),
@@ -231,7 +231,7 @@
                     return;
                 }
                 var now = parseInt(Date.now() / 1000);
-                var interval = Math.max(0, parseInt(this.location_report_interval || 60));
+                var interval = Math.max(0, parseInt(this.location_report_interval || 5));
                 if (interval > 0 && this.last_location_report_time > 0 && now - this.last_location_report_time < interval) {
                     return;
                 }
