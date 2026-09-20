@@ -71,6 +71,7 @@
                         <text>{{$t('common.total')}}<text class="fw-b">{{ item.buy_number_count }}</text>{{$t('common.total_pieces')}}<text class="sales-price margin-right-xs">{{ item.currency_data.currency_symbol }}{{ item.total_price }}</text></text>
                     </view>
                     <view v-if="staff_operate_show(item)" class="item-operation tr br-t padding-vertical-main">
+                        <button v-if="is_buy_staff_booking == 1 && (item.operate_data.is_staff_booking || 0) == 1" class="round bg-white cr-main br-main" type="default" size="mini" @tap="staff_booking_event" :data-value="item.id" :data-index="index" hover-class="none">{{ $t('staff-order.staff_booking') }}</button>
                         <button v-if="(item.operate_data.is_receive || 0) == 1" class="round bg-white cr-main br-main" type="default" size="mini" @tap="operate_event" data-action="receive" :data-value="item.id" :data-index="index" hover-class="none">{{ $t('staff-order.receive') }}</button>
                         <button v-if="(item.operate_data.is_service || 0) == 1" class="round bg-white cr-green br-green" type="default" size="mini" @tap="operate_event" data-action="service" :data-value="item.id" :data-index="index" hover-class="none">{{ $t('staff-order.service_done') }}</button>
                         <button v-if="(item.operate_data.is_take || 0) == 1" class="round bg-white cr-blue br-blue" type="default" size="mini" @tap="operate_event" data-action="take" :data-value="item.id" :data-index="index" hover-class="none">{{ $t('staff-order.take') }}</button>
@@ -78,7 +79,7 @@
                         <button v-if="(item.operate_data.is_make_done || 0) == 1" class="round bg-white cr-green br-green" type="default" size="mini" @tap="operate_event" data-action="makedone" :data-value="item.id" :data-index="index" hover-class="none">{{ $t('staff-order.make_done') }}</button>
                         <button v-if="(item.operate_data.is_collect || 0) == 1" class="round bg-white cr-green br-green" type="default" size="mini" @tap="operate_event" data-action="collect" :data-value="item.id" :data-index="index" hover-class="none">{{ $t('common.receiving_goods') }}</button>
                         <button v-if="(item.operate_data.is_cancel || 0) == 1" class="round bg-white cr-yellow br-yellow" type="default" size="mini" @tap="operate_event" data-action="cancel" :data-value="item.id" :data-index="index" hover-class="none">{{ $t('common.cancel') }}</button>
-                        <button class="round bg-white cr-grey br-grey" type="default" size="mini" @tap="url_event" :data-value="'/pages/plugins/realstore/staff-order-detail/staff-order-detail?id=' + item.id" hover-class="none">{{ $t('common.detail_text') }}</button>
+                        <button class="round bg-white cr-base br-base" type="default" size="mini" @tap="url_event" :data-value="'/pages/plugins/realstore/staff-order-detail/staff-order-detail?id=' + item.id" hover-class="none">{{ $t('common.detail_text') }}</button>
                     </view>
                 </view>
             </view>
@@ -94,6 +95,7 @@
             :propEditorPathType="editor_path_type"
             @success="operate_success"
         ></component-staff-order-operate>
+        <component-orderallot-staff-booking ref="staff_booking" @success="operate_success"></component-orderallot-staff-booking>
         <component-common ref="common"></component-common>
     </view>
 </template>
@@ -105,6 +107,7 @@
     import componentNavBack from '@/components/nav-back/nav-back';
     import componentSearch from '@/components/search/search';
     import componentStaffOrderOperate from '../components/staff-order-operate/staff-order-operate';
+    import componentOrderallotStaffBooking from '../components/orderallot-staff-booking/orderallot-staff-booking';
     import pluginLocale from '../locale/index.js';
 
     var bar_height = parseInt(app.globalData.get_system_info('statusBarHeight', 0, true));
@@ -139,6 +142,7 @@
                 express_list: [],
                 editor_path_type: '',
                 is_edit_staff_profile: 0,
+                is_buy_staff_booking: 0,
             };
         },
         components: {
@@ -148,6 +152,7 @@
             componentNavBack,
             componentSearch,
             componentStaffOrderOperate,
+            componentOrderallotStaffBooking,
         },
         onLoad(params) {
             params = app.globalData.launch_params_handle(params);
@@ -196,6 +201,7 @@
                                 express_list: res.data.data.express_list || [],
                                 editor_path_type: res.data.data.editor_path_type || '',
                                 is_edit_staff_profile: parseInt(res.data.data.is_edit_staff_profile || 0),
+                                is_buy_staff_booking: parseInt(res.data.data.is_buy_staff_booking || 0),
                             });
                         } else if (res.data.code == -400) {
                             this.setData({
@@ -342,6 +348,7 @@
             staff_operate_show(item) {
                 var op = (item || {}).operate_data || {};
                 return (
+                    (this.is_buy_staff_booking == 1 ? (op.is_staff_booking || 0) : 0) +
                     (op.is_receive || 0) +
                     (op.is_service || 0) +
                     (op.is_take || 0) +
@@ -350,6 +357,16 @@
                     (op.is_collect || 0) +
                     (op.is_cancel || 0)
                 ) > 0;
+            },
+            staff_booking_event(e) {
+                var id = parseInt(e.currentTarget.dataset.value || 0);
+                if(id <= 0 || (this.$refs.staff_booking || null) == null) {
+                    return;
+                }
+                var idx = parseInt(e.currentTarget.dataset.index);
+                var row = (!isNaN(idx) && (this.data_list || [])[idx]) ? this.data_list[idx] : null;
+                var symbol = ((row && row.currency_data) || {}).currency_symbol || '';
+                this.$refs.staff_booking.open(id, symbol);
             },
             operate_event(e) {
                 var action = e.currentTarget.dataset.action || '';

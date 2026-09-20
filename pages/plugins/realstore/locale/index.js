@@ -144,7 +144,9 @@ var zh = {
         "self_tag": "自己",
         "settle_info": "结算 ",
         "search_placeholder": "订单号/联系人/联系电话",
-        "edit_profile": "修改资料"
+        "edit_profile": "修改资料",
+        "staff_booking": "预约",
+        "staff_booking_title": "服务订单预约"
     },
     "staff-profile": {
         "page_title": "修改员工资料",
@@ -320,7 +322,9 @@ var en = {
         "self_tag": "Me",
         "settle_info": "Settle ",
         "search_placeholder": "Order no./Contact/Phone",
-        "edit_profile": "Edit profile"
+        "edit_profile": "Edit profile",
+        "staff_booking": "Booking",
+        "staff_booking_title": "Service booking"
     },
     "staff-profile": {
         "page_title": "Edit Staff Profile",

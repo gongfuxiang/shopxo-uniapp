@@ -48,6 +48,14 @@
 /**
 * 商品预约人员时段
 */
+.goods-item-staff-booking {
+    padding-right: 64rpx;
+}
+.goods-item-staff-booking-edit {
+    top: 16rpx;
+    right: 0;
+    z-index: 1;
+}
 .goods-item-staff-booking-unit-no {
     top: 5rpx;
     right: 0;

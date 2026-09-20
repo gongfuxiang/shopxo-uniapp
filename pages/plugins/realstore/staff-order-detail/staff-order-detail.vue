@@ -55,6 +55,7 @@
                         </view>
                     </view>
                     <view v-if="staff_operate_show(detail)" class="item-operation margin-top-sm tc">
+                        <button v-if="is_buy_staff_booking == 1 && (detail.operate_data.is_staff_booking || 0) == 1" class="round bg-white cr-main br-main" type="default" size="mini" @tap="staff_booking_event" hover-class="none">{{ $t('staff-order.staff_booking') }}</button>
                         <button v-if="(detail.operate_data.is_receive || 0) == 1" class="round bg-white cr-main br-main" type="default" size="mini" @tap="operate_event" data-action="receive" hover-class="none">{{ $t('staff-order.receive') }}</button>
                         <button v-if="(detail.operate_data.is_service || 0) == 1" class="round bg-white cr-green br-green" type="default" size="mini" @tap="operate_event" data-action="service" hover-class="none">{{ $t('staff-order.service_done') }}</button>
                         <button v-if="(detail.operate_data.is_take || 0) == 1" class="round bg-white cr-blue br-blue" type="default" size="mini" @tap="operate_event" data-action="take" hover-class="none">{{ $t('staff-order.take') }}</button>
@@ -264,6 +265,7 @@
             :propEditorPathType="editor_path_type"
             @success="get_data"
         ></component-staff-order-operate>
+        <component-orderallot-staff-booking ref="staff_booking" @success="get_data"></component-orderallot-staff-booking>
         <component-common ref="common"></component-common>
     </view>
 </template>
@@ -273,6 +275,7 @@
     import componentNoData from '@/components/no-data/no-data';
     import componentBottomLine from '@/components/bottom-line/bottom-line';
     import componentStaffOrderOperate from '../components/staff-order-operate/staff-order-operate';
+    import componentOrderallotStaffBooking from '../components/orderallot-staff-booking/orderallot-staff-booking';
     import pluginLocale from '../locale/index.js';
 
     var common_static_url = app.globalData.get_static_url('common');
@@ -290,6 +293,7 @@
                 express_list: [],
                 editor_path_type: '',
                 extraction_take_index: 0,
+                is_buy_staff_booking: 0,
             };
         },
         components: {
@@ -297,6 +301,7 @@
             componentNoData,
             componentBottomLine,
             componentStaffOrderOperate,
+            componentOrderallotStaffBooking,
         },
         computed: {
             status_progress() {
@@ -379,6 +384,7 @@
                             this.setData({
                                 express_list: res.data.data.express_list || [],
                                 editor_path_type: res.data.data.editor_path_type || '',
+                                is_buy_staff_booking: parseInt(res.data.data.is_buy_staff_booking || 0),
                             });
                         }
                     },
@@ -441,6 +447,7 @@
             staff_operate_show(item) {
                 var op = (item || {}).operate_data || {};
                 return (
+                    (this.is_buy_staff_booking == 1 ? (op.is_staff_booking || 0) : 0) +
                     (op.is_receive || 0) +
                     (op.is_service || 0) +
                     (op.is_take || 0) +
@@ -449,6 +456,13 @@
                     (op.is_collect || 0) +
                     (op.is_cancel || 0)
                 ) > 0;
+            },
+            staff_booking_event() {
+                if((this.detail || null) == null || (this.$refs.staff_booking || null) == null) {
+                    return;
+                }
+                var symbol = ((this.detail.currency_data) || {}).currency_symbol || '';
+                this.$refs.staff_booking.open(this.detail.id, symbol);
             },
             extraction_take_prev_event() {
                 var items = (((this.detail || {}).extraction_data || {}).items) || [];

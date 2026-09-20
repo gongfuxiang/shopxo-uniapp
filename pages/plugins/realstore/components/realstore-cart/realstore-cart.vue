@@ -236,7 +236,7 @@
 
                 <view class="padding-main">
                     <button type="default" hover-class="none" :loading="staff_booking_submit_loading" :disabled="staff_booking_submit_loading || staff_booking_init_loading_status != 3" class="round bg-main cr-white text-size-md wh-auto" @tap="staff_booking_submit_event">
-                        {{$t('realstore-cart.confirm_checkout')}}
+                        {{ staff_booking_edit_mode ? $t('common.confirm') : $t('realstore-cart.confirm_checkout') }}
                     </button>
                 </view>
             </view>
@@ -307,6 +307,8 @@
                 staff_booking_prefer_staff_id: 0,
                 staff_booking_prefer_staff_alias: '',
                 staff_booking_prefer_staff_avatar: '',
+                // 确认页改约：成功后仅回传数据，不再跳转结算
+                staff_booking_edit_mode: false,
                 // 左滑删除
                 swipe_item_index: null,
                 swipe_options: [
@@ -1254,6 +1256,7 @@
             },
 
             // 打开员工预定弹窗并初始化
+            // params: realstore_id, cart_list, prefer_staff_*, booking_data(回填), edit_mode(确认页改约)
             staff_booking_init(params) {
                 params = params || {};
                 var cart_list = params.cart_list || null;
@@ -1262,22 +1265,37 @@
                 var prefer_staff_alias = params.prefer_staff_alias || '';
                 var prefer_staff_avatar = params.prefer_staff_avatar || '';
                 var prefer_mode = prefer_staff_id > 0 ? 1 : 0;
+                var edit_mode = params.edit_mode === true || parseInt(params.edit_mode || 0) == 1;
+                var prefill_list = [];
+                if((params.booking_data || null) != null) {
+                    if(typeof params.booking_data == 'string') {
+                        try {
+                            prefill_list = JSON.parse(params.booking_data) || [];
+                        } catch(e) {
+                            prefill_list = [];
+                        }
+                    } else if(Array.isArray(params.booking_data)) {
+                        prefill_list = params.booking_data;
+                    }
+                }
                 var booking_form = {};
                 if(cart_list != null) {
                     for(var gi in cart_list) {
                         var stock = parseInt(cart_list[gi].stock) || 1;
                         booking_form[gi] = [];
                         for(var ui = 0; ui < stock; ui++) {
+                            var prefill = this.staff_booking_find_prefill(prefill_list, cart_list[gi], ui);
+                            var use_prefer = prefer_mode == 1 && (prefill == null);
                             booking_form[gi].push({
                                 cart_id: cart_list[gi].id,
                                 goods_id: cart_list[gi].goods_id,
                                 unit_index: ui,
-                                staff_id: prefer_mode == 1 ? prefer_staff_id : 0,
-                                staff_alias: prefer_mode == 1 ? prefer_staff_alias : '',
-                                staff_avatar: prefer_mode == 1 ? prefer_staff_avatar : '',
-                                booking_periods_id: 0,
-                                period_text: '',
-                                ymd: 0,
+                                staff_id: prefill != null ? parseInt(prefill.staff_id || 0) : (use_prefer ? prefer_staff_id : 0),
+                                staff_alias: prefill != null ? (prefill.staff_alias || '') : (use_prefer ? prefer_staff_alias : ''),
+                                staff_avatar: prefill != null ? (prefill.staff_avatar || '') : (use_prefer ? prefer_staff_avatar : ''),
+                                booking_periods_id: prefill != null ? parseInt(prefill.booking_periods_id || 0) : 0,
+                                period_text: prefill != null ? (prefill.period_text || '') : '',
+                                ymd: prefill != null ? parseInt(prefill.ymd || 0) : 0,
                             });
                         }
                     }
@@ -1296,8 +1314,49 @@
                     staff_booking_prefer_staff_id: prefer_staff_id,
                     staff_booking_prefer_staff_alias: prefer_staff_alias,
                     staff_booking_prefer_staff_avatar: prefer_staff_avatar,
+                    staff_booking_edit_mode: edit_mode,
                 });
                 this.staff_booking_load_init_data();
+            },
+
+            // 从已有预约数据中匹配某一商品数量单元
+            staff_booking_find_prefill(prefill_list, goods, unit_index) {
+                if((prefill_list || null) == null || prefill_list.length <= 0 || (goods || null) == null) {
+                    return null;
+                }
+                var cart_id = parseInt(goods.id || 0);
+                var goods_id = parseInt(goods.goods_id || 0);
+                var ui = parseInt(unit_index || 0);
+                for(var i in prefill_list) {
+                    var row = prefill_list[i] || {};
+                    var row_ui = parseInt(row.unit_index || 0);
+                    if(row_ui != ui) {
+                        continue;
+                    }
+                    var row_cart_id = parseInt(row.cart_id || 0);
+                    if(cart_id > 0 && row_cart_id > 0 && row_cart_id == cart_id) {
+                        return row;
+                    }
+                    var row_goods_id = parseInt(row.goods_id || 0);
+                    if(goods_id > 0 && row_goods_id == goods_id && (cart_id <= 0 || row_cart_id <= 0 || row_cart_id == cart_id)) {
+                        return row;
+                    }
+                }
+                return null;
+            },
+
+            // 初始化完成后，为已回填的员工+日期加载时段
+            staff_booking_load_prefill_periods() {
+                var form = this.staff_booking_form || {};
+                for(var gi in form) {
+                    var units = form[gi] || [];
+                    for(var ui in units) {
+                        var item = units[ui] || {};
+                        if(parseInt(item.staff_id || 0) > 0 && parseInt(item.ymd || 0) > 0) {
+                            this.staff_booking_load_unit_periods(gi, ui, item.staff_id, item.ymd);
+                        }
+                    }
+                }
             },
 
             // 按商品购买数量返回序号数组
@@ -1387,6 +1446,9 @@
                             set_data.staff_booking_init_loading_msg = res.data.msg;
                         }
                         this.setData(set_data);
+                        if(res.data.code == 0) {
+                            this.staff_booking_load_prefill_periods();
+                        }
                     },
                     fail: () => {
                         this.setData({
@@ -1684,6 +1746,7 @@
                             unit_index: item.unit_index,
                             staff_id: item.staff_id,
                             staff_alias: item.staff_alias || '',
+                            staff_avatar: item.staff_avatar || '',
                             booking_periods_id: item.booking_periods_id,
                             period_text: item.period_text || '',
                             ymd: item.ymd,
@@ -1691,7 +1754,13 @@
                     }
                 }
 
-                this.setData({ staff_booking_popup_status: false, staff_booking_submit_loading: false });
+                var is_edit_mode = this.staff_booking_edit_mode === true;
+                this.setData({ staff_booking_popup_status: false, staff_booking_submit_loading: false, staff_booking_edit_mode: false });
+                // 确认页改约：仅回传数据，不跳转结算
+                if(is_edit_mode) {
+                    this.$emit('StaffBookingSuccessEvent', booking_data);
+                    return true;
+                }
                 if((app.globalData.data.staff_booking_pending || null) != null) {
                     app.globalData.staff_booking_success(booking_data);
                 } else {
@@ -1701,7 +1770,7 @@
 
             // 关闭员工预定弹窗
             staff_booking_close_event() {
-                this.setData({ staff_booking_popup_status: false });
+                this.setData({ staff_booking_popup_status: false, staff_booking_edit_mode: false });
             },
         }
     };
