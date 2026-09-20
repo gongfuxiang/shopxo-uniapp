@@ -4,7 +4,7 @@
         <button v-if="propOrder.operate_data.is_pay == 1" class="round bg-white cr-green br-green margin-bottom-main" type="default" size="mini" @tap="pay_event" hover-class="none">{{ $t('common.pay') }}</button>
         <button v-if="payvoucher_show" class="round bg-white cr-blue br-blue margin-bottom-main" type="default" size="mini" @tap="payvoucher_event" hover-class="none">{{ payvoucher_name }}</button>
         <button v-if="propOrder.operate_data.is_collect == 1" class="round bg-white cr-green br-green margin-bottom-main" type="default" size="mini" @tap="collect_event" hover-class="none">{{ $t('common.receiving_goods') }}</button>
-        <button v-if="propOrder.operate_data.is_comments == 1" class="round bg-white cr-green br-green margin-bottom-main" type="default" size="mini" @tap="comments_event" hover-class="none">{{ $t('common.comment') }}</button>
+        <button v-if="propOrder.operate_data.is_comments == 1" class="round bg-white cr-green br-green margin-bottom-main" type="default" size="mini" @tap="comments_event" hover-class="none">{{ $t('common.order_comment') }}</button>
         <button v-if="more_actions_count > 0" class="round bg-white cr-base br-base margin-bottom-main" type="default" size="mini" @tap="more_open_event" hover-class="none">{{ $t('common.more') }}</button>
 
         <component-popup :propShow="popup_status" propPosition="bottom" @onclose="more_close_event">

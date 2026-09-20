@@ -103,7 +103,7 @@
                     urls: item.images,
                 });
             },
-            // 获取服务评论列表
+            // 获取服务评价列表
             get_data_list(is_mandatory) {
                 if ((is_mandatory || 0) == 0 && this.data_bottom_line_status) {
                     return false;

@@ -194,7 +194,7 @@
                 });
             },
 
-            // 评论内容
+            // 评价内容
             form_content_event(e) {
                 // 参数
                 var index = e.currentTarget.dataset.index;
@@ -238,7 +238,7 @@
                 // 内容校验
                 var count = this.form_content_list.length;
                 if (count < length) {
-                    app.globalData.showToast(this.$t('common.fill_comment_content'));
+                    app.globalData.showToast(this.$t('user-order-comments.fill_comment_content'));
                     return false;
                 }
 

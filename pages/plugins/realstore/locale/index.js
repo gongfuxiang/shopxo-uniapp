@@ -16,8 +16,8 @@ var zh = {
         "plugins-realstore-staff-order": "门店服务订单",
         "plugins-realstore-staff-order-detail": "服务订单详情",
         "plugins-realstore-orderallot-comments": "服务评价",
-        "plugins-realstore-service-comments": "门店服务评论",
-        "plugins-realstore-user-service-comments": "服务评论"
+        "plugins-realstore-service-comments": "门店服务评价",
+        "plugins-realstore-user-service-comments": "服务评价"
     },
     "batchorder-list": {
         "progress": "进行中"
@@ -67,7 +67,7 @@ var zh = {
         "favor": "收藏",
         "favored": "已收藏",
         "comments": "评价",
-        "view_all_comments": "查看全部评论",
+        "view_all_comments": "查看全部评价",
         "positive_rate": "好评率",
         "no_comments": "暂无评价",
         "belong_store": "所属门店"
@@ -161,7 +161,7 @@ var en = {
         "plugins-realstore-staff-order-detail": "Service Order Detail",
         "plugins-realstore-orderallot-comments": "Service Review",
         "plugins-realstore-service-comments": "Store Service Reviews",
-        "plugins-realstore-user-service-comments": "Service Comments"
+        "plugins-realstore-user-service-comments": "Service Reviews"
     },
     "batchorder-list": {
         "progress": "In progress"
