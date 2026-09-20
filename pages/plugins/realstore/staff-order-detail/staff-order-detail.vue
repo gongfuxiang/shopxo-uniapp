@@ -211,6 +211,7 @@
                                 <text class="cr-grey">{{ $t('common.booking_time') }}</text>
                                 <text v-if="(booking.ymd_text || null) != null && booking.ymd_text != ''">{{ booking.ymd_text }}</text>
                                 <text v-if="(booking.period_text || null) != null && booking.period_text != ''" :class="(booking.ymd_text || null) != null && booking.ymd_text != '' ? 'margin-left' : ''">{{ booking.period_text }}</text>
+                                <text v-if="parseInt(booking.status || 0) == 2" class="cr-grey margin-left">{{ booking.status_name || $t('common.canceled') }}</text>
                             </view>
                         </view>
                     </view>
