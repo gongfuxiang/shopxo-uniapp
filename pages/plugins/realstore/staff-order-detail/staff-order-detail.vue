@@ -65,6 +65,56 @@
                     </view>
                 </view>
 
+                <!-- 取货信息 -->
+                <view v-if="extraction_take_show" class="extraction-take panel-item padding-main border-radius-main bg-white spacing-mb">
+                    <view class="br-b padding-bottom-main fw-b text-size">{{ $t('common.take_info_title') }}</view>
+                    <view class="padding-top-main">
+                        <view v-if="(detail.extraction_data.items || null) != null && detail.extraction_data.items.length > 0" class="extraction-take-switch">
+                            <view v-if="detail.extraction_data.items.length > 1" class="extraction-take-arrow extraction-take-prev" @tap="extraction_take_prev_event">
+                                <iconfont name="icon-angle-left" size="36rpx" color="#666"></iconfont>
+                            </view>
+                            <view class="extraction-take-body">
+                                <view v-if="(detail.extraction_data.items[extraction_take_index].goods_url || null) != null && detail.extraction_data.items[extraction_take_index].goods_url != ''" class="extraction-take-goods cp" :data-value="detail.extraction_data.items[extraction_take_index].goods_url" @tap="url_event">
+                                    <image v-if="(detail.extraction_data.items[extraction_take_index].goods_images || null) != null" class="extraction-take-goods-images br radius" :src="detail.extraction_data.items[extraction_take_index].goods_images" mode="aspectFill"></image>
+                                    <view class="extraction-take-goods-title text-size-sm multi-text">{{ detail.extraction_data.items[extraction_take_index].goods_title || '' }}</view>
+                                </view>
+                                <view v-else class="extraction-take-goods">
+                                    <image v-if="(detail.extraction_data.items[extraction_take_index].goods_images || null) != null" class="extraction-take-goods-images br radius" :src="detail.extraction_data.items[extraction_take_index].goods_images" mode="aspectFill"></image>
+                                    <view class="extraction-take-goods-title text-size-sm multi-text">{{ detail.extraction_data.items[extraction_take_index].goods_title || '' }}</view>
+                                </view>
+                                <view class="extraction-take-code tc">
+                                    <image v-if="(detail.extraction_data.items[extraction_take_index].images || null) != null" class="qrcode br radius" :src="detail.extraction_data.items[extraction_take_index].images" mode="aspectFill"></image>
+                                    <view class="extraction-take-meta margin-top-sm">
+                                        <text class="extraction-take-meta-label cr-grey">{{ $t('common.take_code_label') }}</text>
+                                        <view class="extraction-take-meta-value">
+                                            <block v-if="(detail.extraction_data.items[extraction_take_index].code || null) == null || detail.extraction_data.items[extraction_take_index].code == ''">
+                                                <text class="cr-red">{{ $t('common.pickup_code_does_exist_contact_administrator') }}</text>
+                                            </block>
+                                            <block v-else>
+                                                <view class="dis-inline-block" :data-value="detail.extraction_data.items[extraction_take_index].code" @tap="text_copy_event">
+                                                    <text class="fw-b cr-blue text-size">{{ detail.extraction_data.items[extraction_take_index].code }}</text>
+                                                    <text class="bg-white br-green cr-green round padding-horizontal-sm text-size-xs va-m margin-left-sm">{{ $t('common.copy') }}</text>
+                                                </view>
+                                            </block>
+                                        </view>
+                                    </view>
+                                    <view class="extraction-take-meta margin-top-xs">
+                                        <text class="extraction-take-meta-label cr-grey">{{ $t('common.take_verify_label') }}</text>
+                                        <view class="extraction-take-meta-value">
+                                            <text class="cr-green">{{ detail.extraction_data.items[extraction_take_index].verify_number || 0 }}</text>
+                                            <text class="cr-grey">/</text>
+                                            <text>{{ detail.extraction_data.items[extraction_take_index].total_number || 1 }}</text>
+                                        </view>
+                                    </view>
+                                </view>
+                            </view>
+                            <view v-if="detail.extraction_data.items.length > 1" class="extraction-take-arrow extraction-take-next" @tap="extraction_take_next_event">
+                                <iconfont name="icon-angle-right" size="36rpx" color="#666"></iconfont>
+                            </view>
+                        </view>
+                    </view>
+                </view>
+
                 <!-- 地址 -->
                 <view v-if="(detail.order_type == 0 || detail.order_type == 1 || detail.order_type == 2) && (detail.address_data || null) != null" class="address bg-white padding-main border-radius-main spacing-mb">
                     <view class="address-base oh">
@@ -116,7 +166,7 @@
                                     <text class="fw-b va-m">{{ sv.alias }}</text>
                                     <text v-if="(sv.is_self || 0) == 1" class="staff-self-tag br-grey cr-grey margin-left-sm va-m">{{ $t('staff-order.self_tag') }}</text>
                                 </view>
-                                <text v-if="(sv.is_self || 0) == 1 && staff_settle_text(sv)" class="staff-settle-text cr-green text-size-xs margin-left-sm">{{ $t('staff-order.settle_info') }}{{ staff_settle_text(sv) }}</text>
+                                <text v-if="staff_settle_text(sv)" class="staff-settle-text cr-green text-size-xs margin-left-sm">{{ $t('staff-order.settle_info') }}{{ staff_settle_text(sv) }}</text>
                             </view>
                             <view v-if="((sv.mobile || null) != null && sv.mobile != '') || ((sv.email || null) != null && sv.email != '')" class="staff-data-contact flex-row align-c flex-wrap margin-top-xs">
                                 <view v-if="(sv.mobile || null) != null && sv.mobile != ''" class="staff-contact-item flex-row align-c cp margin-right-main" :data-value="sv.mobile" @tap.stop="tel_event">
@@ -238,6 +288,7 @@
                 data_list_loding_msg: '',
                 express_list: [],
                 editor_path_type: '',
+                extraction_take_index: 0,
             };
         },
         components: {
@@ -264,6 +315,14 @@
             status_progress_steps() {
                 const steps = ((this.status_progress || {}).steps) || null;
                 return (steps != null && steps.length > 0) ? steps : [];
+            },
+            extraction_take_show() {
+                var data = ((this.detail || {}).extraction_data) || null;
+                if (data == null || data === '') {
+                    return false;
+                }
+                var items = data.items || [];
+                return items.length > 0;
             },
         },
         onLoad(params) {
@@ -336,6 +395,7 @@
                             var data = (res.data.data || {}).data || null;
                             if (data != null) {
                                 this.setData({
+                                    extraction_take_index: 0,
                                     detail: data,
                                     detail_list: [
                                         { name: this.$t('orderallot-detail.order_type'), value: data.order_type_name || '' },
@@ -388,6 +448,26 @@
                     (op.is_collect || 0) +
                     (op.is_cancel || 0)
                 ) > 0;
+            },
+            extraction_take_prev_event() {
+                var items = (((this.detail || {}).extraction_data || {}).items) || [];
+                if (items.length <= 1) {
+                    return;
+                }
+                var index = this.extraction_take_index || 0;
+                this.setData({
+                    extraction_take_index: index <= 0 ? items.length - 1 : index - 1,
+                });
+            },
+            extraction_take_next_event() {
+                var items = (((this.detail || {}).extraction_data || {}).items) || [];
+                if (items.length <= 1) {
+                    return;
+                }
+                var index = this.extraction_take_index || 0;
+                this.setData({
+                    extraction_take_index: index >= items.length - 1 ? 0 : index + 1,
+                });
             },
             staff_settle_text(sv) {
                 if ((sv || null) == null) {
@@ -593,6 +673,76 @@
     width: calc(100% - 160rpx);
     word-wrap: break-word;
     word-break: break-all;
+}
+.extraction-take-switch {
+    position: relative;
+}
+.extraction-take-body {
+    width: 100%;
+}
+.extraction-take-goods {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    gap: 16rpx;
+    margin-bottom: 24rpx;
+}
+.extraction-take-goods-images {
+    width: 96rpx;
+    height: 96rpx;
+    flex-shrink: 0;
+}
+.extraction-take-goods-title {
+    flex: 1;
+    min-width: 0;
+    text-align: left;
+}
+.extraction-take-code {
+    padding: 0 88rpx;
+}
+.extraction-take-code .qrcode {
+    width: 280rpx;
+    height: 280rpx;
+    margin: 0 auto;
+    display: block;
+}
+.extraction-take-meta {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-left: auto;
+    margin-right: auto;
+    width: 420rpx;
+    text-align: left;
+}
+.extraction-take-meta-label {
+    width: 5em;
+    flex-shrink: 0;
+    text-align: right;
+}
+.extraction-take-meta-value {
+    flex: 1;
+    min-width: 0;
+    text-align: left;
+}
+.extraction-take-arrow {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 64rpx;
+    height: 64rpx;
+    border-radius: 50%;
+    background: #f5f5f5;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1;
+}
+.extraction-take-prev {
+    left: 0;
+}
+.extraction-take-next {
+    right: 0;
 }
 .staff-data-avatar {
     width: 72rpx;
