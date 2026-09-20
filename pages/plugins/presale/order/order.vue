@@ -16,7 +16,7 @@
                         <text class="cr-grey-9">{{ item.add_time }}</text>
                         <text class="cr-black" :class="item.status < 1 ? 'cr-black' : (item.status < 2 ? 'cr-green' : 'cr-grey-c')">{{ item.status_name }}</text>
                     </view>
-                    <block v-for="(items, index2) in item.detail">
+                    <block v-for="(items, index2) in item.detail" :key="index2">
                         <view class="oh margin-top flex-row gap-10" :data-value="items.goods_url" @tap="url_event">
                             <image :src="items.images" mode="aspectFill" class="br-f5 radius goods-cover"></image>
                             <view class="goods-base">

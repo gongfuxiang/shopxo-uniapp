@@ -6,7 +6,7 @@
                 <view class="fw-b text-size margin-top-xxl">{{ data.title }}</view>
                 <view class="text-size-xs cr-grey margin-top-sm">{{ data.sub_title }}</view>
                 <view class="br padding-main margin-top-lg bg-white border-radius-main">
-                    <block v-for="(item, index) in data.data">
+                    <block v-for="(item, index) in data.data" :key="index">
                         <view class="fw-b tc padding-vertical-sm margin-top">{{item.name}}</view>
                         <image :src="item.url" class="wh-auto radius dis-block" mode="widthFix" :data-value="item.url" @tap="image_show_event"></image>
                     </block>

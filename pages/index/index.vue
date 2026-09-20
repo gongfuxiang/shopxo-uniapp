@@ -64,7 +64,7 @@
                                     <!-- #ifdef H5 || APP -->
                                     <!-- 右上角icon列表 -->
                                     <view v-if="(right_icon_list || null) != null && right_icon_list.length > 0" class="nav-top-right-icon fr">
-                                        <block v-for="(item, index) in right_icon_list">
+                                        <block v-for="(item, index) in right_icon_list" :key="index">
                                             <view class="item dis-inline-block cp pr" :data-value="item.url || ''" @tap="url_event">
                                                 <iconfont :name="item.icon" size="38rpx" color="#fff"></iconfont>
                                                 <view v-if="(item.badge || null) != null" class="badge-icon pa">
