@@ -44,7 +44,11 @@
                     <view class="express-list br radius margin-bottom-main">
                         <view v-if="(form_express_data || null) == null || form_express_data.length == 0" class="padding-main cr-grey tc">{{ $t('staff-order.express_empty_tips') }}</view>
                         <view v-for="(item, index) in form_express_data" :key="index" class="express-item flex-row align-c jc-sb padding-horizontal-main padding-vertical-main" :class="index > 0 ? 'br-t' : ''">
-                            <view class="flex-1 flex-width padding-right-main cr-base text-size-sm">{{ item.express_name }} / {{ item.express_number }}</view>
+                            <view class="flex-1 flex-width padding-right-main cr-base text-size-sm">
+                                <text>{{ item.express_name }}</text>
+                                <text> / </text>
+                                <text>{{ item.express_number }}</text>
+                            </view>
                             <view class="flex-row align-c">
                                 <text class="cr-blue text-size-xs" :data-index="index" @tap="express_edit_event">{{ $t('common.edit') }}</text>
                                 <text class="cr-blue text-size-xs margin-left-main" :data-index="index" @tap="express_remove_event">{{ $t('common.remove') }}</text>
@@ -52,7 +56,10 @@
                         </view>
                     </view>
                     <view class="margin-bottom-xl">
-                        <button class="br-main cr-main bg-white round text-size-sm" type="default" size="mini" @tap="express_add_event" hover-class="none">+ {{ $t('staff-order.express_add') }}</button>
+                        <button class="br-main cr-main bg-white round text-size-sm" type="default" size="mini" @tap="express_add_event" hover-class="none">
+                            <text>+</text>
+                            <text>{{ $t('staff-order.express_add') }}</text>
+                        </button>
                     </view>
                     <form @submit="form_delivery_submit" class="form-container">
                         <view class="form-gorup form-gorup-submit bottom-line-exclude">
@@ -63,13 +70,17 @@
 
                 <!-- 添加/编辑单条快递（同弹层内切换，避免嵌套弹窗被遮罩盖住） -->
                 <block v-else>
-                    <view class="text-size fw-b padding-bottom-main">{{ express_form_type == 'edit' ? $t('common.edit') : $t('staff-order.express_add') }}</view>
+                    <view class="text-size fw-b padding-bottom-main">
+                        <text v-if="express_form_type == 'edit'">{{ $t('common.edit') }}</text>
+                        <text v-else>{{ $t('staff-order.express_add') }}</text>
+                    </view>
                     <form @submit="form_express_item_submit" class="form-container">
                         <view class="form-gorup">
                             <view class="form-gorup-title">{{ $t('common.express_delivery_company') }}<text class="form-group-tips-must">*</text></view>
                             <picker class="margin-top-sm" mode="selector" :range="express_list" range-key="name" :value="form_express_index || 0" @change="form_express_change">
                                 <view class="express-picker br radius padding-left-main padding-right-xxxl padding-vertical-sm arrow-bottom" :class="form_express_index === null ? 'cr-grey' : 'cr-base'">
-                                    {{ form_express_index === null ? $t('staff-order.please_select_express') : ((express_list[form_express_index] || {}).name || '') }}
+                                    <text v-if="form_express_index === null">{{ $t('staff-order.please_select_express') }}</text>
+                                    <text v-else>{{ form_express_selected_name }}</text>
                                 </view>
                             </picker>
                         </view>
@@ -105,7 +116,7 @@
                         </view>
                     </view>
                     <view class="form-gorup form-container-upload oh">
-                        <view class="form-gorup-title">{{ $t('staff-order.service_proof') }}<text class="form-group-tips">{{ $t('common.up_upload') }}30{{ $t('common.text') }}</text></view>
+                        <view class="form-gorup-title">{{ $t('staff-order.service_proof') }}<text class="form-group-tips">{{ $t('staff-order.service_proof_tips') }}</text></view>
                         <view class="margin-top-sm">
                             <component-upload :propData="form_service_images" :propMaxNum="30" :propPathType="editor_path_type" @call-back="form_service_upload_event"></component-upload>
                         </view>
@@ -172,6 +183,16 @@
                 handler(val) {
                     this.editor_path_type = val || '';
                 },
+            },
+        },
+        computed: {
+            // 当前选中的快递公司名称
+            form_express_selected_name() {
+                if (this.form_express_index === null || (this.express_list || []).length == 0) {
+                    return '';
+                }
+                var item = this.express_list[this.form_express_index] || null;
+                return item == null ? '' : (item.name || '');
             },
         },
         methods: {

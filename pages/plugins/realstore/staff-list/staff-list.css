@@ -1,9 +1,50 @@
-.staff-title {
-    max-width: 180rpx;
+.realstore-nav-bg {
+    background-repeat: no-repeat;
+    background-position: top center;
+    background-size: 100% auto;
 }
-.staff-search {
+
+/**
+* 位置和搜索
+*/
+.nav-top-row {
+    min-height: 132rpx;
+    padding-top: 20rpx;
+}
+.nav-location {
+    flex-shrink: 0;
+    max-width: 200rpx;
+}
+.nav-search {
     min-width: 0;
 }
+.nav-map-entry {
+    flex-shrink: 0;
+    width: 56rpx;
+    height: 56rpx;
+}
+
+/**
+* 位置选择提示
+*/
+.choice-location-tips {
+    background: rgba(0, 0, 0, 0.6);
+    top: 0;
+    left: 0;
+    z-index: 2;
+}
+.choice-location-tips .content {
+    margin-top: 30%;
+    width: 520rpx;
+}
+.choice-location-tips .content .close {
+    top: 20rpx;
+    right: 20rpx;
+}
+.choice-location-tips .content .icon {
+    max-width: 200rpx;
+}
+
 .staff-avatar-large {
     width: 120rpx;
     height: 120rpx;
@@ -69,4 +110,15 @@
 .staff-book-btn {
     margin: 0;
     line-height: 50rpx;
+}
+
+@media only screen and (min-width: 960px) {
+    .realstore-nav-bg {
+        background-size: 100% auto;
+    }
+}
+@media only screen and (max-width: 960px) {
+    .realstore-nav-bg {
+        min-height: 160rpx;
+    }
 }

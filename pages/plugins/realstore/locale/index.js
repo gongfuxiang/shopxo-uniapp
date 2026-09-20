@@ -87,7 +87,8 @@ var zh = {
     "index": {
         "select_location": "选择位置",
         "enter_store_name": "输入门店名称",
-        "latest_stores": "附近门店"
+        "latest_stores": "附近门店",
+        "nearby_staff": "附近人员"
     },
     "detail": {
         "business_hours": "营业时间：",
@@ -131,6 +132,7 @@ var zh = {
         "service_msg": "服务完成说明",
         "service_msg_placeholder": "选填，说说完成情况",
         "service_proof": "服务证明图片",
+        "service_proof_tips": "最多上传30张",
         "verify_number": "核销数量",
         "verify_number_placeholder": "请输入核销数量",
         "please_select_express": "请选择快递公司",
@@ -262,7 +264,8 @@ var en = {
     "index": {
         "select_location": "Select location",
         "enter_store_name": "Enter store name",
-        "latest_stores": "Nearby stores"
+        "latest_stores": "Nearby stores",
+        "nearby_staff": "Nearby staff"
     },
     "detail": {
         "business_hours": "Business hours:",

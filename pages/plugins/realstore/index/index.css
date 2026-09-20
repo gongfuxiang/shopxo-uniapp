@@ -4,18 +4,30 @@
 page {
     background-color: #F7EDE1;
 }
+.realstore-nav-bg {
+    background-repeat: no-repeat;
+    background-position: top center;
+    background-size: 100% auto;
+}
 
 /**
 * 位置和搜索
 */
-.nav-location {
-    line-height: 95rpx;
+.nav-top-row {
+    min-height: 132rpx;
+    padding-top: 20rpx;
 }
-.nav-location .icon-arrow-down {
-    top: 34rpx;
+.nav-location {
+    flex-shrink: 0;
+    max-width: 200rpx;
 }
 .nav-search {
-    margin-top: 80rpx;
+    min-width: 0;
+}
+.nav-map-entry {
+    flex-shrink: 0;
+    width: 56rpx;
+    height: 56rpx;
 }
 
 /**
@@ -70,7 +82,7 @@ page {
 @media only screen and (max-width:960px) {
     .realstore-nav-bg {
         /* #ifdef H5 */
-        background-size: auto 100%;
+        background-size: 100% auto;
         /* #endif */
     }
 }

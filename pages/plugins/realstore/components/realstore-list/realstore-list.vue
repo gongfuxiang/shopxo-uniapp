@@ -1,56 +1,69 @@
 <template>
-    <view :class="theme_view">
-        <view v-if="(data_list || null) != null && data_list.length > 0" class="plugins-realstore-data-list oh">
+    <view :class="[theme_view, propIsFold ? 'fold-host' : '']">
+        <view v-if="(data_list || null) != null && data_list.length > 0" class="plugins-realstore-data-list" :class="propIsFold ? 'is-fold' : 'oh'">
             <block v-for="(item, index) in data_list" :key="index">
-                <view class="item bg-white padding-top-xl padding-bottom-sm padding-horizontal-main border-radius-main pr spacing-mb" :class="item.status_info.type === 2 ? 'opacity' : ''" :data-index="index" :data-value="item.url+propRealstoreDetailQuery" @tap="realstore_item_event">
-                    <view class="base oh flex-row">
-                        <!-- 基础内容 -->
-                        <image :src="item.logo" mode="widthFix" class="logo circle br"></image>
-                        <view class="base-right flex-1 flex-width">
-                            <view class="title fw-b text-size single-text tl">
-                                <text v-if="(item.alias || null) != null" class="va-m title-icon border-radius-sm br-main cr-main text-size-xs padding-horizontal-xs margin-right-xs">{{ item.alias }}</text>
-                                <text class="va-m">{{ item.name }}</text>
-                            </view>
-                            <view class="margin-top-sm padding-top-xs text-size-xs cr-grey">
-                                <view v-if="(item.status_info.time || null) != null" class="flex-row align-c">
-                                    <iconfont name="icon-time pr top-xs cr-grey-9"></iconfont>
-                                    <view :class="'status-icon text-size-xs divider-r padding-left-xs padding-right-sm margin-right-sm ' + (item.status_info.status == 1 ? 'cr-green' : item.status_info.type == 1 ? 'cr-red' : 'cr-grey-c')">
-                                        {{ item.status_info.msg }}
+                <!-- id 包在带边距的外层，scroll-into-view 时上/左会留白，不会贴边 -->
+                <view
+                    :id="'store-item-' + index"
+                    class="store-scroll-target"
+                    :class="[propIsFold ? 'is-fold' : 'is-col', propMapScroll ? 'is-map' : '']"
+                >
+                    <view class="item bg-white padding-top-xl padding-bottom-sm padding-horizontal-main border-radius-main pr spacing-mb" :class="[item.status_info.type === 2 ? 'opacity' : '', item.active || '']" :data-index="index" :data-value="item.url+propRealstoreDetailQuery" @tap="realstore_item_event">
+                        <view class="base oh flex-row">
+                            <!-- 基础内容 -->
+                            <image :src="item.logo" mode="widthFix" class="logo circle br"></image>
+                            <view class="base-right flex-1 flex-width">
+                                <view class="title fw-b text-size single-text tl">
+                                    <text v-if="(item.alias || null) != null" class="va-m title-icon border-radius-sm br-main cr-main text-size-xs padding-horizontal-xs margin-right-xs">{{ item.alias }}</text>
+                                    <text class="va-m">{{ item.name }}</text>
+                                </view>
+                                <view class="margin-top-sm padding-top-xs text-size-xs cr-grey">
+                                    <view v-if="(item.status_info.time || null) != null" class="flex-row align-c">
+                                        <iconfont name="icon-time pr top-xs cr-grey-9"></iconfont>
+                                        <view :class="'status-icon text-size-xs divider-r padding-left-xs padding-right-sm margin-right-sm ' + (item.status_info.status == 1 ? 'cr-green' : item.status_info.type == 1 ? 'cr-red' : 'cr-grey-c')">
+                                            {{ item.status_info.msg }}
+                                        </view>
+                                        {{ item.status_info.time }}
                                     </view>
-                                    {{ item.status_info.time }}
                                 </view>
                             </view>
                         </view>
-                    </view>
-                    <view class="flex-row jc-sb align-c br-t-dashed margin-top-main padding-top-sm">
-                        <!-- 地址 -->
-                        <view class="address-content single-text cr-base margin-left-xs dis-inline-block text-size-xs oh cp tl" :data-value="item.province_name + item.city_name + item.county_name + item.address" @tap.stop="text_copy_event">
-                            <view class="dis-inline-block va-m cr-grey-9 margin-top-sm">
-                                <iconfont name="icon-location"></iconfont>
+                        <view class="flex-row jc-sb align-c br-t-dashed margin-top-main padding-top-sm">
+                            <!-- 地址 -->
+                            <view class="address-content single-text cr-base margin-left-xs dis-inline-block text-size-xs oh cp tl" :data-value="item.province_name + item.city_name + item.county_name + item.address" @tap.stop="text_copy_event">
+                                <view class="dis-inline-block va-m cr-grey-9 margin-top-sm">
+                                    <iconfont name="icon-location"></iconfont>
+                                </view>
+                                <text class="va-m margin-left-xs">{{ item.province_name }}{{ item.city_name }}{{ item.county_name }}{{ item.address }}</text>
                             </view>
-                            <text class="va-m margin-left-xs">{{ item.province_name }}{{ item.city_name }}{{ item.county_name }}{{ item.address }}</text>
+                            <view v-if="(item.distance || null) != null" class="text-size-xs cr-grey-c pa address-distance">{{$t('common.distance_from_you')}}{{ item.distance }}</view>
                         </view>
-                        <view v-if="(item.distance || null) != null" class="text-size-xs cr-grey-c pa address-distance">{{$t('common.distance_from_you')}}{{ item.distance }}</view>
-                    </view>
-                    <!-- 右侧操作 -->
-                    <view class="icon-list pa">
-                        <view v-if="(item.service_data || null) != null && (item.service_data.service_tel || null) != null" class="icon-item dis-inline-block tc cp" :data-value="item.service_data.service_tel" @tap.stop="tel_event">
-                            <iconfont name="icon-tel" size="30rpx"></iconfont>
+                        <!-- 右侧操作 -->
+                        <view class="icon-list pa">
+                            <view v-if="(item.service_data || null) != null && (item.service_data.service_tel || null) != null" class="icon-item dis-inline-block tc cp" :data-value="item.service_data.service_tel" @tap.stop="tel_event">
+                                <iconfont name="icon-tel" size="30rpx"></iconfont>
+                            </view>
+                            <!-- #ifndef MP-KUAISHOU -->
+                            <view v-if="item.lat != 0 && item.lng != 0" class="icon-item dis-inline-block tc cp" :data-index="index" @tap.stop="address_map_event">
+                                <iconfont name="icon-send-linear" size="30rpx"></iconfont>
+                            </view>
+                            <!-- #endif -->
                         </view>
-                        <!-- #ifndef MP-KUAISHOU -->
-                        <view v-if="item.lat != 0 && item.lng != 0" class="icon-item dis-inline-block tc cp" :data-index="index" @tap.stop="address_map_event">
-                            <iconfont name="icon-send-linear" size="30rpx"></iconfont>
-                        </view>
-                        <!-- #endif -->
                     </view>
                 </view>
             </block>
+            <view v-if="propIsFold" class="list-fold-tail"></view>
         </view>
     </view>
 </template>
 <script>
 const app = getApp();
 export default {
+    options: {
+        // 让列表项 id 可被外层 scroll-view 的 scroll-into-view 找到
+        virtualHost: true,
+        styleIsolation: 'shared',
+    },
     data() {
         return {
             theme_view: app.globalData.get_theme_value_view(),
@@ -76,6 +89,16 @@ export default {
             type: Boolean,
             default: true,
         },
+        // 地图模式收起：横向单行滚动
+        propIsFold: {
+            type: Boolean,
+            default: false,
+        },
+        // 地图模式：为 scroll-into-view 预留边距
+        propMapScroll: {
+            type: Boolean,
+            default: false,
+        },
         propData: {
             type: Object,
             default: () => {
@@ -93,9 +116,12 @@ export default {
     },
     // 属性值改变监听
     watch: {
-        // 数据
-        propData(value, old_value) {
-            this.init();
+        // 数据（含选中态 active 变更）
+        propData: {
+            handler() {
+                this.init();
+            },
+            deep: true,
         }
     },
     // 页面被展示
@@ -230,4 +256,51 @@ export default {
     }
 };
 </script>
-<style></style>
+<style>
+.plugins-realstore-data-list .item.active {
+    border: 2rpx solid var(--color-main, #e22c08);
+    box-sizing: border-box;
+}
+/* 地图纵滑：上边距做在目标节点内，into-view 后仍留白 */
+.store-scroll-target.is-map.is-col {
+    padding-top: 24rpx;
+    box-sizing: border-box;
+}
+.store-scroll-target.is-map.is-col .item {
+    margin-bottom: 0;
+}
+.store-scroll-target.is-map.is-col:last-child .item {
+    margin-bottom: 24rpx;
+}
+/* 小程序横滑：nowrap + inline-block（比 flex/enable-flex 稳） */
+.fold-host {
+    display: inline-block;
+    white-space: nowrap;
+    vertical-align: top;
+}
+.plugins-realstore-data-list.is-fold {
+    display: block;
+    white-space: nowrap;
+    font-size: 0;
+}
+.store-scroll-target.is-fold {
+    display: inline-block;
+    padding-left: 24rpx;
+    padding-top: 0;
+    box-sizing: border-box;
+    vertical-align: top;
+    font-size: 28rpx;
+}
+.store-scroll-target.is-fold .item {
+    width: 620rpx;
+    margin-bottom: 0;
+    box-sizing: border-box;
+    white-space: normal;
+}
+.plugins-realstore-data-list.is-fold .list-fold-tail {
+    display: inline-block;
+    width: 24rpx;
+    height: 1rpx;
+    vertical-align: top;
+}
+</style>

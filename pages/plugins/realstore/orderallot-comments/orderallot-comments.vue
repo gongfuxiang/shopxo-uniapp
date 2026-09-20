@@ -4,7 +4,7 @@
             <view v-if="(detail || null) != null">
                 <form @submit="form_submit" class="form-container">
                     <view v-if="(detail.items || null) != null && detail.items.length > 0" class="fw-b text-size margin-bottom-sm">{{ $t('orderallot-comments.goods_comments') }}</view>
-                    <view v-for="(item, index) in detail.items" :key="'g'+index" class="form-gorup oh border-radius-main spacing-mb bg-white padding-main">
+                    <view v-for="(item, index) in detail.items" :key="index" class="form-gorup oh border-radius-main spacing-mb bg-white padding-main">
                         <view class="flex-row">
                             <view class="flex-row flex-1 flex-width cp" :data-value="(item.goods_url || null) != null && item.goods_url != '' ? item.goods_url : ('/pages/goods-detail/goods-detail?id=' + item.goods_id)" @tap="url_event">
                                 <image class="goods-image radius br margin-right flex-shrink-0" :src="item.images" mode="aspectFill"></image>
@@ -26,7 +26,7 @@
                     </view>
 
                     <view v-if="(detail.comments_staff_list || null) != null && detail.comments_staff_list.length > 0" class="fw-b text-size margin-bottom-sm margin-top-main">{{ $t('orderallot-comments.staff_comments') }}</view>
-                    <view v-for="(item, index) in detail.comments_staff_list" :key="'s'+index" class="form-gorup oh border-radius-main spacing-mb bg-white padding-main">
+                    <view v-for="(item, index) in detail.comments_staff_list" :key="index" class="form-gorup oh border-radius-main spacing-mb bg-white padding-main">
                         <view class="flex-row align-c">
                             <view class="flex-row align-c flex-1 flex-width cp" :data-value="'/pages/plugins/realstore/staff-detail/staff-detail?id=' + item.staff_id" @tap="url_event">
                                 <image v-if="(item.avatar || '') != ''" class="staff-avatar circle br margin-right flex-shrink-0" :src="item.avatar" mode="aspectFill"></image>

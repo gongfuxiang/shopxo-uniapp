@@ -2,16 +2,16 @@
     <view :class="theme_view">
         <block v-if="(data_base || null) != null">
             <!-- 顶部 -->
-            <view class="bg-white padding-top-main padding-horizontal-main oh flex-row jc-sb align-c cr-grey" :class="show_type_mode == 1 ? 'map padding-bottom' : ''">
+            <view class="bg-white padding-main oh flex-row jc-sb align-c" :class="show_type_mode == 1 ? 'map padding-bottom' : ''">
                 <!-- 位置 -->
                 <view v-if="show_type_mode == 0" class="nav-location flex-row align-c single-text margin-right-sm">
                     <component-choice-location ref="choice_location" propBaseColor="#666" propTextMaxWidth="180rpx" @onBack="user_back_choice_location"></component-choice-location>
                 </view>
                 <!-- 搜索 -->
                 <view class="nav-search" :class="show_type_mode == 1 ? 'map' : ''">
-                    <component-search @oninput="search_input_event" :propIsOnInputEvent="true" @onsearch="search_button_event" :propIsOnEvent="true" :propIsRequired="false" :propDefaultValue="search_keywords_value" :propPlaceholder="$t('index.enter_store_name')" propPlaceholderClass="cr-grey-c" propBgColor="#f5f5f5"></component-search>
+                    <component-search @oninput="search_input_event" :propIsOnInputEvent="true" @onsearch="search_button_event" :propIsOnEvent="true" :propIsRequired="false" :propDefaultValue="search_keywords_value" :propPlaceholder="$t('realstore-staff.search_staff_name')" propPlaceholderClass="cr-grey-c" propBgColor="#f5f5f5"></component-search>
                 </view>
-                <view v-if="is_search_map == 1" class="dis-inline-block margin-left" @tap="show_event">
+                <view v-if="is_search_map == 1" class="nav-map-switch dis-inline-block margin-left" @tap="show_event">
                     <iconfont :name="show_type_mode == 1 ? 'icon-list-dot' : 'icon-map-location'" color="#666" size="38rpx"></iconfont>
                 </view>
             </view>
@@ -32,19 +32,11 @@
                 <image v-if="map_center_icon_status == 1" class="map-center-icon pa" :src="map_location_icon" mode="aspectFit"></image>
             </view>
 
-            <!-- 列表收起/展开（地图模式，放在分类上方） -->
+            <!-- 列表收起/展开（地图模式） -->
             <view v-if="show_type_mode == 1" class="list-fold-bar flex-row align-c jc-c bg-white" @tap="list_fold_event">
                 <view class="list-fold-handle"></view>
                 <iconfont :name="list_is_fold ? 'icon-arrow-top' : 'icon-arrow-bottom'" size="24rpx" color="#999" propClass="margin-left-xs"></iconfont>
             </view>
-
-            <!-- 分类 -->
-            <scroll-view v-if="(category || null) != null && category.length > 0" class="nav-base scroll-view-horizontal bg-white oh" scroll-x="true">
-                <view :class="'item cr-grey dis-inline-block padding-horizontal-main ' + (nav_active_value == 0 ? 'cr-main' : '')" @tap="nav_event" data-value="0">{{$t('common.all')}}</view>
-                <block v-for="(item, index) in category" :key="index">
-                    <view :class="'item cr-grey dis-inline-block padding-horizontal-main ' + (nav_active_value == item.id ? 'cr-main fw-b nav-active-line' : '')" @tap="nav_event" :data-value="item.id">{{ item.name }}</view>
-                </block>
-            </scroll-view>
 
             <!-- 纵滑列表（独立节点，小程序不与横滑共用滚动状态） -->
             <scroll-view
@@ -57,12 +49,14 @@
                 @scrolltolower="scroll_lower"
                 lower-threshold="60"
             >
-                <view v-if="(data_list || null) != null && data_list.length > 0" :class="show_type_mode == 1 ? 'list-map-col' : 'padding-top-main padding-horizontal-main'">
-                    <component-realstore-list ref="store_list_y" :propData="{data: data_list}" :propRealstoreDetailQuery="realstore_detail_query" :propFavorUser="favor_user" :propIsChoice="is_choice_mode == 1" :propIsChoiceBackType="choice_mode_back_type" :propIsOpenRealstoreRedirect="is_open_realstore_redirect" :propIsFold="false" :propMapScroll="show_type_mode == 1"></component-realstore-list>
-                </view>
-                <view v-else>
-                    <component-no-data :propStatus="data_list_loding_status" :propMsg="data_list_loding_msg" :propLoadingLogoTop="show_type_mode == 1 ? '20%' : ''"></component-no-data>
-                </view>
+                <component-staff-search-list
+                    ref="staff_list_y"
+                    :propDataList="data_list"
+                    :propIsFold="false"
+                    :propIsMap="show_type_mode == 1"
+                    :propLodingStatus="data_list_loding_status"
+                    :propLodingMsg="data_list_loding_msg"
+                ></component-staff-search-list>
                 <component-bottom-line :propStatus="data_bottom_line_status"></component-bottom-line>
             </scroll-view>
 
@@ -73,14 +67,15 @@
                 :scroll-left="scroll_left"
                 :scroll-with-animation="list_scroll_animation"
                 class="scroll-box scroll-box-ece-nav map fold js-list-scroll-x"
-                lower-threshold="60"
             >
-                <view v-if="(data_list || null) != null && data_list.length > 0" class="list-fold-row">
-                    <component-realstore-list ref="store_list_x" :propData="{data: data_list}" :propRealstoreDetailQuery="realstore_detail_query" :propFavorUser="favor_user" :propIsChoice="is_choice_mode == 1" :propIsChoiceBackType="choice_mode_back_type" :propIsOpenRealstoreRedirect="is_open_realstore_redirect" :propIsFold="true" :propMapScroll="true"></component-realstore-list>
-                </view>
-                <view v-else>
-                    <component-no-data :propStatus="data_list_loding_status" :propMsg="data_list_loding_msg" propLoadingLogoTop="20%"></component-no-data>
-                </view>
+                <component-staff-search-list
+                    ref="staff_list_x"
+                    :propDataList="data_list"
+                    :propIsFold="true"
+                    :propIsMap="true"
+                    :propLodingStatus="data_list_loding_status"
+                    :propLodingMsg="data_list_loding_msg"
+                ></component-staff-search-list>
             </scroll-view>
         </block>
 
@@ -91,11 +86,10 @@
 <script>
     const app = getApp();
     import componentCommon from '@/components/common/common';
-    import componentNoData from "@/components/no-data/no-data";
     import componentBottomLine from "@/components/bottom-line/bottom-line";
     import componentSearch from "@/components/search/search";
-    import componentRealstoreList from "@/pages/plugins/realstore/components/realstore-list/realstore-list";
     import componentChoiceLocation from '@/components/choice-location/choice-location';
+    import componentStaffSearchList from './staff-search-list.vue';
     import pluginLocale from '../locale/index.js';
     var plugins_static_url = app.globalData.get_static_url('realstore', true);
     export default {
@@ -113,23 +107,13 @@
                 data_page: 1,
                 params: null,
                 data_base: null,
-                category: [],
                 search_keywords_value: "",
-                nav_active_value: 0,
-                favor_user: [],
-                realstore_detail_query: '',
-                // 是否选择模式（0否，1是）
-                is_choice_mode: 0,
-                // 选择模式回调类型（back返回上一页，realstore-detail进入门店详情）
-                choice_mode_back_type: 'back',
-                // 打开门店详情页面是否关闭当前页面（0否，1是）
-                is_open_realstore_redirect: true,
                 // 显示类型模式（0列表，1地图）
                 show_type_mode: 0,
                 // 地图
                 is_search_map: 0,
-                map_location_icon: plugins_static_url+'app/search/location-icon.png',
-                markers_icon: plugins_static_url+'app/search/markers-icon.png',
+                map_location_icon: plugins_static_url+'app/staff-search/location-icon.png',
+                markers_icon: plugins_static_url+'app/staff-search/markers-icon.png',
                 markers_icon_active: '',
                 map_scale: 12,
                 latitude: 39.909,
@@ -151,11 +135,10 @@
 
         components: {
             componentCommon,
-            componentNoData,
             componentBottomLine,
             componentSearch,
-            componentRealstoreList,
-            componentChoiceLocation
+            componentChoiceLocation,
+            componentStaffSearchList
         },
 
         onLoad(params) {
@@ -168,13 +151,8 @@
             // 设置参数
             this.setData({
                 params: params,
-                is_choice_mode: parseInt(params.is_choice_mode || 0),
-                choice_mode_back_type: (params.choice_mode_back_type === undefined) ? 'back' : (params.choice_mode_back_type || ''),
-                is_open_realstore_redirect: (params.is_open_realstore_redirect === undefined) ? true : parseInt(params.is_open_realstore_redirect || 0) == 1,
                 show_type_mode: parseInt(params.show_type_mode || 0),
                 search_keywords_value: params.keywords || "",
-                nav_active_value: params.category_id || 0,
-                realstore_detail_query: (params.goods_id || null) == null ? '' : '&source_goods_id='+params.goods_id
             });
 
             // 数据加载
@@ -194,26 +172,16 @@
             }
 
             // 标题设置
-            if(this.is_choice_mode == 1) {
-                uni.setNavigationBarTitle({
-                    title: this.$t('realstore-cart.choice_store')
-                });
-            }
-        },
-
-        // 下拉刷新
-        onPullDownRefresh() {
-            this.setData({
-                data_page: 1,
+            uni.setNavigationBarTitle({
+                title: this.$t('pages.plugins-realstore-staff-search')
             });
-            this.get_data_list(1);
         },
 
         methods: {
             // 初始化
             get_data() {
                 uni.request({
-                    url: app.globalData.get_request_url("index", "search", "realstore"),
+                    url: app.globalData.get_request_url("index", "staff", "realstore"),
                     method: "POST",
                     data: {},
                     dataType: "json",
@@ -222,15 +190,16 @@
                         if (res.data.code == 0) {
                             var data = res.data.data;
                             var data_base = data.base || {};
+                            var is_search_map = parseInt(data_base.is_staff_search_map || 0);
                             this.setData({
                                 data_base: data.base || null,
-                                category: data.category || [],
-                                favor_user: data.favor_user || [],
-                                is_search_map: parseInt(data_base.is_search_map || 0),
-                                map_scale: (data_base.search_map_scale === undefined || data_base.search_map_scale === null || data_base.search_map_scale === '') ? 12 : parseInt(data_base.search_map_scale),
-                                markers_icon: data_base.search_map_store_icon || this.markers_icon,
-                                markers_icon_active: data_base.search_map_store_icon_active || '',
-                                map_location_icon: data_base.search_map_location_icon || this.map_location_icon,
+                                is_search_map: is_search_map,
+                                // 未开启地图则强制列表模式
+                                show_type_mode: is_search_map == 1 ? this.show_type_mode : 0,
+                                map_scale: (data_base.staff_search_map_scale === undefined || data_base.staff_search_map_scale === null || data_base.staff_search_map_scale === '') ? 12 : parseInt(data_base.staff_search_map_scale),
+                                markers_icon: data_base.staff_search_map_staff_icon || this.markers_icon,
+                                markers_icon_active: data_base.staff_search_map_staff_icon_active || '',
+                                map_location_icon: data_base.staff_search_map_location_icon || this.map_location_icon,
                             });
 
                             // 获取列表数据
@@ -289,13 +258,11 @@
 
                 // 获取数据
                 uni.request({
-                    url: app.globalData.get_request_url("datalist", "search", "realstore"),
+                    url: app.globalData.get_request_url("datalist", "staff", "realstore"),
                     method: "POST",
                     data: {
                         page: this.data_page,
                         keywords: this.search_keywords_value,
-                        category_id: this.nav_active_value || 0,
-                        goods_id: this.params.goods_id || 0,
                         lng: this.longitude || lng,
                         lat: this.latitude || lat,
                     },
@@ -347,14 +314,16 @@
                             var temp_markers = [];
                             if(this.data_list.length > 0) {
                                 this.data_list.forEach((item, index) => {
-                                    temp_markers.push({
-                                        id: index,
-                                        width: 25,
-                                        height: 25,
-                                        latitude: item.lat,
-                                        longitude: item.lng,
-                                        iconPath: this.markers_icon
-                                    });
+                                    if ((item.lat || 0) != 0 && (item.lng || 0) != 0) {
+                                        temp_markers.push({
+                                            id: index,
+                                            width: 25,
+                                            height: 25,
+                                            latitude: item.lat,
+                                            longitude: item.lng,
+                                            iconPath: this.markers_icon
+                                        });
+                                    }
                                 });
                             }
                             this.setData({
@@ -384,39 +353,9 @@
                 });
             },
 
-            // 分享设置处理
-            share_info_handle() {
-                if ((this.data_base || null) != null) {
-                    // 基础自定义分享
-                    this.setData({
-                        share_info: {
-                            title: this.search_keywords_value || this.data_base.seo_title || this.data_base.application_name,
-                            desc: this.data_base.seo_desc,
-                            path: "/pages/plugins/realstore/search/search",
-                            query: "category_id=" + this.nav_active_value + "&keywords=" + this.search_keywords_value+"&goods_id="+(this.params.goods_id || 0),
-                        },
-                    });
-                }
-
-                // 分享菜单处理
-                app.globalData.page_share_handle(this.share_info);
-            },
-
             // 滚动加载
             scroll_lower(e) {
                 this.get_data_list();
-            },
-
-            // 导航事件
-            nav_event(e) {
-                this.setData({
-                    nav_active_value: e.currentTarget.dataset.value || 0,
-                    data_page: 1,
-                    data_list: [],
-                    data_list_loding_status: 1,
-                    data_bottom_line_status: false
-                });
-                this.get_data_list(1);
             },
 
             // 搜索输入事件
@@ -431,8 +370,23 @@
                 this.setData({
                     search_keywords_value: e,
                     data_page: 1,
+                    data_list: [],
+                    data_list_loding_status: 1,
+                    data_bottom_line_status: false,
                 });
                 this.get_data_list(1);
+            },
+
+            // 分享处理
+            share_info_handle() {
+                this.setData({
+                    share_info: {
+                        title: this.$t('pages.plugins-realstore-staff-search'),
+                        path: '/pages/plugins/realstore/staff-search/staff-search',
+                        query: 'keywords='+(this.search_keywords_value || ''),
+                    }
+                });
+                app.globalData.page_share_handle(this.share_info);
             },
 
             // 选择用户地理位置回调
@@ -499,7 +453,6 @@
                     return;
                 }
                 this.data_markers_active_handle(index);
-                // 等选中态渲染后再滚，避免和列表重绘抢滚动
                 this.$nextTick(() => {
                     setTimeout(() => {
                         this.list_scroll_to_index(index);
@@ -535,8 +488,8 @@
             // 纵滑定位
             set_col_scroll_top(index) {
                 var self = this;
-                var fallback = uni.upx2px(index * 280);
-                var list_ref = this.$refs.store_list_y;
+                var fallback = uni.upx2px(index * 320);
+                var list_ref = this.$refs.staff_list_y;
                 this.$nextTick(() => {
                     setTimeout(() => {
                         var apply_top = function(box, offset, item_rect) {
@@ -546,12 +499,11 @@
                             }
                             self.bump_scroll_value('scroll_top', top);
                         };
-                        // 先按页面查（小程序 virtualHost 可见），再进组件查（H5）
                         uni.createSelectorQuery().in(self)
                             .select('.js-list-scroll-y').boundingClientRect()
                             .select('.js-list-scroll-y').scrollOffset()
-                            .select('#store-item-' + index).boundingClientRect()
-                            .selectAll('.store-scroll-target').boundingClientRect()
+                            .select('#staff-item-' + index).boundingClientRect()
+                            .selectAll('.staff-scroll-target').boundingClientRect()
                             .exec((res) => {
                                 var box = (res || [])[0] || null;
                                 var offset = (res || [])[1] || null;
@@ -564,8 +516,8 @@
                                     return;
                                 }
                                 uni.createSelectorQuery().in(list_ref)
-                                    .select('#store-item-' + index).boundingClientRect()
-                                    .selectAll('.store-scroll-target').boundingClientRect()
+                                    .select('#staff-item-' + index).boundingClientRect()
+                                    .selectAll('.staff-scroll-target').boundingClientRect()
                                     .exec((item_res) => {
                                         var item_rect = (item_res || [])[0] || null;
                                         if(item_rect == null) {
@@ -582,7 +534,7 @@
             set_fold_scroll_left(index) {
                 var self = this;
                 var fallback = uni.upx2px(index * 644);
-                var list_ref = this.$refs.store_list_x;
+                var list_ref = this.$refs.staff_list_x;
                 this.$nextTick(() => {
                     setTimeout(() => {
                         var apply_left = function(rect) {
@@ -593,7 +545,7 @@
                             self.bump_scroll_value('scroll_left', target);
                         };
                         uni.createSelectorQuery().in(self)
-                            .select('.store-scroll-target.is-fold').boundingClientRect()
+                            .select('.staff-scroll-target.is-fold').boundingClientRect()
                             .exec((res) => {
                                 var rect = (res || [])[0] || null;
                                 if(rect != null || !list_ref) {
@@ -601,7 +553,7 @@
                                     return;
                                 }
                                 uni.createSelectorQuery().in(list_ref)
-                                    .select('.store-scroll-target.is-fold').boundingClientRect()
+                                    .select('.staff-scroll-target.is-fold').boundingClientRect()
                                     .exec((item_res) => {
                                         apply_left((item_res || [])[0] || null);
                                     });
@@ -612,7 +564,7 @@
 
             // 用户和覆盖物选中处理
             data_markers_active_handle(index) {
-                // 列表数据（新数组，确保选中态能传到列表组件）
+                // 新数组，确保选中态能传到列表组件（小程序尤甚）
                 var temp_data_list = (this.data_list || []).map((item, i) => {
                     return Object.assign({}, item, {
                         active: (i == index) ? 'active' : '',
@@ -622,7 +574,7 @@
                 var temp_markers = this.markers;
                 for(var i in temp_markers) {
                     if(i == index) {
-                        temp_markers[i]['iconPath'] = this.markers_icon_active || temp_data_list[temp_markers[i]['id']]['logo'];
+                        temp_markers[i]['iconPath'] = this.markers_icon_active || temp_data_list[temp_markers[i]['id']]['avatar'] || this.markers_icon;
                     } else {
                         temp_markers[i]['iconPath'] = this.markers_icon;
                     }
@@ -657,10 +609,10 @@
                         });
                     }
                 }
-            }
+            },
         }
     };
 </script>
 <style>
-    @import "./search.css";
+    @import "./staff-search.css";
 </style>

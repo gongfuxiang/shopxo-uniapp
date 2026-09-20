@@ -2,9 +2,9 @@
     <view :class="theme_view">
         <!-- 搜索 -->
         <component-nav-back :propFixed="false" propClass="bg-white cr-black" propColor="#333" :style="'padding-top:' + status_bar_height + 'px;'">
-            <template slot="right" :class="is_mp_env ? 'top-search-width' : ''">
-                <view class="margin-left-main flex-row align-c" :class="is_mp_env ? '' : 'flex-1 flex-width'">
-                    <view class="flex-1 flex-width">
+            <template slot="right" :class="is_mp_env ? 'top-search-width' : 'flex-1 flex-width'">
+                <view class="staff-order-nav-right margin-left-main flex-row align-c">
+                    <view class="staff-order-search flex-1 flex-width">
                         <component-search
                             @oninput="search_input_event"
                             :propIsOnInputEvent="true"
@@ -21,8 +21,7 @@
                     <view
                         v-if="is_edit_staff_profile == 1"
                         class="staff-profile-entry flex-row align-c jc-c"
-                        @tap="url_event"
-                        data-value="/pages/plugins/realstore/staff-profile/staff-profile"
+                        @tap="staff_profile_event"
                     >
                         <iconfont name="icon-user-setup" size="40rpx" color="#333"></iconfont>
                     </view>
@@ -424,6 +423,16 @@
                 });
                 this.get_data_list(1);
             },
+
+            // 员工资料修改入口
+            staff_profile_event() {
+                if (this.is_edit_staff_profile != 1) {
+                    return;
+                }
+                app.globalData.url_open('/pages/plugins/realstore/staff-profile/staff-profile');
+            },
+
+            // url事件
             url_event(e) {
                 app.globalData.url_event(e);
             },

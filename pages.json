@@ -1746,6 +1746,13 @@
                     }
                 },
                 {
+                    "path": "staff-search/staff-search",
+                    "style": {
+                        "enablePullDownRefresh": false,
+                        "navigationBarTitleText": ""
+                    }
+                },
+                {
                     "path": "staff-detail/staff-detail",
                     "style": {
                         "enablePullDownRefresh": true,

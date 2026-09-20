@@ -5,41 +5,37 @@
     max-width: 260rpx;
     height: 56rpx;
     line-height: 56rpx;
+    flex-shrink: 0;
 }
 .nav-search {
-    width: calc(100% - 320rpx);
+    flex: 1;
+    min-width: 0;
+    width: auto;
 }
 .nav-search.map {
-    width: 100%;
+    flex: 1;
+    width: auto;
+}
+.nav-map-switch {
+    flex-shrink: 0;
 }
 
 /**
-* 数据列表
+* 数据列表（仅顶栏，无分类）
 */
-.scroll-box {
-    height: calc(100vh - 180rpx);
+.scroll-box,
+.scroll-box.scroll-box-ece-nav {
+    height: calc(100vh - 100rpx);
 }
-.scroll-box.map {
-    height: calc(100vh - 730rpx);
+.scroll-box.map,
+.scroll-box.scroll-box-ece-nav.map {
+    height: calc(100vh - 648rpx);
 }
 /* 收起：仅保留约一行卡片高度，可横滑 */
-.scroll-box.map.fold {
+.scroll-box.map.fold,
+.scroll-box.scroll-box-ece-nav.map.fold {
     height: 320rpx;
     white-space: nowrap;
-}
-/* 地图展开列表：左右边距，上下边距由目标节点承担 */
-.list-map-col {
-    padding-left: 24rpx;
-    padding-right: 24rpx;
-    box-sizing: border-box;
-}
-.list-fold-row {
-    display: block;
-    white-space: nowrap;
-    padding-top: 16rpx;
-    padding-bottom: 16rpx;
-    box-sizing: border-box;
-    font-size: 0;
 }
 
 /**
@@ -62,9 +58,9 @@
 .map-container {
     height: 500rpx;
 }
-/* 列表收起后地图占满剩余高度（顶栏+分类约180 + 收起条48 + 列表320） */
+/* 列表收起后地图占满剩余高度 */
 .map-container.fold {
-    height: calc(100vh - 180rpx - 48rpx - 320rpx);
+    height: calc(100vh - 100rpx - 48rpx - 320rpx);
 }
 .map-container .map-center-icon {
     top: calc(50% - 30rpx);

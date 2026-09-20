@@ -621,7 +621,8 @@
 		"plugins-coin-cash-list": "Withdrawal details",
 		"plugins-coin-convert-list": "Conversion details",
 		"plugins-coin-recharge-list": "Recharge details",
-		"plugins-coin-collection": "Collection"
+		"plugins-coin-collection": "Collection",
+		"plugins-realstore-staff-search": "Search Staff"
 	},
 	"login": {
 		"get_phone_number": "Get your phone number",

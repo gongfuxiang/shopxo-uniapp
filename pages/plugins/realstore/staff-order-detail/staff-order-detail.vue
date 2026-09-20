@@ -39,7 +39,7 @@
                         <view v-if="status_progress_steps.length > 0" class="make-progress-steps margin-top-main">
                             <view
                                 v-for="(step, index) in status_progress_steps"
-                                :key="step.key || index"
+                                :key="index"
                                 class="make-progress-step"
                                 :class="make_step_class(index)"
                             >

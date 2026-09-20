@@ -27,9 +27,16 @@
     border-radius: 8rpx;
     vertical-align: middle;
 }
+.staff-order-nav-right {
+    width: 100%;
+}
+.staff-order-search {
+    min-width: 0;
+    overflow: hidden;
+}
 .staff-profile-entry {
     flex-shrink: 0;
-    width: 56rpx;
-    height: 56rpx;
-    margin-left: 12rpx;
+    width: 64rpx;
+    height: 64rpx;
+    margin-left: 8rpx;
 }

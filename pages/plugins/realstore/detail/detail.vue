@@ -98,7 +98,7 @@
                                 <view class="goods-discount-aggregate-row flex-row align-c" @tap="popup_discount_event">
                                     <view class="goods-discount-tags-scroll flex-row flex-nowrap margin-right-main cp">
                                         <block v-if="(plugins_coupon_data || null) != null && (plugins_coupon_data.data || null) != null && plugins_coupon_data.data.length > 0">
-                                            <block v-for="(item, index) in plugins_coupon_data.data" :key="'agg-coupon-' + (item.id || index)">
+                                            <block v-for="(item, index) in plugins_coupon_data.data" :key="index">
                                                 <view class="discount-tag-item mini-coupon flex-row flex-nowrap margin-right-sm" :class="item.status_type === 2 ? 'received-coupon mini-coupon-br' : 'not-received-coupon'">
                                                     <text class="nowrap">{{ item.desc || item.name }}</text>
                                                     <text v-if="item.status_type === 0" class="dis-inline-block nowrap margin-left-sm padding-left-sm divider-l" :data-index="index" :data-value="item.id" @tap.stop="coupon_receive_event">{{ item.status_operable_name }}</text>
@@ -273,14 +273,14 @@
                     <!-- 门店优惠券 -->
                     <view v-if="(plugins_coupon_data || null) != null && (plugins_coupon_data.realstore_data || null) != null && plugins_coupon_data.realstore_data.length > 0" class="plugins-coupon-container spacing-mb">
                         <view class="fw-b tc text-size-lg padding-bottom">{{$t('detail.realstore_coupon')}}</view>
-                        <block v-for="(item, index) in plugins_coupon_data.realstore_data" :key="'rs-coupon-' + (item.id || index)">
+                        <block v-for="(item, index) in plugins_coupon_data.realstore_data" :key="index">
                             <component-coupon-card :propData="item" :propStatusType="item.status_type" :propStatusOperableName="item.status_operable_name" :propIndex="index" propIsProgress @call-back="coupon_receive_back_event"></component-coupon-card>
                         </block>
                     </view>
                     <!-- 平台优惠券 -->
                     <view v-if="(plugins_coupon_data || null) != null && (plugins_coupon_data.platform_data || null) != null && plugins_coupon_data.platform_data.length > 0" class="plugins-coupon-container spacing-mb">
                         <view class="fw-b tc text-size-lg padding-bottom">{{$t('detail.platform_coupon')}}</view>
-                        <block v-for="(item, index) in plugins_coupon_data.platform_data" :key="'pf-coupon-' + (item.id || index)">
+                        <block v-for="(item, index) in plugins_coupon_data.platform_data" :key="index">
                             <component-coupon-card :propData="item" :propStatusType="item.status_type" :propStatusOperableName="item.status_operable_name" :propIndex="index" propIsProgress @call-back="coupon_receive_back_event"></component-coupon-card>
                         </block>
                     </view>

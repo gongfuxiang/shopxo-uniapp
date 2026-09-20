@@ -43,7 +43,10 @@
                             <view class="form-gorup-title">{{ $t('staff-profile.gender') }}</view>
                             <view class="flex-row jc-e align-c flex-1 flex-width">
                                 <picker @change="gender_change_event" :value="gender_index" :range="gender_list" range-key="name" name="gender" class="margin-right-sm wh-auto tr">
-                                    <view class="uni-input cr-base picker">{{ (gender_list[gender_index] || {}).name || $t('staff-profile.select_gender') }}</view>
+                                    <view class="uni-input cr-base picker">
+                                        <text v-if="(gender_list[gender_index] || null) == null">{{ $t('staff-profile.select_gender') }}</text>
+                                        <text v-else>{{ gender_list[gender_index].name }}</text>
+                                    </view>
                                 </picker>
                                 <iconfont name="icon-arrow-right" size="34rpx" color="#ccc"></iconfont>
                             </view>

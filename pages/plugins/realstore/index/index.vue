@@ -58,19 +58,18 @@
                 </view>
             </view>
             <block v-else>
-                <view class="realstore-nav-bg">
-                    <!-- 背景图片 -->
-                    <image :src="plugins_static_url + 'title-bg'+(screen_width > 960 ? '-pc' : '')+'.png'" mode="widthFix" class="wh-auto pa bg-img" />
-                    <!-- 顶部 -->
-                    <view class="spacing-mb pr z-i cr-white">
-                        <!-- 位置展示 -->
-                        <view class="nav-location single-text dis-inline-block bs-bb pr padding-left-main padding-right-xl margin-top">
-                            <component-choice-location ref="choice_location" @onBack="user_back_choice_location"></component-choice-location>
+                <view class="realstore-nav-bg" :style="'background-image:url('+(nav_title_bg || '')+')'">
+                    <!-- 位置 + 搜索 + 地图 -->
+                    <view class="nav-top-row padding-horizontal-main flex-row align-s pr z-i cr-white">
+                        <view class="nav-location flex-row align-c">
+                            <component-choice-location ref="choice_location" propTextMaxWidth="140rpx" @onBack="user_back_choice_location"></component-choice-location>
                         </view>
-                    </view>
-                    <!-- 搜索 -->
-                    <view class="nav-search padding-main">
-                        <component-search @onsearch="search_button_event" :propIsOnEvent="true" :propIsRequired="false" :propPlaceholder="$t('index.enter_store_name')" propPlaceholderClass="cr-grey-c"></component-search>
+                        <view class="nav-search flex-1 flex-width margin-left">
+                            <component-search @onsearch="search_button_event" :propIsOnEvent="true" :propIsRequired="false" :propPlaceholder="$t('index.enter_store_name')" propPlaceholderClass="cr-grey-c" propBgColor="#fff"></component-search>
+                        </view>
+                        <view class="nav-map-entry flex-row align-c jc-c margin-left-sm" @tap="search_map_event">
+                            <iconfont name="icon-map-location" color="#fff" size="40rpx"></iconfont>
+                        </view>
                     </view>
                 </view>
 
@@ -171,6 +170,8 @@
                 share_info: {},
                 // 增加随机数，避免无法监听数据列表内部数据更新
                 random_value: 0,
+                // 顶部背景图
+                nav_title_bg: plugins_static_url+'title-bg.png',
             };
         },
 
@@ -284,6 +285,7 @@
                                 force_auto_choice_realstore_distance: parseFloat(data_base.home_force_choice_one_realstore_mode_auto_lately_distance || 0),
                                 data_list_loding_status: data_list.length > 0 ? 3 : 0,
                                 data_bottom_line_status: true,
+                                nav_title_bg: this.nav_title_bg_handle(data_base),
                             });
 
                             // 用户位置初始化
@@ -370,6 +372,11 @@
                 app.globalData.url_open('/pages/plugins/realstore/search/search' + params);
             },
 
+            // 地图搜索入口
+            search_map_event() {
+                app.globalData.url_open('/pages/plugins/realstore/search/search?show_type_mode=1');
+            },
+
             // 选择地理位置
             choose_user_location_event(e) {
                 if ((this.$refs.choice_location || null) != null) {
@@ -439,8 +446,18 @@
                 // #ifdef H5
                 this.setData({
                     screen_width: window.innerWidth,
+                    nav_title_bg: this.nav_title_bg_handle(this.data_base || {}),
                 });
                 // #endif
+            },
+
+            // 顶部背景图处理
+            nav_title_bg_handle(data_base = {}) {
+                var is_pc = this.screen_width > 960;
+                if (is_pc) {
+                    return data_base.home_title_bg_pc_images || this.plugins_static_url + 'title-bg-pc.png';
+                }
+                return data_base.home_title_bg_images || this.plugins_static_url + 'title-bg.png';
             },
 
             // 门店选择事件
