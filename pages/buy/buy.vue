@@ -105,8 +105,8 @@
                                         </view>
                                     </view>
                                 </view>
-                                <!-- 预约人员时段 -->
-                                <view v-if="(item.plugins_realstore_staff_booking_data || null) != null && item.plugins_realstore_staff_booking_data.length > 0" class="goods-item-staff-booking margin-top-sm padding-top-sm br-t-dashed pr">
+                                <!-- 预约人员时段（当前下单类型需预约时才展示，本地数据切换类型时保留） -->
+                                <view v-if="is_staff_booking_required_type() && (item.plugins_realstore_staff_booking_data || null) != null && item.plugins_realstore_staff_booking_data.length > 0" class="goods-item-staff-booking margin-top-sm padding-top-sm br-t-dashed pr">
                                     <text class="goods-item-staff-booking-edit pa text-size-xs cr-main cp" @tap.stop="staff_booking_edit_event">{{ $t('common.modify') }}</text>
                                     <view v-for="(booking, bindex) in item.plugins_realstore_staff_booking_data" :key="bindex" :class="'goods-item-staff-booking-unit pr oh ' + (item.plugins_realstore_staff_booking_data.length > 1 ? 'goods-item-staff-booking-unit-multi ' : '') + (bindex > 0 ? 'margin-top-xs padding-top-xs br-t-dashed' : '')">
                                         <text v-if="item.plugins_realstore_staff_booking_data.length > 1" class="goods-item-staff-booking-unit-no pa text-size-xs cr-grey">{{ $t('common.num') }}{{ parseInt(booking.unit_index || 0) + 1 }}</text>
@@ -125,6 +125,16 @@
                                 <!-- 订单商品表单 -->
                                 <view v-if="(item.plugins_ordergoodsform_data || null) != null" class="goods-item-ordergoodsform">
                                     <component-form-input-base ref="form_input_base" :propConfig="item.plugins_ordergoodsform_data.config" :propBackData="item.goods_id" :propFormInputId="item.plugins_ordergoodsform_data.id"></component-form-input-base>
+                                </view>
+                            </view>
+                        </view>
+                        <!-- 需预约但尚未选择：空状态入口（仅第一组展示一次） -->
+                        <view v-if="index == 0 && is_staff_booking_required_type() && !has_staff_booking_data()" class="buy-data-item oh" @tap="staff_booking_edit_event">
+                            <text class="cr-base">{{ $t('realstore-cart.select_staff_time_slot') }}</text>
+                            <view class="right-value fr cp tr">
+                                <text class="right-value-content single-text cr-grey va-m">{{ $t('buy.please_select_ellipsis') }}</text>
+                                <view class="dis-inline-block va-m lh-xs">
+                                    <iconfont name="icon-arrow-right" color="#999"></iconfont>
                                 </view>
                             </view>
                         </view>
@@ -897,6 +907,9 @@
 
             // 请求参数合并
             request_data_ext_params_merge(data) {
+                // 浅拷贝，避免改写本地 params（如 staff_booking_data）
+                data = Object.assign({}, data || {});
+
                 // 运费
                 var fee = this.plugins_freightfee_choice_data || null;
                 if (fee != null) {
@@ -933,8 +946,12 @@
                 // 虚拟币
                 data['plugins_coin_payment_id'] = this.plugins_coin_payment_id;
 
-                // 门店员工预定（uni-app POST 需 JSON 字符串）
-                if((data.staff_booking_data || null) != null && typeof data.staff_booking_data == 'object') {
+                // 门店员工预定：当前类型不需预约则不传（本地 params 仍保留便于切回）
+                if(!this.is_staff_booking_required_type(data.buy_use_type_data_index)) {
+                    if(data.staff_booking_data != undefined) {
+                        delete data.staff_booking_data;
+                    }
+                } else if((data.staff_booking_data || null) != null && typeof data.staff_booking_data == 'object') {
                     data.staff_booking_data = JSON.stringify(data.staff_booking_data);
                 }
 
@@ -1205,6 +1222,13 @@
                             return false;
                         }                        
                     }
+                }
+
+                // 当前类型需预约但未选择
+                if(this.is_staff_booking_required_type() && !this.has_staff_booking_data()) {
+                    app.globalData.showToast(this.$t('realstore-cart.select_staff_date_time_slot_each'));
+                    this.staff_booking_edit_event();
+                    return false;
                 }
 
                 // 请求参数处理
@@ -1638,8 +1662,81 @@
                 this.init();
             },
 
-            // 确认页修改员工预约时段
+            // 当前下单类型是否需要员工预约（本地预约数据可保留，仅控制展示与提交）
+            is_staff_booking_required_type(buy_use_type_index) {
+                var params = this.params || {};
+                if(parseInt(params.is_buy_staff_booking || 0) != 1) {
+                    return false;
+                }
+                var type_list = params.staff_booking_buy_use_type_list || [];
+                if(!Array.isArray(type_list) || type_list.length <= 0) {
+                    return true;
+                }
+                if(buy_use_type_index === undefined || buy_use_type_index === null || buy_use_type_index === '') {
+                    buy_use_type_index = params.buy_use_type_data_index;
+                }
+                if(buy_use_type_index === undefined || buy_use_type_index === null || buy_use_type_index === '') {
+                    return true;
+                }
+                var type_index = parseInt(buy_use_type_index);
+                return type_list.map(function(v) { return parseInt(v); }).indexOf(type_index) >= 0;
+            },
+
+            // 本地是否已有预约数据
+            has_staff_booking_data() {
+                var booking_data = (this.params || {}).staff_booking_data || null;
+                if(typeof booking_data == 'string') {
+                    try {
+                        booking_data = JSON.parse(booking_data);
+                    } catch(e) {
+                        booking_data = [];
+                    }
+                }
+                return (booking_data || null) != null && Array.isArray(booking_data) && booking_data.length > 0;
+            },
+
+            // 从确认页商品列表组装预约弹窗购物车行
+            staff_booking_build_cart_list() {
+                var cart_list = [];
+                var avatar_map = {};
+                var goods_list = this.goods_list || [];
+                for(var gi in goods_list) {
+                    var items = goods_list[gi].goods_items || [];
+                    for(var ii in items) {
+                        var item = items[ii];
+                        cart_list.push({
+                            id: item.id,
+                            goods_id: item.goods_id,
+                            stock: item.stock,
+                            title: item.title,
+                            images: item.images,
+                            price: item.price,
+                            spec: item.spec || null,
+                        });
+                        var display = item.plugins_realstore_staff_booking_data || null;
+                        if((display || null) == null || display.length <= 0) {
+                            continue;
+                        }
+                        for(var bi in display) {
+                            var bk = display[bi] || {};
+                            var sid = parseInt(bk.staff_id || 0);
+                            if(sid > 0 && (bk.staff_avatar || '') != '') {
+                                avatar_map[sid] = bk.staff_avatar;
+                            }
+                        }
+                    }
+                }
+                return {
+                    cart_list: cart_list,
+                    avatar_map: avatar_map,
+                };
+            },
+
+            // 确认页选择/修改员工预约时段（无预约数据时也可打开）
             staff_booking_edit_event() {
+                if(!this.is_staff_booking_required_type()) {
+                    return false;
+                }
                 var params = this.params || {};
                 var realstore_id = parseInt(params.realstore_id || 0);
                 if(realstore_id <= 0) {
@@ -1654,40 +1751,12 @@
                         booking_data = [];
                     }
                 }
-                if((booking_data || null) == null || !Array.isArray(booking_data) || booking_data.length <= 0) {
-                    app.globalData.showToast(this.$t('common.no_data'));
-                    return false;
+                if((booking_data || null) == null || !Array.isArray(booking_data)) {
+                    booking_data = [];
                 }
-                // 从展示数据补全头像，便于弹窗回填
-                var avatar_map = {};
-                var cart_list = [];
-                var goods_list = this.goods_list || [];
-                for(var gi in goods_list) {
-                    var items = goods_list[gi].goods_items || [];
-                    for(var ii in items) {
-                        var item = items[ii];
-                        var display = item.plugins_realstore_staff_booking_data || null;
-                        if((display || null) == null || display.length <= 0) {
-                            continue;
-                        }
-                        cart_list.push({
-                            id: item.id,
-                            goods_id: item.goods_id,
-                            stock: item.stock,
-                            title: item.title,
-                            images: item.images,
-                            price: item.price,
-                            spec: item.spec || null,
-                        });
-                        for(var bi in display) {
-                            var bk = display[bi] || {};
-                            var sid = parseInt(bk.staff_id || 0);
-                            if(sid > 0 && (bk.staff_avatar || '') != '') {
-                                avatar_map[sid] = bk.staff_avatar;
-                            }
-                        }
-                    }
-                }
+                var built = this.staff_booking_build_cart_list();
+                var cart_list = built.cart_list || [];
+                var avatar_map = built.avatar_map || {};
                 if(cart_list.length <= 0) {
                     app.globalData.showToast(this.$t('common.no_data'));
                     return false;
@@ -1706,6 +1775,7 @@
                     app.globalData.showToast(this.$t('common.no_data'));
                     return false;
                 }
+                // 确认页内选择/改约一律 edit_mode，提交时通过 StaffBookingSuccessEvent 回写，不走结算跳转
                 cart_ref.staff_booking_init({
                     realstore_id: realstore_id,
                     cart_list: cart_list,

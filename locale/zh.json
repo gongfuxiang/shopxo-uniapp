@@ -1001,6 +1001,7 @@
 		"select_shipping_address": "请选择收货地址",
 		"select_pickup_address": "请选择取货地址",
 		"select_coupon": "请选择优惠券",
+		"please_select_ellipsis": "请选择...",
 		"enter_store_order": "进入门店订单",
 		"select_time": "选择时间",
 		"my_name": "我的姓名",

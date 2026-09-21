@@ -841,6 +841,7 @@
 		"select_shipping_address": "Please select a shipping address",
 		"select_pickup_address": "Please select a pickup address",
 		"select_coupon": "Please select a coupon",
+		"please_select_ellipsis": "Please select...",
 		"enter_store_order": "Enter store order",
 		"select_time": "Select time",
 		"my_name": "My name",
