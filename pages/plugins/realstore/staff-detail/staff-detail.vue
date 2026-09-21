@@ -820,6 +820,8 @@
                     goods_data: encodeURIComponent(base64.encode(JSON.stringify([goods_item]))),
                     realstore_id: parseInt((this.realstore || {}).id || 0),
                     buy_use_type_data_index: this.buy_use_type_data_index,
+                    is_buy_staff_booking: parseInt((this.realstore || {}).is_buy_staff_booking || 0),
+                    staff_booking_buy_use_type_list: (this.realstore || {}).staff_booking_buy_use_type_list || [],
                     staff_booking_cart_list: [cart_item],
                     staff_booking_prefer_staff_id: parseInt(this.staff.id || 0),
                     staff_booking_prefer_staff_alias: this.staff.alias || '',

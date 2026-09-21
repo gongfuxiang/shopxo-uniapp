@@ -91,6 +91,13 @@
                                 <input type="text" name="email" :value="form_data.email || ''" maxlength="60" placeholder-class="cr-grey-9 tr" class="cr-base tr margin-right-sm" :placeholder="$t('staff-profile.email_placeholder')" />
                             </view>
                         </view>
+                        <view class="form-gorup oh flex-row jc-sb align-c">
+                            <view class="form-gorup-title">
+                                {{ $t('staff-profile.is_booking_enable') }}
+                                <text class="form-group-tips">{{ $t('staff-profile.is_booking_enable_tips') }}</text>
+                            </view>
+                            <switch :color="theme_color" :checked="(form_data.is_booking_enable || 0) == 1" @change="booking_enable_change_event" style="transform:scale(0.8)" />
+                        </view>
                     </view>
                 </view>
                 <view class="bottom-fixed" :style="bottom_fixed_style">
@@ -126,6 +133,7 @@
                 avatar_list: [],
                 photo_list: [],
                 editor_path_type: '',
+                theme_color: app.globalData.get_theme_color(),
             };
         },
         components: {
@@ -242,6 +250,13 @@
                 });
             },
 
+            // 是否可预约
+            booking_enable_change_event(e) {
+                var temp = this.form_data || {};
+                temp.is_booking_enable = (e.detail.value === true || e.detail.value === 1 || e.detail.value === 'true') ? 1 : 0;
+                this.setData({ form_data: temp });
+            },
+
             // 生日选择事件
             birthday_change_event(e) {
                 var temp = this.form_data || {};
@@ -275,6 +290,7 @@
                         native_place: value.native_place || '',
                         mobile: value.mobile || '',
                         email: value.email || '',
+                        is_booking_enable: parseInt((this.form_data || {}).is_booking_enable || 0),
                     },
                     dataType: 'json',
                     success: (res) => {

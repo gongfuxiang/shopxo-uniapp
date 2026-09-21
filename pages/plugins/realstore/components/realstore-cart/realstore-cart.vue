@@ -291,6 +291,7 @@
                 realstore_cart_content_style: '',
                 // 员工预定
                 is_staff_booking: 0,
+                staff_booking_buy_use_type_list: [],
                 staff_booking_popup_status: false,
                 staff_booking_popup_title: '',
                 staff_booking_realstore_id: 0,
@@ -370,7 +371,8 @@
                             base: params.base || null,
                             source: params.source,
                             realstore_cart_content_style: 'bottom: '+tabbar_height+'rpx',
-                            is_staff_booking: parseInt((params.base || {}).is_buy_staff_booking || 0),
+                            is_staff_booking: parseInt((info || {}).is_buy_staff_booking || 0),
+                            staff_booking_buy_use_type_list: (info || {}).staff_booking_buy_use_type_list || [],
                         });
 
                         // 商品来源
@@ -679,6 +681,8 @@
                         ids: ids.join(','),
                     }, 'buy');
                 data['staff_booking_cart_list'] = (this.cart || null) != null ? (this.cart.data || []) : [];
+                data['is_buy_staff_booking'] = parseInt(this.is_staff_booking || 0);
+                data['staff_booking_buy_use_type_list'] = this.staff_booking_buy_use_type_list || [];
                 app.globalData.to_buy_handle(data, '/pages/buy/buy', this);
             },
 

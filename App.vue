@@ -2574,8 +2574,18 @@
                 if((buy_data.staff_booking_cart_list || null) == null || buy_data.staff_booking_cart_list.length <= 0) {
                     return false;
                 }
-                var base = this.get_config('plugins_base.realstore.data', {}) || {};
-                return parseInt(base.is_buy_staff_booking || 0) == 1;
+                if(parseInt(buy_data.is_buy_staff_booking || 0) != 1) {
+                    return false;
+                }
+                var type_list = buy_data.staff_booking_buy_use_type_list || [];
+                if(!Array.isArray(type_list) || type_list.length <= 0) {
+                    return true;
+                }
+                if(buy_data.buy_use_type_data_index === undefined || buy_data.buy_use_type_data_index === null || buy_data.buy_use_type_data_index === '') {
+                    return true;
+                }
+                var type_index = parseInt(buy_data.buy_use_type_data_index);
+                return type_list.map(function(v) { return parseInt(v); }).indexOf(type_index) >= 0;
             },
 
             // 获取当前页面员工预定组件

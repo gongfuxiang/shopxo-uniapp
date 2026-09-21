@@ -1078,6 +1078,8 @@
                         var type_data = this.$refs.realstore_cart.buy_use_type_data();
                         data['buy_use_type_data_index'] = type_data.data_index;
                         data['realstore_id'] = this.plugins_realstore_info.id;
+                        data['is_buy_staff_booking'] = parseInt(this.plugins_realstore_info.is_buy_staff_booking || 0);
+                        data['staff_booking_buy_use_type_list'] = this.plugins_realstore_info.staff_booking_buy_use_type_list || [];
                         var staff_booking_cart_list = [];
                         for (var j in temp_data_list) {
                             if ((temp_data_list[j]['selected'] || false) == true && (temp_data_list[j]['is_error'] || 0) != 1) {
