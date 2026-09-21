@@ -108,6 +108,7 @@ var zh = {
     "orderallot-detail": {
         "order_type": "订单类型",
         "booking_data": "预约数据",
+        "modify_booking": "修改预约",
         "make_progress_title": "制作进度",
         "make_tip_pending": "订单待商家确认，确认后开始制作",
         "make_tip_making": "商家正在为您制作，请耐心等待",
@@ -289,6 +290,7 @@ var en = {
     "orderallot-detail": {
         "order_type": "Order type",
         "booking_data": "Booking data",
+        "modify_booking": "Change booking",
         "make_progress_title": "Preparation progress",
         "make_tip_pending": "Waiting for the store to confirm, then preparation will start",
         "make_tip_making": "The store is preparing your order, please wait",

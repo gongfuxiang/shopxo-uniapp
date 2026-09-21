@@ -114,6 +114,10 @@
                 type: String,
                 default: '',
             },
+            propControl: {
+                type: String,
+                default: 'stafforder',
+            },
         },
         data() {
             return {
@@ -196,7 +200,7 @@
             load_info() {
                 this.setData({ init_loading_status: 1, init_loading_msg: '' });
                 uni.request({
-                    url: app.globalData.get_request_url('staffbookinginfo', 'stafforder', 'realstore'),
+                    url: app.globalData.get_request_url('staffbookinginfo', this.propControl || 'stafforder', 'realstore'),
                     method: 'POST',
                     data: { id: this.order_allot_id },
                     dataType: 'json',
@@ -266,10 +270,11 @@
                     period_load_key: period_load_key,
                 });
                 uni.request({
-                    url: app.globalData.get_request_url('staffbookingperiodoptions', 'stafforder', 'realstore'),
+                    url: app.globalData.get_request_url('staffbookingperiodoptions', this.propControl || 'stafforder', 'realstore'),
                     method: 'POST',
                     data: {
                         id: booking_id || 0,
+                        order_allot_id: this.order_allot_id,
                         staff_id: staff_id,
                         ymd: ymd,
                     },
@@ -497,7 +502,7 @@
                 }
                 this.setData({ submit_loading: true });
                 uni.request({
-                    url: app.globalData.get_request_url('staffbookingsave', 'stafforder', 'realstore'),
+                    url: app.globalData.get_request_url('staffbookingsave', this.propControl || 'stafforder', 'realstore'),
                     method: 'POST',
                     data: {
                         id: this.order_allot_id,
@@ -506,7 +511,7 @@
                     dataType: 'json',
                     success: (res) => {
                         this.setData({ submit_loading: false });
-                        app.globalData.showToast(res.data.msg);
+                        app.globalData.showToast(res.data.msg, res.data.code == 0 ? 'success' : 'error');
                         if(res.data.code == 0) {
                             this.setData({ popup_status: false });
                             this.$emit('success');

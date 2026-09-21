@@ -63,6 +63,7 @@
                         <button v-if="(detail.operate_data || null) != null && (detail.operate_data.is_pay || 0) == 1" class="round bg-white cr-green br-green" type="default" size="mini" @tap="pay_event" hover-class="none">{{$t('common.pay')}}</button>
                         <button v-if="(detail.operate_data || null) != null && (detail.operate_data.is_collect || 0) == 1" class="round bg-white cr-green br-green" type="default" size="mini" @tap="collect_event" hover-class="none">{{$t('common.receiving_goods')}}</button>
                         <button v-if="(detail.operate_data || null) != null && (detail.operate_data.is_comments || 0) == 1" class="round bg-white cr-main br-main" type="default" size="mini" @tap="url_event" :data-value="'/pages/plugins/realstore/orderallot-comments/orderallot-comments?id=' + detail.id" hover-class="none">{{$t('realstore-staff.comments')}}</button>
+                        <button v-if="(detail.operate_data || null) != null && (detail.operate_data.is_staff_booking || 0) == 1" class="round bg-white cr-main br-main" type="default" size="mini" @tap="staff_booking_event" hover-class="none">{{$t('orderallot-detail.modify_booking')}}</button>
                         <button v-if="(detail.operate_data || null) != null && (detail.operate_data.is_order_batch || 0) == 1" class="round bg-white cr-blue br-blue" type="default" size="mini" @tap="url_event" :data-value="'/pages/plugins/realstore/batchorder-list/batchorder-list?oid=' + detail.order_id" hover-class="none">{{$t('common.batch')}}</button>
                         <button v-if="(detail.operate_data || null) != null && (detail.operate_data.is_order_frequencycard || 0) == 1" class="round bg-white cr-green br-green" type="default" size="mini" @tap="url_event" :data-value="'/pages/plugins/realstore/frequencycard-list/frequencycard-list?oid=' + detail.order_id" hover-class="none">{{$t('common.secondary_card')}}</button>
                         <button v-if="(detail.express_data || null) != null && detail.express_data.length > 0" class="round bg-white cr-main br-main" type="default" size="mini" @tap="url_event" :data-value="'/pages/plugins/express/detail/detail?oid=' + detail.id + '&action_type=realstore'" hover-class="none">{{$t('common.logistics')}}</button>
@@ -173,7 +174,10 @@
 
                 <!-- 预约数据 -->
                 <view v-if="(detail.staff_booking_data || null) != null && detail.staff_booking_data.length > 0" class="staff-booking bg-white padding-main border-radius-main spacing-mb">
-                    <view class="br-b padding-bottom-main fw-b text-size">{{$t('orderallot-detail.booking_data')}}</view>
+                    <view class="br-b padding-bottom-main oh">
+                        <text class="fw-b text-size">{{$t('orderallot-detail.booking_data')}}</text>
+                        <text v-if="(detail.operate_data || null) != null && (detail.operate_data.is_staff_booking || 0) == 1" class="fr cr-main text-size-sm margin-top-xs" @tap="staff_booking_event">{{$t('orderallot-detail.modify_booking')}}</text>
+                    </view>
                     <view v-for="(group, gindex) in detail.staff_booking_data" :key="gindex" :class="'staff-booking-item oh ' + (gindex + 1 >= detail.staff_booking_data.length ? 'padding-main padding-bottom-0' : 'br-b-dashed padding-main')">
                         <view class="flex-row">
                             <view v-if="(group.goods_url || null) != null && group.goods_url != ''" :data-value="group.goods_url" @tap="url_event" class="cp">
@@ -288,6 +292,9 @@
 
         <!-- 公共 -->
         <component-common ref="common"></component-common>
+
+        <!-- 修改预约 -->
+        <component-orderallot-staff-booking ref="staff_booking" propControl="orderallot" @success="init"></component-orderallot-staff-booking>
     </view>
 </template>
 <script>
@@ -296,6 +303,7 @@
     import componentNoData from "@/components/no-data/no-data";
     import componentBottomLine from "@/components/bottom-line/bottom-line";
     import componentPayment from '@/components/payment/payment';
+    import componentOrderallotStaffBooking from '../components/orderallot-staff-booking/orderallot-staff-booking';
     import pluginLocale from '../locale/index.js';
 
     var common_static_url = app.globalData.get_static_url("common");
@@ -334,6 +342,7 @@
             componentNoData,
             componentBottomLine,
             componentPayment,
+            componentOrderallotStaffBooking,
         },
 
         computed: {
@@ -377,6 +386,7 @@
                     Number(op.is_pay || 0) +
                     Number(op.is_collect || 0) +
                     Number(op.is_comments || 0) +
+                    Number(op.is_staff_booking || 0) +
                     Number(d.plugins_delivery_data || 0) +
                     Number(d.plugins_ordergoodsform_data || 0) +
                     Number(op.is_order_batch || 0) +
@@ -565,6 +575,17 @@
                     is_show_payment_popup: false,
                 });
                 this.init();
+            },
+
+            // 修改预约
+            staff_booking_event() {
+                var detail = this.detail || {};
+                var id = parseInt(detail.id || 0);
+                if(id <= 0 || (this.$refs.staff_booking || null) == null) {
+                    return false;
+                }
+                var symbol = ((detail.currency_data || {}).currency_symbol) || '';
+                this.$refs.staff_booking.open(id, symbol);
             },
 
             // 取消
