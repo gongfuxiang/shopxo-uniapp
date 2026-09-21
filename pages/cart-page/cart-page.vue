@@ -297,8 +297,8 @@
                             </view>
                         </block>
                         <view class="padding-main tc">
-                            <view class="dis-inline-block cp" data-value="/pages/plugins/realstore/search/search" @tap="url_event">
-                                <text class="cr-grey text-size-xs va-m">{{ $t('common.view_more') }}</text>
+                            <view class="dis-inline-block cp" @tap="realstore_choice_more_event">
+                                <text class="cr-grey text-size-xs va-m">{{ $t('common.choice_more') }}</text>
                                 <view class="dis-inline-block va-m margin-left-xs">
                                     <iconfont name="icon-arrow-right" size="24rpx" propClass="lh-il cr-grey"></iconfont>
                                 </view>
@@ -549,9 +549,29 @@
                 if (this.data_is_loading == 1) {
                     return false;
                 }
-                this.setData({
+                // 请求前先同步全局选店缓存，避免先按旧店请求再二次请求
+                var need_store_loading = false;
+                if(app.globalData.data.is_cart_header_close_realstore != 1) {
+                    var cache_store = this.get_realstore_choice_cache();
+                    if(cache_store != null) {
+                        var old_id = (this.plugins_realstore_info || null) == null ? 0 : parseInt(this.plugins_realstore_info.id || 0);
+                        if(old_id != parseInt(cache_store.id || 0)) {
+                            need_store_loading = true;
+                            this.setData({
+                                plugins_realstore_info: cache_store,
+                                plugins_realstore_data: this.merge_realstore_list_with_current(this.plugins_realstore_data, cache_store),
+                            });
+                        }
+                    }
+                }
+                var loading_data = {
                     data_is_loading: 1,
-                });
+                };
+                // 因缓存切店时展示与弹窗切店一致的加载效果
+                if(need_store_loading) {
+                    loading_data.data_list_loding_status = 1;
+                }
+                this.setData(loading_data);
 
                 // 门店购物车
                 if (this.cart_type_value == 'realstore' && (this.plugins_realstore_info || null) != null) {
@@ -603,24 +623,19 @@
                                 plugins_intellectstools_data: data.plugins_intellectstools_data || null,
                             });
 
-                            // 门店数据初始化
+                            // 门店数据初始化（列表合并当前/缓存店置顶；门店切换已在请求前完成）
                             var realstore = data.plugins_realstore_data || null;
+                            var cache_store = this.get_realstore_choice_cache();
+                            var current_store = this.plugins_realstore_info || cache_store || null;
+                            realstore = this.merge_realstore_list_with_current(realstore, current_store);
                             this.setData({
                                 plugins_realstore_data: realstore,
                             });
-                            // 门店为空、还没有初始门店信息，初始门店信息不在当前列表中则 赋值门店初始信息和门店购物车初始化
-                            if(app.globalData.data.is_cart_header_close_realstore != 1) {
-                                if(
-                                    realstore == null ||
-                                    this.plugins_realstore_info == null ||
-                                    !realstore
-                                        .map(function (v) {
-                                            return v.id;
-                                        })
-                                        .includes(this.plugins_realstore_info.id)
-                                ) {
+                            if(app.globalData.data.is_cart_header_close_realstore != 1 && this.plugins_realstore_info == null) {
+                                var next_info = cache_store || (realstore == null ? null : realstore[0]);
+                                if(next_info != null) {
                                     this.setData({
-                                        plugins_realstore_info: realstore == null ? null : realstore[0],
+                                        plugins_realstore_info: next_info,
                                     });
                                     this.realstore_cart_data_init();
                                 }
@@ -1320,9 +1335,46 @@
                 }
             },
 
+            // 读取全局选店缓存
+            get_realstore_choice_cache() {
+                var res = uni.getStorageSync(app.globalData.data.cache_realstore_detail_choice_key) || null;
+                if(res != null && (res.data || null) != null && parseInt(res.data.id || 0) > 0) {
+                    return res.data;
+                }
+                return null;
+            },
+
+            // 写入全局选店缓存（与首页强制选店同一份）
+            set_realstore_choice_cache(store) {
+                if((store || null) == null || parseInt(store.id || 0) <= 0) {
+                    return;
+                }
+                uni.setStorageSync(app.globalData.data.cache_realstore_detail_choice_key, {
+                    data: store,
+                    status: 1,
+                });
+            },
+
+            // 当前店置顶合并进附近店列表
+            merge_realstore_list_with_current(list, current) {
+                var result = Array.isArray(list) ? list.slice() : [];
+                if((current || null) == null || parseInt(current.id || 0) <= 0) {
+                    return result.length > 0 ? result : null;
+                }
+                var current_id = parseInt(current.id);
+                result = result.filter(function(v) {
+                    return parseInt((v || {}).id || 0) != current_id;
+                });
+                result.unshift(current);
+                return result;
+            },
+
             // 门店选择事件
             realstore_choice_open_event(e) {
+                var current = this.plugins_realstore_info || this.get_realstore_choice_cache();
+                var list = this.merge_realstore_list_with_current(this.plugins_realstore_data, current);
                 this.setData({
+                    plugins_realstore_data: list,
                     plugins_realstore_choice_status: true,
                 });
             },
@@ -1334,12 +1386,26 @@
                 });
             },
 
+            // 查看更多：选店模式进搜索，选完写缓存并返回购物车
+            realstore_choice_more_event() {
+                this.setData({
+                    plugins_realstore_choice_status: false,
+                });
+                app.globalData.url_open('/pages/plugins/realstore/search/search?is_choice_mode=1&choice_mode_back_type=back&is_open_realstore_redirect=0');
+            },
+
             // 门店弹窗选择
             realstore_choice_item_event(e) {
+                var store = this.plugins_realstore_data[e.currentTarget.dataset.index] || null;
+                if((store || null) == null) {
+                    return false;
+                }
+                this.set_realstore_choice_cache(store);
                 this.setData({
                     data_list_loding_status: 1,
                     plugins_realstore_choice_status: false,
-                    plugins_realstore_info: this.plugins_realstore_data[e.currentTarget.dataset.index],
+                    plugins_realstore_info: store,
+                    plugins_realstore_data: this.merge_realstore_list_with_current(this.plugins_realstore_data, store),
                 });
                 // 重新初始化门店数据
                 this.realstore_cart_data_init();
