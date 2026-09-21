@@ -30,13 +30,10 @@
     min-width: 0;
     transition: width 0.3s ease;
 }
-.progress-bar-text-light {
-    color: #fff;
-}
 
 /*
  * 列表
  */
 .scroll-box {
-    height: calc(100vh - 148rpx);
+    height: calc(100vh - 210rpx);
 }

@@ -10,9 +10,14 @@
             </component-panel-content>
 
             <component-panel-content :propTitle="$t('ask.reply_content')">
-                <view class="item br-b-f5 oh padding-vertical-main">
-                    <mp-html :content="data.reply"></mp-html>
-                </view>
+                <block v-if="(data.is_reply || 0) == 1 && (data.reply || null) != null && data.reply !== ''">
+                    <view class="item br-b-f5 oh padding-vertical-main">
+                        <mp-html :content="data.reply"></mp-html>
+                    </view>
+                </block>
+                <block v-else>
+                    <component-no-data propStatus="0"></component-no-data>
+                </block>
             </component-panel-content>
         </block>
         <view v-else>

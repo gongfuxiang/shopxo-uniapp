@@ -1479,7 +1479,6 @@
                 // 重新设置静态资源
                 this.set_resources_data();
                 // 设置这标题
-                console.log( this.current_opt_type_title[this.navigation_bar_title_key] )
                 uni.setNavigationBarTitle({
                     title: this.current_opt_type_title[this.navigation_bar_title_key],
                 });

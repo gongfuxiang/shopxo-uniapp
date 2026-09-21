@@ -232,34 +232,50 @@
                 <view v-if="detail_list.length > 0" class="panel-item padding-main border-radius-main bg-white spacing-mb">
                     <view class="br-b padding-bottom-main fw-b text-size">{{$t('common.order_information')}}</view>
                     <view class="panel-content oh">
-                        <view v-for="(item, index) in detail_list" :key="index" class="item br-b-dashed oh padding-vertical-main">
-                            <view class="title fl padding-right-main cr-grey">{{ item.name }}</view>
-                            <view v-if="(item.is_copy || 0) == 1" class="content fl br-l padding-left-main" :data-value="item.value" @tap="text_copy_event">
-                                <text>{{ item.value }}</text>
-                                <text class="bg-white br-green cr-green round padding-horizontal-sm text-size-xs margin-left-sm">{{$t('common.copy')}}</text>
-                            </view>
-                            <view v-else class="content fl br-l padding-left-main">{{ item.value }}</view>
-                        </view>
+                        <uni-table :emptyText="$t('common.no_data')">
+                            <block v-for="(item, index) in detail_list" :key="index">
+                                <uni-tr>
+                                    <uni-th width="90">{{item.name}}</uni-th>
+                                    <uni-td>
+                                        <view v-if="(item.is_copy || 0) == 1" :data-value="item.value" @tap="text_copy_event">
+                                            <text>{{ item.value }}</text>
+                                            <text class="bg-white br-green cr-green round padding-horizontal-sm text-size-xs margin-left-sm">{{$t('common.copy')}}</text>
+                                        </view>
+                                        <block v-else>{{ item.value }}</block>
+                                    </uni-td>
+                                </uni-tr>
+                            </block>
+                        </uni-table>
                     </view>
                 </view>
 
                 <!-- 快递信息 -->
                 <view v-if="(detail.express_data || null) != null && detail.express_data.length > 0" class="express-data panel-item padding-main border-radius-main bg-white spacing-mb">
                     <view class="br-b padding-bottom-main fw-b text-size">{{$t('common.express_delivery_info')}}</view>
-                    <view class="panel-content">
-                        <view v-for="(item, index) in detail.express_data" :key="index" class="item br-b-dashed oh padding-vertical-main">
-                            <view class="item oh padding-vertical-main">
-                                <view class="title fl padding-right-main cr-grey">{{$t('common.express_delivery_company')}}</view>
-                                <view class="content fl br-l padding-left-main" :data-value="item.express_name" @tap="text_copy_event">{{item.express_name}}</view>
-                            </view>
-                            <view class="item oh padding-vertical-main">
-                                <view class="title fl padding-right-main cr-grey">{{$t('common.express_tracking_number')}}</view>
-                                <view class="content fl br-l padding-left-main" :data-value="item.express_number" @tap="text_copy_event">
-                                    <text>{{item.express_number}}</text>
-                                    <text class="bg-white br-green cr-green round padding-horizontal-sm text-size-xs margin-left-sm">{{$t('common.copy')}}</text>
-                                </view>
-                            </view>
-                        </view>
+                    <view class="panel-content oh">
+                        <uni-table :emptyText="$t('common.no_data')">
+                            <uni-tr>
+                                <uni-th width="110">{{$t('common.express_delivery_company')}}</uni-th>
+                                <uni-th width="260">{{$t('common.express_tracking_number')}}</uni-th>
+                                <uni-th width="300">{{$t('common.note')}}</uni-th>
+                            </uni-tr>
+                            <block v-for="(item, index) in detail.express_data" :key="index">
+                                <uni-tr>
+                                    <uni-td>
+                                        <view :data-value="item.express_name" @tap="text_copy_event">{{item.express_name}}</view>
+                                    </uni-td>
+                                    <uni-td>
+                                        <view :data-value="item.express_number" @tap="text_copy_event">
+                                            <text>{{item.express_number}}</text>
+                                            <text class="bg-white br-green cr-green round padding-horizontal-sm text-size-xs margin-left-sm">{{$t('common.copy')}}</text>
+                                        </view>
+                                    </uni-td>
+                                    <uni-td>
+                                        <view :data-value="item.note" @tap="text_copy_event">{{item.note}}</view>
+                                    </uni-td>
+                                </uni-tr>
+                            </block>
+                        </uni-table>
                     </view>
                 </view>
             </view>

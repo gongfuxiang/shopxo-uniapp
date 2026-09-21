@@ -5,6 +5,7 @@ import { ensure_chat_user_init, apply_chat_user_page_config } from '../common/ch
 import {
 	chat_connect,
 	chat_resume_connect,
+	chat_disconnect,
 	chat_apply_entry_params,
 	chat_build_session_url,
 	chat_set_receive_user,
@@ -483,6 +484,8 @@ export default {
 				this._list_search_timer = null;
 			}
 			this.unbind_list_events();
+			// 离开会话列表即整条客服链路结束，停掉 ping/重连定时器并断开 WS
+			chat_disconnect();
 		},
 
 		preview_text(row) {

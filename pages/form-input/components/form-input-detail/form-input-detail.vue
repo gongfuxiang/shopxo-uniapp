@@ -2,10 +2,11 @@
     <view :class="theme_view">
         <block v-if="(propData || null) != null" >
             <component-panel-content :propTitle="(propTitle || null) != null && propTitle !== '' ? propTitle : $t('common.form_input_data_text')">
-                <block v-for="(item, index) in propData" :key="index">
-                    <view class="item br-b-f5 oh padding-vertical-main">
-                        <view class="title fl padding-right-main cr-grey">{{ item.name }}</view>
-                        <view class="content fl br-l padding-left-main">
+                <uni-table :emptyText="$t('common.no_data')">
+                    <block v-for="(item, index) in propData" :key="index">
+                        <uni-tr>
+                            <uni-th width="90">{{ item.name }}</uni-th>
+                            <uni-td>
                             <block v-if="item.key == 'upload-img'">
                                 <block v-if="item.value.length > 0">
                                     <block v-for="(items, indexs) in item.value" :key="indexs">
@@ -75,9 +76,10 @@
                                 </block>
                             </block>
                             <text v-else>{{ item.value_text || item.value }}</text>
-                        </view>
-                    </view>
-                </block>
+                            </uni-td>
+                        </uni-tr>
+                    </block>
+                </uni-table>
             </component-panel-content>
         </block>
         <block v-else>

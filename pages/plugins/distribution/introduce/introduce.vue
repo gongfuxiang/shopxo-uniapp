@@ -7,41 +7,43 @@
                     <view v-for="(item, index) in level_list" :key="index" class="padding-main border-radius-main bg-white spacing-mb">
                         <view class="br-b padding-bottom-main fw-b text-size">{{ item.name }}</view>
                         <view class="panel-content oh padding-top-main">
-                            <view class="item br-b oh padding-vertical-main">
-                                <view class="title fl padding-right-main cr-grey">{{$t('introduce.level_certificate')}}</view>
-                                <view class="content fl br-l padding-left-main">
-                                    <image :src="item.images_url" class="dis-block fl level-icon" mode="widthFix"></image>
-                                </view>
-                            </view>
-                            <view class="item br-b oh padding-vertical-main">
-                                <view class="title fl padding-right-main cr-grey">{{$t('introduce.rebate_ratio')}}</view>
-                                <view class="content fl br-l padding-left-main">
-                                    <view>{{$t('introduce.first_level')}}{{ item.level_rate_one }}%</view>
-                                    <view v-if="data_base.level == undefined || data_base.level > 0">{{$t('introduce.second_level')}}{{ item.level_rate_two }}%</view>
-                                    <view v-if="data_base.level == undefined || data_base.level > 1">{{$t('introduce.level')}}{{ item.level_rate_three }}%</view>
-                                </view>
-                            </view>
-                            <view class="item br-b oh padding-vertical-main">
-                                <view class="title fl padding-right-main cr-grey">{{$t('introduce.level_rules')}}</view>
-                                <view class="content fl br-l padding-left-main">
-                                    <block v-if="(item.rules_msg_list || null) != null">
-                                        <view>{{ item.rules_msg_list.name }}</view>
-                                        <view class="padding-left-xxl">
-                                            <block v-if="(item.rules_msg_list.data || null) != null && item.rules_msg_list.data.length > 0">
-                                                <block v-for="(rv, ri) in item.rules_msg_list.data" :key="ri">
-                                                    <view>
-                                                        <text>{{ rv.name }}</text>
-                                                        <text class="fr fw-b">{{ rv.value }}</text>
-                                                    </view>
+                            <uni-table :emptyText="$t('common.no_data')">
+                                <uni-tr>
+                                    <uni-th width="90">{{$t('introduce.level_certificate')}}</uni-th>
+                                    <uni-td>
+                                        <image :src="item.images_url" class="dis-block level-icon" mode="widthFix"></image>
+                                    </uni-td>
+                                </uni-tr>
+                                <uni-tr>
+                                    <uni-th width="90">{{$t('introduce.rebate_ratio')}}</uni-th>
+                                    <uni-td>
+                                        <view>{{$t('introduce.first_level')}}{{ item.level_rate_one }}%</view>
+                                        <view v-if="data_base.level == undefined || data_base.level > 0">{{$t('introduce.second_level')}}{{ item.level_rate_two }}%</view>
+                                        <view v-if="data_base.level == undefined || data_base.level > 1">{{$t('introduce.level')}}{{ item.level_rate_three }}%</view>
+                                    </uni-td>
+                                </uni-tr>
+                                <uni-tr>
+                                    <uni-th width="90">{{$t('introduce.level_rules')}}</uni-th>
+                                    <uni-td>
+                                        <block v-if="(item.rules_msg_list || null) != null">
+                                            <view>{{ item.rules_msg_list.name }}</view>
+                                            <view class="padding-left-xxl">
+                                                <block v-if="(item.rules_msg_list.data || null) != null && item.rules_msg_list.data.length > 0">
+                                                    <block v-for="(rv, ri) in item.rules_msg_list.data" :key="ri">
+                                                        <view>
+                                                            <text>{{ rv.name }}</text>
+                                                            <text class="fr fw-b">{{ rv.value }}</text>
+                                                        </view>
+                                                    </block>
                                                 </block>
-                                            </block>
-                                            <block v-else>
-                                                <view class="cr-grey">{{$t('introduce.unconditional')}}</view>
-                                            </block>
-                                        </view>
-                                    </block>
-                                </view>
-                            </view>
+                                                <block v-else>
+                                                    <view class="cr-grey">{{$t('introduce.unconditional')}}</view>
+                                                </block>
+                                            </view>
+                                        </block>
+                                    </uni-td>
+                                </uni-tr>
+                            </uni-table>
                         </view>
                     </view>
                 </view>

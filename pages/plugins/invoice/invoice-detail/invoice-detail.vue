@@ -12,9 +12,15 @@
             <!-- 电子发票 -->
             <block v-if="detail.status == 2 && detail.invoice_type == 0 && (detail.electronic_invoice || null) != null" class="panel-item padding-main border-radius-main bg-white spacing-mb">
                 <component-panel-content :propTitle="$t('invoice-detail.electronic_invoice')">
-                    <view v-for="(item, index) in detail.electronic_invoice" :key="index" class="item br-b-f5 oh padding-vertical-main">
-                        <view class="content fl" @tap="electronic_invoice_event" :data-value="item.url">{{ item.title }}</view>
-                    </view>
+                    <uni-table :emptyText="$t('common.no_data')">
+                        <block v-for="(item, index) in detail.electronic_invoice" :key="index">
+                            <uni-tr>
+                                <uni-td>
+                                    <view @tap="electronic_invoice_event" :data-value="item.url">{{ item.title }}</view>
+                                </uni-td>
+                            </uni-tr>
+                        </block>
+                    </uni-table>
                     <view class="cr-red padding-top-main">{{$t('invoice-detail.click_invoice_name_copy_then_go')}}</view>
                 </component-panel-content>
             </block>

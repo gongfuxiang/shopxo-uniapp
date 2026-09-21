@@ -4,10 +4,14 @@
             <view class="padding-horizontal-main padding-top-main">
                 <view v-if="detail_list.length > 0" class="panel-item padding-main border-radius-main bg-white spacing-mb">
                     <view class="panel-content oh">
-                        <view v-for="(item, index) in detail_list" :key="index" class="item br-b-dashed oh padding-vertical-main">
-                            <view class="title fl padding-right-main cr-grey">{{ item.name }}</view>
-                            <view class="content fl br-l padding-left-main">{{ item.value }}</view>
-                        </view>
+                        <uni-table :emptyText="$t('common.no_data')">
+                            <block v-for="(item, index) in detail_list" :key="index">
+                                <uni-tr>
+                                    <uni-th width="90">{{ item.name }}</uni-th>
+                                    <uni-td>{{ item.value }}</uni-td>
+                                </uni-tr>
+                            </block>
+                        </uni-table>
                     </view>
                 </view>
             </view>

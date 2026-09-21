@@ -18,7 +18,8 @@ var zh = {
         "plugins-realstore-staff-order-detail": "服务订单详情",
         "plugins-realstore-orderallot-comments": "服务评价",
         "plugins-realstore-service-comments": "门店服务评价",
-        "plugins-realstore-user-service-comments": "服务评价"
+        "plugins-realstore-user-service-comments": "服务评价",
+        "plugins-realstore-staff-search": "搜索员工"
     },
     "batchorder-list": {
         "progress": "进行中"
@@ -200,7 +201,8 @@ var en = {
         "plugins-realstore-staff-order-detail": "Service Order Detail",
         "plugins-realstore-orderallot-comments": "Service Review",
         "plugins-realstore-service-comments": "Store Service Reviews",
-        "plugins-realstore-user-service-comments": "Service Reviews"
+        "plugins-realstore-user-service-comments": "Service Reviews",
+        "plugins-realstore-staff-search": "Search Staff"
     },
     "batchorder-list": {
         "progress": "In progress"

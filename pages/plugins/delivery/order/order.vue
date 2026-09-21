@@ -366,7 +366,8 @@
             init() {
                 var user = app.globalData.get_user_info(this, "init");
                 if (user != false) {
-                    // 位置权限、回调并获取数据
+                    // 先拉列表，避免被定位拖死一直 loading；定位异步补齐距离
+                    this.get_data_list();
                     app.globalData.get_location_check("scope.userLocation", this, "location_back_handle");
                 } else {
                     this.setData({
@@ -410,28 +411,34 @@
                 }
             },
 
-            // 位置权限校验回调
+            // 位置权限校验回调（只更新坐标；列表已在 init 中请求，失败也不阻塞）
             location_back_handle(status = 0) {
                 var self = this;
                 if (status == 1) {
                     uni.getLocation({
                         type: "wgs84",
                         success: function (res) {
+                            var need_refresh = (self.latitude || 0) == 0 && (self.longitude || 0) == 0;
                             self.setData({
                                 longitude: res.longitude,
                                 latitude: res.latitude,
                             });
-                            // 获取数据
-                            self.get_data_list();
+                            // 首次拿到定位后刷新一页，补齐「距你」距离
+                            if (need_refresh) {
+                                self.setData({
+                                    data_page: 1,
+                                    data_bottom_line_status: false,
+                                    data_is_loading: 0,
+                                });
+                                self.get_data_list(1);
+                            }
+                        },
+                        fail: function () {
+                            // 定位失败不影响列表展示
                         },
                     });
-                } else {
-                    if (app.globalData.data.is_distribution_map_force_location == 1) {
-                        app.globalData.url_open('/pages/common/open-setting-location/open-setting-location?is_check_success_back=1');
-                    } else {
-                        // 获取数据
-                        self.get_data_list();
-                    }
+                } else if (app.globalData.data.is_distribution_map_force_location == 1) {
+                    app.globalData.url_open('/pages/common/open-setting-location/open-setting-location?is_check_success_back=1');
                 }
             },
 

@@ -38,29 +38,33 @@
                 <view v-if="(propTitle || null) != null" class="br-b padding-bottom-main fw-b text-size">{{ propTitle }}</view>
                 <view class="panel-content oh">
                     <block v-if="data != null && data_field.length > 0">
-                        <block v-for="(item, index) in data_field" :key="index">
-                            <view v-if="(item.is_hide || 0) == 0" class="item br-b-f5 oh padding-vertical-main">
-                                <view class="title fl padding-right-main cr-grey">{{ item.name }}</view>
-                                <view class="content fl br-l padding-left-main">
-                                    <block v-if="item.type == 'images'">
-                                        <image v-if="(data[item.field] || null) != null" :src="data[item.field]" :data-value="data[item.field]" @tap.stop="images_show_event" mode="aspectFit" class="panel-item-images"></image>
-                                    </block>
-                                    <block v-else-if="item.type == 'many_images'">
-                                        <view v-if="(data[item.field] || null) != null && data[item.field].length > 0" class="dis-inline-block va-m">
-                                            <view class="flex-row gap-5">
-                                                <block v-for="(items, indexs) in data[item.field]" :key="indexs">
-                                                    <image :src="items" :data-value="items" @tap.stop="images_show_event" mode="aspectFit" class="br-f5 radius panel-item-images"></image>
-                                                </block>
+                        <uni-table :emptyText="$t('common.no_data')">
+                            <block v-for="(item, index) in data_field" :key="index">
+                                <uni-tr v-if="(item.is_hide || 0) == 0">
+                                    <uni-th width="90">{{ item.name }}</uni-th>
+                                    <uni-td>
+                                        <block v-if="item.type == 'images'">
+                                            <image v-if="(data[item.field] || null) != null" :src="data[item.field]" :data-value="data[item.field]" @tap.stop="images_show_event" mode="aspectFit" class="panel-item-images"></image>
+                                        </block>
+                                        <block v-else-if="item.type == 'many_images'">
+                                            <view v-if="(data[item.field] || null) != null && data[item.field].length > 0" class="dis-inline-block va-m">
+                                                <view class="flex-row gap-5">
+                                                    <block v-for="(items, indexs) in data[item.field]" :key="indexs">
+                                                        <image :src="items" :data-value="items" @tap.stop="images_show_event" mode="aspectFit" class="br-f5 radius panel-item-images"></image>
+                                                    </block>
+                                                </view>
                                             </view>
-                                        </view>
-                                    </block>
-                                    <text v-else>{{ data[item.field] }}</text>
-                                    <view v-if="(item.is_copy || 0) == 1 && data[item.field] !== ''" class="dis-inline-block margin-left" data-event="copy" :data-value="data[item.field]" @tap.stop="text_event_handle">
-                                        <iconfont name="icon-copy" size="28rpx" class="cr-grey lh-il"></iconfont>
-                                    </view>
-                                </view>
-                            </view>
-                        </block>
+                                        </block>
+                                        <block v-else>
+                                            <text>{{ data[item.field] }}</text>
+                                            <view v-if="(item.is_copy || 0) == 1 && data[item.field] !== ''" class="dis-inline-block margin-left" data-event="copy" :data-value="data[item.field]" @tap.stop="text_event_handle">
+                                                <iconfont name="icon-copy" size="28rpx" class="cr-grey lh-il"></iconfont>
+                                            </view>
+                                        </block>
+                                    </uni-td>
+                                </uni-tr>
+                            </block>
+                        </uni-table>
                         <view v-if="show_max > 0 && show_max < data_field.length" @tap.stop="item_more_event" class="margin-top-sm tc">
                             <text class="cr-grey-c margin-right-sm">{{ $t('common.view_more') }}</text>
                             <iconfont :name="'icon-arrow-' + (more_status ? 'top' : 'bottom')" size="28rpx" color="#ccc"></iconfont>

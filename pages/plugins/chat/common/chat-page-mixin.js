@@ -30,6 +30,7 @@ import {
 	chat_get_friend_base,
 	chat_load_user_base,
 	chat_leave_session,
+	chat_disconnect,
 	chat_send_input_status,
 	chat_can_input_status,
 	chat_can_show_input_message,
@@ -7963,6 +7964,19 @@ export default {
 				} catch (e) {}
 				// 对齐 PC：离开会话；保留 receive 缓存，刷新会话页可按 id 恢复拉记录
 				chat_leave_session();
+				// 栈里已无客服列表时（直达会话后退出），同步断开 WS，避免 ping/重连定时器泄漏
+				try {
+					var pages = getCurrentPages() || [];
+					var has_list = pages.some(function (p) {
+						var route = (p && p.route) || '';
+						return route.indexOf('plugins/chat/list') !== -1;
+					});
+					if (!has_list) {
+						chat_disconnect();
+					}
+				} catch (e) {
+					chat_disconnect();
+				}
 		},
 
 		chat_page_on_ready() {

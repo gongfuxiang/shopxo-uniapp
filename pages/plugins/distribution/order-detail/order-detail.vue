@@ -6,16 +6,20 @@
                 <view v-if="detail_list.length > 0" class="panel-item padding-main border-radius-main bg-white spacing-mb">
                     <view class="br-b padding-bottom-main fw-b text-size">{{$t('common.base_info_text')}}</view>
                     <view class="panel-content oh">
-                        <view class="item br-b oh padding-vertical-main">
-                            <view class="title fl padding-right-main cr-grey">{{$t('order-detail.user_profile_picture')}}</view>
-                            <view class="content fl br-l padding-left-main">
-                                <image :src="detail.avatar" class="avatar dis-block circle fl" mode="widthFix" @tap="avatar_event" :data-value="detail.avatar"></image>
-                            </view>
-                        </view>
-                        <view v-for="(item, index) in detail_list" :key="index" class="item br-b-dashed oh padding-vertical-main">
-                            <view class="title fl padding-right-main cr-grey">{{ item.name }}</view>
-                            <view class="content fl br-l padding-left-main">{{ item.value }}</view>
-                        </view>
+                        <uni-table :emptyText="$t('common.no_data')">
+                            <uni-tr>
+                                <uni-th width="90">{{$t('order-detail.user_profile_picture')}}</uni-th>
+                                <uni-td>
+                                    <image :src="detail.avatar" class="avatar dis-block circle" mode="widthFix" @tap="avatar_event" :data-value="detail.avatar"></image>
+                                </uni-td>
+                            </uni-tr>
+                            <block v-for="(item, index) in detail_list" :key="index">
+                                <uni-tr>
+                                    <uni-th width="90">{{ item.name }}</uni-th>
+                                    <uni-td>{{ item.value }}</uni-td>
+                                </uni-tr>
+                            </block>
+                        </uni-table>
                     </view>
                 </view>
 

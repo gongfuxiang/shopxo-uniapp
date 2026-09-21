@@ -3848,6 +3848,11 @@ export const chat_disconnect = () => {
 	state.manual_close = true;
 	clear_ping();
 	clear_reconnect();
+	if (ai_switching_timer) {
+		clearTimeout(ai_switching_timer);
+		ai_switching_timer = null;
+	}
+	state.ai_switching = false;
 	// 对齐 PC：主动断开前标记离线
 	chat_event_http('off');
 	if (state.socket_task) {

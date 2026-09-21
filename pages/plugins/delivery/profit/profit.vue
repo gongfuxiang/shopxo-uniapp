@@ -62,7 +62,7 @@
                 </view>
             </view>
             <view v-else>
-                <component-no-data :propStatus="data_list_loding_status"></component-no-data>
+                <component-no-data :propStatus="data_list_loding_status" :propMsg="data_list_loding_msg"></component-no-data>
             </view>
             <component-bottom-line :propStatus="data_bottom_line_status"></component-bottom-line>
         </scroll-view>
@@ -87,6 +87,7 @@
                 data_page_total: 0,
                 data_page: 1,
                 data_list_loding_status: 1,
+                data_list_loding_msg: '',
                 data_bottom_line_status: false,
                 data_is_loading: 0,
                 params: null,
@@ -226,6 +227,7 @@
                                 data_total: total,
                                 data_page_total: page_total,
                                 data_list_loding_status: temp_data_list.length > 0 ? 3 : 0,
+                                data_list_loding_msg: '',
                                 data_page: this.data_page + 1,
                                 data_is_loading: 0,
                                 summary: result.summary || {},
@@ -235,12 +237,11 @@
                             });
                         } else {
                             this.setData({
-                                data_list_loding_status: 0,
+                                data_list_loding_status: 2,
+                                data_list_loding_msg: res.data.msg || '',
                                 data_is_loading: 0,
                             });
-                            if (app.globalData.is_login_check(res.data, this, "get_data_list")) {
-                                app.globalData.showToast(res.data.msg);
-                            }
+                            app.globalData.is_login_check(res.data, this, "get_data_list");
                         }
                     },
                     fail: () => {
@@ -250,9 +251,9 @@
                         uni.stopPullDownRefresh();
                         this.setData({
                             data_list_loding_status: 2,
+                            data_list_loding_msg: this.$t('common.internet_error_tips'),
                             data_is_loading: 0,
                         });
-                        app.globalData.showToast(this.$t('common.internet_error_tips'));
                     },
                 });
             },
@@ -269,6 +270,7 @@
                     data_page: 1,
                     data_list: [],
                     data_list_loding_status: 1,
+                    data_list_loding_msg: '',
                     data_bottom_line_status: false
                 });
                 this.get_data_list(1);

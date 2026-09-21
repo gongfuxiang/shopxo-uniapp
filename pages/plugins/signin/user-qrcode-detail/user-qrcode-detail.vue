@@ -16,12 +16,16 @@
                 >
                     <view class="br-b padding-bottom-main fw-b text-size">{{ $t("user-qrcode-detail.double_reward_consecutive_attendance") }}</view>
                     <view class="panel-content oh">
-                        <view v-for="(item, index) in detail.continuous_rules" :key="index" class="item br-b oh padding-vertical-main">
-                            <view class="content fl">
-                                {{ $t("user-qrcode-detail.continuity") }}{{ item.number }}{{ $t("user-qrcode-detail.heaven_flip") }}{{ item.value
-                                }}{{ $t("user-qrcode-detail.times") }}
-                            </view>
-                        </view>
+                        <uni-table :emptyText="$t('common.no_data')">
+                            <block v-for="(item, index) in detail.continuous_rules" :key="index">
+                                <uni-tr>
+                                    <uni-td>
+                                        {{ $t("user-qrcode-detail.continuity") }}{{ item.number }}{{ $t("user-qrcode-detail.heaven_flip") }}{{ item.value
+                                        }}{{ $t("user-qrcode-detail.times") }}
+                                    </uni-td>
+                                </uni-tr>
+                            </block>
+                        </uni-table>
                     </view>
                 </view>
 
@@ -42,15 +46,17 @@
                 <view v-if="share_block_visible" class="panel-item padding-main border-radius-main bg-white spacing-mb">
                     <view class="br-b padding-bottom-main fw-b text-size">{{ $t("user-qrcode-detail.share_block") }}</view>
                     <view class="panel-content oh">
-                        <view v-if="(detail.share_data.url || '').length > 0" class="item br-b-f5 oh padding-vertical-main">
-                            <view class="title fl padding-right-main cr-grey">{{ $t("user-qrcode-detail.share_link_label") }}</view>
-                            <view class="content fl br-l padding-left-main oh">
-                                <text class="text-word-break">{{ detail.share_data.url }}</text>
-                                <view class="dis-inline-block margin-left" :data-value="detail.share_data.url" @tap="text_copy_event">
-                                    <iconfont name="icon-copy" size="28rpx" class="cr-grey lh-il"></iconfont>
-                                </view>
-                            </view>
-                        </view>
+                        <uni-table v-if="(detail.share_data.url || '').length > 0" :emptyText="$t('common.no_data')">
+                            <uni-tr>
+                                <uni-th width="90">{{ $t("user-qrcode-detail.share_link_label") }}</uni-th>
+                                <uni-td>
+                                    <text class="text-word-break">{{ detail.share_data.url }}</text>
+                                    <view class="dis-inline-block margin-left" :data-value="detail.share_data.url" @tap="text_copy_event">
+                                        <iconfont name="icon-copy" size="28rpx" class="cr-grey lh-il"></iconfont>
+                                    </view>
+                                </uni-td>
+                            </uni-tr>
+                        </uni-table>
                         <view v-if="share_qrcode_display_list.length > 0" class="padding-top-main">
                             <view class="flex-row flex-wrap gap-10">
                                 <view

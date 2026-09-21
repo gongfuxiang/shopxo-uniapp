@@ -12,7 +12,7 @@
                         <view class="cr-base">{{$t('goods-comment.rate')}}</view>
                         <view class="value cr-main">{{ goods_score.avg || "0.0" }}</view>
                     </view>
-                    <view class="progress tc border-radius-main flex-1 flex-width flex-row">
+                    <view class="progress border-radius-main flex-1 flex-width flex-row jc-c">
                         <block v-if="goods_score.avg > 0">
                             <block v-for="(item, index) in goods_score.rating" :key="index">
                                 <view v-if="item.portion > 0" :class="item.bar_class" :style="item.bar_style">{{ item.name }}</view>
@@ -123,7 +123,7 @@
                     var intensity = intensities[i] || 0.5;
                     var start = this.color_rgba(color, intensity * 0.72);
                     var end = this.color_rgba(color, Math.min(intensity * 1.18, 1));
-                    var text_class = i >= 3 ? 'progress-bar-text-light' : 'cr-main';
+                    var text_class = i >= 3 ? 'cr-white' : 'cr-main';
                     rating.push({
                         rating: item.rating,
                         name: item.name,
