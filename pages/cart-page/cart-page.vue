@@ -74,11 +74,14 @@
                                                 <view :data-index="index" :data-value="item.goods_url" @tap="goods_event" class="cp">
                                                     <view :class="'cart-goods-title multi-text margin-bottom-sm fw-b ' + ((item.is_error || 0) == 1 ? 'cr-grey' : '')">{{ item.title }}</view>
                                                 </view>
-                                                <view v-if="item.spec != null" class="margin-bottom-sm">
-                                                    <block v-for="(sv, si) in item.spec" :key="si">
+                                                <view v-if="item.spec != null && item.spec.length > 0" class="margin-bottom-sm cart-goods-spec-edit dis-inline-block" :data-index="index" @tap.stop="cart_spec_event">
+                                                    <block v-for="(sv, si) in (item.spec_show || item.spec)" :key="si">
                                                         <text v-if="si > 0" class="cr-grey padding-left-xs padding-right-xs">;</text>
                                                         <text class="cr-grey">{{ sv.value }}</text>
                                                     </block>
+                                                    <view class="dis-inline-block va-m margin-left">
+                                                        <iconfont name="icon-edit" size="28rpx" color="#999"></iconfont>
+                                                    </view>
                                                 </view>
 
                                                 <!-- 底部内容 -->
@@ -340,6 +343,9 @@
         <!-- 门店购物车 -->
         <component-realstore-cart ref="realstore_cart" :propStatus="false" :propCurrencySymbol="currency_symbol" v-on:BuyTypeSwitchEvent="realstore_buy_type_switch_back_event"></component-realstore-cart>
 
+        <!-- 修改规格 -->
+        <component-goods-buy ref="goods_buy" :propCurrencySymbol="currency_symbol" v-on:CartSpecSuccessEvent="cart_spec_success_event"></component-goods-buy>
+
         <!-- 公共 -->
         <component-common ref="common" @onFooterHeight="footer_height_value_event" :propIsFooterSeat="false"></component-common>
     </view>
@@ -353,6 +359,7 @@
     import componentNavBack from '@/components/nav-back/nav-back';
     import componentBottomLine from '@/components/bottom-line/bottom-line';
     import componentPopup from '@/components/popup/popup';
+    import componentGoodsBuy from '@/components/goods-buy/goods-buy';
     import componentRealstoreCart from '@/pages/plugins/realstore/components/realstore-cart/realstore-cart';
     import pluginLocale from './locale/index.js';
 
@@ -451,6 +458,7 @@
             componentNavBack,
             componentBottomLine,
             componentPopup,
+            componentGoodsBuy,
             componentRealstoreCart
         },
 
@@ -1500,6 +1508,73 @@
                     botton_nav_style: 'bottom:'+value+value_unit,
                     scroll_style: 'height: calc(100vh - ' + (value+(this.cart_type_value == 'realstore' ? 200 : 70)-(this.load_status == 0 ? 100 : 0))+'rpx)',
                 });
+            },
+
+            // 修改规格
+            cart_spec_event(e) {
+                var index = e.currentTarget.dataset.index;
+                var item = this.data_list[index] || null;
+                if (item == null || (item.is_error || 0) == 1) {
+                    return false;
+                }
+                var spec = item.spec || item.spec_show || [];
+                if (spec.length == 0) {
+                    return false;
+                }
+                if ((this.$refs.goods_buy || null) == null) {
+                    return false;
+                }
+                uni.showLoading({
+                    title: this.$t('common.loading_in_text'),
+                });
+                uni.request({
+                    url: app.globalData.get_request_url('detail', 'goods'),
+                    method: 'POST',
+                    data: {
+                        id: item.goods_id,
+                    },
+                    dataType: 'json',
+                    success: (res) => {
+                        uni.hideLoading();
+                        if (res.data.code == 0 && (res.data.data.goods || null) != null) {
+                            var goods = res.data.data.goods;
+                            // 优先用带 key 的原规格回显，显示文字用 spec_show 补齐
+                            var appoint_spec = item.spec || [];
+                            if (appoint_spec.length == 0 && (item.spec_show || null) != null) {
+                                appoint_spec = item.spec_show;
+                            } else if (appoint_spec.length > 0 && (item.spec_show || null) != null) {
+                                appoint_spec = appoint_spec.map(function (sv, si) {
+                                    var show = item.spec_show[si] || {};
+                                    return {
+                                        key: sv.key || '',
+                                        value: show.value || sv.value || '',
+                                        type: show.type || sv.type || '',
+                                    };
+                                });
+                            }
+                            this.$refs.goods_buy.init(goods, {
+                                buy_event_type: 'cart-spec',
+                                cart_id: item.id,
+                                stock: item.stock,
+                                spec: appoint_spec,
+                                is_success_tips: 1,
+                            }, {
+                                index: index,
+                            });
+                        } else {
+                            app.globalData.showToast(res.data.msg || this.$t('common.internet_error_tips'));
+                        }
+                    },
+                    fail: () => {
+                        uni.hideLoading();
+                        app.globalData.showToast(this.$t('common.internet_error_tips'));
+                    },
+                });
+            },
+
+            // 修改规格成功
+            cart_spec_success_event() {
+                this.get_data();
             },
 
             // 底部菜单高度

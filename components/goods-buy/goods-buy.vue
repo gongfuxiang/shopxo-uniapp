@@ -295,11 +295,12 @@
                 }
                 // 是否成功提示、默认提示
                 var is_success_tips = init_params.is_success_tips == undefined ? 1 : init_params.is_success_tips || 0;
-                // 直接加购、并且用户已经存在购物车则依次+1
-                if (is_direct_cart == 1 && parseInt(goods.user_cart_count || 0) > 0) {
-                    var buy_number = 1;
-                } else {
-                    var buy_number = goods.buy_min_number || 1;
+                // 直接加购、并且用户已经存在购物车则依次+1；购物车改规格沿用原数量
+                var buy_number = goods.buy_min_number || 1;
+                if ((init_params.stock || null) != null && parseInt(init_params.stock) > 0) {
+                    buy_number = parseInt(init_params.stock);
+                } else if (is_direct_cart == 1 && parseInt(goods.user_cart_count || 0) > 0) {
+                    buy_number = 1;
                 }
 
                 // 购买按钮处理，仅展示购买和购物车
@@ -361,8 +362,8 @@
                 // 获取规格详情
                 this.get_spec_detail();
 
-                // 规格选中处理
-                this.selected_spec_handle();
+                // 规格选中处理（直接传入，避免 setData 时序）
+                this.selected_spec_handle(init_params.spec || null);
 
                 // 是否直接操作加入购物车
                 if (is_direct_cart) {
@@ -371,7 +372,7 @@
             },
 
             // 规格选中处理
-            selected_spec_handle() {
+            selected_spec_handle(appoint_spec = null) {
                 var temp_spec_choose = this.goods_spec_choose;
                 if (temp_spec_choose.length > 0) {
                     // 是否已选择
@@ -387,8 +388,14 @@
                         return false;
                     }
 
-                    // 是否指定规格初始化
-                    var spec = (this.propParams || null) != null && (this.propParams.spec || null) != null ? this.propParams.spec : null;
+                    // 是否指定规格初始化（入参 / props / init params）
+                    var spec = appoint_spec;
+                    if (spec == null && (this.propParams || null) != null && (this.propParams.spec || null) != null) {
+                        spec = this.propParams.spec;
+                    }
+                    if (spec == null && (this.params || null) != null && (this.params.spec || null) != null) {
+                        spec = this.params.spec;
+                    }
                     if (spec != null) {
                         this.appoint_selected_spec_handle(temp_spec_choose, spec);
                     } else {
@@ -529,13 +536,38 @@
                 return true;
             },
 
-            // 指定规格初始化
+            // 指定规格初始化（字符串 name|name、或 [{value/key}]）
             appoint_selected_spec_handle(spec_choose, spec) {
-                spec = decodeURIComponent(spec).split('|');
-                if (spec.length == spec_choose.length) {
+                var appoint = [];
+                if (typeof spec == 'string') {
+                    appoint = decodeURIComponent(spec).split('|');
+                } else if (Array.isArray(spec)) {
+                    appoint = spec.map(function (v) {
+                        if (typeof v == 'string' || typeof v == 'number') {
+                            return String(v);
+                        }
+                        return {
+                            name: v.value || v.name || '',
+                            key: v.key || '',
+                        };
+                    });
+                }
+                // 层数不一致时，仍按已有层尝试回显
+                if (appoint.length > 0 && spec_choose.length > 0) {
                     var sku_count = app.globalData.get_length(spec_choose);
                     this.auto_select_spec_interval_handle(spec_choose, sku_count, function (spec_choose, i, k) {
-                        return spec[i] == spec_choose[i]['value'][k]['name'];
+                        var item = appoint[i];
+                        if (item == null) {
+                            return false;
+                        }
+                        var opt = spec_choose[i]['value'][k];
+                        if (typeof item == 'string') {
+                            return item == opt['name'];
+                        }
+                        if ((item.key || '') != '' && (opt.key || '') != '') {
+                            return String(item.key) == String(opt.key);
+                        }
+                        return (item.name || '') == opt['name'];
                     });
                 }
             },
@@ -1086,6 +1118,11 @@
                             this.goods_cart_event(spec);
                             break;
 
+                        // 购物车修改规格
+                        case 'cart-spec':
+                            this.goods_cart_spec_event(spec);
+                            break;
+
                         // 事件回调
                         case 'back':
                             this.$emit('BackConfirmEvent', {
@@ -1143,6 +1180,49 @@
                                 // 关闭购买弹窗窗口
                                 this.popup_close_event();
                             }
+                        } else {
+                            if (app.globalData.is_login_check(res.data, this, 'spec_confirm_event')) {
+                                app.globalData.showToast(res.data.msg);
+                            }
+                        }
+                    },
+                    fail: () => {
+                        app.globalData.showToast(this.$t('common.internet_error_tips'));
+                    },
+                });
+            },
+
+            // 购物车修改规格
+            goods_cart_spec_event(spec) {
+                var cart_id = this.params.cart_id || this.params.id || null;
+                if (cart_id == null) {
+                    app.globalData.showToast(this.$t('goods-category.goods-category.x46kbv'));
+                    return false;
+                }
+                var data = Object.assign({}, this.params || {});
+                data['id'] = cart_id;
+                data['goods_id'] = this.goods.goods_id || this.goods.id;
+                data['spec'] = JSON.stringify(spec.map(function (v) { return { key: v.key }; }));
+                data['stock'] = this.buy_number;
+                uni.request({
+                    url: app.globalData.get_request_url('spec', 'cart'),
+                    method: 'POST',
+                    data: data,
+                    dataType: 'json',
+                    success: (res) => {
+                        if (res.data.code == 0) {
+                            if (this.is_success_tips == 1) {
+                                app.globalData.showToast(res.data.msg, 'success');
+                            }
+                            this.$emit('CartSpecSuccessEvent', {
+                                cart_id: cart_id,
+                                goods_id: this.goods.goods_id || this.goods.id,
+                                spec: spec,
+                                stock: this.buy_number,
+                                data: res.data.data || {},
+                                back_data: this.back_data,
+                            });
+                            this.popup_close_event();
                         } else {
                             if (app.globalData.is_login_check(res.data, this, 'spec_confirm_event')) {
                                 app.globalData.showToast(res.data.msg);

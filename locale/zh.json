@@ -258,6 +258,7 @@
 		"load_fail": "加载失败",
 		"spec": "规格",
 		"please_select_spec": "请选择规格",
+		"change_spec": "修改规格",
 		"goods_detail": "商品详情",
 		"buy_alone": "单独购买",
 		"no_stock": "没库存了",
