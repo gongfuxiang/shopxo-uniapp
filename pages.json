@@ -1690,6 +1690,13 @@
                     }
                 },
                 {
+                    "path": "staff-favor/staff-favor",
+                    "style": {
+                        "enablePullDownRefresh": true,
+                        "navigationBarTitleText": ""
+                    }
+                },
+                {
                     "path": "orderallot-list/orderallot-list",
                     "style": {
                         // #ifdef MP-WEIXIN || MP-BAIDU || MP-QQ || MP-KUAISHOU || APP
