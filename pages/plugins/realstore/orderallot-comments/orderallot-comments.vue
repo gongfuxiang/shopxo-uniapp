@@ -139,10 +139,16 @@
                             });
                         } else {
                             this.setData({
+                                detail: null,
                                 data_list_loding_status: 2,
                                 data_list_loding_msg: res.data.msg,
                             });
-                            app.globalData.is_login_check(res.data, this, 'init');
+                            if (app.globalData.is_login_check(res.data, this, 'init')) {
+                                // 已评价等业务提示由页面 no-data 展示，不再 toast
+                                if (parseInt(res.data.code) != -100) {
+                                    app.globalData.showToast(res.data.msg);
+                                }
+                            }
                         }
                     },
                     fail: () => {

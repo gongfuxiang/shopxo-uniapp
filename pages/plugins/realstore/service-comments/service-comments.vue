@@ -10,9 +10,13 @@
                     </view>
                     <view class="cr-main text-size-sm">{{ item.rating }}{{ $t('orderallot-comments.score_unit') }}</view>
                 </view>
-                <view v-if="(item.target || null) != null" class="margin-top-sm cr-grey text-size-xs">
-                    <text v-if="item.comment_type == 'staff'">{{ $t('common.staff') }}{{ item.target.alias }}</text>
-                    <text v-else>{{ item.target.title }}</text>
+                <view v-if="(item.target || null) != null" class="target-row margin-top-sm flex-row align-c cp" :data-value="target_url(item)" @tap="url_event">
+                    <image v-if="target_cover(item) != ''" class="target-cover radius br margin-right-sm flex-shrink-0" :src="target_cover(item)" mode="aspectFill"></image>
+                    <view v-else class="target-cover target-cover-placeholder radius br margin-right-sm flex-shrink-0 flex-row align-c jc-c">
+                        <iconfont :name="item.comment_type == 'staff' ? 'icon-user' : 'icon-shopping-bag'" size="32rpx" color="#ccc"></iconfont>
+                    </view>
+                    <view class="flex-1 flex-width text-size-sm multi-text">{{ target_title(item) }}</view>
+                    <iconfont name="icon-arrow-right" size="24rpx" color="#999" propClass="margin-left-xs flex-shrink-0"></iconfont>
                 </view>
                 <view class="margin-top-sm text-size-sm">{{ item.content }}</view>
                 <view v-if="(item.images || null) != null && item.images.length > 0" class="margin-top-sm flex-row flex-wrap">
@@ -90,6 +94,49 @@
             this.get_data_list();
         },
         methods: {
+            // 评价对象封面（商品 images / 人员 avatar）
+            target_cover(item) {
+                if ((item || null) == null || (item.target || null) == null) {
+                    return '';
+                }
+                var t = item.target;
+                return (t.images || '') != '' ? t.images : ((t.avatar || '') != '' ? t.avatar : '');
+            },
+            // 评价对象标题
+            target_title(item) {
+                if ((item || null) == null || (item.target || null) == null) {
+                    return '';
+                }
+                var t = item.target;
+                if (item.comment_type == 'staff') {
+                    return (t.alias || '') != '' ? t.alias : (t.title || '');
+                }
+                return t.title || '';
+            },
+            // 评价对象详情地址
+            target_url(item) {
+                if ((item || null) == null || (item.target || null) == null) {
+                    return '';
+                }
+                var t = item.target;
+                if ((t.goods_url || '') != '') {
+                    return t.goods_url;
+                }
+                if ((t.url || '') != '') {
+                    return t.url;
+                }
+                if (item.comment_type == 'goods' && (t.id || 0) > 0) {
+                    return '/pages/goods-detail/goods-detail?id=' + t.id;
+                }
+                if (item.comment_type == 'staff' && (t.id || 0) > 0) {
+                    return '/pages/plugins/realstore/staff-detail/staff-detail?id=' + t.id;
+                }
+                return '';
+            },
+            // url 跳转
+            url_event(e) {
+                app.globalData.url_event(e);
+            },
             // 评价图片预览（多图可左右切换）
             comment_images_show_event(e) {
                 var index = parseInt(e.currentTarget.dataset.index);
@@ -165,6 +212,13 @@
     width: 64rpx;
     height: 64rpx;
     flex-shrink: 0;
+}
+.target-cover {
+    width: 72rpx;
+    height: 72rpx;
+}
+.target-cover-placeholder {
+    background: #f5f5f5;
 }
 .comment-image {
     width: 160rpx;

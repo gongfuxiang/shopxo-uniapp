@@ -239,3 +239,98 @@ page {
 .not-received-coupon .divider-l::before {
     background: #fff;
 }
+
+/**
+ * 门店人员（对齐员工列表，不展示门店名）
+ */
+.staff-list-actual {
+    padding-bottom: calc(145rpx + env(safe-area-inset-bottom));
+}
+.staff-list-actual.base-mode {
+    padding-bottom: calc(40rpx + env(safe-area-inset-bottom));
+}
+.comments-list-actual {
+    padding-bottom: calc(145rpx + env(safe-area-inset-bottom));
+}
+.comments-list-actual.base-mode {
+    padding-bottom: calc(40rpx + env(safe-area-inset-bottom));
+}
+.comments-target-cover {
+    width: 64rpx;
+    height: 64rpx;
+}
+.comments-target-placeholder {
+    background: #f5f5f5;
+}
+.describe-content-actual {
+    padding-bottom: calc(145rpx + env(safe-area-inset-bottom));
+}
+.describe-content-actual.base-mode {
+    padding-bottom: calc(40rpx + env(safe-area-inset-bottom));
+}
+.staff-avatar-large {
+    width: 120rpx;
+    height: 120rpx;
+    flex-shrink: 0;
+}
+.staff-avatar-large.staff-avatar-placeholder {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #f5f5f5;
+}
+.staff-item-content {
+    min-width: 0;
+}
+.staff-title-row {
+    min-width: 0;
+    width: 100%;
+}
+.staff-info-name {
+    margin-right: 12rpx;
+}
+.staff-stat-row {
+    min-width: 0;
+    width: 100%;
+}
+.staff-distance {
+    margin-left: 12rpx;
+}
+.staff-rating-tag {
+    line-height: 36rpx;
+    padding: 0 12rpx;
+    color: #8b5a2b;
+    background: #f5e6d3;
+}
+.staff-position-tag {
+    line-height: 36rpx;
+    padding: 0 12rpx;
+    max-width: 180rpx;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+.staff-specialty-tag {
+    line-height: 32rpx;
+    padding: 0 10rpx;
+}
+.staff-store-row {
+    min-width: 0;
+}
+.staff-store-meta .staff-meta-icon + .staff-meta-icon {
+    margin-left: 28rpx;
+}
+.staff-meta-icon {
+    line-height: 1;
+}
+.staff-bottom-row {
+    min-width: 0;
+}
+.staff-meta {
+    min-width: 0;
+    padding-right: 16rpx;
+}
+.staff-book-btn {
+    margin: 0;
+    line-height: 50rpx;
+}

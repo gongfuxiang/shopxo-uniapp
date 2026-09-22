@@ -116,25 +116,129 @@
                         </view>
                     </view>
 
-                    <!-- 门店基础模式 -->
-                    <view v-if="is_base_mode == 1 && is_base_mode_show_type == 2" class="nav-base bg-white fw-b margin-bottom-sm margin-top-sm">
-                        <block v-for="(item, index) in nav_base_list" :key="index">
-                            <view v-if="nav_base_index == index" class="item fl tc padding-horizontal-main cr-main nav-active-line" :data-index="index" @tap="nav_base_event">{{ item.name }}</view>
-                            <view v-else class="item fl tc padding-horizontal-main" :data-index="index" @tap="nav_base_event">{{ item.name }}</view>
+                    <!-- 门店详情 Tab（门店自管，多项时展示） -->
+                    <view v-if="(detail_show_tabs || null) != null && detail_show_tabs.length > 1" class="nav-base bg-white fw-b margin-bottom-sm margin-top-sm">
+                        <block v-for="(item, index) in detail_show_tabs" :key="index">
+                            <view v-if="detail_tab_index == index" class="item fl tc padding-horizontal-main cr-main nav-active-line" :data-index="index" @tap="detail_tab_event">{{ item.name }}</view>
+                            <view v-else class="item fl tc padding-horizontal-main" :data-index="index" @tap="detail_tab_event">{{ item.name }}</view>
                         </block>
                     </view>
-                    <!-- 门店基础模式 - 商品 -->
-                    <view v-if="is_base_mode == 1 && (is_base_mode_show_type == 0 || (is_base_mode_show_type == 2 && nav_base_index == 0))" class="padding-horizontal-main border-radius-main bg-white">
-                        <view v-if="is_base_mode_show_type == 0" class="padding-top-sm margin-bottom-sm margin-top-main">
-                            <view class="fw-b title-left-border">{{$t('goods-detail.store_introduction')}}</view>
-                        </view>
+
+                    <!-- 介绍 -->
+                    <view v-if="detail_tab_value == 'describe'">
                         <scroll-view :scroll-y="true" class="cr-base text-size-sm" :style="content_style">
-                            <view class="right-content-actual base-mode-goods">
+                            <view :class="'describe-content-actual padding-horizontal-main '+(is_base_mode == 1 ? 'base-mode' : '')">
+                                <view v-if="is_detail_single_tab && detail_tab_title != ''" class="padding-top-sm margin-bottom-sm margin-top-main">
+                                    <view class="fw-b title-left-border">{{ detail_tab_title }}</view>
+                                </view>
                                 <mp-html :content="info.describe" />
                             </view>
                         </scroll-view>
                     </view>
-                    <block v-if="is_base_mode == 0 || (is_base_mode_show_type == 1 || (is_base_mode_show_type == 2 && nav_base_index == 1))">
+
+                    <!-- 人员 -->
+                    <view v-if="detail_tab_value == 'staff'">
+                        <scroll-view :scroll-y="true" :style="content_style">
+                            <view :class="'staff-list-actual padding-horizontal-main '+(is_base_mode == 1 ? 'base-mode' : '')">
+                                <view v-if="is_detail_single_tab && detail_tab_title != ''" class="padding-top-sm margin-bottom-sm margin-top-main">
+                                    <view class="fw-b title-left-border">{{ detail_tab_title }}</view>
+                                </view>
+                                <block v-if="(staff_list || null) != null && staff_list.length > 0">
+                                    <view v-for="(item, index) in staff_list" :key="index" :class="'staff-item padding-vertical-main cp ' + (index < staff_list.length - 1 ? 'br-b-f5' : '')" :data-value="'/pages/plugins/realstore/staff-detail/staff-detail?id=' + item.id" @tap="url_event">
+                                        <view class="flex-row">
+                                            <image v-if="(item.avatar || null) != null && item.avatar != ''" class="staff-avatar-large circle br margin-right-main" :src="item.avatar" mode="aspectFill"></image>
+                                            <view v-else class="staff-avatar-large staff-avatar-placeholder circle br margin-right-main">
+                                                <iconfont name="icon-user" size="48rpx" color="#ccc"></iconfont>
+                                            </view>
+                                            <view class="flex-1 flex-width staff-item-content">
+                                                <view class="staff-title-row flex-row align-c flex-wrap">
+                                                    <view class="fw-b text-size staff-info-name flex-shrink-0">{{ item.alias }}</view>
+                                                    <view v-if="(item.position_name || null) != null && item.position_name != ''" class="staff-position-tag round br-grey cr-grey text-size-xs flex-shrink-0">{{ item.position_name }}</view>
+                                                    <view class="flex-1 flex-width"></view>
+                                                    <text v-if="(item.distance || '') != ''" class="staff-distance cr-grey text-size-xs flex-shrink-0">{{ item.distance }}</text>
+                                                </view>
+                                                <view v-if="staff_earliest_show(item) != '' || (item.rating || 0) > 0" class="staff-stat-row margin-top-xs flex-row align-c flex-wrap">
+                                                    <view v-if="staff_earliest_show(item) != ''" class="staff-specialty-tag round text-size-xss cr-main bg-main-light flex-shrink-0 margin-right-sm">{{ $t('realstore-staff.earliest') }}{{ staff_earliest_show(item) }}</view>
+                                                    <view v-if="(item.rating || 0) > 0" class="staff-rating-tag round text-size-xss flex-shrink-0">{{ $t('realstore-staff.rating') }} {{ item.rating }}</view>
+                                                </view>
+                                                <view class="staff-store-row margin-top-xs flex-row align-c">
+                                                    <text v-if="(item.service_count || item.booking_count || 0) > 0" class="cr-grey text-size-xs flex-1 flex-width">{{ $t('realstore-staff.served') }}{{ item.service_count || item.booking_count }}{{ $t('realstore-staff.served_unit') }}</text>
+                                                    <view v-else class="flex-1 flex-width"></view>
+                                                    <view class="staff-store-meta flex-row align-c flex-shrink-0">
+                                                        <view class="staff-meta-icon flex-row align-c">
+                                                            <iconfont name="icon-message-o" size="24rpx" color="#ccc"></iconfont>
+                                                            <text class="cr-grey text-size-xs margin-left-xs">{{ item.comments_count || 0 }}</text>
+                                                        </view>
+                                                        <view class="staff-meta-icon flex-row align-c">
+                                                            <iconfont name="icon-heart-o" size="24rpx" color="#ccc"></iconfont>
+                                                            <text class="cr-grey text-size-xs margin-left-xs">{{ item.favor_count || 0 }}</text>
+                                                        </view>
+                                                    </view>
+                                                </view>
+                                            </view>
+                                        </view>
+                                        <view class="staff-bottom-row margin-top-sm flex-row align-c">
+                                            <view class="staff-meta flex-1 flex-width flex-row align-c flex-wrap">
+                                                <view v-if="(item.work_years || 0) > 0" class="text-size-xs cr-base margin-right">{{ $t('realstore-staff.work_years_prefix') }}{{ item.work_years }}{{ $t('realstore-staff.work_years_unit') }}</view>
+                                                <block v-if="(item.specialty_list || null) != null && item.specialty_list.length > 0">
+                                                    <text class="text-size-xs cr-grey margin-right-xs">{{ $t('realstore-staff.specialty') }}</text>
+                                                    <view v-for="(tag, tindex) in item.specialty_list.slice(0, 3)" :key="tindex" class="staff-specialty-tag round text-size-xss cr-grey bg-grey-f5 margin-right-xs">{{ tag }}</view>
+                                                </block>
+                                            </view>
+                                            <button class="staff-book-btn round text-size-xs bg-main cr-white br-main flex-shrink-0" type="default" size="mini" hover-class="none" :data-value="'/pages/plugins/realstore/staff-detail/staff-detail?id=' + item.id" @tap.stop="url_event">{{ $t('realstore-staff.book') }}</button>
+                                        </view>
+                                    </view>
+                                    <component-bottom-line :propStatus="true"></component-bottom-line>
+                                </block>
+                                <block v-else>
+                                    <component-no-data :propStatus="staff_is_load == 1 ? 1 : 0" :propMsg="$t('common.no_data')"></component-no-data>
+                                </block>
+                            </view>
+                        </scroll-view>
+                    </view>
+
+                    <!-- 评论 -->
+                    <view v-if="detail_tab_value == 'comments'">
+                        <scroll-view :scroll-y="true" :style="content_style">
+                            <view :class="'comments-list-actual padding-horizontal-main '+(is_base_mode == 1 ? 'base-mode' : '')">
+                                <view v-if="is_detail_single_tab && detail_tab_title != ''" class="padding-top-sm margin-bottom-sm margin-top-main">
+                                    <view class="fw-b title-left-border">{{ detail_tab_title }}</view>
+                                </view>
+                                <block v-if="(comments_list || null) != null && comments_list.length > 0">
+                                    <view v-for="(item, index) in comments_list" :key="index" :class="'padding-vertical-main ' + (index < comments_list.length - 1 ? 'br-b-f5' : '')">
+                                        <view class="flex-row align-c">
+                                            <image v-if="(item.user || null) != null && (item.user.avatar || null) != null" :src="item.user.avatar" mode="aspectFill" class="circle" style="width: 56rpx; height: 56rpx;"></image>
+                                            <view class="margin-left-sm flex-1 flex-width">
+                                                <view class="text-size-sm">{{ (item.user || null) != null ? (item.user.user_name_view || '') : '' }}</view>
+                                                <view class="cr-grey text-size-xss margin-top-xs">{{ item.add_time || '' }}</view>
+                                            </view>
+                                            <view v-if="(item.rating || null) != null" class="cr-main text-size-sm">{{ item.rating }}{{ $t('orderallot-comments.score_unit') }}</view>
+                                        </view>
+                                        <view v-if="(item.target || null) != null" class="comments-target margin-top-sm flex-row align-c cp" :data-value="comments_target_url(item)" @tap="url_event">
+                                            <image v-if="comments_target_cover(item) != ''" class="comments-target-cover radius br margin-right-sm flex-shrink-0" :src="comments_target_cover(item)" mode="aspectFill"></image>
+                                            <view v-else class="comments-target-cover comments-target-placeholder radius br margin-right-sm flex-shrink-0 flex-row align-c jc-c">
+                                                <iconfont :name="item.comment_type == 'staff' ? 'icon-user' : 'icon-shopping-bag'" size="28rpx" color="#ccc"></iconfont>
+                                            </view>
+                                            <view class="flex-1 flex-width text-size-sm multi-text">{{ comments_target_title(item) }}</view>
+                                            <iconfont name="icon-arrow-right" size="24rpx" color="#999" propClass="margin-left-xs flex-shrink-0"></iconfont>
+                                        </view>
+                                        <view class="margin-top-sm text-size-sm cr-base">{{ item.content || '' }}</view>
+                                    </view>
+                                    <view v-if="comments_total > comments_list.length" class="comments-view-all flex-row align-c jc-c cr-base text-size-sm margin-top-main padding-vertical-main" :data-value="'/pages/plugins/realstore/service-comments/service-comments?realstore_id=' + (((info || null) == null) ? 0 : (info.id || 0))" @tap="url_event">
+                                        <text>{{ $t('realstore-staff.view_all_comments') }}</text>
+                                        <iconfont name="icon-arrow-right" size="24rpx" color="#666" propClass="margin-left-xs"></iconfont>
+                                    </view>
+                                    <component-bottom-line :propStatus="comments_total <= comments_list.length"></component-bottom-line>
+                                </block>
+                                <block v-else>
+                                    <component-no-data :propStatus="comments_is_load == 1 ? 1 : 0" :propMsg="$t('detail.no_comments')"></component-no-data>
+                                </block>
+                            </view>
+                        </scroll-view>
+                    </view>
+
+                    <!-- 商品 -->
+                    <block v-if="detail_tab_value == 'goods'">
                         <!-- 左侧分类和右侧商品 -->
                         <view class="content oh bg-white pr flex-row jc-sb" :style="content_style">
                             <!-- 左侧 -->
@@ -348,6 +452,7 @@
     import componentNavBack from '@/components/nav-back/nav-back';
     import componentGoodsBuy from '@/components/goods-buy/goods-buy';
     import componentNoData from '@/components/no-data/no-data';
+    import componentBottomLine from '@/components/bottom-line/bottom-line';
     import componentSearch from '@/components/search/search';
     import componentBadge from '@/components/badge/badge';
     import componentPopup from '@/components/popup/popup';
@@ -377,7 +482,15 @@
                 data_list_loding_msg: '',
                 data_is_loading: 0,
                 is_base_mode: 0,
-                is_base_mode_show_type: 0,
+                // 门店详情展示 Tab
+                detail_show_tabs: [],
+                detail_tab_index: 0,
+                detail_tab_value: 'goods',
+                staff_list: [],
+                staff_is_load: 0,
+                comments_list: [],
+                comments_total: 0,
+                comments_is_load: 0,
                 is_cart_nav: false,
                 params: {},
                 is_first: 1,
@@ -397,12 +510,6 @@
                 nav_active_index: -1,
                 nav_active_item_index: -1,
                 popup_service_status: false,
-                // 基础导航
-                nav_base_index: 0,
-                nav_base_list: [
-                    { name: this.$t('goods-detail.store_introduction'), value: 0 },
-                    { name: this.$t('goods-detail.store_products'), value: 1 },
-                ],
                 // 下单类型
                 buy_use_type_active_index: 0,
                 // 排序导航
@@ -471,6 +578,7 @@
             componentNavBack,
             componentGoodsBuy,
             componentNoData,
+            componentBottomLine,
             componentSearch,
             componentBadge,
             componentPopup,
@@ -483,6 +591,26 @@
             // 是否有优惠聚合信息（优惠券等，后续可扩展其他促销）
             has_discount_aggregate() {
                 return (this.plugins_coupon_data || null) != null && (this.plugins_coupon_data.data || null) != null && this.plugins_coupon_data.data.length > 0;
+            },
+            // 仅一项 Tab 时展示区块标题
+            is_detail_single_tab() {
+                return (this.detail_show_tabs || null) == null || this.detail_show_tabs.length <= 1;
+            },
+            // 当前 Tab 标题（取配置/重命名后的名称）
+            detail_tab_title() {
+                var tabs = this.detail_show_tabs || [];
+                if(tabs.length > 0) {
+                    var cur = tabs[this.detail_tab_index] || null;
+                    if(cur != null && (cur.name || null) != null && cur.name != '') {
+                        return cur.name;
+                    }
+                    for(var i in tabs) {
+                        if(tabs[i]['value'] == this.detail_tab_value && (tabs[i]['name'] || null) != null) {
+                            return tabs[i]['name'];
+                        }
+                    }
+                }
+                return '';
             },
         },
 
@@ -512,11 +640,14 @@
             // 初始化配置
             this.init_config();
 
-            // 获取数据
-            var self = this;
-            setTimeout(function() {
-                self.get_detail_init();
-            }, 100);
+            // 非首次且当前非商品 Tab：不重拉门店详情，避免覆盖当前 Tab/人员评价数据
+            var skip_detail = (this.is_first != 1 && (this.info || null) != null && this.detail_tab_value != 'goods');
+            if(!skip_detail) {
+                var self = this;
+                setTimeout(function() {
+                    self.get_detail_init();
+                }, 100);
+            }
 
             // 公共onshow事件
             if ((this.$refs.common || null) != null) {
@@ -528,7 +659,12 @@
         onPullDownRefresh() {
             this.setData({
                 data_page: 1,
-                data_list_loding_status: (this.data_list_loding_status == 2) ? 1 : this.data_list_loding_status
+                data_list_loding_status: (this.data_list_loding_status == 2) ? 1 : this.data_list_loding_status,
+                staff_list: [],
+                staff_is_load: 0,
+                comments_list: [],
+                comments_total: 0,
+                comments_is_load: 0,
             });
             this.reset_scroll();
             this.get_detail_init();
@@ -565,7 +701,12 @@
                         data_page_total: 0,
                         data_is_loading: 0,
                         data_list_loding_status: 1,
-                        data_bottom_line_status: false
+                        data_bottom_line_status: false,
+                        staff_list: [],
+                        staff_is_load: 0,
+                        comments_list: [],
+                        comments_total: 0,
+                        comments_is_load: 0,
                     });
                     this.source_goods_remove();
                     this.reset_scroll();
@@ -599,11 +740,25 @@
                             // 基础配置
                             var data_base = data.base || {};
 
+                            // Tab 配置与当前选中（已有选中且仍有效则保留，避免返回覆盖）
+                            var tabs = data.detail_show_tabs || [];
+                            var tab_value = this.detail_tab_value || 'goods';
+                            var tab_index = this.detail_tab_index || 0;
+                            var tab_values = tabs.map(function(v) { return v.value; });
+                            if(tabs.length <= 0 || tab_values.indexOf(tab_value) == -1) {
+                                tab_value = (tabs.length > 0) ? tabs[0]['value'] : 'goods';
+                                tab_index = 0;
+                            } else {
+                                tab_index = tab_values.indexOf(tab_value);
+                            }
+
                             this.setData({
                                 is_service_info: parseInt(data_base.is_service_info || 0),
                                 is_realstore_switch: parseInt(data_base.is_realstore_switch || 0),
                                 is_base_mode: parseInt(data.is_base_mode || 0),
-                                is_base_mode_show_type: parseInt(data.is_base_mode_show_type || 0),
+                                detail_show_tabs: tabs,
+                                detail_tab_index: tab_index,
+                                detail_tab_value: tab_value,
                                 is_cart_nav: true,
                                 data_base: data_base,
                                 info: data.info || null,
@@ -667,13 +822,9 @@
                                     buy_use_type_active_index: type_data.active_index,
                                 });
 
-                                // 获取数据、仅首次调用，获取列表接口
+                                // 首次 / 刷新：按当前 Tab 按需加载
+                                this.detail_tab_data_load(1);
                                 if (this.is_first == 1) {
-                                    // 是否基础模式
-                                    if(this.is_base_mode != 1 || this.is_base_mode_show_type != 0) {
-                                        this.get_data_list();
-                                    }
-                                    // 非首次记录
                                     this.setData({
                                         is_first: 0,
                                     });
@@ -812,7 +963,11 @@
                 // 基础模式内容高度处理
                 var value = 0;
                 if(this.is_base_mode == 1) {
-                    value = (this.is_base_mode_show_type == 1) ? 110 : 220;
+                    value = 110;
+                }
+                // 多 Tab 时额外高度（nav-base 80 + margin-top/bottom-sm 各 12）
+                if((this.detail_show_tabs || null) != null && this.detail_show_tabs.length > 1) {
+                    value += 104;
                 }
                 // 内容高度
                 value += (this.client_type == 'h5') ? 370 : 352;
@@ -1190,11 +1345,183 @@
                 }
             },
 
-            // 基础导航事件
-            nav_base_event(e) {
+            // 详情 Tab 切换
+            detail_tab_event(e) {
+                var index = parseInt(e.currentTarget.dataset.index || 0);
+                var tabs = this.detail_show_tabs || [];
+                var value = (tabs[index] || null) != null ? tabs[index]['value'] : 'goods';
                 this.setData({
-                    nav_base_index: e.currentTarget.dataset.index,
+                    detail_tab_index: index,
+                    detail_tab_value: value,
                 });
+                this.detail_tab_data_load();
+                this.content_actual_size_handle();
+            },
+
+            // 按当前 Tab 按需加载（已有数据则跳过；is_force=1 强制）
+            detail_tab_data_load(is_force) {
+                var value = this.detail_tab_value;
+                if(value == 'goods') {
+                    if((is_force || 0) == 1 || (((this.data_list || null) == null || this.data_list.length == 0) && this.data_list_loding_status != 3)) {
+                        this.get_data_list(1);
+                    }
+                } else if(value == 'staff') {
+                    this.get_staff_list(is_force);
+                } else if(value == 'comments') {
+                    this.get_comments_list(is_force);
+                }
+            },
+
+            // 人员列表（按需，0未加载/1加载中/2已加载）
+            get_staff_list(is_force) {
+                if((is_force || 0) == 0 && this.staff_is_load == 2) {
+                    return false;
+                }
+                if(this.staff_is_load == 1) {
+                    return false;
+                }
+                if((this.info || null) == null) {
+                    return false;
+                }
+                this.setData({ staff_is_load: 1 });
+                uni.request({
+                    url: app.globalData.get_request_url('stafflist', 'detail', 'realstore'),
+                    method: 'POST',
+                    data: {
+                        id: this.info.id,
+                    },
+                    dataType: 'json',
+                    success: (res) => {
+                        if(res.data.code == 0) {
+                            this.setData({
+                                staff_list: res.data.data || [],
+                                staff_is_load: 2,
+                            });
+                        } else {
+                            this.setData({
+                                staff_list: [],
+                                staff_is_load: 2,
+                            });
+                        }
+                    },
+                    fail: () => {
+                        this.setData({
+                            staff_list: [],
+                            staff_is_load: 2,
+                        });
+                    },
+                });
+            },
+
+            // 评价预览（按需，0未加载/1加载中/2已加载）
+            get_comments_list(is_force) {
+                if((is_force || 0) == 0 && this.comments_is_load == 2) {
+                    return false;
+                }
+                if(this.comments_is_load == 1) {
+                    return false;
+                }
+                if((this.info || null) == null) {
+                    return false;
+                }
+                this.setData({ comments_is_load: 1 });
+                uni.request({
+                    url: app.globalData.get_request_url('commentslist', 'detail', 'realstore'),
+                    method: 'POST',
+                    data: {
+                        id: this.info.id,
+                        page: 1,
+                        n: 10,
+                    },
+                    dataType: 'json',
+                    success: (res) => {
+                        if(res.data.code == 0) {
+                            var data = res.data.data || {};
+                            this.setData({
+                                comments_list: data.data || [],
+                                comments_total: data.total || 0,
+                                comments_is_load: 2,
+                            });
+                        } else {
+                            this.setData({
+                                comments_list: [],
+                                comments_total: 0,
+                                comments_is_load: 2,
+                            });
+                        }
+                    },
+                    fail: () => {
+                        this.setData({
+                            comments_list: [],
+                            comments_total: 0,
+                            comments_is_load: 2,
+                        });
+                    },
+                });
+            },
+
+            // 最早可约短文案（今天仅时刻，其它带日标签）
+            staff_earliest_show(item) {
+                var booking = (item || {}).earliest_booking || null;
+                if (booking == null) {
+                    return '';
+                }
+                var time = booking.start_time || '';
+                if (time == '' && (booking.time_text || '') != '') {
+                    time = String(booking.time_text).split(/[\s\-–—]/)[0] || '';
+                }
+                if (time == '') {
+                    return booking.text || item.earliest_booking_text || '';
+                }
+                if (parseInt(booking.is_today || 0) == 1 || (booking.day_label || '') == '') {
+                    return time;
+                }
+                return booking.day_label + time;
+            },
+
+            // 评价对象封面
+            comments_target_cover(item) {
+                if ((item || null) == null || (item.target || null) == null) {
+                    return '';
+                }
+                var t = item.target;
+                return (t.images || '') != '' ? t.images : ((t.avatar || '') != '' ? t.avatar : '');
+            },
+            // 评价对象标题
+            comments_target_title(item) {
+                if ((item || null) == null || (item.target || null) == null) {
+                    return '';
+                }
+                var t = item.target;
+                if (item.comment_type == 'staff') {
+                    return (t.alias || '') != '' ? t.alias : (t.title || '');
+                }
+                return t.title || '';
+            },
+            // 评价对象详情地址
+            comments_target_url(item) {
+                if ((item || null) == null || (item.target || null) == null) {
+                    return '';
+                }
+                var t = item.target;
+                if ((t.goods_url || '') != '') {
+                    return t.goods_url;
+                }
+                if ((t.url || '') != '') {
+                    return t.url;
+                }
+                if (item.comment_type == 'goods' && (t.id || 0) > 0) {
+                    return '/pages/goods-detail/goods-detail?id=' + t.id;
+                }
+                if (item.comment_type == 'staff' && (t.id || 0) > 0) {
+                    return '/pages/plugins/realstore/staff-detail/staff-detail?id=' + t.id;
+                }
+                return '';
+            },
+
+            // url事件
+            url_event(e) {
+                app.globalData.url_event(e);
             },
 
             // 底部菜单高度
