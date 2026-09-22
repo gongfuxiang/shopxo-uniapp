@@ -534,6 +534,7 @@
 		"batch": "batch",
 		"secondary_card": "Secondary card",
 		"logistics": "logistics",
+		"rider": "Rider",
 		"confirm_goods_been_received_completed_cannot": "Please confirm that the goods have been received or completed, and cannot be restored after operation. Are you sure to continue?",
 		"recharge_now": "Recharge Now",
 		"recharge": "Recharge",

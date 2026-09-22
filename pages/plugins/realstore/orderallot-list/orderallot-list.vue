@@ -54,9 +54,9 @@
                             (item.operate_data.is_comments || 0) +
                             (item.operate_data.is_staff_booking || 0) +
                             (item.plugins_delivery_data || 0) +
-                            (item.plugins_ordergoodsform_data || 0)
+                            (item.plugins_ordergoodsform_data || 0) +
+                            (item.plugins_express_data || 0)
                         ) ||
-                        ((item.express_data || null) != null && item.express_data.length > 0) ||
                         (item.operate_data.is_order_batch || 0) == 1 ||
                         (item.operate_data.is_order_frequencycard || 0) == 1
                     " class="item-operation tr br-t padding-vertical-main">
@@ -67,8 +67,8 @@
                         <button v-if="(item.operate_data.is_staff_booking || 0) == 1" class="round bg-white cr-main br-main" type="default" size="mini" @tap="staff_booking_event" :data-value="item.id" :data-index="index" hover-class="none">{{$t('orderallot-detail.modify_booking')}}</button>
                         <button v-if="(item.operate_data.is_order_batch || 0) == 1" class="round bg-white cr-blue br-blue" type="default" size="mini" @tap="url_event" :data-value="'/pages/plugins/realstore/batchorder-list/batchorder-list?oid=' + item.order_id" hover-class="none">{{$t('common.batch')}}</button>
                         <button v-if="(item.operate_data.is_order_frequencycard || 0) == 1" class="round bg-white cr-green br-green" type="default" size="mini" @tap="url_event" :data-value="'/pages/plugins/realstore/frequencycard-list/frequencycard-list?oid=' + item.order_id" hover-class="none">{{$t('common.secondary_card')}}</button>
-                        <button v-if="(item.express_data || null) != null && item.express_data.length > 0" class="round bg-white cr-main br-main" type="default" size="mini" @tap="url_event" :data-value="'/pages/plugins/express/detail/detail?oid=' + item.id + '&action_type=realstore'" hover-class="none">{{$t('common.logistics')}}</button>
-                        <button v-if="(item.plugins_delivery_data || 0) > 0" class="round bg-white cr-main br-main margin-bottom-main" type="default" size="mini" @tap="url_event" :data-value="'/pages/plugins/delivery/logistics/logistics?id=' + item.plugins_delivery_data" hover-class="none">{{$t('common.logistics')}}</button>
+                        <button v-if="(item.plugins_express_data || 0) == 1 && (item.express_data || null) != null && item.express_data.length > 0" class="round bg-white cr-main br-main" type="default" size="mini" @tap="url_event" :data-value="'/pages/plugins/express/detail/detail?oid=' + item.id + '&action_type=realstore'" hover-class="none">{{$t('common.logistics')}}</button>
+                        <button v-if="(item.plugins_delivery_data || 0) > 0" class="round bg-white cr-main br-main margin-bottom-main" type="default" size="mini" @tap="url_event" :data-value="'/pages/plugins/delivery/logistics/logistics?id=' + item.plugins_delivery_data" hover-class="none">{{$t('common.rider')}}</button>
                         <button v-if="(item.plugins_ordergoodsform_data || 0) == 1" class="round bg-white cr-blue br-blue margin-bottom-main" type="default" size="mini" @tap="url_event" :data-value="'/pages/plugins/ordergoodsform/order/order?id=' + item.order_id" hover-class="none">{{$t('common.form')}}</button>
                     </view>
                 </view>

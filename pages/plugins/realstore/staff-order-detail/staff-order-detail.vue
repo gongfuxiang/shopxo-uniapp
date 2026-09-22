@@ -63,6 +63,8 @@
                         <button v-if="(detail.operate_data.is_make_done || 0) == 1" class="round bg-white cr-green br-green" type="default" size="mini" @tap="operate_event" data-action="makedone" hover-class="none">{{ $t('staff-order.make_done') }}</button>
                         <button v-if="(detail.operate_data.is_collect || 0) == 1" class="round bg-white cr-green br-green" type="default" size="mini" @tap="operate_event" data-action="collect" hover-class="none">{{ $t('common.receiving_goods') }}</button>
                         <button v-if="(detail.operate_data.is_cancel || 0) == 1" class="round bg-white cr-yellow br-yellow" type="default" size="mini" @tap="operate_event" data-action="cancel" hover-class="none">{{ $t('common.cancel') }}</button>
+                        <button v-if="(detail.plugins_express_data || 0) == 1 && (detail.express_data || null) != null && detail.express_data.length > 0" class="round bg-white cr-main br-main" type="default" size="mini" @tap="url_event" :data-value="'/pages/plugins/express/detail/detail?oid=' + detail.id + '&action_type=realstore'" hover-class="none">{{$t('common.logistics')}}</button>
+                        <button v-if="(detail.plugins_delivery_data || 0) > 0" class="round bg-white cr-main br-main" type="default" size="mini" @tap="url_event" :data-value="'/pages/plugins/delivery/logistics/logistics?id=' + detail.plugins_delivery_data" hover-class="none">{{$t('common.rider')}}</button>
                     </view>
                 </view>
 
@@ -470,7 +472,9 @@
                     (op.is_delivery || 0) +
                     (op.is_make_done || 0) +
                     (op.is_collect || 0) +
-                    (op.is_cancel || 0)
+                    (op.is_cancel || 0) +
+                    (item.plugins_express_data || 0) +
+                    (item.plugins_delivery_data || 0)
                 ) > 0;
             },
             staff_booking_event() {

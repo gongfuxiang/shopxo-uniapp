@@ -71,15 +71,13 @@
                         <text>{{$t('common.total')}}<text class="fw-b">{{ item.buy_number_count }}</text>{{$t('common.total_pieces')}}<text class="sales-price margin-right-xs">{{ item.currency_data.currency_symbol }}{{ item.total_price }}</text></text>
                     </view>
                     <view v-if="staff_operate_show(item)" class="item-operation tr br-t padding-vertical-main">
-                        <button v-if="is_buy_staff_booking == 1 && (item.operate_data.is_staff_booking || 0) == 1" class="round bg-white cr-main br-main" type="default" size="mini" @tap="staff_booking_event" :data-value="item.id" :data-index="index" hover-class="none">{{ $t('staff-order.staff_booking') }}</button>
                         <button v-if="(item.operate_data.is_receive || 0) == 1" class="round bg-white cr-main br-main" type="default" size="mini" @tap="operate_event" data-action="receive" :data-value="item.id" :data-index="index" hover-class="none">{{ $t('staff-order.receive') }}</button>
                         <button v-if="(item.operate_data.is_service || 0) == 1" class="round bg-white cr-green br-green" type="default" size="mini" @tap="operate_event" data-action="service" :data-value="item.id" :data-index="index" hover-class="none">{{ $t('staff-order.service_done') }}</button>
                         <button v-if="(item.operate_data.is_take || 0) == 1" class="round bg-white cr-blue br-blue" type="default" size="mini" @tap="operate_event" data-action="take" :data-value="item.id" :data-index="index" hover-class="none">{{ $t('staff-order.take') }}</button>
                         <button v-if="(item.operate_data.is_delivery || 0) == 1" class="round bg-white cr-blue br-blue" type="default" size="mini" @tap="operate_event" data-action="delivery" :data-value="item.id" :data-index="index" hover-class="none">{{ $t('staff-order.delivery') }}</button>
                         <button v-if="(item.operate_data.is_make_done || 0) == 1" class="round bg-white cr-green br-green" type="default" size="mini" @tap="operate_event" data-action="makedone" :data-value="item.id" :data-index="index" hover-class="none">{{ $t('staff-order.make_done') }}</button>
                         <button v-if="(item.operate_data.is_collect || 0) == 1" class="round bg-white cr-green br-green" type="default" size="mini" @tap="operate_event" data-action="collect" :data-value="item.id" :data-index="index" hover-class="none">{{ $t('common.receiving_goods') }}</button>
-                        <button v-if="(item.operate_data.is_cancel || 0) == 1" class="round bg-white cr-yellow br-yellow" type="default" size="mini" @tap="operate_event" data-action="cancel" :data-value="item.id" :data-index="index" hover-class="none">{{ $t('common.cancel') }}</button>
-                        <button class="round bg-white cr-base br-base" type="default" size="mini" @tap="url_event" :data-value="'/pages/plugins/realstore/staff-order-detail/staff-order-detail?id=' + item.id" hover-class="none">{{ $t('common.detail_text') }}</button>
+                        <button v-if="staff_more_actions(item).length > 0" class="round bg-white cr-base br-base" type="default" size="mini" @tap="more_open_event" :data-index="index" hover-class="none">{{ $t('common.more') }}</button>
                     </view>
                 </view>
             </view>
@@ -88,6 +86,24 @@
             </view>
             <component-bottom-line :propStatus="data_bottom_line_status"></component-bottom-line>
         </scroll-view>
+
+        <!-- 更多操作 -->
+        <component-popup :propShow="more_popup_status" propPosition="bottom" @onclose="more_close_event">
+            <view class="padding-horizontal-main padding-top-main padding-bottom-lg">
+                <view class="staff-order-more-header flex-row jc-sb align-c margin-bottom-main">
+                    <view class="fw-b text-size">{{ $t('common.more_operate') }}</view>
+                    <view class="cp" @tap.stop="more_close_event">
+                        <iconfont name="icon-close-line" size="28rpx" color="#999"></iconfont>
+                    </view>
+                </view>
+                <scroll-view v-if="more_actions.length > 0" :scroll-y="true" class="staff-order-more-scroll">
+                    <view v-for="(item, index) in more_actions" :key="index" class="staff-order-more-item br-b padding-vertical-main tc cp" :data-index="index" @tap="more_select_event">{{ item.name }}</view>
+                </scroll-view>
+                <view class="padding-top-main">
+                    <button class="round bg-grey-f5 cr-base text-size wh-auto" type="default" hover-class="none" @tap="more_close_event">{{ $t('common.cancel') }}</button>
+                </view>
+            </view>
+        </component-popup>
 
         <component-staff-order-operate
             ref="staff_operate"
@@ -106,6 +122,7 @@
     import componentBottomLine from '@/components/bottom-line/bottom-line';
     import componentNavBack from '@/components/nav-back/nav-back';
     import componentSearch from '@/components/search/search';
+    import componentPopup from '@/components/popup/popup';
     import componentStaffOrderOperate from '../components/staff-order-operate/staff-order-operate';
     import componentOrderallotStaffBooking from '../components/orderallot-staff-booking/orderallot-staff-booking';
     import pluginLocale from '../locale/index.js';
@@ -143,6 +160,9 @@
                 editor_path_type: '',
                 is_edit_staff_profile: 0,
                 is_buy_staff_booking: 0,
+                more_popup_status: false,
+                more_actions: [],
+                more_order_index: -1,
             };
         },
         components: {
@@ -151,6 +171,7 @@
             componentBottomLine,
             componentNavBack,
             componentSearch,
+            componentPopup,
             componentStaffOrderOperate,
             componentOrderallotStaffBooking,
         },
@@ -348,15 +369,112 @@
             staff_operate_show(item) {
                 var op = (item || {}).operate_data || {};
                 return (
-                    (this.is_buy_staff_booking == 1 ? (op.is_staff_booking || 0) : 0) +
                     (op.is_receive || 0) +
                     (op.is_service || 0) +
                     (op.is_take || 0) +
                     (op.is_delivery || 0) +
                     (op.is_make_done || 0) +
                     (op.is_collect || 0) +
-                    (op.is_cancel || 0)
+                    this.staff_more_actions(item).length
                 ) > 0;
+            },
+            // 更多操作（次要入口）
+            staff_more_actions(item) {
+                if ((item || null) == null) {
+                    return [];
+                }
+                var op = item.operate_data || {};
+                var actions = [];
+                if (this.is_buy_staff_booking == 1 && (op.is_staff_booking || 0) == 1) {
+                    actions.push({
+                        key: 'staff_booking',
+                        name: this.$t('staff-order.staff_booking'),
+                        type: 'event',
+                        event: 'staff_booking',
+                    });
+                }
+                if ((op.is_cancel || 0) == 1) {
+                    actions.push({
+                        key: 'cancel',
+                        name: this.$t('common.cancel'),
+                        type: 'event',
+                        event: 'cancel',
+                    });
+                }
+                if ((item.plugins_express_data || 0) == 1 && (item.express_data || null) != null && item.express_data.length > 0) {
+                    actions.push({
+                        key: 'express',
+                        name: this.$t('common.logistics'),
+                        type: 'url',
+                        value: '/pages/plugins/express/detail/detail?oid=' + item.id + '&action_type=realstore',
+                    });
+                }
+                if ((item.plugins_delivery_data || 0) > 0) {
+                    actions.push({
+                        key: 'rider',
+                        name: this.$t('common.rider'),
+                        type: 'url',
+                        value: '/pages/plugins/delivery/logistics/logistics?id=' + item.plugins_delivery_data,
+                    });
+                }
+                return actions;
+            },
+            more_open_event(e) {
+                var index = parseInt(e.currentTarget.dataset.index);
+                var row = (!isNaN(index) && (this.data_list || [])[index]) ? this.data_list[index] : null;
+                var actions = this.staff_more_actions(row);
+                if (actions.length == 0) {
+                    return;
+                }
+                this.setData({
+                    more_popup_status: true,
+                    more_actions: actions,
+                    more_order_index: index,
+                });
+            },
+            more_close_event() {
+                this.setData({
+                    more_popup_status: false,
+                    more_actions: [],
+                    more_order_index: -1,
+                });
+            },
+            more_select_event(e) {
+                var index = parseInt(e.currentTarget.dataset.index);
+                var action = (this.more_actions || [])[index] || null;
+                var order_index = this.more_order_index;
+                this.more_close_event();
+                if ((action || null) == null) {
+                    return;
+                }
+                if (action.type == 'url') {
+                    app.globalData.url_open(action.value);
+                    return;
+                }
+                if (action.type == 'event') {
+                    if (action.event == 'staff_booking') {
+                        this.staff_booking_event({
+                            currentTarget: {
+                                dataset: {
+                                    value: ((this.data_list || [])[order_index] || {}).id || 0,
+                                    index: order_index,
+                                },
+                            },
+                        });
+                        return;
+                    }
+                    if (action.event == 'cancel') {
+                        this.operate_event({
+                            currentTarget: {
+                                dataset: {
+                                    action: 'cancel',
+                                    value: ((this.data_list || [])[order_index] || {}).id || 0,
+                                    index: order_index,
+                                },
+                            },
+                        });
+                    }
+                }
             },
             staff_booking_event(e) {
                 var id = parseInt(e.currentTarget.dataset.value || 0);
@@ -458,4 +576,13 @@
 </script>
 <style>
 @import './staff-order.css';
+.staff-order-more-header {
+    min-height: 48rpx;
+}
+.staff-order-more-scroll {
+    max-height: 55vh;
+}
+.staff-order-more-item:last-child {
+    border-bottom: 0 !important;
+}
 </style>

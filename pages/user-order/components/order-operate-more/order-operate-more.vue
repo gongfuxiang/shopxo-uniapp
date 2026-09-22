@@ -5,9 +5,22 @@
         <button v-if="payvoucher_show" class="round bg-white cr-blue br-blue margin-bottom-main" type="default" size="mini" @tap="payvoucher_event" hover-class="none">{{ payvoucher_name }}</button>
         <button v-if="propOrder.operate_data.is_collect == 1" class="round bg-white cr-green br-green margin-bottom-main" type="default" size="mini" @tap="collect_event" hover-class="none">{{ $t('common.receiving_goods') }}</button>
         <button v-if="propOrder.operate_data.is_comments == 1" class="round bg-white cr-green br-green margin-bottom-main" type="default" size="mini" @tap="comments_event" hover-class="none">{{ $t('common.order_comment') }}</button>
-        <button v-if="more_actions_count > 0" class="round bg-white cr-base br-base margin-bottom-main" type="default" size="mini" @tap="more_open_event" hover-class="none">{{ $t('common.more') }}</button>
+        <!-- 详情页空间充足：次要操作全部直接展示；列表仍收进更多 -->
+        <block v-if="is_detail_source">
+            <button
+                v-for="(item, index) in more_actions"
+                :key="item.key || index"
+                :class="'round bg-white margin-bottom-main ' + more_action_btn_class(item)"
+                type="default"
+                size="mini"
+                :data-index="index"
+                @tap="more_select_event"
+                hover-class="none"
+            >{{ item.name }}</button>
+        </block>
+        <button v-else-if="more_actions_count > 0" class="round bg-white cr-base br-base margin-bottom-main" type="default" size="mini" @tap="more_open_event" hover-class="none">{{ $t('common.more') }}</button>
 
-        <component-popup :propShow="popup_status" propPosition="bottom" @onclose="more_close_event">
+        <component-popup v-if="!is_detail_source" :propShow="popup_status" propPosition="bottom" @onclose="more_close_event">
             <view class="padding-horizontal-main padding-top-main padding-bottom-lg">
                 <view class="order-more-header flex-row jc-sb align-c margin-bottom-main">
                     <view class="fw-b text-size">{{ $t('common.more_operate') }}</view>
@@ -58,6 +71,10 @@
             };
         },
         computed: {
+            // 是否详情页（详情直接平铺更多操作）
+            is_detail_source() {
+                return (this.propSource || '') == 'detail';
+            },
             // 是否展示操作栏
             operate_bar_show() {
                 if ((this.propOrder || null) == null || this.propOrder.operate_data == null) {
@@ -85,6 +102,20 @@
             },
         },
         methods: {
+            // 详情平铺按钮样式
+            more_action_btn_class(item) {
+                if ((item || null) == null) {
+                    return 'cr-main br-main';
+                }
+                if (item.key == 'delete') {
+                    return 'cr-red br-red';
+                }
+                if (item.key == 'rush') {
+                    return 'cr-yellow br-yellow';
+                }
+                return 'cr-main br-main';
+            },
+
             // 构建更多操作项（插件操作、删除等）
             build_more_actions(order) {
                 if ((order || null) == null) {
@@ -111,7 +142,7 @@
                 if ((order.plugins_delivery_data || 0) > 0) {
                     actions.push({
                         key: 'delivery',
-                        name: this.$t('common.logistics'),
+                        name: this.$t('common.rider'),
                         type: 'url',
                         value: '/pages/plugins/delivery/logistics/logistics?id=' + order.plugins_delivery_data,
                     });
@@ -269,7 +300,9 @@
             more_select_event(e) {
                 var index = e.currentTarget.dataset.index;
                 var action = this.more_actions[index];
-                this.more_close_event();
+                if (!this.is_detail_source) {
+                    this.more_close_event();
+                }
                 this.more_action_handle(action);
             },
 

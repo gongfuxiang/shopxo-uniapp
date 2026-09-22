@@ -534,6 +534,7 @@
 		"batch": "批次",
 		"secondary_card": "次卡",
 		"logistics": "物流",
+		"rider": "骑手",
 		"confirm_goods_been_received_completed_cannot": "请确认已收到货物或已完成，操作后不可恢复，确定继续吗?",
 		"recharge_now": "立即充值",
 		"recharge": "充值",
