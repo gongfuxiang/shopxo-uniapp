@@ -224,17 +224,20 @@
                         title: this.$t('common.loading_in_text'),
                     });
                 }
-                // 参数
+                // 参数（全部=-1 不传 status，与后端 status>-1 才筛选一致）
                 var order_status = (this.nav_status_list[this.nav_status_index] || null) == null ? -1 : this.nav_status_list[this.nav_status_index]['value'];
+                var post_data = {
+                    page: this.data_page,
+                    is_more: 1,
+                };
+                if (order_status != -1 && order_status != '-1') {
+                    post_data.status = order_status;
+                }
                 // 获取数据
                 uni.request({
                     url: app.globalData.get_request_url('index', 'order', 'vip'),
                     method: 'POST',
-                    data: {
-                        page: this.data_page,
-                        status: order_status,
-                        is_more: 1,
-                    },
+                    data: post_data,
                     dataType: 'json',
                     success: (res) => {
                         if(this.data_page > 1) {

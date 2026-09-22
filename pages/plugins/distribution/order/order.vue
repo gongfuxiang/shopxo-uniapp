@@ -169,18 +169,21 @@
                     });
                 }
 
-                // 参数
+                // 参数（全部=-1 不传 status，避免 Form 表格搜成 o.status in [-1] 无数据）
                 var order_status = (this.nav_status_list[this.nav_status_index] || null) == null ? -1 : this.nav_status_list[this.nav_status_index]["value"];
+                var post_data = {
+                    page: this.data_page,
+                    uid: this.params.uid || 0,
+                    is_more: 1,
+                };
+                if (order_status != -1 && order_status != "-1") {
+                    post_data.status = order_status;
+                }
                 // 获取数据
                 uni.request({
                     url: app.globalData.get_request_url("index", "order", "distribution"),
                     method: "POST",
-                    data: {
-                        page: this.data_page,
-                        status: order_status,
-                        uid: this.params.uid || 0,
-                        is_more: 1,
-                    },
+                    data: post_data,
                     dataType: "json",
                     success: (res) => {
                         if(this.data_page > 1) {
