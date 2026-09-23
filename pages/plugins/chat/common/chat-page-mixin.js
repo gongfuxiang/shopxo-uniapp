@@ -50,6 +50,7 @@ import {
 	chat_can_end,
 	chat_end_session,
 	chat_continue_session,
+	chat_session_revive_inflight,
 	chat_submit_rating,
 	chat_can_rating,
 	chat_can_show_read,
@@ -152,6 +153,10 @@ let ended_while_page_hidden = false;
 /** 自动续聊 / 结束态发消息排队 continue 期间，忽略迟到的 chat-end、chat-rating-open（对齐 admin） */
 let suppress_ended_choice = false;
 let suppress_ended_choice_timer = null;
+/** suppress 期间已变为结束：过期后再弹「是否继续」 */
+let pending_ended_prompt_after_suppress = false;
+/** 由页面实例绑定：suppress 过期后补弹结束询问 */
+let run_pending_ended_prompt = null;
 
 const arm_suppress_ended_choice = (ms = 2000) => {
 	suppress_ended_choice = true;
@@ -161,11 +166,16 @@ const arm_suppress_ended_choice = (ms = 2000) => {
 	suppress_ended_choice_timer = setTimeout(() => {
 		suppress_ended_choice_timer = null;
 		suppress_ended_choice = false;
+		if (pending_ended_prompt_after_suppress && typeof run_pending_ended_prompt == 'function') {
+			pending_ended_prompt_after_suppress = false;
+			run_pending_ended_prompt();
+		}
 	}, ms);
 };
 
 const clear_suppress_ended_choice = () => {
 	suppress_ended_choice = false;
+	pending_ended_prompt_after_suppress = false;
 	if (suppress_ended_choice_timer) {
 		clearTimeout(suppress_ended_choice_timer);
 		suppress_ended_choice_timer = null;
@@ -363,8 +373,8 @@ const voice_touch_opts = { passive: false };
 /** 商品卡片点击：本管理端默认不跳；迁移项目通过 chat_set_config 开启 */
 
 /**
- * 当前页聊天超时（或对方结束）变为已结束：询问继续聊天或退出
- * 从列表进入已结束会话：由 record init 静默 chat-continue，不走此弹窗
+ * 一直留在本页的活跃会话超时（或对方结束）：询问继续聊天或退出
+ * 新进页已结束：静默 chat-continue，不走此弹窗
  */
 
 /** 发送媒体：先占位灰块+进度，完成后再展示并可点击 */
@@ -3448,7 +3458,7 @@ export default {
 						pending_session_revive = false;
 						allow_ended_prompt = true;
 					} else {
-						// 进页已结束：主动 chat-continue，续聊成功前不弹「是否继续」
+						// 新进页已结束：静默发续聊，不弹窗；一直留在本页后超时才弹
 						this.mark_enter_ended_session();
 						this.try_enter_auto_continue();
 					}
@@ -4412,6 +4422,7 @@ export default {
 					ended_while_page_hidden = false;
 					this.show_ended_choice_modal = false;
 					ended_choice_showing = false;
+					pending_ended_prompt_after_suppress = false;
 					// 对齐 admin：续聊成功后立刻 engaged，允许之后超时再弹「是否继续」
 					if (prev_ended && pending_session_revive) {
 						pending_session_revive = false;
@@ -4421,15 +4432,21 @@ export default {
 					if (record_init_done) {
 						allow_ended_prompt = true;
 					}
-				} else if (
-					allow_ended_prompt
-					&& session_page_engaged
-					&& !prev_ended
-					&& !suppress_ended_choice
-					&& !pending_session_revive
-				) {
-					// 仅本页聊天过程中变为结束才询问；进页已结束/续聊中不弹
-					this.prompt_ended_session_choice();
+				} else if (!prev_ended) {
+					if (allow_ended_prompt && session_page_engaged) {
+						// 一直留在本页的活跃会话超时/被结束 → 弹窗
+						if (this.skip_auto_continue) {
+							// 主动结束等待中：不排队补弹
+						} else if (suppress_ended_choice) {
+							pending_ended_prompt_after_suppress = true;
+						} else {
+							this.prompt_ended_session_choice();
+						}
+					} else if (record_init_done) {
+						// 新进页后才标结束：静默续聊，不弹窗
+						this.mark_enter_ended_session();
+						this.try_enter_auto_continue();
+					}
 				}
 				this.can_end_session = chat_can_end();
 				this.show_read_receipt = chat_can_show_read();
@@ -6002,7 +6019,8 @@ export default {
 
 		prompt_ended_session_choice() {
 			
-				// 仅本页聊天过程中超时/对方结束才弹；进页已结束走静默 chat-continue（对齐 admin）
+				// 一直留在本页的活跃会话超时（或对方结束）：询问继续聊天或退出
+				// 新进页已结束：静默 chat-continue，不走此弹窗
 				if (!this.page_alive || this.skip_auto_continue || this.show_rating_modal) {
 					return;
 				}
@@ -7466,6 +7484,26 @@ export default {
 				if (this.show_rating_modal || this.skip_auto_continue) {
 					return false;
 				}
+				if (this.session_ended) {
+					this.panel_type = '';
+					this.input_focus = false;
+					this.is_voice_input = false;
+					if (chat_session_revive_inflight()) {
+						showToast('正在继续聊天...');
+						return false;
+					}
+					// 新进页结束态：优先静默续聊，不弹「是否继续」
+					if (!session_page_engaged || pending_session_revive) {
+						this.try_enter_auto_continue();
+						showToast('正在继续聊天...');
+						return false;
+					}
+					showToast('对话已结束');
+					if (!ended_choice_handled && !ended_choice_showing) {
+						this.$nextTick(() => this.prompt_ended_session_choice());
+					}
+					return false;
+				}
 				if (!opts.skip_connect && (this.connect_status !== 1 || this.online_status != 'online')) {
 					if (this.connect_status !== 1) {
 						showToast(this.is_connecting ? '正在连接...' : '未连接');
@@ -7531,11 +7569,27 @@ export default {
 					return;
 				}
 				clear_suppress_ended_choice();
+				const was_live_on_page = session_page_engaged && allow_ended_prompt && !pending_session_revive;
 				pending_session_revive = false;
+				ended_choice_handled = false;
 				this.message_list.forEach((row) => {
 					if (row && row.is_self && row.send_status == 'sending' && row.upload_status != 'uploading') {
 						this.mark_send_fail(row.key);
 					}
+				});
+				if (was_live_on_page) {
+					// 一直留在本页超时后续聊失败 → 弹窗
+					session_page_engaged = true;
+					allow_ended_prompt = true;
+					this.$nextTick(() => {
+						this.prompt_ended_session_choice();
+					});
+					return;
+				}
+				// 新进页静默续聊失败：不弹窗，再试一次续聊
+				this.mark_enter_ended_session();
+				this.$nextTick(() => {
+					this.try_enter_auto_continue();
 				});
 			
 		},
@@ -7701,6 +7755,14 @@ export default {
 				ended_choice_showing = false;
 				record_init_done = false;
 				allow_ended_prompt = false;
+				run_pending_ended_prompt = () => {
+					if (!this.page_alive) {
+						return;
+					}
+					this.$nextTick(() => {
+						this.prompt_ended_session_choice();
+					});
+				};
 				session_page_engaged = false;
 				pending_session_revive = false;
 				page_visible = true;
@@ -7888,6 +7950,7 @@ export default {
 				pending_session_revive = false;
 				page_visible = false;
 				ended_while_page_hidden = false;
+				run_pending_ended_prompt = null;
 				clear_suppress_ended_choice();
 				try {
 					this.show_ended_choice_modal = false;
