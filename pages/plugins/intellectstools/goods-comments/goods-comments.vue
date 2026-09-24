@@ -49,7 +49,7 @@
     const app = getApp();
     import componentCommon from '@/components/common/common';
     import componentNoData from '@/components/no-data/no-data';
-    import componentUpload from '@/components/upload/upload';
+    import componentUpload from '@/pages/common/components/upload/upload';
     import pluginLocale from '../locale/index.js';
     const theme_color = app.globalData.get_theme_color();
     export default {
@@ -100,10 +100,8 @@
             // 数据加载
             this.init();
 
-            // 公共onshow事件
-            if ((this.$refs.common || null) != null) {
-                this.$refs.common.on_show();
-            }
+            // 公共onshow事件（$refs 未就绪时自动延后重试）
+            app.globalData.page_common_on_show(this);
         },
 
         // 下拉刷新
@@ -227,7 +225,8 @@
                 });
             },
             // 上传回调
-            retrun_image_event(data) {
+            retrun_image_event() {
+                var data = (uni.getStorageSync(app.globalData.data.cache_upload_callback_key) || {}).data;
                 this.setData({
                     image_list: data,
                 });

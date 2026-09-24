@@ -58,8 +58,8 @@
     import base64 from '@/common/js/lib/base64.js';
     import componentCommon from '@/components/common/common';
     import componentNoData from '@/components/no-data/no-data';
-    import componentGoodsSpecChoice from '@/components/goods-spec-choice/goods-spec-choice';
-    import componentSharePopup from '@/components/share-popup/share-popup';
+    import componentGoodsSpecChoice from '@/pages/common/components/goods-spec-choice/goods-spec-choice';
+    import componentSharePopup from '@/pages/common/components/share-popup/share-popup';
     import pluginLocale from '../locale/index.js';
     export default {
         mixins: [pluginLocale],
@@ -102,10 +102,8 @@
             // 调用公共事件方法
             app.globalData.page_event_onshow_handle();
 
-            // 公共onshow事件
-            if ((this.$refs.common || null) != null) {
-                this.$refs.common.on_show();
-            }
+            // 公共onshow事件（$refs 未就绪时自动延后重试）
+            app.globalData.page_common_on_show(this);
 
             // 加载数据
             this.get_data();
@@ -196,6 +194,7 @@
 
             // 规格确认回调事件
             spec_confirm_event(value) {
+                value = uni.getStorageSync(app.globalData.data.cache_goods_spec_choice_key) || value || {};
                 this.buy_handle((value.spec || []).map(function (v) { return { key: v.key }; }));
             },
 

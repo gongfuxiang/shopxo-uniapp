@@ -256,7 +256,7 @@
     import componentNoData from "@/components/no-data/no-data";
     import componentBottomLine from "@/components/bottom-line/bottom-line";
     import componentPopup from "@/components/popup/popup";
-    import componentUpload from '@/components/upload/upload';
+    import componentUpload from '@/pages/common/components/upload/upload';
     import pluginLocale from '../locale/index.js';
 
     var common_static_url = app.globalData.get_static_url('common');
@@ -336,10 +336,8 @@
             // 调用公共事件方法
             app.globalData.page_event_onshow_handle();
 
-            // 公共onshow事件
-            if ((this.$refs.common || null) != null) {
-                this.$refs.common.on_show();
-            }
+            // 公共onshow事件（$refs 未就绪时自动延后重试）
+            app.globalData.page_common_on_show(this);
 
             // 分享菜单处理
             app.globalData.page_share_handle();
@@ -568,7 +566,8 @@
                 });
             },
 
-            upload_image_event(res) {
+            upload_image_event() {
+                var res = (uni.getStorageSync(app.globalData.data.cache_upload_callback_key) || {}).data;
                 this.setData({
                     form_delivery_success_images_list: res,
                 });

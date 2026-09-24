@@ -14,8 +14,8 @@
                             <view class="text-size-sm">{{item.name}}</view>
                             <view v-if="item.value.length > 0" class="spec margin-top-sm">
                                 <block v-for="(items, keys) in item.value" :key="keys">
-                                    <button @tap.stop="goods_spec_choice_event" :data-key="key" :data-keys="keys" type="default" size="mini" hover-class="none" :class="'round '+items.is_active + ' ' + items.is_dont + ' ' + items.is_disabled">
-                                        <image v-if="(items.images || null) != null" :src="items.images" mode="scaleToFill" class="va-m dis-inline-block round margin-right-sm"></image>
+                                    <button @tap.stop="goods_spec_choice_event" :data-key="key" :data-keys="keys" type="default" size="mini" hover-class="none" :class="'spec-btn round '+items.is_active + ' ' + items.is_dont + ' ' + items.is_disabled">
+                                        <image v-if="(items.images || null) != null" :src="items.images" mode="scaleToFill" class="spec-btn-image va-m dis-inline-block round margin-right-sm"></image>
                                         <text class="va-m">{{items.name}}</text>
                                     </button>
                                 </block>
@@ -307,13 +307,15 @@
                     popup_status: false
                 });
 
-                // 调用父级
-                this.$emit('specConfirmEvent', {
+                // 调用父级（跨分包异步组件：先写缓存再 $emit）
+                var back_data = {
                     goods_id: this.goods_id,
                     spec: spec,
                     stock: this.buy_min_number,
                     out_value: this.out_value,
-                });
+                };
+                uni.setStorageSync(app.globalData.data.cache_goods_spec_choice_key, back_data);
+                this.$emit('specConfirmEvent', back_data);
             }
         }
     };
@@ -325,15 +327,15 @@
         overflow-x: hidden;
         margin-top: 20rpx;
     }
-    .goods-spec-choice-container .item .spec button {
+    .goods-spec-choice-container .item .spec .spec-btn {
         background-color: #f5f5f5;
         color: #666;
         border: 1px solid #ccc;
     }
-    .goods-spec-choice-container .item .spec button:not(:last-child) {
+    .goods-spec-choice-container .item .spec .spec-btn:not(:last-child) {
         margin-right: 25rpx;
     }
-    .goods-spec-choice-container .item .spec button image {
+    .goods-spec-choice-container .item .spec .spec-btn .spec-btn-image {
         width: 40rpx;
         height: 40rpx !important;
     }
@@ -342,7 +344,7 @@
         background-color: #ffffff !important;
         border: 1px solid #ebeaea !important;
     }
-    .goods-spec-choice-container .spec-dont-choose image {
+    .goods-spec-choice-container .spec-dont-choose .spec-btn-image {
         opacity: 0.5;
     }
     .goods-spec-choice-container .spec-items-disabled {
@@ -350,7 +352,7 @@
         background-color: #ffffff !important;
         border: 1px dashed #d5d5d5 !important;
     }
-    .goods-spec-choice-container .spec-items-disabled image {
+    .goods-spec-choice-container .spec-items-disabled .spec-btn-image {
         opacity: 0.3;
     }
 </style>

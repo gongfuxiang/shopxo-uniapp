@@ -198,7 +198,7 @@ export default {
         },
         // 关闭按钮
         popup_close_event(e) {
-            this.$emit("onclose", false);
+            this.$emit("onclose");
         },
         //提交按钮
         sub_ragion_event() {

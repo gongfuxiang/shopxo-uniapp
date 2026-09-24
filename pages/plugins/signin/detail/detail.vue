@@ -134,7 +134,7 @@
     import componentCommon from '@/components/common/common';
     import componentNavBack from '@/components/nav-back/nav-back';
     import componentNoData from '@/components/no-data/no-data';
-    import componentSharePopup from '@/components/share-popup/share-popup';
+    import componentSharePopup from '@/pages/common/components/share-popup/share-popup';
     import componentGoodsList from '@/components/goods-list/goods-list';
     import pluginLocale from '../locale/index.js';
     var signin_static_url = app.globalData.get_static_url('signin', true) + 'app/';
@@ -217,10 +217,8 @@
             // 日历渲染
             this.get_calendar();
 
-            // 公共onshow事件
-            if ((this.$refs.common || null) != null) {
-                this.$refs.common.on_show();
-            }
+            // 公共onshow事件（$refs 未就绪时自动延后重试）
+            app.globalData.page_common_on_show(this);
         },
         // 下拉刷新
         onPullDownRefresh() {

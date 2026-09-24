@@ -303,9 +303,7 @@
             app.globalData.page_event_onshow_handle();
 
             // 公共 onShow（用户中心等）
-            if ((this.$refs.common || null) != null) {
-                this.$refs.common.on_show();
-            }
+            app.globalData.page_common_on_show(this);
 
             // 分享菜单处理
             app.globalData.page_share_handle(this.share_info);

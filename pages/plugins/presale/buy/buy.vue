@@ -90,7 +90,7 @@
     import base64 from '@/common/js/lib/base64.js';
     import componentCommon from '@/components/common/common';
     import componentNoData from '@/components/no-data/no-data';
-    import componentPayment from '@/components/payment/payment';
+    import componentPayment from '@/pages/common/components/payment/payment';
     import pluginLocale from '../locale/index.js';
 
     var common_static_url = app.globalData.get_static_url('common');
@@ -173,10 +173,8 @@
             // 初始化配置
             this.init_config();
 
-            // 公共onshow事件
-            if ((this.$refs.common || null) != null) {
-                this.$refs.common.on_show();
-            }
+            // 公共onshow事件（$refs 未就绪时自动延后重试）
+            app.globalData.page_common_on_show(this);
 
             // 分享菜单处理
             app.globalData.page_share_handle();

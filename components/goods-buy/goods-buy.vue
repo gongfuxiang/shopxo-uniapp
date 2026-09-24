@@ -593,6 +593,9 @@
 
             // 规格事件
             goods_spec_choice_event(e) {
+                if ((e || null) == null || (e.currentTarget || null) == null || (e.currentTarget.dataset || null) == null) {
+                    return false;
+                }
                 var key = e.currentTarget.dataset.key || 0;
                 var keys = e.currentTarget.dataset.keys || 0;
                 this.goods_spec_choice_handle(key, keys);
@@ -935,6 +938,9 @@
 
             // 数量操作事件
             goods_buy_number_event(e) {
+                if ((e || null) == null || (e.currentTarget || null) == null || (e.currentTarget.dataset || null) == null) {
+                    return false;
+                }
                 var type = parseInt(e.currentTarget.dataset.type || 0);
                 var temp_number = parseInt(this.buy_number);
                 var number = type == 0 ? temp_number - 1 : temp_number + 1;
@@ -1069,11 +1075,17 @@
                         }
                     }
 
-                    // 操作类型
-                    var type = (e == null) ? this.buy_event_type : (e.currentTarget.dataset.type || this.buy_event_type);
-                    var value = (e == null) ? null : (e.currentTarget.dataset.value || null);
-                    var business = (e == null) ? null : (e.currentTarget.dataset.business || null);
-                    var buylink = (e == null) ? null : (e.currentTarget.dataset.buylink || null);
+                    // 操作类型（登录回放时 e.currentTarget 可能为 null）
+                    var type = this.buy_event_type;
+                    var value = null;
+                    var business = null;
+                    var buylink = null;
+                    if ((e || null) != null && (e.currentTarget || null) != null && (e.currentTarget.dataset || null) != null) {
+                        type = e.currentTarget.dataset.type || this.buy_event_type;
+                        value = e.currentTarget.dataset.value || null;
+                        business = e.currentTarget.dataset.business || null;
+                        buylink = e.currentTarget.dataset.buylink || null;
+                    }
                     switch (type) {
                         // 展示型、商品页面规格选择展示型 拨打电话操作
                         case 'show':

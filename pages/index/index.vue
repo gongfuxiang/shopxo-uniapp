@@ -6,7 +6,7 @@
                 <block v-if="data_mode == 3">
                     <block v-if="load_status == 1">
                         <block v-if="(data_list || null) != null && (data_list.config || null) != null">
-                            <component-diy :propValue="data_list.config" :propDataId="data_list.id" :propKey="random_value" @onLocationBack="user_back_choice_location">
+                            <component-diy :propValue="data_list.config" :propDataId="data_list.id" :propKey="random_value" @onLocationBack="user_back_choice_location" @onLangOpen="diy_lang_open_event" @onShareOpen="diy_share_open_event">
                                 <!-- 由于diy组件异步加载、默认先加载骨架屏展示 -->
                                 <component-no-data propStatus="1" :propLoadingUseSkeleton="true" propPage="home"></component-no-data>
                                 <!-- 底部内容 -->
@@ -21,6 +21,9 @@
                                     <component-common ref="common_footer" :propIsModalBusiness="false" :propIsGrayscale="plugins_mourning_data_is_app"></component-common>
                                 </template>
                             </component-diy>
+                            <!-- diy 内嵌套跨分包异步组件不支持，由页面托管语言/分享 -->
+                            <component-lang-switch ref="lang_switch" @popup_sub_language_event="diy_popup_sub_language_event"></component-lang-switch>
+                            <component-share-popup ref="share"></component-share-popup>
                         </block>
                         <block v-else>
                             <component-no-data propStatus="0" propPage="home"></component-no-data>
@@ -370,6 +373,8 @@
     import componentMagicList from '@/pages/plugins/magic/components/magic-list/magic-list';
     import componentDiy from '@/pages/diy/components/diy/diy';
     import componentChoiceLocation from '@/components/choice-location/choice-location';
+    import componentLangSwitch from '@/pages/common/components/lang-switch/lang-switch';
+    import componentSharePopup from '@/pages/common/components/share-popup/share-popup';
 
     // 状态栏高度
     var bar_height = parseInt(app.globalData.get_system_info('statusBarHeight', 0, true));
@@ -490,6 +495,8 @@
             componentMagicList,
             componentDiy,
             componentChoiceLocation,
+            componentLangSwitch,
+            componentSharePopup,
         },
 
         onLoad(params) {
@@ -521,10 +528,8 @@
                 app.globalData.is_config(this, 'init_config');
             }
 
-            // 公共onshow事件
-            if ((this.$refs.common || null) != null) {
-                this.$refs.common.on_show({object: this, method: 'init'});
-            }
+            // 公共onshow事件（$refs 未就绪时自动延后重试）
+            app.globalData.page_common_on_show(this, {object: this, method: 'init'});
             if ((this.$refs.common_footer || null) != null) {
                 this.$refs.common_footer.on_show({object: this, method: 'init'});
             }
@@ -732,6 +737,27 @@
             user_back_choice_location(e) {
                 // 重新刷新数据
                 this.init();
+            },
+
+            // diy 多语言打开（页面托管异步组件）
+            diy_lang_open_event() {
+                if ((this.$refs.lang_switch || null) != null) {
+                    this.$refs.lang_switch.lang_open_event();
+                }
+            },
+
+            // diy 分享打开（页面托管异步组件）
+            diy_share_open_event() {
+                if ((this.$refs.share || null) != null) {
+                    this.$refs.share.init();
+                }
+            },
+
+            // diy 多语言选择回调
+            diy_popup_sub_language_event(e) {
+                e = uni.getStorageSync(app.globalData.data.cache_lang_switch_key) || e;
+                app.globalData.set_pages_navigation_bar_title();
+                app.globalData.init_config();
             },
 
             // url事件

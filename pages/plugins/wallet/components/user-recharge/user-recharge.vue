@@ -65,7 +65,7 @@
     import componentNoData from '@/components/no-data/no-data';
     import componentBottomLine from '@/components/bottom-line/bottom-line';
 
-    import componentPayment from '@/components/payment/payment';
+    import componentPayment from '@/pages/common/components/payment/payment';
 
     export default {
         props: {
@@ -324,6 +324,7 @@
             },
             // 支付成功数据设置
             order_item_pay_success_handle(data) {
+                data = uni.getStorageSync(app.globalData.data.cache_payment_keys.pay_success) || data || {};
                 var order_ids_arr = data.order_id.toString().split(',');
                 var temp_data_list = this.data_list;
                 for (var i in temp_data_list) {

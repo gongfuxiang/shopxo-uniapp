@@ -143,7 +143,7 @@
                                     </view>
                                     <view v-else class="flex-1 flex-width"></view>
                                     <block v-if="(item.is_error || 0) == 0">
-                                        <button class="goods-select-btn round text-size-xs bg-main cr-white br-main" type="default" size="mini" hover-class="none" :data-index="index" @tap.stop="goods_select_event">
+                                        <button v-if="(realstore.is_buy_staff_booking || 0) == 1" :class="'goods-select-btn round text-size-xs ' + ((staff.is_booking_enable || 0) == 1 ? 'bg-main cr-white br-main' : 'bg-grey-disabled')" type="default" size="mini" hover-class="none" :data-index="index" @tap.stop="goods_select_event">
                                             {{ $t('realstore-staff.go_order') }}
                                         </button>
                                     </block>
@@ -179,7 +179,7 @@
                 </view>
                 <view class="text-size-xss margin-top-xs" :class="(favor_info.status || 0) == 1 ? 'cr-main' : 'cr-base'">{{ (favor_info.status || 0) == 1 ? $t('realstore-staff.favored') : $t('realstore-staff.favor') }}</view>
             </view>
-            <button class="staff-bottom-book-btn flex-1 flex-width round bg-main cr-white text-size" type="default" hover-class="none" @tap="book_now_event">{{ $t('realstore-staff.book_now') }}</button>
+            <button :class="'staff-bottom-book-btn flex-1 flex-width round text-size ' + (staff_can_booking ? 'bg-main cr-white' : 'bg-grey-disabled')" type="default" hover-class="none" @tap="book_now_event">{{ $t('realstore-staff.book_now') }}</button>
         </view>
 
         <component-goods-buy ref="goods_buy" @BackConfirmEvent="goods_buy_back_event"></component-goods-buy>
@@ -196,7 +196,7 @@
     import componentGoodsBuy from '@/components/goods-buy/goods-buy';
     import componentRealstoreCart from '@/pages/plugins/realstore/components/realstore-cart/realstore-cart';
     import componentBanner from '@/components/slider/slider';
-    import componentSharePopup from '@/components/share-popup/share-popup';
+    import componentSharePopup from '@/pages/common/components/share-popup/share-popup';
     import componentBadge from '@/components/badge/badge';
     import pluginLocale from '../locale/index.js';
 
@@ -270,6 +270,10 @@
                 }
                 return booking.day_label + time;
             },
+            // 门店总预约开启且该员工可预约
+            staff_can_booking() {
+                return parseInt((this.realstore || {}).is_buy_staff_booking || 0) == 1 && parseInt((this.staff || {}).is_booking_enable || 0) == 1;
+            },
             // 基础信息网格（入驻/性别/年龄/身高/民族/属相/籍贯/星座）
             profile_info_list() {
                 var staff = this.staff || {};
@@ -319,10 +323,8 @@
             // 调用公共事件方法
             app.globalData.page_event_onshow_handle();
 
-            // 公共onshow事件
-            if ((this.$refs.common || null) != null) {
-                this.$refs.common.on_show();
-            }
+            // 公共onshow事件（$refs 未就绪时自动延后重试）
+            app.globalData.page_common_on_show(this);
         },
 
         // 下拉刷新
@@ -632,6 +634,14 @@
 
             // 立即预约：滚动到商品区 #staff-goods-section，并抖动提示选择
             book_now_event() {
+                if (parseInt((this.realstore || {}).is_buy_staff_booking || 0) != 1) {
+                    app.globalData.showToast(this.$t('realstore-staff.store_booking_disabled_tips'));
+                    return false;
+                }
+                if (parseInt((this.staff || {}).is_booking_enable || 0) != 1) {
+                    app.globalData.showToast(this.$t('realstore-staff.booking_disabled_tips'));
+                    return false;
+                }
                 if ((this.goods_list || []).length <= 0 && this.goods_list_loding_status != 1) {
                     app.globalData.showToast(this.$t('realstore-staff.bookable_services_2'));
                     return false;
@@ -712,6 +722,13 @@
 
             // 选择商品去下单
             goods_select_event(e) {
+                if (parseInt((this.realstore || {}).is_buy_staff_booking || 0) != 1) {
+                    return false;
+                }
+                if (parseInt((this.staff || {}).is_booking_enable || 0) != 1) {
+                    app.globalData.showToast(this.$t('realstore-staff.booking_disabled_tips'));
+                    return false;
+                }
                 var index = e.currentTarget.dataset.index;
                 var goods = (this.goods_list || [])[index];
                 if ((goods || null) == null) {

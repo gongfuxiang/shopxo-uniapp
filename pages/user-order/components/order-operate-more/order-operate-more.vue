@@ -7,16 +7,16 @@
         <button v-if="propOrder.operate_data.is_comments == 1" class="round bg-white cr-green br-green margin-bottom-main" type="default" size="mini" @tap="comments_event" hover-class="none">{{ $t('common.order_comment') }}</button>
         <!-- 详情页空间充足：次要操作全部直接展示；列表仍收进更多 -->
         <block v-if="is_detail_source">
-            <button
-                v-for="(item, index) in more_actions"
-                :key="item.key || index"
-                :class="'round bg-white margin-bottom-main ' + more_action_btn_class(item)"
-                type="default"
-                size="mini"
-                :data-index="index"
-                @tap="more_select_event"
-                hover-class="none"
-            >{{ item.name }}</button>
+            <block v-for="(item, index) in more_actions" :key="item.key">
+                <button
+                    :class="'round bg-white margin-bottom-main ' + more_action_btn_class(item)"
+                    type="default"
+                    size="mini"
+                    :data-index="index"
+                    @tap="more_select_event"
+                    hover-class="none"
+                >{{ item.name }}</button>
+            </block>
         </block>
         <button v-else-if="more_actions_count > 0" class="round bg-white cr-base br-base margin-bottom-main" type="default" size="mini" @tap="more_open_event" hover-class="none">{{ $t('common.more') }}</button>
 

@@ -108,7 +108,7 @@
     import componentCommon from '@/components/common/common';
     import componentNoData from '@/components/no-data/no-data';
     import componentBottomLine from '@/components/bottom-line/bottom-line';
-    import componentGoodsSpecChoice from '@/components/goods-spec-choice/goods-spec-choice';
+    import componentGoodsSpecChoice from '@/pages/common/components/goods-spec-choice/goods-spec-choice';
     import pluginLocale from '../locale/index.js';
     let binding_static_url = app.globalData.get_static_url('binding', true);
 
@@ -163,10 +163,8 @@
             // 获取数据
             this.get_data();
 
-            // 公共onshow事件
-            if ((this.$refs.common || null) != null) {
-                this.$refs.common.on_show();
-            }
+            // 公共onshow事件（$refs 未就绪时自动延后重试）
+            app.globalData.page_common_on_show(this);
         },
 
         // 下拉刷新
@@ -322,6 +320,7 @@
 
             // 规格确认回调事件
             spec_confirm_event(value) {
+                value = uni.getStorageSync(app.globalData.data.cache_goods_spec_choice_key) || value || {};
                 var temp_data = this.data;
                 temp_data['goods'][value.out_value]['spec_choice_data'] = value.spec;
                 temp_data['goods'][value.out_value]['spec_choice_text'] = value.spec

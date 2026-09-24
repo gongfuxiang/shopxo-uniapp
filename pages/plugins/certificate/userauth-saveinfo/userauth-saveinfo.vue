@@ -97,7 +97,7 @@
     const app = getApp();
     import componentCommon from '@/components/common/common';
     import componentNoData from '@/components/no-data/no-data';
-    import componentUpload from '@/components/upload/upload';
+    import componentUpload from '@/pages/common/components/upload/upload';
     import componentPopup from '@/components/popup/popup';
     import pluginLocale from '../locale/index.js';
 
@@ -141,10 +141,8 @@
             // 调用公共事件方法
             app.globalData.page_event_onshow_handle();
 
-            // 公共onshow事件
-            if ((this.$refs.common || null) != null) {
-                this.$refs.common.on_show();
-            }
+            // 公共onshow事件（$refs 未就绪时自动延后重试）
+            app.globalData.page_common_on_show(this);
 
             // 分享菜单处理
             app.globalData.page_share_handle();
@@ -198,7 +196,10 @@
             },
 
             // 上传回调事件
-            retrun_image_event(data, sign) {
+            retrun_image_event() {
+                var cache = uni.getStorageSync(app.globalData.data.cache_upload_callback_key) || {};
+                var data = cache.data;
+                var sign = cache.call_data;
                 var temp_images_data = this.licence_images_data;
                 var temp_data = this.data;
                 var value = data[0] || '';

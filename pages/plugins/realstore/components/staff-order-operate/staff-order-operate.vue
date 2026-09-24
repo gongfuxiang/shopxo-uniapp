@@ -132,7 +132,7 @@
 <script>
     const app = getApp();
     import componentPopup from '@/components/popup/popup';
-    import componentUpload from '@/components/upload/upload';
+    import componentUpload from '@/pages/common/components/upload/upload';
     import pluginLocale from '../../locale/index.js';
 
     export default {
@@ -347,7 +347,8 @@
             form_service_msg_event(e) {
                 this.setData({ form_service_msg: e.detail.value || '' });
             },
-            form_service_upload_event(list) {
+            form_service_upload_event() {
+                var list = (uni.getStorageSync(app.globalData.data.cache_upload_callback_key) || {}).data;
                 this.setData({ form_service_images: list || [] });
             },
             express_add_event() {

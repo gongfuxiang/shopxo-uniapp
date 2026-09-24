@@ -114,7 +114,7 @@
     import componentSearch from '@/components/search/search';
     import componentNoData from "@/components/no-data/no-data";
     import componentBottomLine from "@/components/bottom-line/bottom-line";
-    import componentPayment from '@/components/payment/payment';
+    import componentPayment from '@/pages/common/components/payment/payment';
     import componentOrderallotStaffBooking from '../components/orderallot-staff-booking/orderallot-staff-booking';
     import pluginLocale from '../locale/index.js';
 
@@ -218,10 +218,8 @@
             // 分享菜单处理
             app.globalData.page_share_handle();
 
-            // 公共onshow事件
-            if ((this.$refs.common || null) != null) {
-                this.$refs.common.on_show();
-            }
+            // 公共onshow事件（$refs 未就绪时自动延后重试）
+            app.globalData.page_common_on_show(this);
         },
 
         // 下拉刷新
@@ -431,6 +429,7 @@
             // 支付成功数据设置
             // 订单完成回调
             order_item_pay_success_handle(data) {
+                data = uni.getStorageSync(app.globalData.data.cache_payment_keys.pay_success) || data || {};
                 var order_ids_arr = data.order_id.toString().split(',');
                 var temp_data_list = this.data_list;
                 for (var i in temp_data_list) {

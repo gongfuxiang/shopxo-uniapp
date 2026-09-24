@@ -537,10 +537,8 @@
             // 清除tab参数
             app.globalData.remove_page_tabbar_switch_params();
 
-            // 公共onshow事件
-            if ((this.$refs.common || null) != null) {
-                this.$refs.common.on_show({object: this, method: 'init'});
-            }
+            // 公共onshow事件（$refs 未就绪时自动延后重试）
+            app.globalData.page_common_on_show(this, {object: this, method: 'init'});
         },
 
         methods: {

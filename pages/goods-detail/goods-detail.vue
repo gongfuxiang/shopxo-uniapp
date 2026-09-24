@@ -908,10 +908,10 @@
     const app = getApp();
     import componentCommon from '@/components/common/common';
     import componentGoodsBuy from '@/components/goods-buy/goods-buy';
-    import componentGoodsBatchBuy from '@/components/goods-batch-buy/goods-batch-buy';
+    import componentGoodsBatchBuy from '@/pages/goods-detail/components/goods-batch-buy/goods-batch-buy';
     import componentPopup from '@/components/popup/popup';
     import componentBadge from '@/components/badge/badge';
-    import componentTrnNav from '@/components/trn-nav/trn-nav';
+    import componentTrnNav from '@/pages/goods-detail/components/trn-nav/trn-nav';
     import componentCountdown from '@/components/countdown/countdown';
     import componentNoData from '@/components/no-data/no-data';
     import componentBottomLine from '@/components/bottom-line/bottom-line';
@@ -919,12 +919,12 @@
     import componentRealstoreList from '@/pages/plugins/realstore/components/realstore-list/realstore-list';
     import componentShopList from '@/pages/plugins/shop/components/shop-list/shop-list';
     import componentBindingDetailList from '@/pages/plugins/binding/components/binding-detail-list/binding-detail-list';
-    import componentSharePopup from '@/components/share-popup/share-popup';
+    import componentSharePopup from '@/pages/common/components/share-popup/share-popup';
     import componentGoodsComments from '@/pages/goods-detail/components/goods-comments/goods-comments';
     import componentCategorylimitWarmTips from '@/pages/goods-detail/components/categorylimit-warm-tips/categorylimit-warm-tips';
     import componentRealstoreCart from '@/pages/plugins/realstore/components/realstore-cart/realstore-cart';
     import componentGoodsList from '@/components/goods-list/goods-list';
-    import componentWholesaleRules from '@/components/wholesale-rules/wholesale-rules';
+    import componentWholesaleRules from '@/pages/goods-detail/components/wholesale-rules/wholesale-rules';
     import componentAskCommentsGoods from '@/pages/plugins/ask/components/ask-comments-goods/ask-comments-goods';
     import componentCouponCard from '@/pages/plugins/coupon/components/coupon-card/coupon-card';
     import componentGoodsCompare from '@/pages/plugins/goodscompare/components/goods-compare/goods-compare';
@@ -1139,7 +1139,8 @@
         },
 
         onShow() {
-            // 监听数据
+            // 先解绑再绑定，避免多次进入详情重复监听
+            uni.$off('onDataEvent');
             var self = this;
             uni.$on('onDataEvent', function(e) {
                 self.form_input_data_change_event(e);
@@ -1156,10 +1157,8 @@
                 this.init();
             }
 
-            // 公共onshow事件
-            if ((this.$refs.common || null) != null) {
-                this.$refs.common.on_show();
-            }
+            // 公共onshow（App.vue 内自动重试，无需 onReady 再补）
+            app.globalData.page_common_on_show(this);
         },
         
         onReady() {
@@ -1254,16 +1253,30 @@
             init_goods_buy_page() {
                 var self = this;
                 this.$nextTick(function () {
-                    if (!self.is_spec_page_inline || (self.$refs.goods_buy_page || null) == null || (self.goods || null) == null) {
+                    if (!self.is_spec_page_inline || (self.goods || null) == null) {
                         return;
                     }
-                    self.$refs.goods_buy_page.init(self.goods, {
+                    app.globalData.page_ref_call(self, 'goods_buy_page', 'init', [self.goods, {
                         buy_event_type: self.buy_event_type || 'buy',
                         buy_button: self.buy_button,
                         is_init: 1,
                         ...self.params,
-                    });
+                    }]);
                 });
+            },
+
+            // 安全读取事件 dataset（登录回放时 currentTarget 可能为 null）
+            event_dataset(e) {
+                if ((e || null) == null) {
+                    return null;
+                }
+                if ((e.currentTarget || null) != null && (e.currentTarget.dataset || null) != null) {
+                    return e.currentTarget.dataset;
+                }
+                if (e.index !== undefined || e.value !== undefined || e.type !== undefined) {
+                    return e;
+                }
+                return null;
             },
 
             // 初始化配置
@@ -1366,17 +1379,15 @@
 
                             // 如果已默认开启购买弹窗，库存为0则不开启
                             if (this.popup_buy_status && parseInt(goods.inventory) > 0 && !this.is_spec_page_inline) {
-                                if ((this.$refs.goods_buy || null) != null) {
-                                    this.$refs.goods_buy.init(this.goods, {...{buy_event_type: this.buy_event_type, buy_button: this.buy_button}, ...this.params});
-                                    this.setData({is_loading_goods_buy_popup: 1});
-                                }
+                                app.globalData.page_ref_call(this, 'goods_buy', 'init', [this.goods, {...{buy_event_type: this.buy_event_type, buy_button: this.buy_button}, ...this.params}]);
+                                this.setData({is_loading_goods_buy_popup: 1});
                             }
 
                             // 规格内页直选初始化
                             this.init_goods_buy_page();
 
                             // 是否展示门店购物车导航
-                            if((this.plugins_realstore_data || null) != null && (this.$refs.realstore_cart || null) != null) {
+                            if((this.plugins_realstore_data || null) != null) {
                                 // 当前门店信息
                                 if((this.plugins_realstore_data.info || null) != null) {
                                     this.setData({
@@ -1384,7 +1395,7 @@
                                         goods_bottom_nav_status: false,
                                         goods_bottom_opt_nav_status: false,
                                     });
-                                    this.$refs.realstore_cart.init({...{source: 'goods', base: this.plugins_realstore_data.base, info: this.plugins_realstore_data.info, realstore_goods_data: {...{buy_button: this.buy_button}, ...this.goods}}, ...this.params});
+                                    app.globalData.page_ref_call(this, 'realstore_cart', 'init', [{...{source: 'goods', base: this.plugins_realstore_data.base, info: this.plugins_realstore_data.info, realstore_goods_data: {...{buy_button: this.buy_button}, ...this.goods}}, ...this.params}]);
                                 }
 
                                 // 是否需要隐藏购物车
@@ -1501,8 +1512,12 @@
             // 顶部导航事件
             top_nav_title_event(e) {
                 var self = this;
-                var index = e.currentTarget.dataset.index || 0;
-                var value = e.currentTarget.dataset.value || null;
+                var ds = this.event_dataset(e) || {};
+                var index = ds.index || 0;
+                var value = ds.value || null;
+                if ((value || null) == null) {
+                    return false;
+                }
 
                 // 清除定时任务并禁止滚动改变
                 clearTimeout(self.top_nav_title_timer);
@@ -1537,8 +1552,9 @@
                 if (!app.globalData.is_single_page_check()) {
                     return false;
                 }
-                var type = e.currentTarget.dataset.type || null;
-                var value = e.currentTarget.dataset.value || null;
+                var ds = this.event_dataset(e) || {};
+                var type = ds.type || null;
+                var value = ds.value || null;
                 app.globalData.url_open(value);
             },
 
@@ -1575,16 +1591,20 @@
                 if (!app.globalData.is_single_page_check()) {
                     return false;
                 }
-                var type = e.currentTarget.dataset.type || 'buy';
-                var value = e.currentTarget.dataset.value || null;
+                var ds = this.event_dataset(e) || {};
+                var type = ds.type || 'buy';
+                var value = ds.value || null;
 
                 // 订单商品表单插件数据验证处理
                 var form_input_check_arr = ['spec-show', 'buy', 'cart', 'plugins-batchbuy-button-buy', 'plugins-batchbuy-button-cart'];
-                if (form_input_check_arr.indexOf(type) != -1 && (this.$refs.form_input_base || null) != null) {
-                    var res = this.$refs.form_input_base.on_submit_event();
-                    if(res.status == 'error') {
-                        app.globalData.showToast(res.message);
-                        return false;
+                if (form_input_check_arr.indexOf(type) != -1) {
+                    var form_input_base = app.globalData.page_ref(this, 'form_input_base');
+                    if (form_input_base != null) {
+                        var res = form_input_base.on_submit_event();
+                        if(res.status == 'error') {
+                            app.globalData.showToast(res.message);
+                            return false;
+                        }
                     }
                 }
 
@@ -1609,18 +1629,17 @@
                     case 'cart':
                         this.setData({ buy_event_type: type });
                         // 内页已选全则直接确认；否则走弹层
-                        if (this.is_spec_page_inline && (this.$refs.goods_buy_page || null) != null) {
-                            if (this.$refs.goods_buy_page.is_spec_selected_complete()) {
-                                this.$refs.goods_buy_page.page_buy_submit(type);
+                        var goods_buy_page = app.globalData.page_ref(this, 'goods_buy_page');
+                        if (this.is_spec_page_inline && goods_buy_page != null) {
+                            if (goods_buy_page.is_spec_selected_complete()) {
+                                goods_buy_page.page_buy_submit(type);
                                 return false;
                             }
                             app.globalData.showToast(this.$t('common.please_select_spec'));
                             return false;
                         }
-                        if ((this.$refs.goods_buy || null) != null) {
-                            this.$refs.goods_buy.init(this.goods, {...{buy_event_type: this.buy_event_type, buy_button: this.buy_button, is_init: this.is_loading_goods_buy_popup == 0 ? 1 : 0}, ...this.params});
-                            this.setData({is_loading_goods_buy_popup: 1});
-                        }
+                        app.globalData.page_ref_call(this, 'goods_buy', 'init', [this.goods, {...{buy_event_type: this.buy_event_type, buy_button: this.buy_button, is_init: this.is_loading_goods_buy_popup == 0 ? 1 : 0}, ...this.params}]);
+                        this.setData({is_loading_goods_buy_popup: 1});
                         break;
                     // url事件
                     case 'url':
@@ -1684,9 +1703,7 @@
                     // 商品批量下单(购买,加入购物车)
                     case 'plugins-batchbuy-button-buy':
                     case 'plugins-batchbuy-button-cart':
-                        if ((this.$refs.goods_batch_buy || null) != null) {
-                            this.$refs.goods_batch_buy.init({goods: this.goods, batchbuy_data: this.plugins_batchbuy_data, buy_button: this.buy_button, plugins_wholesale_data: this.plugins_wholesale_data});
-                        }
+                        app.globalData.page_ref_call(this, 'goods_batch_buy', 'init', [{goods: this.goods, batchbuy_data: this.plugins_batchbuy_data, buy_button: this.buy_button, plugins_wholesale_data: this.plugins_wholesale_data}]);
                         break;
                     // 默认
                     default:
@@ -1795,7 +1812,8 @@
 
             // 详情图片查看
             goods_detail_images_view_event(e) {
-                var value = e.currentTarget.dataset.value || null;
+                var ds = this.event_dataset(e) || {};
+                var value = ds.value || null;
                 if (value != null) {
                     uni.previewImage({
                         current: value,
@@ -1806,7 +1824,8 @@
 
             // 商品相册图片查看
             goods_photo_view_event(e) {
-                var index = e.currentTarget.dataset.index;
+                var ds = this.event_dataset(e) || {};
+                var index = ds.index;
                 var all = [];
                 for (var i in this.goods_photo) {
                     all.push(this.goods_photo[i]['images']);
@@ -1833,14 +1852,12 @@
 
             // 分享开启弹层
             popup_share_event(e) {
-                if ((this.$refs.share || null) != null) {
-                    this.$refs.share.init({
-                        status: true,
-                        is_goods_poster: this.plugins_is_goods_detail_poster,
-                        goods_id: this.goods.id,
-                        share_info: this.share_info
-                    });
-                }
+                app.globalData.page_ref_call(this, 'share', 'init', [{
+                    status: true,
+                    is_goods_poster: this.plugins_is_goods_detail_poster,
+                    goods_id: this.goods.id,
+                    share_info: this.share_info
+                }]);
             },
 
             // 聚合优惠数据开启弹层
@@ -1880,10 +1897,20 @@
                 if (!app.globalData.is_single_page_check()) {
                     return false;
                 }
-                // 登录校验
-                let user = app.globalData.get_user_info(this, 'coupon_receive_event', e);
+                // 先落盘 dataset，登录回放时 currentTarget 可能已为 null
+                var dataset = this.event_dataset(e);
+                if (dataset != null) {
+                    uni.setStorageSync('cache_plugins_coupon_receive_key', dataset);
+                } else {
+                    dataset = uni.getStorageSync('cache_plugins_coupon_receive_key') || null;
+                }
+                if (dataset == null) {
+                    return false;
+                }
+                // 登录校验（回调用 back 事件读缓存，避免再依赖事件对象）
+                let user = app.globalData.get_user_info(this, 'coupon_receive_back_event');
                 if (user != false) {
-                    this.coupon_receive_handle(e.currentTarget.dataset);
+                    this.coupon_receive_handle(dataset);
                 }
             },
 
@@ -1978,9 +2005,10 @@
 
             // 商品参数开启弹层
             popup_params_event(e) {
+                var ds = this.event_dataset(e) || {};
                 this.setData({
                     popup_params_status: true,
-                    popup_params_type_field: e.currentTarget.dataset.value || 'base',
+                    popup_params_type_field: ds.value || 'base',
                 });
             },
 

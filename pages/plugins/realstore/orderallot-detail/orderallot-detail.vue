@@ -318,7 +318,7 @@
     import componentCommon from '@/components/common/common';
     import componentNoData from "@/components/no-data/no-data";
     import componentBottomLine from "@/components/bottom-line/bottom-line";
-    import componentPayment from '@/components/payment/payment';
+    import componentPayment from '@/pages/common/components/payment/payment';
     import componentOrderallotStaffBooking from '../components/orderallot-staff-booking/orderallot-staff-booking';
     import pluginLocale from '../locale/index.js';
 
@@ -435,10 +435,8 @@
             // 分享菜单处理
             app.globalData.page_share_handle();
 
-            // 公共onshow事件
-            if ((this.$refs.common || null) != null) {
-                this.$refs.common.on_show();
-            }
+            // 公共onshow事件（$refs 未就绪时自动延后重试）
+            app.globalData.page_common_on_show(this);
         },
 
         // 下拉刷新

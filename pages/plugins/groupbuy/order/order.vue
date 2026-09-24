@@ -78,7 +78,7 @@
     import componentSearch from '@/components/search/search';
     import componentNoData from '@/components/no-data/no-data';
     import componentBottomLine from '@/components/bottom-line/bottom-line';
-    import componentPanelContent from '@/components/panel-content/panel-content';
+    import componentPanelContent from '@/pages/common/components/panel-content/panel-content';
     import pluginLocale from '../locale/index.js';
 
     // 状态栏高度
@@ -152,10 +152,8 @@
             // 调用公共事件方法
             app.globalData.page_event_onshow_handle();
 
-            // 公共onshow事件
-            if ((this.$refs.common || null) != null) {
-                this.$refs.common.on_show();
-            }
+            // 公共onshow事件（$refs 未就绪时自动延后重试）
+            app.globalData.page_common_on_show(this);
 
             // onShow 可能早于 init 完成，tab 已就绪但列表未拉取时补拉一次
             if (this.nav_status_list.length > 0 && this.data_list.length <= 0 && this.data_is_loading == 0) {

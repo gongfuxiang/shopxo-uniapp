@@ -104,7 +104,7 @@
     const app = getApp();
     import componentCommon from '@/components/common/common';
     import componentPopup from '@/components/popup/popup';
-    import componentLangSwitch from '@/components/lang-switch/lang-switch';
+    import componentLangSwitch from '@/pages/common/components/lang-switch/lang-switch';
     import pluginLocale from './locale/index.js';
     export default {
         mixins: [pluginLocale],
@@ -157,10 +157,8 @@
             // 数据加载
             this.init();
 
-            // 公共onshow事件
-            if ((this.$refs.common || null) != null) {
-                this.$refs.common.on_show();
-            }
+            // 公共onshow事件（$refs 未就绪时自动延后重试）
+            app.globalData.page_common_on_show(this);
         },
 
         methods: {
@@ -275,6 +273,7 @@
             },
             // 提交语言选择
             popup_sub_language_event(e) {
+                e = uni.getStorageSync(app.globalData.data.cache_lang_switch_key) || e;
                 this.setData({
                     language: e,
                 });

@@ -7,21 +7,21 @@
             <view class="time-select-popup-content" @click.stop="_stopFunc">
                 <view class="time-select-close-btn" v-if="propCloseBtn" @tap="_closeBtnClose">×</view>
                 <view class="time-select-title padding-bottom-sm">
-                    <view v-if="(propTitle || null) != null">{{ propTitle || this.$t('common.select_time_2') }}</view>
-                    <view v-if="(propSubhead || null) != null">{{ propSubhead }}</view>
+                    <view v-if="(propTitle || null) != null" class="time-select-title-main">{{ propTitle || this.$t('common.select_time_2') }}</view>
+                    <view v-if="(propSubhead || null) != null" class="time-select-subhead">{{ propSubhead }}</view>
                 </view>
                 <view class="time-select-time-box">
                     <view class="left_box">
                         <block v-if="item.timeArr.length > 0" v-for="(item, index) in timeList" :key="item.dateStr">
-                            <view @tap="_changeDay(index)" :class="{ active: item.checked }">
+                            <view @tap="_changeDay(index)" class="time-select-item" :class="{ active: item.checked }">
                                 {{ item.name }}
                             </view>
                         </block>
                     </view>
                     <view class="right_box">
-                        <view v-if="day_active_index == 0 && (propPlaceholder || null) != null" @tap="_changeTime('')" :class="time_active_index === '' ? 'active' : ''">{{ propPlaceholder }}</view>
+                        <view v-if="day_active_index == 0 && (propPlaceholder || null) != null" @tap="_changeTime('')" class="time-select-item" :class="time_active_index === '' ? 'active' : ''">{{ propPlaceholder }}</view>
                         <block v-for="(item, index) in activeTimeArr" :key="item.time">
-                            <view @tap="_changeTime(index)" :class="{ active: item.checked }"> {{ item.time }}{{ propRangeType ? '-' + item.endtime : '' }} </view>
+                            <view @tap="_changeTime(index)" class="time-select-item" :class="{ active: item.checked }"> {{ item.time }}{{ propRangeType ? '-' + item.endtime : '' }} </view>
                         </block>
                     </view>
                 </view>
@@ -437,7 +437,13 @@
         z-index: 100;
         pointer-events: none;
     }
-    .time-select-popup-mask view {
+    .time-select-popup-content,
+    .time-select-title,
+    .time-select-close-btn,
+    .time-select-time-box,
+    .time-select-time-box .left_box,
+    .time-select-time-box .right_box,
+    .time-select-item {
         box-sizing: border-box;
     }
     .time-select-popup-content {
@@ -485,7 +491,7 @@
         z-index: 99;
         font-size: 44rpx;
     }
-    .time-select-title > view:nth-child(2) {
+    .time-select-subhead {
         font-size: 22rpx;
         color: #919191;
         margin-top: 10rpx;
@@ -498,7 +504,8 @@
         justify-content: space-between;
         align-items: center;
     }
-    .time-select-time-box > view {
+    .time-select-time-box .left_box,
+    .time-select-time-box .right_box {
         height: 100%;
         overflow-y: auto;
         -webkit-overflow-scrolling: touch;
@@ -508,14 +515,14 @@
         color: #919191;
         width: 45%;
     }
-    .time-select-time-box .left_box view,
-    .time-select-time-box .right_box view {
+    .time-select-time-box .left_box .time-select-item,
+    .time-select-time-box .right_box .time-select-item {
         text-align: center;
         line-height: 90rpx;
         position: relative;
         color: #666;
     }
-    .time-select-time-box .right_box view::before {
+    .time-select-time-box .right_box .time-select-item::before {
         content: ' ';
         width: 80%;
         position: absolute;
@@ -523,7 +530,7 @@
         bottom: 0;
         border: 1px dashed #f4f4f4;
     }
-    .time-select-time-box .right_box view:last-child::before {
+    .time-select-time-box .right_box .time-select-item:last-child::before {
         border: none;
     }
     .time-select-time-box .right_box {

@@ -70,7 +70,7 @@
     const app = getApp();
     import componentCommon from '@/components/common/common';
     import componentNoData from '@/components/no-data/no-data';
-    import componentUpload from '@/components/upload/upload';
+    import componentUpload from '@/pages/common/components/upload/upload';
     import pluginLocale from '../locale/index.js';
     import pageLocale from './locale/index.js';
 
@@ -111,9 +111,7 @@
         onShow() {
             app.globalData.page_event_onshow_handle();
             this.init();
-            if ((this.$refs.common || null) != null) {
-                this.$refs.common.on_show();
-            }
+            app.globalData.page_common_on_show(this);
         },
         onPullDownRefresh() {
             this.init();
@@ -185,13 +183,19 @@
                 this.setData({ staff_content_list: temp });
             },
             // 商品评价图片上传回调
-            goods_upload_event(res, index) {
+            goods_upload_event() {
+                var cache = uni.getStorageSync(app.globalData.data.cache_upload_callback_key) || {};
+                var res = cache.data;
+                var index = cache.call_data;
                 var temp = this.goods_images_list.slice();
                 temp[index] = res;
                 this.setData({ goods_images_list: temp });
             },
             // 员工评价图片上传回调
-            staff_upload_event(res, index) {
+            staff_upload_event() {
+                var cache = uni.getStorageSync(app.globalData.data.cache_upload_callback_key) || {};
+                var res = cache.data;
+                var index = cache.call_data;
                 var temp = this.staff_images_list.slice();
                 temp[index] = res;
                 this.setData({ staff_images_list: temp });

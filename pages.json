@@ -15,6 +15,7 @@
                 "usingComponents": {
                     "component-diy": "/pages/diy/components/diy/diy",
                     "component-form-input": "/pages/form-input/components/form-input/form-input",
+                    "component-region-picker": "/pages/common/components/region-picker/region-picker",
                     "component-layout": "/pages/design/components/layout/layout",
                     "component-binding-list": "/pages/plugins/binding/components/binding-list/binding-list",
                     "component-realstore-list": "/pages/plugins/realstore/components/realstore-list/realstore-list",
@@ -23,11 +24,14 @@
                     "component-groupbuy-home-list": "/pages/plugins/groupbuy/components/groupbuy-home-list/groupbuy-home-list",
                     "component-blog-list": "/pages/plugins/blog/components/blog-list/blog-list",
                     "component-activity-list": "/pages/plugins/activity/components/activity-list/activity-list",
-                    "component-magic-list": "/pages/plugins/magic/components/magic-list/magic-list"
+                    "component-magic-list": "/pages/plugins/magic/components/magic-list/magic-list",
+                    "component-share-popup": "/pages/common/components/share-popup/share-popup",
+                    "component-lang-switch": "/pages/common/components/lang-switch/lang-switch"
                 },
                 "componentPlaceholder": {
                     "component-diy": "view",
                     "component-form-input": "view",
+                    "component-region-picker": "view",
                     "component-layout": "view",
                     "component-binding-list": "view",
                     "component-realstore-list": "view",
@@ -36,7 +40,9 @@
                     "component-groupbuy-home-list": "view",
                     "component-blog-list": "view",
                     "component-activity-list": "view",
-                    "component-magic-list": "view"
+                    "component-magic-list": "view",
+                    "component-share-popup": "view",
+                    "component-lang-switch": "view"
                 }
             }
         },
@@ -112,7 +118,15 @@
                         "titlePenetrate": "YES",
                         // #endif
                         "enablePullDownRefresh": true,
-                        "navigationBarTitleText": ""
+                        "navigationBarTitleText": "",
+                        "usingComponents": {
+                            "component-share-popup": "/pages/common/components/share-popup/share-popup",
+                            "component-lang-switch": "/pages/common/components/lang-switch/lang-switch"
+                        },
+                        "componentPlaceholder": {
+                            "component-share-popup": "view",
+                            "component-lang-switch": "view"
+                        }
                     }
                 }
             ]
@@ -131,7 +145,13 @@
                         "titlePenetrate": "YES",
                         // #endif
                         "enablePullDownRefresh": true,
-                        "navigationBarTitleText": ""
+                        "navigationBarTitleText": "",
+                        "usingComponents": {
+                            "component-region-picker": "/pages/common/components/region-picker/region-picker"
+                        },
+                        "componentPlaceholder": {
+                            "component-region-picker": "view"
+                        }
                     },
                     "usingComponents": {
                         "baidu-editor": "dynamicLib://editorLib/editor"
@@ -148,7 +168,13 @@
                         "titlePenetrate": "YES",
                         // #endif
                         "enablePullDownRefresh": true,
-                        "navigationBarTitleText": ""
+                        "navigationBarTitleText": "",
+                        "usingComponents": {
+                            "component-region-picker": "/pages/common/components/region-picker/region-picker"
+                        },
+                        "componentPlaceholder": {
+                            "component-region-picker": "view"
+                        }
                     },
                     "usingComponents": {
                         "baidu-editor": "dynamicLib://editorLib/editor"
@@ -163,7 +189,13 @@
                     "path": "form-input-data",
                     "style": {
                         "enablePullDownRefresh": true,
-                        "navigationBarTitleText": ""
+                        "navigationBarTitleText": "",
+                        "usingComponents": {
+                            "component-panel-content": "/pages/common/components/panel-content/panel-content"
+                        },
+                        "componentPlaceholder": {
+                            "component-panel-content": "view"
+                        }
                     }
                 }
             ]
@@ -177,10 +209,12 @@
                         "enablePullDownRefresh": true,
                         "navigationBarTitleText": "",
                         "usingComponents": {
-                            "component-form-input-detail": "/pages/form-input/components/form-input-detail/form-input-detail"
+                            "component-form-input-detail": "/pages/form-input/components/form-input-detail/form-input-detail",
+                            "component-panel-content": "/pages/common/components/panel-content/panel-content"
                         },
                         "componentPlaceholder": {
-                            "component-form-input-detail": "view"
+                            "component-form-input-detail": "view",
+                            "component-panel-content": "view"
                         }
                     }
                 }
@@ -206,7 +240,9 @@
                             "component-ask-comments-goods": "/pages/plugins/ask/components/ask-comments-goods/ask-comments-goods",
                             "component-coupon-card": "/pages/plugins/coupon/components/coupon-card/coupon-card",
                             "component-goods-compare": "/pages/plugins/goodscompare/components/goods-compare/goods-compare",
-                            "component-form-input-base": "/pages/form-input/components/form-input/form-input-base"
+                            "component-form-input-base": "/pages/form-input/components/form-input/form-input-base",
+                            "component-region-picker": "/pages/common/components/region-picker/region-picker",
+                            "component-share-popup": "/pages/common/components/share-popup/share-popup"
                         },
                         "componentPlaceholder": {
                             "component-goods-comments": "view",
@@ -217,7 +253,9 @@
                             "component-ask-comments-goods": "view",
                             "component-coupon-card": "view",
                             "component-goods-compare": "view",
-                            "component-form-input-base": "view"
+                            "component-form-input-base": "view",
+                            "component-region-picker": "view",
+                            "component-share-popup": "view"
                         }
                     }
                 }
@@ -230,7 +268,13 @@
                     "path": "login",
                     "style": {
                         "enablePullDownRefresh": false,
-                        "navigationBarTitleText": ""
+                        "navigationBarTitleText": "",
+                        "usingComponents": {
+                            "component-lang-switch": "/pages/common/components/lang-switch/lang-switch"
+                        },
+                        "componentPlaceholder": {
+                            "component-lang-switch": "view"
+                        }
                     }
                 }
             ]
@@ -275,12 +319,20 @@
                         "usingComponents": {
                             "component-form-input-base": "/pages/form-input/components/form-input/form-input-base",
                             "component-invoice-buy-popup": "/pages/plugins/invoice/components/invoice-buy-popup/invoice-buy-popup",
-                            "component-friendpay-mode-switch": "/pages/plugins/friendpay/components/pay-mode-switch/pay-mode-switch"
+                            "component-friendpay-mode-switch": "/pages/plugins/friendpay/components/pay-mode-switch/pay-mode-switch",
+                            "component-time-select": "/pages/common/components/time-select/time-select",
+                            "component-region-picker": "/pages/common/components/region-picker/region-picker",
+                            "component-payment": "/pages/common/components/payment/payment",
+                            "component-realstore-cart": "/pages/plugins/realstore/components/realstore-cart/realstore-cart"
                         },
                         "componentPlaceholder": {
                             "component-form-input-base": "view",
                             "component-invoice-buy-popup": "view",
-                            "component-friendpay-mode-switch": "view"
+                            "component-friendpay-mode-switch": "view",
+                            "component-time-select": "view",
+                            "component-region-picker": "view",
+                            "component-payment": "view",
+                            "component-realstore-cart": "view"
                         }
                     }
                 }
@@ -374,10 +426,12 @@
                         "enablePullDownRefresh": true,
                         "navigationBarTitleText": "",
                         "usingComponents": {
-                            "component-friendpay-order-pay-popup": "/pages/plugins/friendpay/components/order-pay-popup/order-pay-popup"
+                            "component-friendpay-order-pay-popup": "/pages/plugins/friendpay/components/order-pay-popup/order-pay-popup",
+                            "component-payment": "/pages/common/components/payment/payment"
                         },
                         "componentPlaceholder": {
-                            "component-friendpay-order-pay-popup": "view"
+                            "component-friendpay-order-pay-popup": "view",
+                            "component-payment": "view"
                         }
                     }
                 }
@@ -394,12 +448,14 @@
                         "usingComponents": {
                             "component-hospital-order-detail": "/pages/plugins/hospital/components/order-detail/order-detail",
                             "component-order-operate-more": "/pages/user-order/components/order-operate-more/order-operate-more",
-                            "component-friendpay-order-pay-popup": "/pages/plugins/friendpay/components/order-pay-popup/order-pay-popup"
+                            "component-friendpay-order-pay-popup": "/pages/plugins/friendpay/components/order-pay-popup/order-pay-popup",
+                            "component-payment": "/pages/common/components/payment/payment"
                         },
                         "componentPlaceholder": {
                             "component-hospital-order-detail": "view",
                             "component-order-operate-more": "view",
-                            "component-friendpay-order-pay-popup": "view"
+                            "component-friendpay-order-pay-popup": "view",
+                            "component-payment": "view"
                         }
                     }
                 }
@@ -412,7 +468,13 @@
                     "path": "user-order-comments",
                     "style": {
                         "enablePullDownRefresh": true,
-                        "navigationBarTitleText": ""
+                        "navigationBarTitleText": "",
+                        "usingComponents": {
+                            "component-upload": "/pages/common/components/upload/upload"
+                        },
+                        "componentPlaceholder": {
+                            "component-upload": "view"
+                        }
                     }
                 }
             ]
@@ -436,7 +498,13 @@
                     "path": "user-goods-comments",
                     "style": {
                         "enablePullDownRefresh": true,
-                        "navigationBarTitleText": ""
+                        "navigationBarTitleText": "",
+                        "usingComponents": {
+                            "component-panel-content": "/pages/common/components/panel-content/panel-content"
+                        },
+                        "componentPlaceholder": {
+                            "component-panel-content": "view"
+                        }
                     }
                 }
             ]
@@ -515,7 +583,13 @@
                     "path": "user-orderaftersale-detail",
                     "style": {
                         "enablePullDownRefresh": true,
-                        "navigationBarTitleText": ""
+                        "navigationBarTitleText": "",
+                        "usingComponents": {
+                            "component-upload": "/pages/common/components/upload/upload"
+                        },
+                        "componentPlaceholder": {
+                            "component-upload": "view"
+                        }
                     }
                 }
             ]
@@ -533,10 +607,10 @@
             ]
         },
         {
-            "root": "pages/common/open-setting-location",
+            "root": "pages/common",
             "pages": [
                 {
-                    "path": "open-setting-location",
+                    "path": "open-setting-location/open-setting-location",
                     "style": {
                         // #ifndef MP-TOUTIAO
                         "navigationStyle": "custom",
@@ -686,7 +760,13 @@
                     "path": "setup",
                     "style": {
                         "enablePullDownRefresh": false,
-                        "navigationBarTitleText": ""
+                        "navigationBarTitleText": "",
+                        "usingComponents": {
+                            "component-lang-switch": "/pages/common/components/lang-switch/lang-switch"
+                        },
+                        "componentPlaceholder": {
+                            "component-lang-switch": "view"
+                        }
                     }
                 }
             ]
@@ -821,10 +901,12 @@
                         "enablePullDownRefresh": true,
                         "navigationBarTitleText": "",
                         "usingComponents": {
-                            "component-time-select": "/pages/common/components/time-select/time-select"
+                            "component-time-select": "/pages/common/components/time-select/time-select",
+                            "component-payment": "/pages/common/components/payment/payment"
                         },
                         "componentPlaceholder": {
-                            "component-time-select": "view"
+                            "component-time-select": "view",
+                            "component-payment": "view"
                         }
                     }
                 },
@@ -848,10 +930,12 @@
                         "enablePullDownRefresh": true,
                         "navigationBarTitleText": "",
                         "usingComponents": {
-                            "component-form-input-detail": "/pages/form-input/components/form-input-detail/form-input-detail"
+                            "component-form-input-detail": "/pages/form-input/components/form-input-detail/form-input-detail",
+                            "component-panel-content": "/pages/common/components/panel-content/panel-content"
                         },
                         "componentPlaceholder": {
-                            "component-form-input-detail": "view"
+                            "component-form-input-detail": "view",
+                            "component-panel-content": "view"
                         }
                     }
                 },
@@ -861,10 +945,12 @@
                         "enablePullDownRefresh": false,
                         "navigationBarTitleText": "",
                         "usingComponents": {
-                            "component-form-input-base": "/pages/form-input/components/form-input/form-input-base"
+                            "component-form-input-base": "/pages/form-input/components/form-input/form-input-base",
+                            "component-region-picker": "/pages/common/components/region-picker/region-picker"
                         },
                         "componentPlaceholder": {
-                            "component-form-input-base": "view"
+                            "component-form-input-base": "view",
+                            "component-region-picker": "view"
                         }
                     }
                 },
@@ -872,7 +958,13 @@
                     "path": "order/order",
                     "style": {
                         "enablePullDownRefresh": true,
-                        "navigationBarTitleText": ""
+                        "navigationBarTitleText": "",
+                        "usingComponents": {
+                            "component-payment": "/pages/common/components/payment/payment"
+                        },
+                        "componentPlaceholder": {
+                            "component-payment": "view"
+                        }
                     }
                 },
                 {
@@ -942,10 +1034,12 @@
                         "enablePullDownRefresh": true,
                         "navigationBarTitleText": "",
                         "usingComponents": {
-                            "component-form-input-detail": "/pages/form-input/components/form-input-detail/form-input-detail"
+                            "component-form-input-detail": "/pages/form-input/components/form-input-detail/form-input-detail",
+                            "component-panel-content": "/pages/common/components/panel-content/panel-content"
                         },
                         "componentPlaceholder": {
-                            "component-form-input-detail": "view"
+                            "component-form-input-detail": "view",
+                            "component-panel-content": "view"
                         }
                     }
                 },
@@ -955,10 +1049,12 @@
                         "enablePullDownRefresh": false,
                         "navigationBarTitleText": "",
                         "usingComponents": {
-                            "component-form-input-base": "/pages/form-input/components/form-input/form-input-base"
+                            "component-form-input-base": "/pages/form-input/components/form-input/form-input-base",
+                            "component-region-picker": "/pages/common/components/region-picker/region-picker"
                         },
                         "componentPlaceholder": {
-                            "component-form-input-base": "view"
+                            "component-form-input-base": "view",
+                            "component-region-picker": "view"
                         }
                     }
                 },
@@ -994,7 +1090,13 @@
                     "path": "team/team",
                     "style": {
                         "enablePullDownRefresh": true,
-                        "navigationBarTitleText": ""
+                        "navigationBarTitleText": "",
+                        "usingComponents": {
+                            "component-panel-content": "/pages/common/components/panel-content/panel-content"
+                        },
+                        "componentPlaceholder": {
+                            "component-panel-content": "view"
+                        }
                     }
                 },
                 {
@@ -1008,28 +1110,54 @@
                     "path": "recommend-list/recommend-list",
                     "style": {
                         "enablePullDownRefresh": true,
-                        "navigationBarTitleText": ""
+                        "navigationBarTitleText": "",
+                        "usingComponents": {
+                            "component-share-popup": "/pages/common/components/share-popup/share-popup"
+                        },
+                        "componentPlaceholder": {
+                            "component-share-popup": "view"
+                        }
                     }
                 },
                 {
                     "path": "recommend-detail/recommend-detail",
                     "style": {
                         "enablePullDownRefresh": true,
-                        "navigationBarTitleText": ""
+                        "navigationBarTitleText": "",
+                        "usingComponents": {
+                            "component-share-popup": "/pages/common/components/share-popup/share-popup"
+                        },
+                        "componentPlaceholder": {
+                            "component-share-popup": "view"
+                        }
                     }
                 },
                 {
                     "path": "recommend-form/recommend-form",
                     "style": {
                         "enablePullDownRefresh": true,
-                        "navigationBarTitleText": ""
+                        "navigationBarTitleText": "",
+                        "usingComponents": {
+                            "component-goods-spec-choice": "/pages/common/components/goods-spec-choice/goods-spec-choice",
+                            "component-upload": "/pages/common/components/upload/upload"
+                        },
+                        "componentPlaceholder": {
+                            "component-goods-spec-choice": "view",
+                            "component-upload": "view"
+                        }
                     }
                 },
                 {
                     "path": "poster/poster",
                     "style": {
                         "enablePullDownRefresh": true,
-                        "navigationBarTitleText": ""
+                        "navigationBarTitleText": "",
+                        "usingComponents": {
+                            "component-share-popup": "/pages/common/components/share-popup/share-popup"
+                        },
+                        "componentPlaceholder": {
+                            "component-share-popup": "view"
+                        }
                     }
                 },
                 {
@@ -1043,7 +1171,13 @@
                     "path": "extraction-apply/extraction-apply",
                     "style": {
                         "enablePullDownRefresh": false,
-                        "navigationBarTitleText": ""
+                        "navigationBarTitleText": "",
+                        "usingComponents": {
+                            "component-upload": "/pages/common/components/upload/upload"
+                        },
+                        "componentPlaceholder": {
+                            "component-upload": "view"
+                        }
                     }
                 },
                 {
@@ -1092,7 +1226,13 @@
                     "path": "visit-form/visit-form",
                     "style": {
                         "enablePullDownRefresh": true,
-                        "navigationBarTitleText": ""
+                        "navigationBarTitleText": "",
+                        "usingComponents": {
+                            "component-upload": "/pages/common/components/upload/upload"
+                        },
+                        "componentPlaceholder": {
+                            "component-upload": "view"
+                        }
                     }
                 }
             ]
@@ -1111,7 +1251,13 @@
                         "titlePenetrate": "YES",
                         // #endif
                         "enablePullDownRefresh": true,
-                        "navigationBarTitleText": ""
+                        "navigationBarTitleText": "",
+                        "usingComponents": {
+                            "component-payment": "/pages/common/components/payment/payment"
+                        },
+                        "componentPlaceholder": {
+                            "component-payment": "view"
+                        }
                     }
                 },
                 {
@@ -1125,7 +1271,13 @@
                         "titlePenetrate": "YES",
                         // #endif
                         "enablePullDownRefresh": false,
-                        "navigationBarTitleText": ""
+                        "navigationBarTitleText": "",
+                        "usingComponents": {
+                            "component-payment": "/pages/common/components/payment/payment"
+                        },
+                        "componentPlaceholder": {
+                            "component-payment": "view"
+                        }
                     }
                 },
                 {
@@ -1240,7 +1392,13 @@
                     "path": "detail/detail",
                     "style": {
                         "enablePullDownRefresh": true,
-                        "navigationBarTitleText": ""
+                        "navigationBarTitleText": "",
+                        "usingComponents": {
+                            "component-share-popup": "/pages/common/components/share-popup/share-popup"
+                        },
+                        "componentPlaceholder": {
+                            "component-share-popup": "view"
+                        }
                     }
                 }
             ]
@@ -1264,14 +1422,26 @@
                     "path": "invoice/invoice",
                     "style": {
                         "enablePullDownRefresh": true,
-                        "navigationBarTitleText": ""
+                        "navigationBarTitleText": "",
+                        "usingComponents": {
+                            "component-panel-content": "/pages/common/components/panel-content/panel-content"
+                        },
+                        "componentPlaceholder": {
+                            "component-panel-content": "view"
+                        }
                     }
                 },
                 {
                     "path": "invoice-detail/invoice-detail",
                     "style": {
                         "enablePullDownRefresh": true,
-                        "navigationBarTitleText": ""
+                        "navigationBarTitleText": "",
+                        "usingComponents": {
+                            "component-panel-content": "/pages/common/components/panel-content/panel-content"
+                        },
+                        "componentPlaceholder": {
+                            "component-panel-content": "view"
+                        }
                     }
                 },
                 {
@@ -1285,14 +1455,26 @@
                     "path": "order/order",
                     "style": {
                         "enablePullDownRefresh": true,
-                        "navigationBarTitleText": ""
+                        "navigationBarTitleText": "",
+                        "usingComponents": {
+                            "component-panel-content": "/pages/common/components/panel-content/panel-content"
+                        },
+                        "componentPlaceholder": {
+                            "component-panel-content": "view"
+                        }
                     }
                 },
                 {
                     "path": "business/business",
                     "style": {
                         "enablePullDownRefresh": true,
-                        "navigationBarTitleText": ""
+                        "navigationBarTitleText": "",
+                        "usingComponents": {
+                            "component-panel-content": "/pages/common/components/panel-content/panel-content"
+                        },
+                        "componentPlaceholder": {
+                            "component-panel-content": "view"
+                        }
                     }
                 }
             ]
@@ -1304,7 +1486,13 @@
                     "path": "user/user",
                     "style": {
                         "enablePullDownRefresh": true,
-                        "navigationBarTitleText": ""
+                        "navigationBarTitleText": "",
+                        "usingComponents": {
+                            "component-panel-content": "/pages/common/components/panel-content/panel-content"
+                        },
+                        "componentPlaceholder": {
+                            "component-panel-content": "view"
+                        }
                     }
                 },
                 {
@@ -1318,14 +1506,26 @@
                         "titlePenetrate": "YES",
                         // #endif
                         "enablePullDownRefresh": true,
-                        "navigationBarTitleText": ""
+                        "navigationBarTitleText": "",
+                        "usingComponents": {
+                            "component-share-popup": "/pages/common/components/share-popup/share-popup"
+                        },
+                        "componentPlaceholder": {
+                            "component-share-popup": "view"
+                        }
                     }
                 },
                 {
                     "path": "user-qrcode-detail/user-qrcode-detail",
                     "style": {
                         "enablePullDownRefresh": true,
-                        "navigationBarTitleText": ""
+                        "navigationBarTitleText": "",
+                        "usingComponents": {
+                            "component-panel-content": "/pages/common/components/panel-content/panel-content"
+                        },
+                        "componentPlaceholder": {
+                            "component-panel-content": "view"
+                        }
                     }
                 },
                 {
@@ -1339,7 +1539,13 @@
                     "path": "user-coming-list/user-coming-list",
                     "style": {
                         "enablePullDownRefresh": true,
-                        "navigationBarTitleText": ""
+                        "navigationBarTitleText": "",
+                        "usingComponents": {
+                            "component-panel-content": "/pages/common/components/panel-content/panel-content"
+                        },
+                        "componentPlaceholder": {
+                            "component-panel-content": "view"
+                        }
                     }
                 }
             ]
@@ -1358,7 +1564,13 @@
                         "titlePenetrate": "YES",
                         // #endif
                         "enablePullDownRefresh": true,
-                        "navigationBarTitleText": ""
+                        "navigationBarTitleText": "",
+                        "usingComponents": {
+                            "component-share-popup": "/pages/common/components/share-popup/share-popup"
+                        },
+                        "componentPlaceholder": {
+                            "component-share-popup": "view"
+                        }
                     }
                 },
                 {
@@ -1431,11 +1643,15 @@
                         "navigationBarTitleText": "",
                         "usingComponents": {
                             "component-layout": "/pages/design/components/layout/layout",
-                            "component-diy": "/pages/diy/components/diy/diy"
+                            "component-diy": "/pages/diy/components/diy/diy",
+                            "component-share-popup": "/pages/common/components/share-popup/share-popup",
+                            "component-lang-switch": "/pages/common/components/lang-switch/lang-switch"
                         },
                         "componentPlaceholder": {
                             "component-layout": "view",
-                            "component-diy": "view"
+                            "component-diy": "view",
+                            "component-share-popup": "view",
+                            "component-lang-switch": "view"
                         }
                     }
                 },
@@ -1459,10 +1675,14 @@
                         "enablePullDownRefresh": true,
                         "navigationBarTitleText": "",
                         "usingComponents": {
-                            "component-diy": "/pages/diy/components/diy/diy"
+                            "component-diy": "/pages/diy/components/diy/diy",
+                            "component-share-popup": "/pages/common/components/share-popup/share-popup",
+                            "component-lang-switch": "/pages/common/components/lang-switch/lang-switch"
                         },
                         "componentPlaceholder": {
-                            "component-diy": "view"
+                            "component-diy": "view",
+                            "component-share-popup": "view",
+                            "component-lang-switch": "view"
                         }
                     }
                 },
@@ -1574,14 +1794,30 @@
                     "path": "detail/detail",
                     "style": {
                         "enablePullDownRefresh": false,
-                        "navigationBarTitleText": ""
+                        "navigationBarTitleText": "",
+                        "usingComponents": {
+                            "component-payment": "/pages/common/components/payment/payment",
+                            "component-share-popup": "/pages/common/components/share-popup/share-popup"
+                        },
+                        "componentPlaceholder": {
+                            "component-payment": "view",
+                            "component-share-popup": "view"
+                        }
                     }
                 },
                 {
                     "path": "user/user",
                     "style": {
                         "enablePullDownRefresh": true,
-                        "navigationBarTitleText": ""
+                        "navigationBarTitleText": "",
+                        "usingComponents": {
+                            "component-payment": "/pages/common/components/payment/payment",
+                            "component-panel-content": "/pages/common/components/panel-content/panel-content"
+                        },
+                        "componentPlaceholder": {
+                            "component-payment": "view",
+                            "component-panel-content": "view"
+                        }
                     }
                 }
             ]
@@ -1607,14 +1843,30 @@
                     "path": "detail/detail",
                     "style": {
                         "enablePullDownRefresh": true,
-                        "navigationBarTitleText": ""
+                        "navigationBarTitleText": "",
+                        "usingComponents": {
+                            "component-share-popup": "/pages/common/components/share-popup/share-popup",
+                            "component-emoji-popup": "/pages/common/components/emoji-popup/emoji-popup"
+                        },
+                        "componentPlaceholder": {
+                            "component-share-popup": "view",
+                            "component-emoji-popup": "view"
+                        }
                     }
                 },
                 {
                     "path": "comments/comments",
                     "style": {
                         "enablePullDownRefresh": true,
-                        "navigationBarTitleText": ""
+                        "navigationBarTitleText": "",
+                        "usingComponents": {
+                            "component-share-popup": "/pages/common/components/share-popup/share-popup",
+                            "component-emoji-popup": "/pages/common/components/emoji-popup/emoji-popup"
+                        },
+                        "componentPlaceholder": {
+                            "component-share-popup": "view",
+                            "component-emoji-popup": "view"
+                        }
                     }
                 },
                 {
@@ -1628,7 +1880,13 @@
                     "path": "form/form",
                     "style": {
                         "enablePullDownRefresh": true,
-                        "navigationBarTitleText": ""
+                        "navigationBarTitleText": "",
+                        "usingComponents": {
+                            "component-upload": "/pages/common/components/upload/upload"
+                        },
+                        "componentPlaceholder": {
+                            "component-upload": "view"
+                        }
                     }
                 }
             ]
@@ -1675,10 +1933,14 @@
                         "enablePullDownRefresh": true,
                         "navigationBarTitleText": "",
                         "usingComponents": {
-                            "component-realstore-cart": "/pages/plugins/realstore/components/realstore-cart/realstore-cart"
+                            "component-realstore-cart": "/pages/plugins/realstore/components/realstore-cart/realstore-cart",
+                            "component-share-popup": "/pages/common/components/share-popup/share-popup",
+                            "component-coupon-card": "/pages/plugins/coupon/components/coupon-card/coupon-card"
                         },
                         "componentPlaceholder": {
-                            "component-realstore-cart": "view"
+                            "component-realstore-cart": "view",
+                            "component-share-popup": "view",
+                            "component-coupon-card": "view"
                         }
                     }
                 },
@@ -1707,14 +1969,26 @@
                         "titlePenetrate": "YES",
                         // #endif
                         "enablePullDownRefresh": true,
-                        "navigationBarTitleText": ""
+                        "navigationBarTitleText": "",
+                        "usingComponents": {
+                            "component-payment": "/pages/common/components/payment/payment"
+                        },
+                        "componentPlaceholder": {
+                            "component-payment": "view"
+                        }
                     }
                 },
                 {
                     "path": "orderallot-detail/orderallot-detail",
                     "style": {
                         "enablePullDownRefresh": true,
-                        "navigationBarTitleText": ""
+                        "navigationBarTitleText": "",
+                        "usingComponents": {
+                            "component-payment": "/pages/common/components/payment/payment"
+                        },
+                        "componentPlaceholder": {
+                            "component-payment": "view"
+                        }
                     }
                 },
                 {
@@ -1765,10 +2039,12 @@
                         "enablePullDownRefresh": true,
                         "navigationBarTitleText": "",
                         "usingComponents": {
-                            "component-realstore-cart": "/pages/plugins/realstore/components/realstore-cart/realstore-cart"
+                            "component-realstore-cart": "/pages/plugins/realstore/components/realstore-cart/realstore-cart",
+                            "component-share-popup": "/pages/common/components/share-popup/share-popup"
                         },
                         "componentPlaceholder": {
-                            "component-realstore-cart": "view"
+                            "component-realstore-cart": "view",
+                            "component-share-popup": "view"
                         }
                     }
                 },
@@ -1783,28 +2059,52 @@
                         "titlePenetrate": "YES",
                         // #endif
                         "enablePullDownRefresh": true,
-                        "navigationBarTitleText": ""
+                        "navigationBarTitleText": "",
+                        "usingComponents": {
+                            "component-upload": "/pages/common/components/upload/upload"
+                        },
+                        "componentPlaceholder": {
+                            "component-upload": "view"
+                        }
                     }
                 },
                 {
                     "path": "staff-profile/staff-profile",
                     "style": {
                         "enablePullDownRefresh": false,
-                        "navigationBarTitleText": ""
+                        "navigationBarTitleText": "",
+                        "usingComponents": {
+                            "component-upload": "/pages/common/components/upload/upload"
+                        },
+                        "componentPlaceholder": {
+                            "component-upload": "view"
+                        }
                     }
                 },
                 {
                     "path": "staff-order-detail/staff-order-detail",
                     "style": {
                         "enablePullDownRefresh": true,
-                        "navigationBarTitleText": ""
+                        "navigationBarTitleText": "",
+                        "usingComponents": {
+                            "component-upload": "/pages/common/components/upload/upload"
+                        },
+                        "componentPlaceholder": {
+                            "component-upload": "view"
+                        }
                     }
                 },
                 {
                     "path": "orderallot-comments/orderallot-comments",
                     "style": {
                         "enablePullDownRefresh": true,
-                        "navigationBarTitleText": ""
+                        "navigationBarTitleText": "",
+                        "usingComponents": {
+                            "component-upload": "/pages/common/components/upload/upload"
+                        },
+                        "componentPlaceholder": {
+                            "component-upload": "view"
+                        }
                     }
                 },
                 {
@@ -1818,7 +2118,13 @@
                     "path": "user-service-comments/user-service-comments",
                     "style": {
                         "enablePullDownRefresh": true,
-                        "navigationBarTitleText": ""
+                        "navigationBarTitleText": "",
+                        "usingComponents": {
+                            "component-panel-content": "/pages/common/components/panel-content/panel-content"
+                        },
+                        "componentPlaceholder": {
+                            "component-panel-content": "view"
+                        }
                     }
                 }
             ]
@@ -1837,7 +2143,13 @@
                     "path": "detail/detail",
                     "style": {
                         "enablePullDownRefresh": true,
-                        "navigationBarTitleText": ""
+                        "navigationBarTitleText": "",
+                        "usingComponents": {
+                            "component-goods-spec-choice": "/pages/common/components/goods-spec-choice/goods-spec-choice"
+                        },
+                        "componentPlaceholder": {
+                            "component-goods-spec-choice": "view"
+                        }
                     }
                 }
             ]
@@ -1849,14 +2161,26 @@
                     "path": "order/order",
                     "style": {
                         "enablePullDownRefresh": false,
-                        "navigationBarTitleText": ""
+                        "navigationBarTitleText": "",
+                        "usingComponents": {
+                            "component-upload": "/pages/common/components/upload/upload"
+                        },
+                        "componentPlaceholder": {
+                            "component-upload": "view"
+                        }
                     }
                 },
                 {
                     "path": "order-detail/order-detail",
                     "style": {
                         "enablePullDownRefresh": true,
-                        "navigationBarTitleText": ""
+                        "navigationBarTitleText": "",
+                        "usingComponents": {
+                            "component-upload": "/pages/common/components/upload/upload"
+                        },
+                        "componentPlaceholder": {
+                            "component-upload": "view"
+                        }
                     }
                 },
                 {
@@ -1934,28 +2258,54 @@
                     "path": "detail/detail",
                     "style": {
                         "enablePullDownRefresh": true,
-                        "navigationBarTitleText": ""
+                        "navigationBarTitleText": "",
+                        "usingComponents": {
+                            "component-share-popup": "/pages/common/components/share-popup/share-popup",
+                            "component-emoji-popup": "/pages/common/components/emoji-popup/emoji-popup"
+                        },
+                        "componentPlaceholder": {
+                            "component-share-popup": "view",
+                            "component-emoji-popup": "view"
+                        }
                     }
                 },
                 {
                     "path": "form/form",
                     "style": {
                         "enablePullDownRefresh": true,
-                        "navigationBarTitleText": ""
+                        "navigationBarTitleText": "",
+                        "usingComponents": {
+                            "component-upload": "/pages/common/components/upload/upload"
+                        },
+                        "componentPlaceholder": {
+                            "component-upload": "view"
+                        }
                     }
                 },
                 {
                     "path": "user-detail/user-detail",
                     "style": {
                         "enablePullDownRefresh": true,
-                        "navigationBarTitleText": ""
+                        "navigationBarTitleText": "",
+                        "usingComponents": {
+                            "component-panel-content": "/pages/common/components/panel-content/panel-content"
+                        },
+                        "componentPlaceholder": {
+                            "component-panel-content": "view"
+                        }
                     }
                 },
                 {
                     "path": "user-list/user-list",
                     "style": {
                         "enablePullDownRefresh": true,
-                        "navigationBarTitleText": ""
+                        "navigationBarTitleText": "",
+                        "usingComponents": {
+                            "component-panel-content": "/pages/common/components/panel-content/panel-content"
+                        },
+                        "componentPlaceholder": {
+                            "component-panel-content": "view"
+                        }
                     }
                 },
                 {
@@ -1969,7 +2319,15 @@
                     "path": "comments/comments",
                     "style": {
                         "enablePullDownRefresh": true,
-                        "navigationBarTitleText": ""
+                        "navigationBarTitleText": "",
+                        "usingComponents": {
+                            "component-share-popup": "/pages/common/components/share-popup/share-popup",
+                            "component-emoji-popup": "/pages/common/components/emoji-popup/emoji-popup"
+                        },
+                        "componentPlaceholder": {
+                            "component-share-popup": "view",
+                            "component-emoji-popup": "view"
+                        }
                     }
                 }
             ]
@@ -1981,7 +2339,13 @@
                     "path": "goods-comments/goods-comments",
                     "style": {
                         "enablePullDownRefresh": true,
-                        "navigationBarTitleText": ""
+                        "navigationBarTitleText": "",
+                        "usingComponents": {
+                            "component-upload": "/pages/common/components/upload/upload"
+                        },
+                        "componentPlaceholder": {
+                            "component-upload": "view"
+                        }
                     }
                 }
             ]
@@ -1993,7 +2357,13 @@
                     "path": "index/index",
                     "style": {
                         "enablePullDownRefresh": true,
-                        "navigationBarTitleText": ""
+                        "navigationBarTitleText": "",
+                        "usingComponents": {
+                            "component-payment": "/pages/common/components/payment/payment"
+                        },
+                        "componentPlaceholder": {
+                            "component-payment": "view"
+                        }
                     }
                 },
                 {
@@ -2013,7 +2383,13 @@
                     "style": {
                         "disableScroll": true,
                         "enablePullDownRefresh": false,
-                        "navigationBarTitleText": ""
+                        "navigationBarTitleText": "",
+                        "usingComponents": {
+                            "component-payment": "/pages/common/components/payment/payment"
+                        },
+                        "componentPlaceholder": {
+                            "component-payment": "view"
+                        }
                     }
                 }
             ]
@@ -2039,10 +2415,12 @@
                         "enablePullDownRefresh": true,
                         "navigationBarTitleText": "",
                         "usingComponents": {
-                            "component-form-input-detail": "/pages/form-input/components/form-input-detail/form-input-detail"
+                            "component-form-input-detail": "/pages/form-input/components/form-input-detail/form-input-detail",
+                            "component-panel-content": "/pages/common/components/panel-content/panel-content"
                         },
                         "componentPlaceholder": {
-                            "component-form-input-detail": "view"
+                            "component-form-input-detail": "view",
+                            "component-panel-content": "view"
                         }
                     }
                 }
@@ -2083,7 +2461,13 @@
                     "path": "recharge-pay/recharge-pay",
                     "style": {
                         "enablePullDownRefresh": true,
-                        "navigationBarTitleText": ""
+                        "navigationBarTitleText": "",
+                        "usingComponents": {
+                            "component-upload": "/pages/common/components/upload/upload"
+                        },
+                        "componentPlaceholder": {
+                            "component-upload": "view"
+                        }
                     }
                 },
                 {
@@ -2191,28 +2575,52 @@
                     "path": "share/share",
                     "style": {
                         "enablePullDownRefresh": true,
-                        "navigationBarTitleText": ""
+                        "navigationBarTitleText": "",
+                        "usingComponents": {
+                            "component-share-popup": "/pages/common/components/share-popup/share-popup"
+                        },
+                        "componentPlaceholder": {
+                            "component-share-popup": "view"
+                        }
                     }
                 },
                 {
                     "path": "share/list",
                     "style": {
                         "enablePullDownRefresh": true,
-                        "navigationBarTitleText": ""
+                        "navigationBarTitleText": "",
+                        "usingComponents": {
+                            "component-panel-content": "/pages/common/components/panel-content/panel-content"
+                        },
+                        "componentPlaceholder": {
+                            "component-panel-content": "view"
+                        }
                     }
                 },
                 {
                     "path": "share/detail",
                     "style": {
                         "enablePullDownRefresh": true,
-                        "navigationBarTitleText": ""
+                        "navigationBarTitleText": "",
+                        "usingComponents": {
+                            "component-panel-content": "/pages/common/components/panel-content/panel-content"
+                        },
+                        "componentPlaceholder": {
+                            "component-panel-content": "view"
+                        }
                     }
                 },
                 {
                     "path": "pay/index",
                     "style": {
                         "enablePullDownRefresh": true,
-                        "navigationBarTitleText": ""
+                        "navigationBarTitleText": "",
+                        "usingComponents": {
+                            "component-payment": "/pages/common/components/payment/payment"
+                        },
+                        "componentPlaceholder": {
+                            "component-payment": "view"
+                        }
                     }
                 },
                 {
@@ -2231,35 +2639,71 @@
                     "path": "goods/goods",
                     "style": {
                         "enablePullDownRefresh": true,
-                        "navigationBarTitleText": ""
+                        "navigationBarTitleText": "",
+                        "usingComponents": {
+                            "component-payment": "/pages/common/components/payment/payment",
+                            "component-share-popup": "/pages/common/components/share-popup/share-popup"
+                        },
+                        "componentPlaceholder": {
+                            "component-payment": "view",
+                            "component-share-popup": "view"
+                        }
                     }
                 },
                 {
                     "path": "gift/gift",
                     "style": {
                         "enablePullDownRefresh": true,
-                        "navigationBarTitleText": ""
+                        "navigationBarTitleText": "",
+                        "usingComponents": {
+                            "component-panel-content": "/pages/common/components/panel-content/panel-content",
+                            "component-payment": "/pages/common/components/payment/payment"
+                        },
+                        "componentPlaceholder": {
+                            "component-panel-content": "view",
+                            "component-payment": "view"
+                        }
                     }
                 },
                 {
                     "path": "gift-detail/gift-detail",
                     "style": {
                         "enablePullDownRefresh": true,
-                        "navigationBarTitleText": ""
+                        "navigationBarTitleText": "",
+                        "usingComponents": {
+                            "component-panel-content": "/pages/common/components/panel-content/panel-content"
+                        },
+                        "componentPlaceholder": {
+                            "component-panel-content": "view"
+                        }
                     }
                 },
                 {
                     "path": "code/code",
                     "style": {
                         "enablePullDownRefresh": true,
-                        "navigationBarTitleText": ""
+                        "navigationBarTitleText": "",
+                        "usingComponents": {
+                            "component-panel-content": "/pages/common/components/panel-content/panel-content"
+                        },
+                        "componentPlaceholder": {
+                            "component-panel-content": "view"
+                        }
                     }
                 },
                 {
                     "path": "receive/receive",
                     "style": {
                         "enablePullDownRefresh": true,
-                        "navigationBarTitleText": ""
+                        "navigationBarTitleText": "",
+                        "usingComponents": {
+                            "component-goods-spec-choice": "/pages/common/components/goods-spec-choice/goods-spec-choice",
+                            "component-share-popup": "/pages/common/components/share-popup/share-popup"
+                        },
+                        "componentPlaceholder": {
+                            "component-goods-spec-choice": "view",
+                            "component-share-popup": "view"
+                        }
                     }
                 }
             ]
@@ -2347,21 +2791,39 @@
                     "path": "userauth/userauth",
                     "style": {
                         "enablePullDownRefresh": true,
-                        "navigationBarTitleText": ""
+                        "navigationBarTitleText": "",
+                        "usingComponents": {
+                            "component-panel-content": "/pages/common/components/panel-content/panel-content"
+                        },
+                        "componentPlaceholder": {
+                            "component-panel-content": "view"
+                        }
                     }
                 },
                 {
                     "path": "userauth-saveinfo/userauth-saveinfo",
                     "style": {
                         "enablePullDownRefresh": true,
-                        "navigationBarTitleText": ""
+                        "navigationBarTitleText": "",
+                        "usingComponents": {
+                            "component-upload": "/pages/common/components/upload/upload"
+                        },
+                        "componentPlaceholder": {
+                            "component-upload": "view"
+                        }
                     }
                 },
                 {
                     "path": "userauth-detail/userauth-detail",
                     "style": {
                         "enablePullDownRefresh": true,
-                        "navigationBarTitleText": ""
+                        "navigationBarTitleText": "",
+                        "usingComponents": {
+                            "component-panel-content": "/pages/common/components/panel-content/panel-content"
+                        },
+                        "componentPlaceholder": {
+                            "component-panel-content": "view"
+                        }
                     }
                 }
             ]
@@ -2414,13 +2876,15 @@
                             "component-u-icon": "/pages/plugins/live/components/u-icon/u-icon",
                             "component-u-popup": "/pages/plugins/live/components/u-popup/u-popup",
                             "component-u-transition": "/pages/plugins/live/components/u-transition/u-transition",
-                            "component-u-share-popup": "/pages/plugins/live/components/u-share-popup/u-share-popup"
+                            "component-u-share-popup": "/pages/plugins/live/components/u-share-popup/u-share-popup",
+                            "component-upload": "/pages/common/components/upload/upload"
                         },
                         "componentPlaceholder": {
                             "component-u-icon": "view",
                             "component-u-popup": "view",
                             "component-u-transition": "view",
-                            "component-u-share-popup": "view"
+                            "component-u-share-popup": "view",
+                            "component-upload": "view"
                         }
                     }
                 },
@@ -2537,14 +3001,26 @@
                     "path": "form/form",
                     "style": {
                         "enablePullDownRefresh": true,
-                        "navigationBarTitleText": ""
+                        "navigationBarTitleText": "",
+                        "usingComponents": {
+                            "component-upload": "/pages/common/components/upload/upload"
+                        },
+                        "componentPlaceholder": {
+                            "component-upload": "view"
+                        }
                     }
                 },
                 {
                     "path": "user/user",
                     "style": {
                         "enablePullDownRefresh": true,
-                        "navigationBarTitleText": ""
+                        "navigationBarTitleText": "",
+                        "usingComponents": {
+                            "component-panel-content": "/pages/common/components/panel-content/panel-content"
+                        },
+                        "componentPlaceholder": {
+                            "component-panel-content": "view"
+                        }
                     }
                 }
             ]
@@ -2556,14 +3032,26 @@
                     "path": "form/form",
                     "style": {
                         "enablePullDownRefresh": true,
-                        "navigationBarTitleText": ""
+                        "navigationBarTitleText": "",
+                        "usingComponents": {
+                            "component-upload": "/pages/common/components/upload/upload"
+                        },
+                        "componentPlaceholder": {
+                            "component-upload": "view"
+                        }
                     }
                 },
                 {
                     "path": "user/user",
                     "style": {
                         "enablePullDownRefresh": true,
-                        "navigationBarTitleText": ""
+                        "navigationBarTitleText": "",
+                        "usingComponents": {
+                            "component-panel-content": "/pages/common/components/panel-content/panel-content"
+                        },
+                        "componentPlaceholder": {
+                            "component-panel-content": "view"
+                        }
                     }
                 }
             ]
@@ -2582,21 +3070,39 @@
                     "path": "detail/detail",
                     "style": {
                         "enablePullDownRefresh": true,
-                        "navigationBarTitleText": ""
+                        "navigationBarTitleText": "",
+                        "usingComponents": {
+                            "component-share-popup": "/pages/common/components/share-popup/share-popup"
+                        },
+                        "componentPlaceholder": {
+                            "component-share-popup": "view"
+                        }
                     }
                 },
                 {
                     "path": "team/team",
                     "style": {
                         "enablePullDownRefresh": true,
-                        "navigationBarTitleText": ""
+                        "navigationBarTitleText": "",
+                        "usingComponents": {
+                            "component-share-popup": "/pages/common/components/share-popup/share-popup"
+                        },
+                        "componentPlaceholder": {
+                            "component-share-popup": "view"
+                        }
                     }
                 },
                 {
                     "path": "order/order",
                     "style": {
                         "enablePullDownRefresh": true,
-                        "navigationBarTitleText": ""
+                        "navigationBarTitleText": "",
+                        "usingComponents": {
+                            "component-panel-content": "/pages/common/components/panel-content/panel-content"
+                        },
+                        "componentPlaceholder": {
+                            "component-panel-content": "view"
+                        }
                     }
                 }
             ]
@@ -2615,14 +3121,26 @@
                     "path": "detail/detail",
                     "style": {
                         "enablePullDownRefresh": true,
-                        "navigationBarTitleText": ""
+                        "navigationBarTitleText": "",
+                        "usingComponents": {
+                            "component-share-popup": "/pages/common/components/share-popup/share-popup"
+                        },
+                        "componentPlaceholder": {
+                            "component-share-popup": "view"
+                        }
                     }
                 },
                 {
                     "path": "team/team",
                     "style": {
                         "enablePullDownRefresh": true,
-                        "navigationBarTitleText": ""
+                        "navigationBarTitleText": "",
+                        "usingComponents": {
+                            "component-share-popup": "/pages/common/components/share-popup/share-popup"
+                        },
+                        "componentPlaceholder": {
+                            "component-share-popup": "view"
+                        }
                     }
                 },
                 {
@@ -2636,7 +3154,13 @@
                         "titlePenetrate": "YES",
                         // #endif
                         "enablePullDownRefresh": true,
-                        "navigationBarTitleText": ""
+                        "navigationBarTitleText": "",
+                        "usingComponents": {
+                            "component-panel-content": "/pages/common/components/panel-content/panel-content"
+                        },
+                        "componentPlaceholder": {
+                            "component-panel-content": "view"
+                        }
                     }
                 }
             ]
@@ -2655,14 +3179,28 @@
                     "path": "buy/buy",
                     "style": {
                         "enablePullDownRefresh": true,
-                        "navigationBarTitleText": ""
+                        "navigationBarTitleText": "",
+                        "usingComponents": {
+                            "component-payment": "/pages/common/components/payment/payment"
+                        },
+                        "componentPlaceholder": {
+                            "component-payment": "view"
+                        }
                     }
                 },
                 {
                     "path": "order/order",
                     "style": {
                         "enablePullDownRefresh": true,
-                        "navigationBarTitleText": ""
+                        "navigationBarTitleText": "",
+                        "usingComponents": {
+                            "component-panel-content": "/pages/common/components/panel-content/panel-content",
+                            "component-payment": "/pages/common/components/payment/payment"
+                        },
+                        "componentPlaceholder": {
+                            "component-panel-content": "view",
+                            "component-payment": "view"
+                        }
                     }
                 }
             ]
@@ -2674,7 +3212,13 @@
                     "path": "form/form",
                     "style": {
                         "enablePullDownRefresh": true,
-                        "navigationBarTitleText": ""
+                        "navigationBarTitleText": "",
+                        "usingComponents": {
+                            "component-upload": "/pages/common/components/upload/upload"
+                        },
+                        "componentPlaceholder": {
+                            "component-upload": "view"
+                        }
                     }
                 }
             ]
@@ -2709,7 +3253,13 @@
                     "path": "record/record",
                     "style": {
                         "enablePullDownRefresh": true,
-                        "navigationBarTitleText": ""
+                        "navigationBarTitleText": "",
+                        "usingComponents": {
+                            "component-panel-content": "/pages/common/components/panel-content/panel-content"
+                        },
+                        "componentPlaceholder": {
+                            "component-panel-content": "view"
+                        }
                     }
                 }
             ]

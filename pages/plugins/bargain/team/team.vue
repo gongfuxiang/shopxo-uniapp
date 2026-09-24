@@ -158,7 +158,7 @@
     import componentBottomLine from '@/components/bottom-line/bottom-line';
     import componentBargainPlayRules from '../components/bargain-play-rules/bargain-play-rules';
     import componentBargainDotTitle from '../components/bargain-dot-title/bargain-dot-title';
-    import componentSharePopup from '@/components/share-popup/share-popup';
+    import componentSharePopup from '@/pages/common/components/share-popup/share-popup';
     import componentCountdown from '@/components/countdown/countdown';
     import pluginLocale from '../locale/index.js';
 
@@ -215,9 +215,7 @@
                 user: app.globalData.get_user_info(this, 'init'),
             });
             this.get_data();
-            if ((this.$refs.common || null) != null) {
-                this.$refs.common.on_show();
-            }
+            app.globalData.page_common_on_show(this);
         },
         onPullDownRefresh() {
             this.get_data();

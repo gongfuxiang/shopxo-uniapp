@@ -144,7 +144,7 @@
                                     <view class="fw-b title-left-border">{{ detail_tab_title }}</view>
                                 </view>
                                 <block v-if="(staff_list || null) != null && staff_list.length > 0">
-                                    <view v-for="(item, index) in staff_list" :key="index" :class="'staff-item padding-vertical-main cp ' + (index < staff_list.length - 1 ? 'br-b-f5' : '')" :data-value="'/pages/plugins/realstore/staff-detail/staff-detail?id=' + item.id" @tap="url_event">
+                                    <view v-for="(item, index) in staff_list" :key="index" :class="'staff-item padding-main border-radius-main bg-white spacing-mb ' + ((info.is_buy_staff_booking || 0) == 1 ? 'cp' : '')" :data-index="index" @tap="staff_item_tap_event">
                                         <view class="flex-row">
                                             <image v-if="(item.avatar || null) != null && item.avatar != ''" class="staff-avatar-large circle br margin-right-main" :src="item.avatar" mode="aspectFill"></image>
                                             <view v-else class="staff-avatar-large staff-avatar-placeholder circle br margin-right-main">
@@ -153,17 +153,17 @@
                                             <view class="flex-1 flex-width staff-item-content">
                                                 <view class="staff-title-row flex-row align-c flex-wrap">
                                                     <view class="fw-b text-size staff-info-name flex-shrink-0">{{ item.alias }}</view>
-                                                    <view v-if="(item.position_name || null) != null && item.position_name != ''" class="staff-position-tag round br-grey cr-grey text-size-xs flex-shrink-0">{{ item.position_name }}</view>
+                                                    <view v-if="(item.position_name || null) != null && item.position_name != ''" class="staff-position-tag round bg-white br-grey cr-grey text-size-xs flex-shrink-0">{{ item.position_name }}</view>
                                                     <view class="flex-1 flex-width"></view>
                                                     <text v-if="(item.distance || '') != ''" class="staff-distance cr-grey text-size-xs flex-shrink-0">{{ item.distance }}</text>
                                                 </view>
-                                                <view v-if="staff_earliest_show(item) != '' || (item.rating || 0) > 0" class="staff-stat-row margin-top-xs flex-row align-c flex-wrap">
+                                                <view v-if="staff_earliest_show(item) != '' || (item.rating || 0) > 0 || (item.service_count || item.booking_count || 0) > 0" class="staff-stat-row margin-top-xs flex-row align-c flex-wrap">
                                                     <view v-if="staff_earliest_show(item) != ''" class="staff-specialty-tag round text-size-xss cr-main bg-main-light flex-shrink-0 margin-right-sm">{{ $t('realstore-staff.earliest') }}{{ staff_earliest_show(item) }}</view>
-                                                    <view v-if="(item.rating || 0) > 0" class="staff-rating-tag round text-size-xss flex-shrink-0">{{ $t('realstore-staff.rating') }} {{ item.rating }}</view>
+                                                    <view v-if="(item.rating || 0) > 0 || (item.service_count || item.booking_count || 0) > 0" class="staff-rating-tag round text-size-xss margin-right-sm flex-shrink-0">{{ $t('realstore-staff.rating') }} {{ (item.rating || 0) > 0 ? item.rating : '5.0' }}</view>
+                                                    <text v-if="(item.service_count || item.booking_count || 0) > 0" class="cr-grey text-size-xs flex-shrink-0">{{ $t('realstore-staff.served') }}{{ item.service_count || item.booking_count }}{{ $t('realstore-staff.served_unit') }}</text>
                                                 </view>
                                                 <view class="staff-store-row margin-top-xs flex-row align-c">
-                                                    <text v-if="(item.service_count || item.booking_count || 0) > 0" class="cr-grey text-size-xs flex-1 flex-width">{{ $t('realstore-staff.served') }}{{ item.service_count || item.booking_count }}{{ $t('realstore-staff.served_unit') }}</text>
-                                                    <view v-else class="flex-1 flex-width"></view>
+                                                    <view class="flex-1 flex-width"></view>
                                                     <view class="staff-store-meta flex-row align-c flex-shrink-0">
                                                         <view class="staff-meta-icon flex-row align-c">
                                                             <iconfont name="icon-message-o" size="24rpx" color="#ccc"></iconfont>
@@ -185,7 +185,7 @@
                                                     <view v-for="(tag, tindex) in item.specialty_list.slice(0, 3)" :key="tindex" class="staff-specialty-tag round text-size-xss cr-grey bg-grey-f5 margin-right-xs">{{ tag }}</view>
                                                 </block>
                                             </view>
-                                            <button class="staff-book-btn round text-size-xs bg-main cr-white br-main flex-shrink-0" type="default" size="mini" hover-class="none" :data-value="'/pages/plugins/realstore/staff-detail/staff-detail?id=' + item.id" @tap.stop="url_event">{{ $t('realstore-staff.book') }}</button>
+                                            <button v-if="(info.is_buy_staff_booking || 0) == 1" :class="'staff-book-btn round text-size-xs flex-shrink-0 ' + ((item.is_booking_enable || 0) == 1 ? 'bg-main cr-white br-main' : 'bg-grey-disabled')" type="default" size="mini" hover-class="none" :data-index="index" @tap.stop="staff_book_tap_event">{{ $t('realstore-staff.book') }}</button>
                                         </view>
                                     </view>
                                     <component-bottom-line :propStatus="true"></component-bottom-line>
@@ -457,7 +457,7 @@
     import componentBadge from '@/components/badge/badge';
     import componentPopup from '@/components/popup/popup';
     import componentRealstoreCart from '@/pages/plugins/realstore/components/realstore-cart/realstore-cart';
-    import componentSharePopup from '@/components/share-popup/share-popup';
+    import componentSharePopup from '@/pages/common/components/share-popup/share-popup';
     import componentCouponCard from '@/pages/plugins/coupon/components/coupon-card/coupon-card';
     import pluginLocale from '../locale/index.js';
 
@@ -649,10 +649,8 @@
                 }, 100);
             }
 
-            // 公共onshow事件
-            if ((this.$refs.common || null) != null) {
-                this.$refs.common.on_show();
-            }
+            // 公共onshow事件（$refs 未就绪时自动延后重试）
+            app.globalData.page_common_on_show(this);
         },
 
         // 下拉刷新
@@ -724,13 +722,17 @@
                 // #endif
 
                 // 请求数据
+                var realstore_cart = app.globalData.page_ref(this, 'realstore_cart');
+                var init_data = {
+                    id: ((this.info || null) == null) ? (this.params.id || 0) : (this.info.id || 0),
+                };
+                if (realstore_cart != null && typeof realstore_cart.request_params_merge === 'function') {
+                    init_data = realstore_cart.request_params_merge(init_data, 'init');
+                }
                 uni.request({
                     url: app.globalData.get_request_url('index', 'detail', 'realstore'),
                     method: 'POST',
-                    data: this.$refs.realstore_cart.request_params_merge(
-                        {
-                            id: ((this.info || null) == null) ? (this.params.id || 0) : (this.info.id || 0),
-                        }, 'init'),
+                    data: init_data,
                     dataType: 'json',
                     success: (res) => {
                         uni.stopPullDownRefresh();
@@ -893,10 +895,15 @@
                 }
 
                 // 获取数据
+                var realstore_cart = app.globalData.page_ref(this, 'realstore_cart');
+                var list_data = post_data;
+                if (realstore_cart != null && typeof realstore_cart.request_params_merge === 'function') {
+                    list_data = realstore_cart.request_params_merge(post_data, 'data');
+                }
                 uni.request({
                     url: app.globalData.get_request_url('datalist', 'detail', 'realstore'),
                     method: 'POST',
-                    data: this.$refs.realstore_cart.request_params_merge(post_data, 'data'),
+                    data: list_data,
                     dataType: 'json',
                     success: (res) => {
                         uni.stopPullDownRefresh();
@@ -1038,17 +1045,15 @@
                     if ((temp_goods.is_exist_many_spec || 0) != 0) {
                         // 是否购物车中操作
                         if (type == 0) {
-                            this.$refs.realstore_cart.cart_event(true);
+                            app.globalData.page_ref_call(this, 'realstore_cart', 'cart_event', [true]);
                             app.globalData.showToast(this.$t('common.products_different_specifications_need_reduced_s'));
                         } else {
-                            if ((this.$refs.goods_buy || null) != null) {
-                                var buy_params = this.params;
-                                var type_data = this.buy_use_type_data();
-                                buy_params['buy_event_type'] = 'cart';
-                                buy_params['buy_use_type_data_index'] = type_data.data_index;
-                                buy_params['realstore_id'] = this.info.id;
-                                this.$refs.goods_buy.init(temp_goods, buy_params);
-                            }
+                            var buy_params = this.params;
+                            var type_data = this.buy_use_type_data();
+                            buy_params['buy_event_type'] = 'cart';
+                            buy_params['buy_use_type_data_index'] = type_data.data_index;
+                            buy_params['realstore_id'] = this.info.id;
+                            app.globalData.page_ref_call(this, 'goods_buy', 'init', [temp_goods, buy_params]);
                         }
                         return false;
                     }
@@ -1120,17 +1125,13 @@
 
             // 获取购物车数据
             get_cart_data() {
-                if((this.$refs.realstore_cart || null) != null) {
-                    this.$refs.realstore_cart.init({...{source: 'realstore', base: this.data_base, info: this.info}, ...this.params});
-                }
+                app.globalData.page_ref_call(this, 'realstore_cart', 'init', [{...{source: 'realstore', base: this.data_base, info: this.info}, ...this.params}]);
             },
 
             // 列表数量事件处理
             buy_number_event_handle(e, type, goods, spec = '') {
                 // 调用门店购物车方法处理
-                if((this.$refs.realstore_cart || null) != null) {
-                    this.$refs.realstore_cart.goods_opt_handle(type, goods, spec, 'buy_number', e);
-                }
+                app.globalData.page_ref_call(this, 'realstore_cart', 'goods_opt_handle', [type, goods, spec, 'buy_number', e]);
             },
 
             // 搜索输入事件
@@ -1153,9 +1154,7 @@
 
             // 搜索icon扫码事件、扫码商品id实现加入购物车
             search_icon_event(e) {
-                if((this.$refs.realstore_cart || null) != null) {
-                    this.$refs.realstore_cart.search_icon_handle(e);
-                }
+                app.globalData.page_ref_call(this, 'realstore_cart', 'search_icon_handle', [e]);
             },
 
             // 剪切板
@@ -1273,9 +1272,7 @@
 
             // 使用类型事件
             buy_use_type_event(e) {
-                if((this.$refs.realstore_cart || null) != null) {
-                    this.$refs.realstore_cart.buy_use_type_event();
-                }
+                app.globalData.page_ref_call(this, 'realstore_cart', 'buy_use_type_event', []);
             },
 
             // 下单类型切换事件回调
@@ -1291,8 +1288,9 @@
 
             // 获取使用类型数据索引、默认在店0
             buy_use_type_data() {
-                if((this.$refs.realstore_cart || null) != null) {
-                    return this.$refs.realstore_cart.buy_use_type_data();
+                var realstore_cart = app.globalData.page_ref(this, 'realstore_cart');
+                if (realstore_cart != null && typeof realstore_cart.buy_use_type_data === 'function') {
+                    return realstore_cart.buy_use_type_data();
                 }
                 return {
                     active_index: 0,
@@ -1338,11 +1336,9 @@
 
             // 分享开启弹层
             share_event(e) {
-                if ((this.$refs.share || null) != null) {
-                    this.$refs.share.init({
-                        share_info: this.share_info
-                    });
-                }
+                app.globalData.page_ref_call(this, 'share', 'init', [{
+                    share_info: this.share_info
+                }]);
             },
 
             // 详情 Tab 切换
@@ -1520,6 +1516,36 @@
             },
 
             // url事件
+            // 门店人员：总预约未开不可进详情
+            staff_item_tap_event(e) {
+                if (parseInt((this.info || {}).is_buy_staff_booking || 0) != 1) {
+                    return false;
+                }
+                var index = e.currentTarget.dataset.index;
+                var item = (this.staff_list || [])[index] || null;
+                if (item == null || (item.id || 0) <= 0) {
+                    return false;
+                }
+                app.globalData.url_open('/pages/plugins/realstore/staff-detail/staff-detail?id=' + item.id);
+            },
+
+            // 门店人员去预约：单人未开预约则提示
+            staff_book_tap_event(e) {
+                if (parseInt((this.info || {}).is_buy_staff_booking || 0) != 1) {
+                    return false;
+                }
+                var index = e.currentTarget.dataset.index;
+                var item = (this.staff_list || [])[index] || null;
+                if (item == null || (item.id || 0) <= 0) {
+                    return false;
+                }
+                if (parseInt(item.is_booking_enable || 0) != 1) {
+                    app.globalData.showToast(this.$t('realstore-staff.booking_disabled_tips'));
+                    return false;
+                }
+                app.globalData.url_open('/pages/plugins/realstore/staff-detail/staff-detail?id=' + item.id);
+            },
+
             url_event(e) {
                 app.globalData.url_event(e);
             },

@@ -2,7 +2,7 @@
     <view :class="theme_view">
         <block v-if="(data || null) != null && (data.config || null) != null">
             <!-- diy模块 -->
-            <component-diy :propValue="data.config" :propDataId="data.id" :propKey="random_value" @onLocationBack="user_back_choice_location">
+            <component-diy :propValue="data.config" :propDataId="data.id" :propKey="random_value" @onLocationBack="user_back_choice_location" @onLangOpen="diy_lang_open_event" @onShareOpen="diy_share_open_event">
                 <!-- 底部内容 -->
                 <template slot="diy-bottom-content">
                     <!-- 结尾 -->
@@ -13,6 +13,9 @@
                     <component-common ref="common"></component-common>
                 </template>
             </component-diy>
+            <!-- diy 内嵌套跨分包异步组件不支持，由页面托管语言/分享 -->
+            <component-lang-switch ref="lang_switch" @popup_sub_language_event="diy_popup_sub_language_event"></component-lang-switch>
+            <component-share-popup ref="share"></component-share-popup>
         </block>
         <block v-else>
             <component-no-data :propStatus="data_list_loding_status" :propMsg="data_list_loding_msg"></component-no-data>
@@ -25,6 +28,8 @@
     import componentDiy from '@/pages/diy/components/diy/diy';
     import componentNoData from '@/components/no-data/no-data';
     import componentBottomLine from '@/components/bottom-line/bottom-line';
+    import componentLangSwitch from '@/pages/common/components/lang-switch/lang-switch';
+    import componentSharePopup from '@/pages/common/components/share-popup/share-popup';
     import pluginLocale from '../locale/index.js';
     export default {
         mixins: [pluginLocale],
@@ -33,6 +38,8 @@
             componentDiy,
             componentNoData,
             componentBottomLine,
+            componentLangSwitch,
+            componentSharePopup,
         },
         data() {
             return {
@@ -85,10 +92,8 @@
         methods: {
             // 初始化公共
             init_common() {
-                // 公共onshow事件
-                if ((this.$refs.common || null) != null) {
-                    this.$refs.common.on_show();
-                }
+                // 公共onshow事件（$refs 未就绪时自动延后重试）
+                app.globalData.page_common_on_show(this);
             },
 
             // 获取数据
@@ -195,6 +200,27 @@
             user_back_choice_location(e) {
                 // 重新刷新数据
                 this.get_data();
+            },
+
+            // diy 多语言打开（页面托管异步组件）
+            diy_lang_open_event() {
+                if ((this.$refs.lang_switch || null) != null) {
+                    this.$refs.lang_switch.lang_open_event();
+                }
+            },
+
+            // diy 分享打开（页面托管异步组件）
+            diy_share_open_event() {
+                if ((this.$refs.share || null) != null) {
+                    this.$refs.share.init();
+                }
+            },
+
+            // diy 多语言选择回调
+            diy_popup_sub_language_event(e) {
+                e = uni.getStorageSync(app.globalData.data.cache_lang_switch_key) || e;
+                app.globalData.set_pages_navigation_bar_title();
+                app.globalData.init_config();
             },
         },
     };

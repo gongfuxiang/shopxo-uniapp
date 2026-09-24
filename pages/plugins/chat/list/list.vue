@@ -111,7 +111,7 @@
 		},
 		onShow() {
 			app.globalData.page_event_onshow_handle && app.globalData.page_event_onshow_handle();
-			this.$refs.common && this.$refs.common.on_show && this.$refs.common.on_show();
+			app.globalData.page_common_on_show(this);
 			this.chat_list_on_show();
 		},
 		onReady() {

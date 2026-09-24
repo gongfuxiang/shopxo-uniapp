@@ -115,7 +115,7 @@
     import componentGoodsList from '@/components/goods-list/goods-list';
     import componentPopup from '@/components/popup/popup';
     import componentTitle from '@/components/title/title';
-    import componentSharePopup from '@/components/share-popup/share-popup';
+    import componentSharePopup from '@/pages/common/components/share-popup/share-popup';
     import pluginLocale from '../locale/index.js';
     export default {
         mixins: [pluginLocale],
@@ -185,10 +185,8 @@
             // 获取数据
             this.get_data();
 
-            // 公共onshow事件
-            if ((this.$refs.common || null) != null) {
-                this.$refs.common.on_show();
-            }
+            // 公共onshow事件（$refs 未就绪时自动延后重试）
+            app.globalData.page_common_on_show(this);
         },
         // 下拉刷新
         onPullDownRefresh() {

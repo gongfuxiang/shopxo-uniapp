@@ -299,6 +299,8 @@
                 this.setData({
                     is_show_payment_popup: false,
                 });
+                // 缓存事件数据（跨分包异步组件小程序端拿不到 emit 参数）
+                uni.setStorageSync(app.globalData.data.cache_payment_keys.close, false);
                 this.$emit('close-payment-popup', false);
             },
 
@@ -320,6 +322,7 @@
                     is_show_payment_popup: false,
                 });
                 this.pay_handle(this.propTempPayValue, this.payment_id);
+                uni.setStorageSync(app.globalData.data.cache_payment_keys.close, false);
                 this.$emit('close-payment-popup', false);
             },
 
@@ -739,6 +742,7 @@
                                 is_show_cancel: 0,
                             });
                             // 支付接口调用成功，但是不知道是否支付成功，所以需要重新获取列表数据
+                            uni.setStorageSync(app.globalData.data.cache_payment_keys.reset, true);
                             self.$emit('reset-event');
                         },
                         fail: function (res) {
@@ -891,6 +895,8 @@
                     payment_id: this.payment_id,
                     is_to_page: is_to_page,
                 };
+                // 缓存事件数据（跨分包异步组件小程序端拿不到 emit 参数）
+                uni.setStorageSync(app.globalData.data.cache_payment_keys.pay_success, back_data);
                 this.$emit('pay-success', back_data);
                 if (is_to_page && this.propIsToPage) {
                     this.to_success_page_event();
@@ -904,6 +910,8 @@
                     temp_pay_index: this.propTempPayIndex,
                     payment_id: this.payment_id,
                 };
+                // 缓存事件数据（跨分包异步组件小程序端拿不到 emit 参数）
+                uni.setStorageSync(app.globalData.data.cache_payment_keys.pay_fail, back_data);
                 this.$emit('pay-fail', back_data);
                 this.to_fail_page_event(msg);
             },
@@ -975,6 +983,8 @@
                     temp_pay_index: this.propTempPayIndex,
                     payment_id: this.payment_id,
                 };
+                // 缓存事件数据（跨分包异步组件小程序端拿不到 emit 参数）
+                uni.setStorageSync(app.globalData.data.cache_payment_keys.pay_html_close, back_data);
                 this.$emit('pay-html-close', back_data);
 
                 // 进入指定页面

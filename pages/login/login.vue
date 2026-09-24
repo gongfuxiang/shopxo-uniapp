@@ -399,7 +399,7 @@
     import base64 from '@/common/js/lib/base64.js';
     import componentCommon from '@/components/common/common';
     import componentPopup from '@/components/popup/popup';
-    import componentLangSwitch from '@/components/lang-switch/lang-switch';
+    import componentLangSwitch from '@/pages/common/components/lang-switch/lang-switch';
     import pluginLocale from './locale/index.js';
     let login_static_url = app.globalData.get_static_url('thirdpartylogin', true) + 'icon/';
 
@@ -530,10 +530,8 @@
             // 异步初始化配置
             this.init_config();
 
-            // 公共onshow事件
-            if ((this.$refs.common || null) != null) {
-                this.$refs.common.on_show();
-            }
+            // 公共onshow事件（$refs 未就绪时自动延后重试）
+            app.globalData.page_common_on_show(this);
 
             // 分享菜单处理
             app.globalData.page_share_handle();
@@ -1663,6 +1661,7 @@
             },
             // 提交语言选择
             popup_sub_language_event(e) {
+                e = uni.getStorageSync(app.globalData.data.cache_lang_switch_key) || e;
                 this.setData({
                     language: e,
                 });

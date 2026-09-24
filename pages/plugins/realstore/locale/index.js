@@ -73,7 +73,9 @@ var zh = {
         "view_all_comments": "查看全部评价",
         "positive_rate": "好评率",
         "no_comments": "暂无评价",
-        "belong_store": "所属门店"
+        "belong_store": "所属门店",
+        "booking_disabled_tips": "该人员暂未开启预约",
+        "store_booking_disabled_tips": "门店暂未开启预约"
     },
     "orderallot-comments": {
         "goods_comments": "商品评价",
@@ -258,7 +260,9 @@ var en = {
         "view_all_comments": "View all",
         "positive_rate": "Positive ",
         "no_comments": "No reviews yet",
-        "belong_store": "Store"
+        "belong_store": "Store",
+        "booking_disabled_tips": "This staff is not accepting bookings",
+        "store_booking_disabled_tips": "Store booking is not enabled"
     },
     "orderallot-comments": {
         "goods_comments": "Product Reviews",

@@ -101,6 +101,21 @@
         created: function () {},
 
         methods: {
+            // 跨分包异步组件回调：先写缓存再 $emit（小程序端拿不到 emit 参数）
+            call_back_handle(data) {
+                uni.setStorageSync(app.globalData.data.cache_upload_callback_key, {
+                    data: data,
+                    call_data: this.propCallData,
+                });
+                //#ifndef APP-NVUE
+                this.$emit('call-back');
+                //#endif
+                //#ifdef APP-NVUE
+                this.$emit('callBack');
+                uni.$emit('callBack');
+                //#endif
+            },
+
             // 采用递归的方式上传多张
             upload_one_by_one(img_paths, success, fail, count, length) {
                 var self = this;
@@ -121,15 +136,9 @@
                                     if(self.propSingleCall) {
                                         // 是否返回全部信息
                                         if(self.propIsAllInfo) {
-                                            //#ifndef APP-NVUE
-                                            self.$emit('call-back', data.data, self.propCallData);
-                                            //#endif
-                                            //#ifdef APP-NVUE
-                                            self.$emit('callBack', data.data, self.propCallData);
-                                            uni.$emit('callBack', data.data, self.propCallData);
-                                            //#endif
+                                            self.call_back_handle(data.data);
                                         } else {
-                                            self.$emit('call-back', data.data.url, self.propCallData);
+                                            self.call_back_handle(data.data.url);
                                         }
                                     } else {
                                         var list = self.form_images_list;
@@ -147,7 +156,7 @@
                                         //#ifdef APP-NVUE
                                         self.form_images_list = list;
                                         //#endif
-                                        self.$emit('call-back', self.form_images_list, self.propCallData);
+                                        self.call_back_handle(self.form_images_list);
                                     }
                                 } else {
                                     app.globalData.showToast(data.msg);
@@ -222,7 +231,7 @@
                             //#ifdef APP-NVUE
                             self.form_images_list = list;
                             //#endif
-                            self.$emit('call-back', self.form_images_list, self.propCallData);
+                            self.call_back_handle(self.form_images_list);
                         }
                     },
                 });

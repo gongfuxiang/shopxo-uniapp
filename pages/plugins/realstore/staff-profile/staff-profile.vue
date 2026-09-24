@@ -115,7 +115,7 @@
     const app = getApp();
     import componentCommon from '@/components/common/common';
     import componentNoData from '@/components/no-data/no-data';
-    import componentUpload from '@/components/upload/upload';
+    import componentUpload from '@/pages/common/components/upload/upload';
     import pluginLocale from '../locale/index.js';
 
     export default {
@@ -156,10 +156,8 @@
             // 调用公共事件方法
             app.globalData.page_event_onshow_handle();
 
-            // 公共onshow事件
-            if ((this.$refs.common || null) != null) {
-                this.$refs.common.on_show();
-            }
+            // 公共onshow事件（$refs 未就绪时自动延后重试）
+            app.globalData.page_common_on_show(this);
         },
         methods: {
             // 初始化
@@ -230,14 +228,16 @@
             },
 
             // 头像上传回调
-            avatar_upload_event(e) {
+            avatar_upload_event() {
+                var e = (uni.getStorageSync(app.globalData.data.cache_upload_callback_key) || {}).data;
                 this.setData({
                     avatar_list: e || [],
                 });
             },
 
             // 相册上传回调
-            photo_upload_event(e) {
+            photo_upload_event() {
+                var e = (uni.getStorageSync(app.globalData.data.cache_upload_callback_key) || {}).data;
                 this.setData({
                     photo_list: e || [],
                 });

@@ -167,6 +167,27 @@
                 // 时间组件选择缓存key
                 cache_time_select_choice_key: 'cache_time_select_choice_key',
 
+                // 上传组件回调缓存key（data + call_data）
+                cache_upload_callback_key: 'cache_upload_callback_key',
+
+                // 支付组件事件缓存keys
+                cache_payment_keys: {
+                    close: 'cache_payment_close_event',
+                    reset: 'cache_payment_reset_event',
+                    pay_success: 'cache_payment_pay_success_event',
+                    pay_fail: 'cache_payment_pay_fail_event',
+                    pay_html_close: 'cache_payment_pay_html_close_event',
+                },
+
+                // 商品规格选择组件回调缓存key
+                cache_goods_spec_choice_key: 'cache_goods_spec_choice_key',
+
+                // 语言切换组件回调缓存key
+                cache_lang_switch_key: 'cache_lang_switch_key',
+
+                // 表情选择组件回调缓存key
+                cache_emoji_popup_key: 'cache_emoji_popup_key',
+
                 // 页面支付临时缓存key
                 cache_page_pay_key: 'cache_page_pay_key',
 
@@ -249,6 +270,8 @@
                 common_data_init_config_back_list: [],
                 common_data_init_status: 0,
                 common_data_init_back_timer: null,
+                // iconfont 远程字体是否已加载
+                iconfont_font_loaded: 0,
                 // 网络状态检查
                 network_type_page_record_timer: null,
                 // 位置监听更新页面临时记录数据
@@ -332,7 +355,21 @@
                 }
                 // #endif
 
-                var system_info = uni.getSystemInfoSync();
+                var system_info = {};
+                // 微信基础库已弃用 getSystemInfoSync，优先合并拆分 API
+                try {
+                    if (typeof uni.getDeviceInfo === 'function' || typeof uni.getWindowInfo === 'function' || typeof uni.getAppBaseInfo === 'function') {
+                        var device = (typeof uni.getDeviceInfo === 'function' ? uni.getDeviceInfo() : null) || {};
+                        var window_info = (typeof uni.getWindowInfo === 'function' ? uni.getWindowInfo() : null) || {};
+                        var app_base = (typeof uni.getAppBaseInfo === 'function' ? uni.getAppBaseInfo() : null) || {};
+                        var system_setting = (typeof uni.getSystemSetting === 'function' ? uni.getSystemSetting() : null) || {};
+                        system_info = Object.assign({}, system_setting, app_base, window_info, device);
+                    } else {
+                        system_info = uni.getSystemInfoSync();
+                    }
+                } catch (e) {
+                    system_info = uni.getSystemInfoSync();
+                }
                 uni.setStorageSync(this.data.cache_system_info_key, system_info);
                 return system_info;
             },
@@ -798,11 +835,13 @@
             is_weixin_force_user_base_handle(self, data, object, method, params) {
                 var status = parseInt(self.get_config('config.common_app_is_weixin_force_user_base', 0));
                 if(status == 1) {
-                    var obj = self.get_page_object();
-                    if((obj.$vm || null) != null && (obj.$vm.$refs || null) != null && (obj.$vm.$refs.common || null) != null && (obj.$vm.$refs.common.$refs || null) != null) {
-                        if((obj.$vm.$refs.common.$refs.modal_business || null) != null && (obj.$vm.$refs.common.$refs.modal_business.$refs || null) != null) {
-                            if((obj.$vm.$refs.common.$refs.modal_business.$refs.user_base || null) != null) {
-                                var user_base = obj.$vm.$refs.common.$refs.modal_business.$refs.user_base;
+                    try {
+                        var obj = self.get_page_object();
+                        if((obj || null) != null && (obj.$vm || null) != null) {
+                            var refs = obj.$vm.$refs || null;
+                            var user_base = (((refs || {}).common || {}).$refs || {}).modal_business;
+                            user_base = ((user_base || {}).$refs || {}).user_base || null;
+                            if(user_base != null) {
                                 var res = user_base.form_write_field_check_data(data, true);
                                 if(res.popup_status) {
                                     user_base.user_base_open(object, method, params);
@@ -810,7 +849,7 @@
                                 return res.popup_status;
                             }
                         }
-                    }
+                    } catch (e) {}
                 }
                 return false;
             },
@@ -1107,6 +1146,9 @@
              * 事件操作
              */
             operation_event(e) {
+                if ((e || null) == null || (e.currentTarget || null) == null || (e.currentTarget.dataset || null) == null) {
+                    return false;
+                }
                 var value = e.currentTarget.dataset.value || null;
                 var type = parseInt(e.currentTarget.dataset.type);
                 if (value != null) {
@@ -1274,7 +1316,16 @@
 
             // 拨打电话
             call_tel(data) {
-                var value = typeof data == 'object' ? data.currentTarget.dataset.value || null : data || null;
+                var value = null;
+                if (typeof data == 'object' && data != null) {
+                    if ((data.currentTarget || null) != null && (data.currentTarget.dataset || null) != null) {
+                        value = data.currentTarget.dataset.value || null;
+                    } else if (data.value !== undefined) {
+                        value = data.value;
+                    }
+                } else {
+                    value = data || null;
+                }
                 if (value != null) {
                     uni.makePhoneCall({
                         phoneNumber: value.toString(),
@@ -1338,11 +1389,16 @@
                             uni.setStorageSync(key, value);
                         }
                     }
-                    // 更新底部菜单数据
-                    var obj = this.get_page_object() || null;
-                    if(obj != null && (obj.$vm || null) != null && (obj.$vm.$refs || null) != null && (obj.$vm.$refs.common || null) != null) {
-                        obj.$vm.$refs.common.footer_init();
-                    }
+                    // 更新底部菜单数据（页面未渲染完成时访问 $refs 会报 dataset of null，失败则忽略，页面 onShow/onReady 会再刷）
+                    try {
+                        var obj = this.get_page_object() || null;
+                        if(obj != null && (obj.$vm || null) != null) {
+                            var refs = obj.$vm.$refs || null;
+                            if(refs != null && (refs.common || null) != null && typeof refs.common.footer_init === 'function') {
+                                refs.common.footer_init();
+                            }
+                        }
+                    } catch (e) {}
                 }
             },
 
@@ -1959,6 +2015,9 @@
 
             // 文本事件
             text_event_handle(e) {
+                if ((e || null) == null || (e.currentTarget || null) == null || (e.currentTarget.dataset || null) == null) {
+                    return false;
+                }
                 var event = e.currentTarget.dataset.event || null;
                 if (event != null) {
                     var value = e.currentTarget.dataset.value;
@@ -1977,7 +2036,16 @@
 
             // 剪贴板
             text_copy_event(data) {
-                var value = typeof data == 'object' ? data.currentTarget.dataset.value || null : data || null;
+                var value = null;
+                if (typeof data == 'object' && data != null) {
+                    if ((data.currentTarget || null) != null && (data.currentTarget.dataset || null) != null) {
+                        value = data.currentTarget.dataset.value || null;
+                    } else if (data.value !== undefined) {
+                        value = data.value;
+                    }
+                } else {
+                    value = data || null;
+                }
                 if (value != null) {
                     var self = this;
                     uni.setClipboardData({
@@ -1997,7 +2065,12 @@
 
             // 图片预览
             image_show_event(e, urls = null) {
-                var value = e.currentTarget.dataset.value || null;
+                var value = null;
+                if ((e || null) != null && (e.currentTarget || null) != null && (e.currentTarget.dataset || null) != null) {
+                    value = e.currentTarget.dataset.value || null;
+                } else if (typeof e == 'string') {
+                    value = e;
+                }
                 if (value != null) {
                     uni.previewImage({
                         current: value,
@@ -2022,6 +2095,64 @@
                     // 根据配置的静态url地址+主题标识+参数类型组合远程静态文件地址
                     return this.data.static_url + 'static/app/' + this.get_theme_value() + '/' + type + '/';
                 }
+            },
+
+            // iconfont 远程静态目录（不跟主题，固定 static/common/iconfont/）
+            get_iconfont_static_url() {
+                return this.data.static_url + 'static/common/iconfont/';
+            },
+
+            // 远程加载 iconfont 字体（H5 / 小程序 / App 非 nvue）
+            load_iconfont_font() {
+                if (parseInt(this.data.iconfont_font_loaded || 0) == 1) {
+                    return;
+                }
+                // 各端统一用 ttf 即可（小程序/App/H5 手机端均支持）
+                var url = this.get_iconfont_static_url() + 'iconfont.ttf';
+
+                // #ifdef H5
+                // H5：注入 @font-face（比 loadFontFace 更稳）
+                if (typeof document !== 'undefined') {
+                    var style_id = 'shopxo-iconfont-face';
+                    if (!document.getElementById(style_id)) {
+                        var style = document.createElement('style');
+                        style.id = style_id;
+                        style.type = 'text/css';
+                        style.appendChild(document.createTextNode(
+                            '@font-face{font-family:"iconfont";src:url("' + url + '") format("truetype");font-weight:normal;font-style:normal;font-display:swap;}'
+                        ));
+                        document.head.appendChild(style);
+                    }
+                    this.data.iconfont_font_loaded = 1;
+                    return;
+                }
+                // #endif
+
+                // #ifndef H5
+                // #ifndef APP-NVUE
+                // 小程序 / App-Vue
+                if (typeof uni.loadFontFace === 'function') {
+                    var self = this;
+                    uni.loadFontFace({
+                        global: true,
+                        family: 'iconfont',
+                        source: 'url("' + url + '")',
+                        success: function () {
+                            self.data.iconfont_font_loaded = 1;
+                        },
+                        fail: function () {
+                            uni.loadFontFace({
+                                family: 'iconfont',
+                                source: 'url("' + url + '")',
+                                success: function () {
+                                    self.data.iconfont_font_loaded = 1;
+                                },
+                            });
+                        },
+                    });
+                }
+                // #endif
+                // #endif
             },
 
             // rpx转px
@@ -2507,17 +2638,26 @@
                 if (is_app == 1) {
                     // 当前时间戳
                     var time_current = Date.parse(new Date());
+                    // iOS 兼容：将 "yyyy-MM-dd HH:mm:ss" 转为 "yyyy/MM/dd HH:mm:ss"
+                    var parse_time = (val) => {
+                        if ((val || null) == null || val === '') {
+                            return NaN;
+                        }
+                        return Date.parse(new Date(String(val).replace(/-/g, '/')));
+                    };
                     // 开始时间
                     var time_start = this.get_config('plugins_base.mourning.data.time_start') || null;
                     if (time_start != null) {
-                        if (Date.parse(new Date(time_start)) > time_current) {
+                        var start_ts = parse_time(time_start);
+                        if (!isNaN(start_ts) && start_ts > time_current) {
                             return false;
                         }
                     }
                     // 结束时间
                     var time_end = this.get_config('plugins_base.mourning.data.time_end') || null;
                     if (time_end != null) {
-                        if (Date.parse(new Date(time_end)) < time_current) {
+                        var end_ts = parse_time(time_end);
+                        if (!isNaN(end_ts) && end_ts < time_current) {
                             return false;
                         }
                     }
@@ -2829,18 +2969,25 @@
                                     if (typeof pv.object === 'object' && (pv.method || null) != null) {
                                         pv.object[pv.method]({ ...(pv.params || {}), ...{ loading: 1 } });
                                     }
-                                    // 重新调用页面common
-                                    var obj = self.get_page_object();
-                                    if((obj.$vm || null) != null && (obj.$vm.$refs || null) != null) {
-                                        setTimeout(function() {
-                                            if((obj.$vm.$refs.common || null) != null) {
-                                                obj.$vm.$refs.common.init();
-                                            }
-                                            if((obj.$vm.$refs.common_footer || null) != null) {
-                                                obj.$vm.$refs.common_footer.init();
-                                            }
-                                        }, 500);
-                                    }
+                                    // 重新调用页面common（页面未就绪访问 $refs 可能抛错）
+                                    try {
+                                        var obj = self.get_page_object();
+                                        if((obj || null) != null && (obj.$vm || null) != null) {
+                                            setTimeout(function() {
+                                                try {
+                                                    var refs = obj.$vm.$refs || null;
+                                                    if(refs != null) {
+                                                        if((refs.common || null) != null && typeof refs.common.init === 'function') {
+                                                            refs.common.init();
+                                                        }
+                                                        if((refs.common_footer || null) != null && typeof refs.common_footer.init === 'function') {
+                                                            refs.common_footer.init();
+                                                        }
+                                                    }
+                                                } catch (e2) {}
+                                            }, 500);
+                                        }
+                                    } catch (e) {}
                                 }
                             }
                         });
@@ -3467,12 +3614,85 @@
                 // 设置导航背景色和颜色
                 this.set_navigation_bar_color();
             },
+
+            /**
+             * 安全调用页面 component-common.on_show
+             * 说明：小程序页面未渲染完时访问 this.$refs 会触发 selectAllComponents，
+             * 内部读 dataset 抛错（Cannot read property 'dataset' of null）。
+             * 失败则短延迟自动重试，避免各页 onShow 直接崩。
+             */
+            page_common_on_show(vm, params, retry) {
+                if ((vm || null) == null) {
+                    return false;
+                }
+                retry = parseInt(retry || 0);
+                try {
+                    var refs = vm.$refs || null;
+                    if (refs != null && (refs.common || null) != null && typeof refs.common.on_show === 'function') {
+                        refs.common.on_show(params || {});
+                        return true;
+                    }
+                } catch (e) {}
+                if (retry < 3) {
+                    var self = this;
+                    setTimeout(function () {
+                        self.page_common_on_show(vm, params, retry + 1);
+                    }, 50 * (retry + 1));
+                }
+                return false;
+            },
+
+            /**
+             * 安全读取页面 $refs[name]
+             * 未就绪时返回 null，不抛错
+             */
+            page_ref(vm, name) {
+                if ((vm || null) == null || (name || null) == null || name === '') {
+                    return null;
+                }
+                try {
+                    var refs = vm.$refs || null;
+                    if (refs != null && (refs[name] || null) != null) {
+                        return refs[name];
+                    }
+                } catch (e) {}
+                return null;
+            },
+
+            /**
+             * 安全调用页面 ref 方法，失败则短延迟重试
+             * page_ref_call(vm, 'goods_buy', 'init', [arg1, arg2])
+             */
+            page_ref_call(vm, name, method, args, retry) {
+                if ((vm || null) == null || (name || null) == null || (method || null) == null) {
+                    return false;
+                }
+                retry = parseInt(retry || 0);
+                args = args || [];
+                try {
+                    var ref = this.page_ref(vm, name);
+                    if (ref != null && typeof ref[method] === 'function') {
+                        ref[method].apply(ref, args);
+                        return true;
+                    }
+                } catch (e) {}
+                if (retry < 5) {
+                    var self = this;
+                    setTimeout(function () {
+                        self.page_ref_call(vm, name, method, args, retry + 1);
+                    }, 50 * (retry + 1));
+                }
+                return false;
+            },
         },
 
         // 初始化完成时触发（全局只触发一次）
         onLaunch(params) {
             //隐藏系统tabbar
             this.globalData.system_hide_tabbar();
+
+            // 远程加载 iconfont 字体
+            this.globalData.load_iconfont_font();
         },
 
         // 启动，或从后台进入前台显示
@@ -3482,6 +3702,9 @@
 
             // 公共数据初始化
             this.globalData.init_config();
+
+            // 远程加载 iconfont 字体（防止冷启动失败后补载）
+            this.globalData.load_iconfont_font();
 
             // 设置设备信息
             this.globalData.set_system_info();
@@ -3527,5 +3750,6 @@
     @import './common/css/lib.css';
     @import './common/css/theme.css';
     @import './common/css/animation.css';
+    @import './common/css/iconfont.css';
     /* #endif */
 </style>

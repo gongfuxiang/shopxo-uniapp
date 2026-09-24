@@ -97,7 +97,7 @@
     const app = getApp();
     import componentCommon from '@/components/common/common';
     import componentNoData from '@/components/no-data/no-data';
-    import componentUpload from '@/components/upload/upload';
+    import componentUpload from '@/pages/common/components/upload/upload';
     import pluginLocale from '../locale/index.js';
 
     export default {
@@ -138,9 +138,7 @@
          */
         onShow() {
             app.globalData.page_event_onshow_handle();
-            if ((this.$refs.common || null) != null) {
-                this.$refs.common.on_show();
-            }
+            app.globalData.page_common_on_show(this);
             app.globalData.page_share_handle();
         },
 
@@ -206,7 +204,8 @@
             /**
              * 上传组件回调（同步凭证图片列表）
              */
-            return_image_event(data) {
+            return_image_event() {
+                var data = (uni.getStorageSync(app.globalData.data.cache_upload_callback_key) || {}).data;
                 this.setData({
                     image_list: data,
                 });

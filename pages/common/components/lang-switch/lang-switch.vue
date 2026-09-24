@@ -85,9 +85,11 @@
                 this.setData({
                     popup_status: false,
                 });
-                // 将当前选中的多语言返回给父级使用
+                // 将当前选中的多语言返回给父级使用（跨分包异步组件：先写缓存再 $emit）
                 var language_list = this.$t('language');
-                this.$emit('popup_sub_language_event', language_list[this.language_key]);
+                var back_data = language_list[this.language_key];
+                uni.setStorageSync(app.globalData.data.cache_lang_switch_key, back_data);
+                this.$emit('popup_sub_language_event', back_data);
             },
             // 多语言切换
             language_change(lang) {

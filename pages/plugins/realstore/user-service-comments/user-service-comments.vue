@@ -41,7 +41,7 @@
     import componentCommon from '@/components/common/common';
     import componentNoData from '@/components/no-data/no-data';
     import componentBottomLine from '@/components/bottom-line/bottom-line';
-    import componentPanelContent from '@/components/panel-content/panel-content';
+    import componentPanelContent from '@/pages/common/components/panel-content/panel-content';
     import pluginLocale from '../locale/index.js';
 
     export default {
@@ -75,9 +75,7 @@
         onShow() {
             app.globalData.page_event_onshow_handle();
             this.init();
-            if ((this.$refs.common || null) != null) {
-                this.$refs.common.on_show();
-            }
+            app.globalData.page_common_on_show(this);
             app.globalData.page_share_handle();
         },
         onPullDownRefresh() {

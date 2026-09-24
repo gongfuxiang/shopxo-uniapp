@@ -34,7 +34,7 @@
     import componentCommon from '@/components/common/common';
     import componentNavBack from '@/components/nav-back/nav-back';
     import componentNoData from '@/components/no-data/no-data';
-    import componentPanelContent from '@/components/panel-content/panel-content';
+    import componentPanelContent from '@/pages/common/components/panel-content/panel-content';
     import pluginLocale from '../locale/index.js';
 
     export default {
@@ -79,10 +79,8 @@
             // 加载数据
             this.init();
 
-            // 公共onshow事件
-            if ((this.$refs.common || null) != null) {
-                this.$refs.common.on_show();
-            }
+            // 公共onshow事件（$refs 未就绪时自动延后重试）
+            app.globalData.page_common_on_show(this);
 
             // 分享菜单处理
             app.globalData.page_share_handle();

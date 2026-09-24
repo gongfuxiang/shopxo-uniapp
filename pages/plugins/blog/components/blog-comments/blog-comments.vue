@@ -154,8 +154,8 @@
     const app = getApp();
     var common_static_url = app.globalData.get_static_url('common');
     import componentPopup from '@/components/popup/popup';
-    import componentSharePopup from '@/components/share-popup/share-popup';
-    import componentEmojiPopup from '@/components/emoji-popup/emoji-popup';
+    import componentSharePopup from '@/pages/common/components/share-popup/share-popup';
+    import componentEmojiPopup from '@/pages/common/components/emoji-popup/emoji-popup';
     export default {
         data() {
             return {
@@ -286,6 +286,7 @@
 
             // 表情选择确认事件
             emoji_choice_confirm_event(emoji) {
+                emoji = uni.getStorageSync(app.globalData.data.cache_emoji_popup_key) || emoji;
                 var value = this.input_comments_value;
                 var cursor = parseInt(this.input_comments_cursor || 0);
                 if (value != '') {

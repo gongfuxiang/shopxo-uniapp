@@ -111,10 +111,10 @@
 <script>
     const app = getApp();
     import componentCommon from '@/components/common/common';
-    import componentPanelContent from "@/components/panel-content/panel-content";
+    import componentPanelContent from "@/pages/common/components/panel-content/panel-content";
     import componentNoData from '@/components/no-data/no-data';
     import componentBottomLine from '@/components/bottom-line/bottom-line';
-    import componentPayment from '@/components/payment/payment';
+    import componentPayment from '@/pages/common/components/payment/payment';
     import componentPopup from '@/components/popup/popup';
     import pluginLocale from '../locale/index.js';
     export default {
@@ -184,10 +184,8 @@
             // 调用公共事件方法
             app.globalData.page_event_onshow_handle();
 
-            // 公共onshow事件
-            if ((this.$refs.common || null) != null) {
-                this.$refs.common.on_show();
-            }
+            // 公共onshow事件（$refs 未就绪时自动延后重试）
+            app.globalData.page_common_on_show(this);
 
             // 分享菜单处理
             app.globalData.page_share_handle();
@@ -421,6 +419,7 @@
 
             // 支付成功数据设置
             order_item_pay_success_handle(data) {
+                data = uni.getStorageSync(app.globalData.data.cache_payment_keys.pay_success) || data || {};
                 var order_ids_arr = data.order_id.toString().split(',');
                 var temp_data_list = this.data_list;
                 for (var i in temp_data_list) {

@@ -65,9 +65,7 @@
         },
         onShow() {
             app.globalData.page_event_onshow_handle();
-            if ((this.$refs.common || null) != null) {
-                this.$refs.common.on_show();
-            }
+            app.globalData.page_common_on_show(this);
         },
         methods: {
             init() {

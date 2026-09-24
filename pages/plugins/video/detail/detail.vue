@@ -273,7 +273,7 @@
     import componentNoData from '@/components/no-data/no-data';
     import componentBottomLine from '@/components/bottom-line/bottom-line';
     import componentPopup from '@/components/popup/popup';
-    import componentUpload from '@/components/upload/upload';
+    import componentUpload from '@/pages/common/components/upload/upload';
     import componentCommon from '@/components/common/common';
     import pluginLocale from '../locale/index.js';
     // 状态栏高度
@@ -409,10 +409,8 @@
                 this.video_play_event(this.create_video_contexts[this.current_index]);
             }
 
-            // 公共onshow事件
-            if ((this.$refs.common || null) != null) {
-                this.$refs.common.on_show();
-            }
+            // 公共onshow事件（$refs 未就绪时自动延后重试）
+            app.globalData.page_common_on_show(this);
 
             // 分享菜单处理
             app.globalData.page_share_handle();
@@ -1008,7 +1006,8 @@
             },
 
             // 图片上传回调
-            upload_images_event(res) {
+            upload_images_event() {
+                var res = (uni.getStorageSync(app.globalData.data.cache_upload_callback_key) || {}).data;
                 if((res || null) != null) {
                     if (this.form_images_list.length > 0) {
                         this.form_images_list.splice(0, 1, { url: res.url, name: res.name, size: res.size });

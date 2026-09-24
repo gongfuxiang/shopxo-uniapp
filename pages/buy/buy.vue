@@ -447,7 +447,7 @@
     import componentPopup from '@/components/popup/popup';
     import componentNoData from '@/components/no-data/no-data';
     import componentTimeSelect from '@/pages/common/components/time-select/time-select';
-    import componentPayment from '@/components/payment/payment';
+    import componentPayment from '@/pages/common/components/payment/payment';
     import componentFormInputBase from '@/pages/form-input/components/form-input/form-input-base';
     import componentInvoiceBuyPopup from '@/pages/plugins/invoice/components/invoice-buy-popup/invoice-buy-popup';
     import componentFriendpayModeSwitch from '@/pages/plugins/friendpay/components/pay-mode-switch/pay-mode-switch';
@@ -608,10 +608,8 @@
             // 初始化配置
             this.init_config();
 
-            // 公共onshow事件
-            if ((this.$refs.common || null) != null) {
-                this.$refs.common.on_show();
-            }
+            // 公共onshow事件（$refs 未就绪时自动延后重试）
+            app.globalData.page_common_on_show(this);
 
             // 分享菜单处理
             app.globalData.page_share_handle();
@@ -1770,7 +1768,7 @@
                     }
                     prefill.push(row);
                 }
-                var cart_ref = this.$refs.staff_booking_cart || null;
+                var cart_ref = app.globalData.page_ref(this, 'staff_booking_cart');
                 if(cart_ref == null || typeof cart_ref.staff_booking_init != 'function') {
                     app.globalData.showToast(this.$t('common.no_data'));
                     return false;
