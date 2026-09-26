@@ -5,7 +5,7 @@
  * 迁移到其他项目（插件式）：
  * 1. 拷贝 common/js/chat_*.js、hooks/chat_*、pages/consult（咨询端）或 pages/customer-service（工作台）、相关 components
  * 2. 改本文件顶部 chat_default_config，或运行时 chat_set_config / chat_connect
- * 3. 商品点击：开启 goods_click_enable=1，优先用消息里的 goods_url；或传 on_goods_click 回调
+ * 3. 商品点击：开启 goods_click_enable=1，走原生商品详情（忽略 PC http）；或传 on_goods_click 回调
  */
 import {
 	get_user_cache_info,
@@ -17,7 +17,6 @@ import {
 	isEmpty,
 	showToast,
 	url_open,
-	open_web_view,
 } from './chat-host.js';
 import { notify_incoming_chat } from './chat-push.js';
 import $api from './chat-request.js';
@@ -75,14 +74,13 @@ export const chat_default_config = {
 	/** 对齐 PC data-is-goods-recommend，商品推荐入口；缺省关闭 */
 	is_goods_recommend: 0,
 	/**
-	 * 商品卡片点击跳转（插件迁移用）
-	 * - 本管理端：保持 0，不跳详情
-	 * - 其他项目：chat_set_config({ goods_click_enable: 1, goods_detail_path: '/pages/goods-detail/goods-detail?id={id}' })
+	 * 商品卡片点击跳转（商城咨询端默认开）
+	 * - goods_detail_path 兜底原生详情；消息里已是 /pages/ 的 goods_url 优先
 	 * - 或传 on_goods_click: (goods) => { ... } 自定义（优先于路径）
 	 */
-	goods_click_enable: 0,
-	/** 详情页路径模板，支持 {id} / {goods_id}；空且无回调时若有 goods_url 则开 web-view */
-	goods_detail_path: '',
+	goods_click_enable: 1,
+	/** 详情页路径模板，支持 {id} / {goods_id} */
+	goods_detail_path: '/pages/goods-detail/goods-detail?id={id}',
 	/** 自定义商品点击：(goods) => void | false */
 	on_goods_click: null,
 	/** true：控制台打印每条 WS 收发数据，方便联调；看完可改回 false */
@@ -113,27 +111,11 @@ export const chat_can_open_goods = () => {
 
 /**
  * 打开商品（插件迁移入口）
- * 优先级：on_goods_click > 接口下发的 goods_url > goods_detail_path 模板兜底
+ * 手机端与订单/售后一致：只用原生 pages，忽略 PC 的 http(s) 链接
+ * 优先级：on_goods_click > 已是 /pages/ 的 goods_url > goods_detail_path / 默认商品详情
  * @param {object} goods { id, goods_id, goods_url, title, ... }
  * @returns {boolean}
  */
-const open_goods_link = (url) => {
-	const link = String(url || '').trim();
-	if (isEmpty(link)) {
-		return false;
-	}
-	if (/^https?:\/\//i.test(link)) {
-		open_web_view(link);
-		return true;
-	}
-	if (link.indexOf('/pages/') === 0) {
-		url_open(link);
-		return true;
-	}
-	url_open(link);
-	return true;
-};
-
 export const chat_open_goods = (goods = {}) => {
 	const g = goods && typeof goods == 'object' ? goods : {};
 	const id = parseInt(g.id || g.goods_id || 0) || 0;
@@ -149,27 +131,23 @@ export const chat_open_goods = (goods = {}) => {
 	if (parseInt(runtime_config.goods_click_enable || 0) != 1) {
 		return false;
 	}
-	const goods_url = String(g.goods_url || g.url || '').trim();
-	if (!isEmpty(goods_url)) {
-		return open_goods_link(goods_url);
-	}
-	const path_tpl = String(runtime_config.goods_detail_path || '').trim();
-	if (path_tpl) {
-		if (!(id > 0) && path_tpl.indexOf('{id}') >= 0) {
-			showToast(chat_t('goods_info_error'));
-			return false;
-		}
-		const path = path_tpl.replace(/\{goods_id\}/g, String(id)).replace(/\{id\}/g, String(id));
-		url_open(path);
-		return true;
-	}
-	return false;
+	const path_tpl = String(runtime_config.goods_detail_path || '').trim()
+		|| '/pages/goods-detail/goods-detail?id={id}';
+	return open_biz_detail_link(
+		g.goods_url || g.url || '',
+		id,
+		path_tpl,
+	);
 };
 
-/** 打开业务详情（订单/售后）：手机端只用原生 pages，不走 PC 的 http webview */
+/** 打开业务详情（订单/售后/商品）：手机端只用原生 pages，不走 PC 的 http webview */
 const open_biz_detail_link = (url, id, fallback_path) => {
 	const oid = parseInt(id || 0) || 0;
-	const link = String(url || '').trim();
+	let link = String(url || '').trim();
+	// 后端偶发不下发前导 /（pages/...），小程序 navigateTo 需要绝对路径
+	if (link.indexOf('pages/') === 0) {
+		link = '/' + link;
+	}
 	// 仅信任已是 uniapp 路径的链接；http(s) 是 PC 详情，忽略
 	if (link.indexOf('/pages/') === 0) {
 		url_open(link);
@@ -179,7 +157,9 @@ const open_biz_detail_link = (url, id, fallback_path) => {
 		showToast(chat_t('data_error'));
 		return false;
 	}
-	const path = String(fallback_path || '').replace(/\{id\}/g, String(oid));
+	const path = String(fallback_path || '')
+		.replace(/\{goods_id\}/g, String(oid))
+		.replace(/\{id\}/g, String(oid));
 	if (isEmpty(path)) {
 		showToast(chat_t('data_error'));
 		return false;
@@ -380,6 +360,14 @@ export const get_chat_state = () => ({
 	queue_count: state.queue_count,
 	emoji_list: state.emoji_list,
 });
+
+/** 设置端类型（咨询页 onLoad 尽早标 user，避免小程序 onShow 抢连时仍是默认 work） */
+export const chat_set_user_type = (type) => {
+	if (type == 'user' || type == 'work') {
+		state.user_type = type;
+	}
+	return state.user_type;
+};
 
 /** 清空 debug 收包缓存 */
 export const chat_clear_recv_log = () => {
@@ -4685,6 +4673,7 @@ export default {
 	on_chat_event,
 	off_chat_event,
 	get_chat_state,
+	chat_set_user_type,
 	chat_clear_recv_log,
 	chat_event_http,
 	chat_apply_work_init,

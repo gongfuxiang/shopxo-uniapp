@@ -179,57 +179,70 @@
                 " class="goods-discount-aggregate padding-main bg-white text-size-xs br-t-f9">
                     <view class="goods-discount-aggregate-row flex-row align-c" @tap="popup_discount_event">
                         <view class="goods-discount-tags-scroll flex-row flex-nowrap margin-right-main cp">
-                            <!-- 优惠券 -->
+                            <!-- 优惠券（key 用 index，勿拼字符串：小程序 wx:key 不支持表达式） -->
                             <block v-if="((plugins_coupon_data || null) != null && plugins_coupon_data.data.length > 0)">
-                                <block v-for="(item, index) in plugins_coupon_data.data" :key="'cp-' + index">
-                                    <view class="discount-tag-item mini-coupon flex-row flex-nowrap margin-right-sm" :class="item.status_type === 2 ? 'received-coupon mini-coupon-br' : 'not-received-coupon'">
-                                        <text class="nowrap">{{ item.desc || item.name }}</text>
-                                        <text v-if="item.status_type === 0" class="dis-inline-block nowrap margin-left-sm padding-left-sm divider-l" :data-index="index" :data-value="item.id" @tap.stop="coupon_receive_event">{{ item.status_operable_name }}</text>
-                                        <text v-else class="dis-inline-block nowrap margin-left-sm padding-left-sm divider-l">{{ item.status_operable_name }}</text>
-                                    </view>
-                                </block>
+                                <view
+                                    v-for="(item, index) in plugins_coupon_data.data"
+                                    :key="index"
+                                    class="discount-tag-item mini-coupon flex-row flex-nowrap margin-right-sm"
+                                    :class="item.status_type === 2 ? 'received-coupon mini-coupon-br' : 'not-received-coupon'"
+                                >
+                                    <text class="nowrap">{{ item.desc || item.name }}</text>
+                                    <text v-if="item.status_type === 0" class="dis-inline-block nowrap margin-left-sm padding-left-sm divider-l" :data-index="index" :data-value="item.id" @tap.stop="coupon_receive_event">{{ item.status_operable_name }}</text>
+                                    <text v-else class="dis-inline-block nowrap margin-left-sm padding-left-sm divider-l">{{ item.status_operable_name }}</text>
+                                </view>
                             </block>
                             <!-- 优购返现 / 返卡券 -->
                             <block v-if="(plugins_excellentbuyreturntocash_data || null) != null">
                                 <view v-if="(plugins_excellentbuyreturntocash_data.cash || null) != null" class="discount-tag-item br-green cr-green bg-white radius padding-vertical-xss padding-horizontal-sm margin-right-sm">{{ plugins_excellentbuyreturntocash_data.cash.tag }}</view>
                                 <block v-if="(plugins_excellentbuyreturntocash_data.data || null) != null && plugins_excellentbuyreturntocash_data.data.length > 0">
-                                    <block v-for="(item, index) in plugins_excellentbuyreturntocash_data.data" :key="'eb-' + index">
-                                        <view class="discount-tag-item br-main cr-main bg-white radius padding-vertical-xss padding-horizontal-sm margin-right-sm">{{ item.desc || item.name }}</view>
-                                    </block>
+                                    <view
+                                        v-for="(item, index) in plugins_excellentbuyreturntocash_data.data"
+                                        :key="index"
+                                        class="discount-tag-item br-main cr-main bg-white radius padding-vertical-xss padding-horizontal-sm margin-right-sm"
+                                    >{{ item.desc || item.name }}</view>
                                 </block>
                             </block>
-                            <!-- 满减满折 -->
-                            <block v-if="(plugins_fullreduce_data || null) != null && (plugins_fullreduce_data.data || null) != null">
-                                <block v-for="(item, index) in plugins_fullreduce_data.data" :key="'fr-' + index">
-                                    <block v-for="(item2, index2) in item.rule_lines" :key="'fr-' + index + '-' + index2">
-                                        <view class="discount-tag-item br-main cr-main bg-white radius padding-vertical-xss padding-horizontal-sm margin-right-sm">{{item2}}</view>
-                                    </block>
+                            <!-- 满减满折：每类单独父级，避免多段 v-for 在 H5 下 key 冲突 -->
+                            <view v-if="(plugins_fullreduce_data || null) != null && (plugins_fullreduce_data.data || null) != null" class="flex-row flex-nowrap">
+                                <block v-for="(item, index) in plugins_fullreduce_data.data" :key="index">
+                                    <view
+                                        v-for="(item2, index2) in item.rule_lines"
+                                        :key="index2"
+                                        class="discount-tag-item br-main cr-main bg-white radius padding-vertical-xss padding-horizontal-sm margin-right-sm"
+                                    >{{item2}}</view>
                                 </block>
-                            </block>
+                            </view>
                             <!-- 满送 -->
-                            <block v-if="(plugins_fullgive_data || null) != null && (plugins_fullgive_data.data || null) != null">
-                                <block v-for="(item, index) in plugins_fullgive_data.data" :key="'fg-' + index">
-                                    <block v-for="(item2, index2) in item.rule_lines" :key="'fg-' + index + '-' + index2">
-                                        <view class="discount-tag-item br-main cr-main bg-white radius padding-vertical-xss padding-horizontal-sm margin-right-sm">{{item2}}</view>
-                                    </block>
+                            <view v-if="(plugins_fullgive_data || null) != null && (plugins_fullgive_data.data || null) != null" class="flex-row flex-nowrap">
+                                <block v-for="(item, index) in plugins_fullgive_data.data" :key="index">
+                                    <view
+                                        v-for="(item2, index2) in item.rule_lines"
+                                        :key="index2"
+                                        class="discount-tag-item br-main cr-main bg-white radius padding-vertical-xss padding-horizontal-sm margin-right-sm"
+                                    >{{item2}}</view>
                                 </block>
-                            </block>
+                            </view>
                             <!-- N件N优惠 -->
-                            <block v-if="(plugins_npiecendis_data || null) != null && (plugins_npiecendis_data.data || null) != null">
-                                <block v-for="(item, index) in plugins_npiecendis_data.data" :key="'np-' + index">
-                                    <block v-for="(item2, index2) in item.rule_lines" :key="'np-' + index + '-' + index2">
-                                        <view class="discount-tag-item br-main cr-main bg-white radius padding-vertical-xss padding-horizontal-sm margin-right-sm">{{item2}}</view>
-                                    </block>
+                            <view v-if="(plugins_npiecendis_data || null) != null && (plugins_npiecendis_data.data || null) != null" class="flex-row flex-nowrap">
+                                <block v-for="(item, index) in plugins_npiecendis_data.data" :key="index">
+                                    <view
+                                        v-for="(item2, index2) in item.rule_lines"
+                                        :key="index2"
+                                        class="discount-tag-item br-main cr-main bg-white radius padding-vertical-xss padding-horizontal-sm margin-right-sm"
+                                    >{{item2}}</view>
                                 </block>
-                            </block>
+                            </view>
                             <!-- 新人礼包 -->
-                            <block v-if="(plugins_newpersongift_data || null) != null && (plugins_newpersongift_data.data || null) != null">
-                                <block v-for="(item, index) in plugins_newpersongift_data.data" :key="'ng-' + index">
-                                    <block v-for="(item2, index2) in item.rule_lines" :key="'ng-' + index + '-' + index2">
-                                        <view class="discount-tag-item br-main cr-main bg-white radius padding-vertical-xss padding-horizontal-sm margin-right-sm">{{item2}}</view>
-                                    </block>
+                            <view v-if="(plugins_newpersongift_data || null) != null && (plugins_newpersongift_data.data || null) != null" class="flex-row flex-nowrap">
+                                <block v-for="(item, index) in plugins_newpersongift_data.data" :key="index">
+                                    <view
+                                        v-for="(item2, index2) in item.rule_lines"
+                                        :key="index2"
+                                        class="discount-tag-item br-main cr-main bg-white radius padding-vertical-xss padding-horizontal-sm margin-right-sm"
+                                    >{{item2}}</view>
                                 </block>
-                            </block>
+                            </view>
                         </view>
                         <view class="goods-discount-aggregate-more flex-shrink">
                             <text class="text-size-xs cr-grey-9">{{$t('common.view_text')}}</text>

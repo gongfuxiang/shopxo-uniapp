@@ -10,11 +10,11 @@
 }
 
 .chat-list-nav {
-	position: fixed;
-	left: 0;
-	right: 0;
-	top: 0;
+	/* 勿用 fixed：从会话 redirect 回列表时量高易偏小，paddingTop 不够会被顶栏挡住 */
+	position: relative;
 	z-index: 20;
+	flex-shrink: 0;
+	width: 100%;
 	background: #fff;
 	border-bottom: 1rpx solid #e5e5e5;
 	box-sizing: border-box;

@@ -18,6 +18,7 @@ import {
 	on_chat_event,
 	off_chat_event,
 	get_chat_state,
+	chat_set_user_type,
 	chat_set_receive_user,
 	chat_get_receive_user_cache,
 	chat_load_record,
@@ -606,7 +607,8 @@ export default {
 		},
 
 		goods_clickable() {
-			return chat_can_open_goods();
+			// 仅用于样式；真正跳转不再依赖此 computed（runtime_config 非响应式会缓存错）
+			return true;
 		},
 
 		more_panel_items() {
@@ -656,9 +658,8 @@ export default {
 			if (!this.page_user_inited || this.show_ws_loading) {
 				return true;
 			}
-			// 咨询端：未分配客服前保持加载，避免未选会话就能发消息
-			const st = get_chat_state();
-			if ((st.user_type || 'user') == 'user' && !(st.receive_user && st.receive_user.id)) {
+			// 咨询端：必须等会话对象落到页面响应式字段（勿只读模块态，否则不触发 computed）
+			if (!(parseInt(this.chat_id || 0) > 0)) {
 				return true;
 			}
 			return !this.list_ready;
@@ -695,7 +696,7 @@ export default {
 		}
 		return chat_t('disconnected');
 	}
-	if ((get_chat_state().user_type || 'user') == 'user' && !(get_chat_state().receive_user && get_chat_state().receive_user.id)) {
+	if (!(parseInt(this.chat_id || 0) > 0)) {
 		return chat_t('waiting_agent');
 	}
 	if (this.online_status == 'logout') {
@@ -5868,46 +5869,57 @@ export default {
 			
 		},
 
-		open_goods_card_event(e) {
-			
-				if (!this.goods_clickable) {
-					return;
+		open_goods_card_event(e, goods_payload) {
+			// 小程序：$emit 转发后 event.dataset 常丢失，必须优先用 payload.data
+			let goods = goods_payload && typeof goods_payload == 'object' ? goods_payload : null;
+			if (!goods) {
+				const ds = e && e.currentTarget && e.currentTarget.dataset ? e.currentTarget.dataset : null;
+				const json_str = (ds && (ds.json || ds.goodsJson)) || '';
+				if (json_str) {
+					try {
+						goods = JSON.parse(json_str) || {};
+					} catch (err) {
+						goods = {};
+					}
 				}
-				const json_str = e?.currentTarget?.dataset?.json || '{}';
-				let goods = {};
-				try {
-					goods = JSON.parse(json_str) || {};
-				} catch (err) {
-					goods = {};
-				}
-				chat_open_goods(goods);
-			
+			}
+			if (!goods || typeof goods != 'object') {
+				goods = {};
+			}
+			// 不走 computed goods_clickable：它读的是非响应式 runtime_config，会缓存成 false 导致静默无反应
+			chat_open_goods(goods);
 		},
 
-		open_order_card_event(e) {
-			
-				const json_str = e?.currentTarget?.dataset?.json || '{}';
-				let order = {};
-				try {
-					order = JSON.parse(json_str) || {};
-				} catch (err) {
-					order = {};
+		open_order_card_event(e, order_payload) {
+			let order = order_payload && typeof order_payload == 'object' ? order_payload : null;
+			if (!order) {
+				const ds = e && e.currentTarget && e.currentTarget.dataset ? e.currentTarget.dataset : null;
+				const json_str = (ds && ds.json) || '';
+				if (json_str) {
+					try {
+						order = JSON.parse(json_str) || {};
+					} catch (err) {
+						order = {};
+					}
 				}
-				chat_open_order(order);
-			
+			}
+			chat_open_order(order || {});
 		},
 
-		open_aftersale_card_event(e) {
-			
-				const json_str = e?.currentTarget?.dataset?.json || '{}';
-				let aftersale = {};
-				try {
-					aftersale = JSON.parse(json_str) || {};
-				} catch (err) {
-					aftersale = {};
+		open_aftersale_card_event(e, aftersale_payload) {
+			let aftersale = aftersale_payload && typeof aftersale_payload == 'object' ? aftersale_payload : null;
+			if (!aftersale) {
+				const ds = e && e.currentTarget && e.currentTarget.dataset ? e.currentTarget.dataset : null;
+				const json_str = (ds && ds.json) || '';
+				if (json_str) {
+					try {
+						aftersale = JSON.parse(json_str) || {};
+					} catch (err) {
+						aftersale = {};
+					}
 				}
-				chat_open_aftersale(aftersale);
-			
+			}
+			chat_open_aftersale(aftersale || {});
 		},
 
 		transfer_human_event() {
@@ -7355,11 +7367,11 @@ export default {
 				case 'openVideo':
 					return this.open_video_player_event(event);
 				case 'openGoods':
-					return this.open_goods_card_event(event);
+					return this.open_goods_card_event(event, data);
 				case 'openOrder':
-					return this.open_order_card_event(event);
+					return this.open_order_card_event(event, data);
 				case 'openAftersale':
-					return this.open_aftersale_card_event(event);
+					return this.open_aftersale_card_event(event, data);
 				case 'toggleAudio':
 					return this.toggle_audio_play_event(event);
 				case 'quote':
@@ -7712,6 +7724,8 @@ export default {
 
 		chat_page_on_load(params) {
 			this.page_alive = true;
+				// 咨询端尽早标记 user，避免小程序 onShow 抢先 resume 时仍按默认 work 连 WS、拿不到 success.receive
+				chat_set_user_type('user');
 				const entry = { ...(params || {}) };
 				if (isEmpty(entry.source)) {
 					try {
@@ -7766,9 +7780,8 @@ export default {
 				list_ready_fallback_timer = setTimeout(() => {
 					list_ready_fallback_timer = null;
 					if (this.page_alive && !this.list_ready) {
-						const st = get_chat_state();
 						// 咨询端未分配客服时不解除加载（避免未选会话就能发消息）
-						if ((st.user_type || 'user') == 'user' && !(st.receive_user && st.receive_user.id)) {
+						if (!(parseInt(this.chat_id || 0) > 0)) {
 							return;
 						}
 						this.scroll_to_bottom_after_layout(true);
@@ -7837,6 +7850,10 @@ export default {
 				if (!(Number(this.nav_occupy_h || 0) > 0)) {
 					this.init_nav_metrics(true);
 					this.measure_chrome();
+				}
+				// 小程序：onShow 早于 onLoad 里 ensure_chat_user_init 完成；此时 resume 会以未就绪配置连 WS，导致首次一直加载
+				if (!this.page_user_inited) {
+					return;
 				}
 				if (file_pick_hold) {
 					this.arm_resume_hold();

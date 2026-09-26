@@ -83,11 +83,10 @@ export default {
 				minHeight: '0',
 				overflow: 'hidden',
 			};
-			if (occupy > 0) {
-				style.paddingTop = occupy + 'px';
-			}
-			if (win > 0) {
-				style.height = win + 'px';
+			/* 顶栏在文档流内，不再用 paddingTop 让位；主区高度 = 窗口 - 顶栏 */
+			if (win > 0 && occupy > 0) {
+				style.height = Math.max(120, win - occupy) + 'px';
+				style.flex = 'none';
 			}
 			return style;
 		},
@@ -254,20 +253,34 @@ export default {
 			this.list_nav_layout_ready = true;
 		},
 
-		measure_list_nav() {
+		measure_list_nav(retry = 0) {
 			this.$nextTick(() => {
 				if (!this.page_alive) {
 					return;
 				}
 				try {
 					uni.createSelectorQuery().in(this).select('.chat-list-nav').boundingClientRect((rect) => {
-						if (!this.page_alive || !rect || !(rect.height > 0)) {
+						if (!this.page_alive) {
 							return;
 						}
-						const h = Math.round(rect.height);
-						if (Math.abs(h - Number(this.nav_occupy_h || 0)) >= 1) {
+						const floor = Math.round(
+							Number(this.status_bar_height || 0)
+							+ Number(this.nav_content_h || 0)
+							+ this.get_list_nav_bottom_pad()
+						);
+						const measured = rect && rect.height > 0 ? Math.round(rect.height) : 0;
+						/* redirect 回列表时偶发量到不含状态栏的高度，取 max 避免主区被顶栏挡住 */
+						const h = Math.max(measured, floor);
+						if (h > 0 && Math.abs(h - Number(this.nav_occupy_h || 0)) >= 1) {
 							this.nav_bar_h = h;
 							this.nav_occupy_h = h;
+						}
+						if (measured > 0 && measured + 1 < floor && retry < 4) {
+							setTimeout(() => {
+								if (this.page_alive) {
+									this.measure_list_nav(retry + 1);
+								}
+							}, 50 * (retry + 1));
 						}
 					}).exec();
 				} catch (e) {}
@@ -453,10 +466,9 @@ export default {
 
 		chat_list_on_show() {
 			this.page_alive = true;
-			if (!(Number(this.nav_occupy_h || 0) > 0)) {
-				this.init_list_nav(true);
-				this.measure_list_nav();
-			}
+			/* 从会话三横杠 redirect 回来也要重算，避免沿用偏小的 occupy */
+			this.init_list_nav(true);
+			this.measure_list_nav();
 			this.apply_list_page_title();
 			chat_resume_connect();
 			this.sync_connect_ui();
