@@ -36,7 +36,8 @@ iframe,
 .plugins-realstore-cart-content,
 .tabs-content,
 .header-around,
-.plugins-realstore-detail-base-mode-nav {
+.plugins-realstore-detail-base-mode-nav,
+.staff-bottom-bar {
     max-width: 1600rpx !important;
     margin: 0 auto !important;
 }
@@ -54,7 +55,8 @@ iframe,
     left: auto !important;
 }
 iframe,
-.bottom-fixed {
+.bottom-fixed,
+.staff-bottom-bar {
     right: 0 !important;
 }
 .web-html-content iframe {

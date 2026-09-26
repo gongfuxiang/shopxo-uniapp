@@ -356,7 +356,7 @@
                                 if (this.data_page <= 1) {
                                     update_data.original_payment_list = data.payment_list || [];
                                     update_data.payment_list = data.payment_list || [];
-                                    update_data.default_payment_id = data.default_payment_id || 0;
+                                    update_data.default_payment_id = parseInt(data.default_payment_id || 0);
                                     update_data.plugins_friendpay_data = data.plugins_friendpay_data || null;
                                 }
                                 this.setData(update_data);
