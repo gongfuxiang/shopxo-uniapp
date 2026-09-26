@@ -1,49 +1,20 @@
 <template>
 	<view>
-		<view
-		    ref="uni-rate"
-		    class="uni-rate"
-		>
-			<view
-					class="uni-rate__icon"
-					:class="{'uni-cursor-not-allowed': disabled}"
-					:style="{ 'margin-right': marginNumber + 'px' }"
-					v-for="(star, index) in stars"
-					:key="index"
-					@touchstart.stop="touchstart"
-					@touchmove.stop="touchmove"
-					@mousedown.stop="mousedown"
-					@mousemove.stop="mousemove"
-					@mouseleave="mouseleave"
-			>
-				<uni-icons
-				    :color="color"
-				    :size="size"
-				    :type="isFill ? 'star-filled' : 'star'"
-				/>
+		<view ref="uni-rate" class="uni-rate">
+			<view class="uni-rate__icon" :class="{'uni-cursor-not-allowed': disabled}"
+				:style="{ 'margin-right': marginNumber + 'px' }" v-for="(star, index) in stars" :key="index"
+				@touchstart.stop="touchstart" @touchmove.stop="touchmove" @mousedown.stop="mousedown"
+				@mousemove.stop="mousemove" @mouseleave="mouseleave">
+				<uni-icons :color="color" :size="size" :type="isFill ? 'star-filled' : 'star'" />
 				<!-- #ifdef APP-NVUE -->
-				<view
-				    :style="{ width: star.activeWitch.replace('%','')*size/100+'px'}"
-				    class="uni-rate__icon-on"
-				>
-					<uni-icons
-					    style="text-align: left;"
-					    :color="disabled?'#ccc':activeColor"
-					    :size="size"
-					    type="star-filled"
-					/>
+				<view :style="{ width: star.activeWitch.replace('%','')*size/100+'px'}" class="uni-rate__icon-on">
+					<uni-icons style="text-align: left;" :color="disabled?'#ccc':activeColor" :size="size"
+						type="star-filled" />
 				</view>
 				<!-- #endif -->
 				<!-- #ifndef APP-NVUE -->
-				<view
-				    :style="{ width: star.activeWitch}"
-				    class="uni-rate__icon-on"
-				>
-					<uni-icons
-					    :color="disabled?disabledColor:activeColor"
-					    :size="size"
-					    type="star-filled"
-					/>
+				<view :style="{ width: star.activeWitch}" class="uni-rate__icon-on">
+					<uni-icons :color="disabled?disabledColor:activeColor" :size="size" type="star-filled" />
 				</view>
 				<!-- #endif -->
 			</view>
@@ -148,7 +119,8 @@
 				valueSync: "",
 				userMouseFristMove: true,
 				userRated: false,
-				userLastRate: 1
+				userLastRate: 1,
+				PC: false
 			};
 		},
 		watch: {
@@ -188,34 +160,34 @@
 			}
 		},
 		created() {
-			this.valueSync = Number(this.value||this.modelValue);
+			this.valueSync = Number(this.value || this.modelValue);
 			this._rateBoxLeft = 0
 			this._oldValue = null
+			// #ifdef H5
+			this.PC = this.IsPC()
+			// #endif
 		},
 		mounted() {
 			setTimeout(() => {
 				this._getSize()
 			}, 100)
-			// #ifdef H5
-			this.PC = this.IsPC()
-			// #endif
 		},
 		methods: {
 			touchstart(e) {
 				// #ifdef H5
-				if( this.IsPC() ) return
+				if (this.PC) return
 				// #endif
 				if (this.readonly || this.disabled) return
 				const {
 					clientX,
 					screenX
 				} = e.changedTouches[0]
-				// TODO 做一下兼容，只有 Nvue 下才有 screenX，其他平台式 clientX
+				// TODO 做一下兼容，只有 Nvue 下才有 screenX，其他平台是 clientX
 				this._getRateCount(clientX || screenX)
 			},
 			touchmove(e) {
 				// #ifdef H5
-				if( this.IsPC() ) return
+				if (this.PC) return
 				// #endif
 				if (this.readonly || this.disabled || !this.touchable) return
 				const {
@@ -231,7 +203,7 @@
 
 			mousedown(e) {
 				// #ifdef H5
-				if( !this.IsPC() ) return
+				if (!this.PC) return
 				if (this.readonly || this.disabled) return
 				const {
 					clientX,
@@ -243,12 +215,11 @@
 			},
 			mousemove(e) {
 				// #ifdef H5
-				if( !this.IsPC() ) return
-				if( this.userRated ) return
-				if( this.userMouseFristMove ) {
-					console.log('---mousemove----', this.valueSync);
-						this.userLastRate = this.valueSync
-						this.userMouseFristMove = false
+				if (!this.PC) return
+				if (this.userRated) return
+				if (this.userMouseFristMove) {
+					this.userLastRate = this.valueSync
+					this.userMouseFristMove = false
 				}
 				if (this.readonly || this.disabled || !this.touchable) return
 				const {
@@ -259,27 +230,37 @@
 			},
 			mouseleave(e) {
 				// #ifdef H5
-				if( !this.IsPC() ) return
+				if (!this.PC) return
 				if (this.readonly || this.disabled || !this.touchable) return
-				if( this.userRated ) {
+				if (this.userRated) {
 					this.userRated = false
 					return
 				}
-					this.valueSync = this.userLastRate
+				this.valueSync = this.userLastRate
 				// #endif
 			},
 			// #ifdef H5
 			IsPC() {
-				var userAgentInfo = navigator.userAgent;
-				var Agents = ["Android", "iPhone", "SymbianOS", "Windows Phone", "iPad", "iPod"];
-				var flag = true;
-				for (let v = 0; v < Agents.length - 1; v++) {
-					if (userAgentInfo.indexOf(Agents[v]) > 0) {
-						flag = false;
-						break;
-					}
+				var userAgentInfo = navigator.userAgent || '';
+				var info = typeof uni !== 'undefined' && uni.getSystemInfoSync ? uni.getSystemInfoSync() : null;
+				if (info && info.deviceType) {
+					if (info.deviceType === 'pc') return true;
+					if (info.deviceType === 'phone' || info.deviceType === 'pad') return false;
 				}
-				return flag;
+				var isMobileUA = /Android|iPhone|SymbianOS|Windows Phone|iPad|iPod|Mobile|Harmony|HarmonyOS/i.test(userAgentInfo);
+				if (isMobileUA) return false;
+				var hasTouch = false;
+				if (typeof navigator.maxTouchPoints === 'number') {
+					hasTouch = navigator.maxTouchPoints > 0;
+				} else if (typeof window !== 'undefined') {
+					hasTouch = 'ontouchstart' in window;
+				}
+				if (hasTouch && typeof window !== 'undefined' && window.matchMedia) {
+					var finePointer = window.matchMedia('(pointer: fine)').matches;
+					var canHover = window.matchMedia('(hover: hover)').matches;
+					return finePointer || canHover;
+				}
+				return !hasTouch;
 			},
 			// #endif
 
@@ -289,7 +270,7 @@
 			_getRateCount(clientX) {
 				this._getSize()
 				const size = Number(this.size)
-				if(size === NaN){
+				if (isNaN(size)) {
 					return new Error('size 属性只能设置为数字')
 				}
 				const rateMoveRange = clientX - this._rateBoxLeft
@@ -354,10 +335,7 @@
 	};
 </script>
 
-<style
-    lang="scss"
-    scoped
->
+<style lang="scss">
 	.uni-rate {
 		/* #ifndef APP-NVUE */
 		display: flex;

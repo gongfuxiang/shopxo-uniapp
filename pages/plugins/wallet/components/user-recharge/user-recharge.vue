@@ -39,24 +39,6 @@
 
         <!-- 结尾 -->
         <component-bottom-line :propStatus="data_bottom_line_status"></component-bottom-line>
-
-        <!-- 支付弹窗 -->
-        <component-payment
-            ref="payment"
-            :propPayUrl="pay_url"
-            :propQrcodeUrl="qrcode_url"
-            propPayDataKey="recharge_id"
-            :propPaymentList="payment_list"
-            :propTempPayValue="temp_pay_value"
-            :propTempPayIndex="temp_pay_index"
-            :propPayPrice="pay_price"
-            :propPaymentId="payment_id"
-            :propToAppointPage="to_appoint_page"
-            :propDefaultPaymentId="default_payment_id"
-            :propIsShowPayment="is_show_payment_popup"
-            @close-payment-popup="payment_popup_event_close"
-            @pay-success="order_item_pay_success_handle"
-        ></component-payment>
     </view>
 </template>
 <script>
@@ -64,8 +46,6 @@
     import componentPopup from '@/components/popup/popup';
     import componentNoData from '@/components/no-data/no-data';
     import componentBottomLine from '@/components/bottom-line/bottom-line';
-
-    import componentPayment from '@/pages/common/components/payment/payment';
 
     export default {
         props: {
@@ -104,18 +84,6 @@
                     { name: this.$t('user-recharge-detail.recharge_amount'), field: 'money' },
                     { name: this.$t('common.payment_amount'), field: 'pay_money' },
                 ],
-
-                // 支付弹窗参数
-                pay_url: '',
-                qrcode_url: '',
-                payment_list: [],
-                temp_pay_value: '',
-                temp_pay_index: 0,
-                payment_id: 0,
-                default_payment_id: 0,
-                is_show_payment_popup: false,
-                pay_price: 0,
-                to_appoint_page: '/pages/plugins/wallet/user/user?type=wallet',
             };
         },
 
@@ -123,7 +91,6 @@
             componentPopup,
             componentNoData,
             componentBottomLine,
-            componentPayment,
         },
 
         created() {
@@ -161,10 +128,6 @@
             init() {
                 var user = app.globalData.get_user_info(this, 'init');
                 if (user != false) {
-                    this.setData({
-                        pay_url: app.globalData.get_request_url('pay', 'recharge', 'wallet'),
-                        qrcode_url: app.globalData.get_request_url('paycheck', 'recharge', 'wallet'),
-                    });
                     // 获取数据
                     this.get_data_list();
                 } else {
@@ -233,8 +196,6 @@
                                 }
 
                                 this.setData({
-                                    payment_list: data.payment_list || [],
-                                    default_payment_id: data.default_payment_id || 0,
                                     data_list: temp_data_list,
                                     data_total: data.total,
                                     data_page_total: data.page_total,
@@ -248,18 +209,24 @@
                                     data_bottom_line_status: this.data_list.length > 0 && this.data_page > 1 && this.data_page > this.data_page_total,
                                 });
 
+                                // 支付方式交给页面层（pages.json 已声明 component-payment）
+                                if (this.data_page <= 2) {
+                                    this.$emit('payment-data', {
+                                        payment_list: data.payment_list || [],
+                                        default_payment_id: parseInt(data.default_payment_id || 0),
+                                    });
+                                }
+
                                 // 下订单支付处理
                                 var key = app.globalData.data.cache_page_pay_key;
                                 var pay_data = uni.getStorageSync(key) || null;
                                 if (pay_data != null && (pay_data.order_ids || null) != null && (pay_data.payment_id || null) != null) {
                                     uni.removeStorageSync(key);
-                                    this.setData({
-                                        temp_pay_value: pay_data.order_ids,
+                                    this.$emit('auto-pay', {
+                                        order_ids: pay_data.order_ids,
                                         payment_id: pay_data.payment_id,
+                                        payment_list: data.payment_list || [],
                                     });
-                                    if ((this.$refs.payment || null) != null) {
-                                        this.$refs.payment.pay_handle(pay_data.order_ids, pay_data.payment_id, this.payment_list);
-                                    }
                                 }
                             } else {
                                 this.setData({
@@ -297,14 +264,13 @@
                 });
             },
 
-            // 支付
+            // 支付（交给页面层弹窗）
             pay_event(e) {
-                this.setData({
-                    is_show_payment_popup: true,
-                    temp_pay_value: e.currentTarget.dataset.value,
-                    temp_pay_index: e.currentTarget.dataset.index,
-                    pay_price: e.currentTarget.dataset.price,
-                    payment_id: e.currentTarget.dataset.payment || 0,
+                this.$emit('open-pay', {
+                    value: e.currentTarget.dataset.value,
+                    index: e.currentTarget.dataset.index,
+                    price: e.currentTarget.dataset.price,
+                    payment: e.currentTarget.dataset.payment || 0,
                 });
             },
 
@@ -316,13 +282,7 @@
                 app.globalData.url_open(url);
             },
 
-            // 支付弹窗关闭
-            payment_popup_event_close(e) {
-                this.setData({
-                    is_show_payment_popup: false,
-                });
-            },
-            // 支付成功数据设置
+            // 支付成功数据设置（页面层回调）
             order_item_pay_success_handle(data) {
                 data = uni.getStorageSync(app.globalData.data.cache_payment_keys.pay_success) || data || {};
                 var order_ids_arr = data.order_id.toString().split(',');
@@ -426,18 +386,6 @@
         line-height: 60rpx;
         padding: 0 30rpx;
         min-width: 84rpx;
-    }
-    .payment-list .item {
-        width: 50%;
-    }
-
-    .payment-list .item-content {
-        padding: 20rpx 10rpx;
-    }
-
-    .payment-list .item-content image {
-        width: 50rpx;
-        height: 50rpx !important;
     }
     .recharge-item .name {
         min-width: 112rpx;

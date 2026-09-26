@@ -356,8 +356,10 @@
                 // #endif
 
                 var system_info = {};
-                // 微信基础库已弃用 getSystemInfoSync，优先合并拆分 API
                 try {
+                    // 微信基础库已弃用 getSystemInfoSync，小程序端优先合并拆分 API
+                    // H5/App 等端虽可能存在同名方法，但是未实现桩，调用会刷 [system] API ... is not yet implemented
+                    // #ifdef MP-WEIXIN
                     if (typeof uni.getDeviceInfo === 'function' || typeof uni.getWindowInfo === 'function' || typeof uni.getAppBaseInfo === 'function') {
                         var device = (typeof uni.getDeviceInfo === 'function' ? uni.getDeviceInfo() : null) || {};
                         var window_info = (typeof uni.getWindowInfo === 'function' ? uni.getWindowInfo() : null) || {};
@@ -367,6 +369,10 @@
                     } else {
                         system_info = uni.getSystemInfoSync();
                     }
+                    // #endif
+                    // #ifndef MP-WEIXIN
+                    system_info = uni.getSystemInfoSync();
+                    // #endif
                 } catch (e) {
                     system_info = uni.getSystemInfoSync();
                 }

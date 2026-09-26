@@ -629,6 +629,10 @@
 	flex-direction: column;
 }
 
+.bubble-order.is-clickable:active {
+	opacity: 0.75;
+}
+
 .order-head {
 	margin-bottom: 12rpx;
 }

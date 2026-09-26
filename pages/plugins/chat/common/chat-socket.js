@@ -166,6 +166,66 @@ export const chat_open_goods = (goods = {}) => {
 	return false;
 };
 
+/** 打开业务详情（订单/售后）：手机端只用原生 pages，不走 PC 的 http webview */
+const open_biz_detail_link = (url, id, fallback_path) => {
+	const oid = parseInt(id || 0) || 0;
+	const link = String(url || '').trim();
+	// 仅信任已是 uniapp 路径的链接；http(s) 是 PC 详情，忽略
+	if (link.indexOf('/pages/') === 0) {
+		url_open(link);
+		return true;
+	}
+	if (!(oid > 0)) {
+		showToast(chat_t('data_error'));
+		return false;
+	}
+	const path = String(fallback_path || '').replace(/\{id\}/g, String(oid));
+	if (isEmpty(path)) {
+		showToast(chat_t('data_error'));
+		return false;
+	}
+	url_open(path);
+	return true;
+};
+
+/** 打开订单详情（咨询端 → 手机端订单详情页） */
+export const chat_open_order = (order = {}) => {
+	const o = order && typeof order == 'object' ? order : {};
+	const cb = runtime_config.on_order_click;
+	if (typeof cb == 'function') {
+		try {
+			cb(o);
+			return true;
+		} catch (e) {
+			return false;
+		}
+	}
+	return open_biz_detail_link(
+		o.order_url || o.url || '',
+		o.id,
+		'/pages/user-order-detail/user-order-detail?id={id}',
+	);
+};
+
+/** 打开售后详情（咨询端 → 手机端售后详情页） */
+export const chat_open_aftersale = (aftersale = {}) => {
+	const a = aftersale && typeof aftersale == 'object' ? aftersale : {};
+	const cb = runtime_config.on_aftersale_click;
+	if (typeof cb == 'function') {
+		try {
+			cb(a);
+			return true;
+		} catch (e) {
+			return false;
+		}
+	}
+	return open_biz_detail_link(
+		a.aftersale_url || a.url || '',
+		a.id,
+		'/pages/user-orderaftersale-detail/user-orderaftersale-detail?id={id}',
+	);
+};
+
 const state = {
 	socket_task: null,
 	connect_status: 0, // 0未连接 1已就绪
@@ -2612,6 +2672,10 @@ const handle_message = (raw) => {
 			} else {
 				state.quick_message = [];
 			}
+			// 对齐 PC：咨询端 success.data.consult_panel 写入 friend_base.ext（勿等 user-base 坐席空面板）
+			if (state.user_type == 'user' && data.data) {
+				chat_apply_visitor_consult_panel(data.data.consult_panel || null, data.data.source_push || null);
+			}
 			if (data.ai && typeof data.ai.is_enable != 'undefined') {
 				chat_apply_ai_mode({
 					is_enable: data.ai.is_enable,
@@ -3903,6 +3967,53 @@ export const chat_get_receive_user_cache = () => {
 	}
 };
 
+/** 对齐 PC ChatConsultPanelHasData：面板是否有可展示列表 */
+const chat_consult_panel_has_data = (panel) => {
+	if (!panel || typeof panel != 'object') {
+		return false;
+	}
+	if (Array.isArray(panel.list) && panel.list.length > 0) {
+		return true;
+	}
+	const tabs = panel.tabs;
+	if (!tabs || typeof tabs != 'object') {
+		return false;
+	}
+	return Object.keys(tabs).some((key) => {
+		const tab = tabs[key];
+		return tab && Array.isArray(tab.list) && tab.list.length > 0;
+	});
+};
+
+/**
+ * 对齐 PC ChatRenderConsultPanel(success.consult_panel)：
+ * 咨询端把访客面板落到 friend_base.ext，供发送商品/订单/售后弹层使用
+ */
+export const chat_apply_visitor_consult_panel = (panel, source_push = null) => {
+	if (state.user_type != 'user') {
+		return;
+	}
+	const base = { ...(state.friend_base || {}) };
+	const ext = { ...(base.ext || {}) };
+	if (panel && typeof panel == 'object') {
+		ext.consult_panel = panel;
+	}
+	if (source_push && typeof source_push == 'object') {
+		ext.source_push = source_push;
+		if (source_push.goods && !ext.goods) {
+			ext.goods = source_push.goods;
+		}
+		if (source_push.order) {
+			ext.order = source_push.order;
+		}
+		if (source_push.aftersale) {
+			ext.aftersale = source_push.aftersale;
+		}
+	}
+	base.ext = ext;
+	chat_set_friend_base(base);
+};
+
 export const chat_set_friend_base = (base) => {
 	if (base && base.friend) {
 		base = {
@@ -3912,6 +4023,25 @@ export const chat_set_friend_base = (base) => {
 				label: normalize_label_list(base.friend.label),
 			},
 		};
+	}
+	// 咨询端：user-base/record 可能带坐席视角空面板，勿覆盖 success 下发的访客 consult_panel
+	if (state.user_type == 'user' && base) {
+		const prev_ext = (state.friend_base && state.friend_base.ext) || {};
+		const next_ext = { ...(base.ext || {}) };
+		if (chat_consult_panel_has_data(prev_ext.consult_panel) && !chat_consult_panel_has_data(next_ext.consult_panel)) {
+			next_ext.consult_panel = prev_ext.consult_panel;
+		}
+		['source_push', 'goods', 'order', 'aftersale', 'source'].forEach((key) => {
+			const prev_val = prev_ext[key];
+			const next_val = next_ext[key];
+			const next_empty = next_val == null
+				|| (Array.isArray(next_val) && next_val.length === 0)
+				|| (typeof next_val == 'object' && !Array.isArray(next_val) && Object.keys(next_val).length === 0);
+			if (prev_val != null && next_empty) {
+				next_ext[key] = prev_val;
+			}
+		});
+		base = { ...base, ext: next_ext };
 	}
 	state.friend_base = base || null;
 	try {
@@ -4234,7 +4364,8 @@ export const chat_send_message = (content) => {
 		return false;
 	}
 	if (!state.receive_user || !state.receive_user.id) {
-		showToast(chat_t('select_session_user'));
+		// 工作台：未选会话用户；咨询端：尚无分配客服（勿用坐席文案）
+		showToast(state.user_type == 'work' ? chat_t('select_session_user') : chat_t('waiting_agent'));
 		return false;
 	}
 	const vid = active_contact_id();
@@ -4549,6 +4680,8 @@ export default {
 	get_chat_config,
 	chat_can_open_goods,
 	chat_open_goods,
+	chat_open_order,
+	chat_open_aftersale,
 	on_chat_event,
 	off_chat_event,
 	get_chat_state,

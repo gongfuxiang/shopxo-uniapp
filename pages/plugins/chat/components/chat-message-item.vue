@@ -197,7 +197,9 @@
 							<!-- 对齐 PC order / aftersale 卡片 -->
 							<view
 								v-else-if="item.data_type == 'order' && item.order"
-								class="bubble-order"
+								class="bubble-order is-clickable"
+								:data-json="JSON.stringify(item.order)"
+								@tap.stop="emit_open_order"
 							>
 								<view class="order-head">
 									<text class="order-head-line">{{ order_card_meta_primary(item.order) }}</text>
@@ -218,7 +220,9 @@
 							</view>
 							<view
 								v-else-if="item.data_type == 'aftersale' && item.aftersale"
-								class="bubble-order is-aftersale"
+								class="bubble-order is-aftersale is-clickable"
+								:data-json="JSON.stringify(item.aftersale)"
+								@tap.stop="emit_open_aftersale"
 							>
 								<text class="order-head">{{ aftersale_card_head(item.aftersale) }}</text>
 								<view v-if="item.aftersale.goods_title || item.aftersale.images" class="order-goods-row">
@@ -471,6 +475,8 @@
 			emit_video_poster_error(e) { this.emit_msg('videoPosterError', { event: e }); },
 			emit_open_video(e) { this.emit_msg('openVideo', { event: e }); },
 			emit_open_goods(e) { this.emit_msg('openGoods', { event: e }); },
+			emit_open_order(e) { this.emit_msg('openOrder', { event: e }); },
+			emit_open_aftersale(e) { this.emit_msg('openAftersale', { event: e }); },
 			emit_toggle_audio(e) { this.emit_msg('toggleAudio', { event: e }); },
 			emit_quote(e) { this.emit_msg('quote', { event: e }); },
 			emit_press_start(e) { this.emit_msg('pressStart', { event: e }); },

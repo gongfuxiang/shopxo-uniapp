@@ -1,3 +1,10 @@
+## 1.3.2（2026-02-09）
+- 修复 pc 触屏问题
+## 1.3.1（2022-02-25）
+- 修复 条件判断 `NaN` 错误的 bug
+## 1.3.0（2021-11-19）
+- 优化 组件UI，并提供设计资源，详见:[https://uniapp.dcloud.io/component/uniui/resource](https://uniapp.dcloud.io/component/uniui/resource)
+- 文档迁移，详见:[https://uniapp.dcloud.io/component/uniui/uni-rate](https://uniapp.dcloud.io/component/uniui/uni-rate)
 ## 1.2.2（2021-09-10）
 - 优化 默认值修改为 0 颗星
 ## 1.2.1（2021-07-30）

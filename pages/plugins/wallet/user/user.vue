@@ -1,6 +1,6 @@
 <template>
     <view :class="theme_view">
-        <component-nav-back :propIsShowBack="true" :propName="$t('pages.plugins-wallet-user')"></component-nav-back>
+        <component-nav-back :propIsShowBack="true" :propName="$t('pages.plugins-wallet-user') || ''"></component-nav-back>
         <block v-if="(data_base || null) != null">
             <scroll-view :scroll-y="true" class="scroll-box" @scrolltolower="scroll_lower" lower-threshold="60" @scroll="scroll_event">
                 <view class="page-bottom-fixed">
@@ -81,7 +81,15 @@
                                             <component-wallet-log :propPullDownRefresh="propPullDownRefresh" :propScrollLower="scroll_lower_bool"></component-wallet-log>
                                         </view>
                                         <view v-if="current == 'recharge'">
-                                            <component-user-recharge :propPullDownRefresh="propPullDownRefresh" :propScrollLower="scroll_lower_bool" @pay-success="pay_success_event"></component-user-recharge>
+                                            <component-user-recharge
+                                                ref="user_recharge"
+                                                :propPullDownRefresh="propPullDownRefresh"
+                                                :propScrollLower="scroll_lower_bool"
+                                                @payment-data="payment_data_event"
+                                                @open-pay="open_pay_event"
+                                                @auto-pay="auto_pay_event"
+                                                @pay-success="pay_success_event"
+                                            ></component-user-recharge>
                                         </view>
                                         <view v-if="current == 'cash'">
                                             <component-user-cash :propPullDownRefresh="propPullDownRefresh" :propScrollLower="scroll_lower_bool"></component-user-cash>
@@ -95,8 +103,8 @@
                             <view class="bottom-fixed" :style="bottom_fixed_style">
                                 <view class="bottom-line-exclude">
                                     <view class="flex-row jc-sb align-c gap-10">
-                                        <button v-if="(data_base || null) != null && (data_base.is_enable_recharge || 0) == 1" class="item round cr-white bg-main br-main text-size wh-auto" type="default" hover-class="none" data-value="/pages/plugins/wallet/recharge/recharge" @tap="url_event">{{$t('common.recharge')}}</button>
-                                        <button v-if="(data_base || null) != null && (data_base.is_enable_cash || 0) == 1" class="item round cr-main bg-white br-main text-size wh-auto" type="default" hover-class="none" :data-value="(data_base.is_cash_auth || 0) == 1 ? '/pages/plugins/wallet/cash-auth/cash-auth' : '/pages/plugins/wallet/cash-create/cash-create'" @tap="url_event">{{$t('common.withdraw')}}</button>
+                                        <button v-if="(data_base || null) != null && (data_base.is_enable_recharge || 0) == 1" class="item round cr-white bg-main br-main text-size wh-auto" type="default" hover-class="none" @tap="go_recharge_event">{{$t('common.recharge')}}</button>
+                                        <button v-if="(data_base || null) != null && (data_base.is_enable_cash || 0) == 1" class="item round cr-main bg-white br-main text-size wh-auto" type="default" hover-class="none" @tap="go_cash_event">{{$t('common.withdraw')}}</button>
                                     </view>
                                 </view>
                             </view>
@@ -112,6 +120,25 @@
 
         <!-- 公共 -->
         <component-common ref="common"></component-common>
+
+        <!-- 支付弹窗（页面层引用，pages.json 已声明 component-payment） -->
+        <component-payment
+            ref="payment"
+            :propPayUrl="pay_url"
+            :propQrcodeUrl="qrcode_url"
+            propPayDataKey="recharge_id"
+            :propPaymentList="payment_list"
+            :propTempPayValue="temp_pay_value"
+            :propTempPayIndex="temp_pay_index"
+            :propPayPrice="pay_price"
+            :propPaymentId="payment_id"
+            :propToAppointPage="to_appoint_page"
+            :propDefaultPaymentId="default_payment_id"
+            :propIsShowPayment="is_show_payment_popup"
+            :propIsToPage="false"
+            @close-payment-popup="payment_popup_event_close"
+            @pay-success="order_item_pay_success_handle"
+        ></component-payment>
     </view>
 </template>
 <script>
@@ -124,6 +151,7 @@
     import componentUserRecharge from '../components/user-recharge/user-recharge';
     import componentUserCash from '../components/user-cash/user-cash';
     import componentTransfer from '../components/transfer/transfer';
+    import componentPayment from '@/pages/common/components/payment/payment';
     import pluginLocale from '../locale/index.js';
     var wallet_static_url = app.globalData.get_static_url('wallet', true) + 'app/';
     // 状态栏高度
@@ -157,6 +185,17 @@
                 scroll_lower_bool: false,
                 payment_page_url: null,
                 integral_to_balance: null,
+                // 支付弹窗参数
+                pay_url: '',
+                qrcode_url: '',
+                payment_list: [],
+                temp_pay_value: '',
+                temp_pay_index: 0,
+                payment_id: 0,
+                default_payment_id: 0,
+                is_show_payment_popup: false,
+                pay_price: 0,
+                to_appoint_page: '/pages/plugins/wallet/user/user?type=recharge',
             };
         },
 
@@ -169,6 +208,7 @@
             componentUserRecharge,
             componentUserCash,
             componentTransfer,
+            componentPayment,
         },
 
         onLoad(params) {
@@ -197,6 +237,10 @@
                     app.globalData.update_query_string_parameter([{ key: 'type', value: pay_data.type }]);
                 }, 200);
             }
+            this.setData({
+                pay_url: app.globalData.get_request_url('pay', 'recharge', 'wallet'),
+                qrcode_url: app.globalData.get_request_url('paycheck', 'recharge', 'wallet'),
+            });
             this.init();
         },
 
@@ -210,6 +254,16 @@
             // 分享菜单处理
             app.globalData.page_share_handle();
 
+            // 从充值/提现等子页返回：切到对应 tab 并刷新列表
+            var return_type = app.globalData.wallet_user_return_type || null;
+            if (return_type != null) {
+                app.globalData.wallet_user_return_type = null;
+                this.switch_tab(return_type, true);
+            } else if ((this.data_base || null) != null && (this.current == 'recharge' || this.current == 'cash' || this.current == 'transfer')) {
+                // 已在对应明细 tab，返回时刷新列表
+                this.refresh_tab_list();
+            }
+
             // 从积分兑换页返回后刷新钱包数据
             if (app.globalData.wallet_integral_to_balance_refresh == 1) {
                 app.globalData.wallet_integral_to_balance_refresh = 0;
@@ -222,9 +276,7 @@
         // 下拉刷新
         onPullDownRefresh() {
             this.get_data();
-            this.setData({
-                propPullDownRefresh: !this.propPullDownRefresh,
-            });
+            this.refresh_tab_list();
         },
         methods: {
             init(e) {
@@ -232,6 +284,45 @@
                 if (user != false) {
                     this.get_data();
                 }
+            },
+
+            // 切换明细 tab
+            switch_tab(value, is_refresh_list) {
+                value = value || 'wallet';
+                this.setData({
+                    current: value,
+                });
+                app.globalData.update_query_string_parameter([{ key: 'type', value: value }]);
+                if ((is_refresh_list || false) == true) {
+                    if ((this.data_base || null) != null) {
+                        this.get_data();
+                    }
+                    this.refresh_tab_list();
+                }
+            },
+
+            // 刷新当前 tab 列表
+            refresh_tab_list() {
+                this.$nextTick(() => {
+                    this.setData({
+                        propPullDownRefresh: !this.propPullDownRefresh,
+                    });
+                });
+            },
+
+            // 去充值
+            go_recharge_event() {
+                app.globalData.wallet_user_return_type = 'recharge';
+                app.globalData.url_open('/pages/plugins/wallet/recharge/recharge');
+            },
+
+            // 去提现
+            go_cash_event() {
+                app.globalData.wallet_user_return_type = 'cash';
+                var url = ((this.data_base || null) != null && (this.data_base.is_cash_auth || 0) == 1)
+                    ? '/pages/plugins/wallet/cash-auth/cash-auth'
+                    : '/pages/plugins/wallet/cash-create/cash-create';
+                app.globalData.url_open(url);
             },
 
             // 获取数据
@@ -284,11 +375,7 @@
             },
             // 明细导航切换
             nav_change(e) {
-                var value = e.currentTarget.dataset.value || 'wallet';
-                this.setData({
-                    current: value,
-                });
-                app.globalData.update_query_string_parameter([{ key: 'type', value: value }]);
+                this.switch_tab(e.currentTarget.dataset.value || 'wallet', false);
             },
 
             // 滚动加载
@@ -298,9 +385,68 @@
                 });
             },
 
+            // 支付方式数据
+            payment_data_event(e) {
+                this.setData({
+                    payment_list: e.payment_list || [],
+                    default_payment_id: parseInt(e.default_payment_id || 0),
+                });
+            },
+
+            // 打开支付弹窗
+            open_pay_event(e) {
+                // 支付完成后仍回到充值明细 tab
+                app.globalData.wallet_user_return_type = 'recharge';
+                this.setData({
+                    is_show_payment_popup: true,
+                    temp_pay_value: e.value,
+                    temp_pay_index: e.index,
+                    pay_price: e.price,
+                    payment_id: e.payment || 0,
+                });
+            },
+
+            // 自动支付
+            auto_pay_event(e) {
+                app.globalData.wallet_user_return_type = 'recharge';
+                this.setData({
+                    payment_list: e.payment_list || this.payment_list,
+                    temp_pay_value: e.order_ids,
+                    payment_id: e.payment_id,
+                    current: 'recharge',
+                });
+                if ((this.$refs.payment || null) != null) {
+                    this.$refs.payment.pay_handle(e.order_ids, e.payment_id, e.payment_list || this.payment_list);
+                }
+            },
+
+            // 支付弹窗关闭
+            payment_popup_event_close() {
+                this.setData({
+                    is_show_payment_popup: false,
+                });
+            },
+
+            // 支付成功
+            order_item_pay_success_handle(data) {
+                // 保持在充值明细
+                this.setData({
+                    current: 'recharge',
+                    is_show_payment_popup: false,
+                });
+                app.globalData.wallet_user_return_type = null;
+                app.globalData.update_query_string_parameter([{ key: 'type', value: 'recharge' }]);
+                if ((this.$refs.user_recharge || null) != null && typeof this.$refs.user_recharge.order_item_pay_success_handle == 'function') {
+                    this.$refs.user_recharge.order_item_pay_success_handle(data);
+                } else {
+                    this.pay_success_event();
+                }
+            },
+
             // 支付成功回调
             pay_success_event() {
                 this.get_data();
+                this.refresh_tab_list();
             },
 
             // 页面滚动监听

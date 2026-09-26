@@ -55,6 +55,8 @@ import {
 	chat_can_show_read,
 	chat_can_open_goods,
 	chat_open_goods,
+	chat_open_order,
+	chat_open_aftersale,
 	chat_can_recall,
 	chat_recall_still_valid,
 	chat_recall_seconds,
@@ -651,7 +653,15 @@ export default {
 		},
 
 		show_chat_loading() {
-			return !this.page_user_inited || this.show_ws_loading || !this.list_ready;
+			if (!this.page_user_inited || this.show_ws_loading) {
+				return true;
+			}
+			// 咨询端：未分配客服前保持加载，避免未选会话就能发消息
+			const st = get_chat_state();
+			if ((st.user_type || 'user') == 'user' && !(st.receive_user && st.receive_user.id)) {
+				return true;
+			}
+			return !this.list_ready;
 		},
 
 		input_locked() {
@@ -684,6 +694,9 @@ export default {
 			return chat_t('connecting');
 		}
 		return chat_t('disconnected');
+	}
+	if ((get_chat_state().user_type || 'user') == 'user' && !(get_chat_state().receive_user && get_chat_state().receive_user.id)) {
+		return chat_t('waiting_agent');
 	}
 	if (this.online_status == 'logout') {
 		return chat_t('you_exited');
@@ -1682,7 +1695,12 @@ export default {
 				this.consult_keyword = '';
 				this.input_focus = false;
 				this.keyboard_height = 0;
-				this.refresh_friend_base();
+				// 咨询端面板来自 success.consult_panel；勿再拉 user-base（坐席视角会冲掉）
+				if ((get_chat_state().user_type || 'user') == 'user') {
+					this.sync_friend_base();
+				} else {
+					this.refresh_friend_base();
+				}
 				this.$nextTick(() => {
 					const ref = this.$refs.consult_popup_ref;
 					ref && ref.open && ref.open();
@@ -4616,6 +4634,8 @@ export default {
 				this.current_avatar = chat_state.current_user?.avatar || this.default_avatar;
 				this.sync_emoji_list();
 				this.sync_ai_state(chat_state);
+				// 咨询端：success 已写入 consult_panel，同步到页面供发送商品/订单/售后
+				this.sync_friend_base(chat_get_friend_base());
 				if (this.route_chat_id) {
 					this.resolve_route_receive_user();
 				} else if (chat_state.receive_user?.id) {
@@ -5861,6 +5881,32 @@ export default {
 					goods = {};
 				}
 				chat_open_goods(goods);
+			
+		},
+
+		open_order_card_event(e) {
+			
+				const json_str = e?.currentTarget?.dataset?.json || '{}';
+				let order = {};
+				try {
+					order = JSON.parse(json_str) || {};
+				} catch (err) {
+					order = {};
+				}
+				chat_open_order(order);
+			
+		},
+
+		open_aftersale_card_event(e) {
+			
+				const json_str = e?.currentTarget?.dataset?.json || '{}';
+				let aftersale = {};
+				try {
+					aftersale = JSON.parse(json_str) || {};
+				} catch (err) {
+					aftersale = {};
+				}
+				chat_open_aftersale(aftersale);
 			
 		},
 
@@ -7310,6 +7356,10 @@ export default {
 					return this.open_video_player_event(event);
 				case 'openGoods':
 					return this.open_goods_card_event(event);
+				case 'openOrder':
+					return this.open_order_card_event(event);
+				case 'openAftersale':
+					return this.open_aftersale_card_event(event);
 				case 'toggleAudio':
 					return this.toggle_audio_play_event(event);
 				case 'quote':
@@ -7716,6 +7766,11 @@ export default {
 				list_ready_fallback_timer = setTimeout(() => {
 					list_ready_fallback_timer = null;
 					if (this.page_alive && !this.list_ready) {
+						const st = get_chat_state();
+						// 咨询端未分配客服时不解除加载（避免未选会话就能发消息）
+						if ((st.user_type || 'user') == 'user' && !(st.receive_user && st.receive_user.id)) {
+							return;
+						}
 						this.scroll_to_bottom_after_layout(true);
 					}
 				}, 1500);

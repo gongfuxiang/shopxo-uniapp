@@ -1,8 +1,8 @@
 <template>
     <view :class="theme_view">
         <view class="pa-w" :class="(propFixed ? 'pf z-i left-0 top-0 right-0' : '') + ' ' + propClass" :style="'padding-top:' + (status_bar_height > 0 ? status_bar_height + 5 : 0) + 'px;background-color:rgba(255,255,255,' + opacity + ');' + propStyle">
-            <view v-if="(propName || null) != null || propIsRightSlot || is_show_back" class="nav-back padding-horizontal-main round va-m flex-row align-c" :class="(opacity > 0.3 ? 'cr-black ' : 'cr-white ') + (status_bar_height > 0 ? '' : 'padding-vertical-main')">
-                <view v-if="(propName || null) != null" :class="'text-size-md tc pa left-0 right-0 padding-top-xs ' + propNameClass" :style="propNameOpacity ? (opacity ? 'color:rgba(51,51,51,' + opacity + ')' : '') : ''">{{ propName }}</view>
+            <view v-if="(nav_name || null) != null || propIsRightSlot || is_show_back" class="nav-back padding-horizontal-main round va-m flex-row align-c" :class="(opacity > 0.3 ? 'cr-black ' : 'cr-white ') + (status_bar_height > 0 ? '' : 'padding-vertical-main')">
+                <view v-if="(nav_name || null) != null" :class="'text-size-md tc pa left-0 right-0 padding-top-xs ' + propNameClass" :style="propNameOpacity ? (opacity ? 'color:rgba(51,51,51,' + opacity + ')' : '') : ''">{{ nav_name }}</view>
                 <view v-if="is_show_back" @tap="top_nav_left_back_event" class="dis-inline-block">
                     <iconfont name="icon-arrow-left" size="40rpx" propClass="pr top-xs z-i" :color="(client_value == 'alipay' || client_value == 'baidu') ? 'transparent' : propColor"></iconfont>
                 </view>
@@ -43,9 +43,8 @@
                 type: String,
                 default: '',
             },
-            // 标题名称
+            // 标题名称（允许空；父级勿传 null，组件内再兜底成空串）
             propName: {
-                type: String,
                 default: '',
             },
             // 标题名称class
@@ -81,6 +80,13 @@
                 // 顶部返回导航背景透明度
                 opacity: 0,
             };
+        },
+        computed: {
+            // 统一标题为字符串，避免小程序 prop 收到 null 告警
+            nav_name() {
+                var name = this.propName;
+                return (name === null || name === undefined) ? '' : String(name);
+            },
         },
         // 页面被展示
         created: function () {
