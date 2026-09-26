@@ -26,7 +26,7 @@
                 version: 'v6.9.2',
 
                 // app版本信息、如: v1.0.0 20180118
-                app_version_info: 'v6.9.2 20260925',
+                app_version_info: 'v6.9.2 20260929',
 
                 // 货币价格符号
                 currency_symbol: '￥',
