@@ -406,26 +406,28 @@
                             });
 
                             if (staff != null) {
-                                // 基础自定义分享
-                                var share_desc = [];
-                                if ((staff.position_name || null) != null && staff.position_name != '') {
-                                    share_desc.push(staff.position_name);
+                                // 基础自定义分享：介绍优先简介，图片优先头像
+                                var share_desc = staff.introduce || '';
+                                if (share_desc == '') {
+                                    var share_desc_list = [];
+                                    if ((staff.position_name || null) != null && staff.position_name != '') {
+                                        share_desc_list.push(staff.position_name);
+                                    }
+                                    if ((staff.realstore || null) != null && (staff.realstore.name || '') != '') {
+                                        share_desc_list.push(staff.realstore.name);
+                                    } else if ((data.realstore || null) != null && (data.realstore.name || '') != '') {
+                                        share_desc_list.push(data.realstore.name);
+                                    }
+                                    share_desc = share_desc_list.join(' | ');
                                 }
-                                if ((staff.realstore || null) != null && (staff.realstore.name || '') != '') {
-                                    share_desc.push(staff.realstore.name);
-                                } else if ((data.realstore || null) != null && (data.realstore.name || '') != '') {
-                                    share_desc.push(data.realstore.name);
-                                }
-                                var share_img = '';
-                                if (photo_list.length > 0 && (photo_list[0].images_url || '') != '') {
+                                var share_img = staff.avatar || '';
+                                if (share_img == '' && photo_list.length > 0 && (photo_list[0].images_url || '') != '') {
                                     share_img = photo_list[0].images_url;
-                                } else if ((staff.avatar || '') != '') {
-                                    share_img = staff.avatar;
                                 }
                                 this.setData({
                                     share_info: {
                                         title: staff.alias || this.$t('pages.plugins-realstore-staff-detail'),
-                                        desc: share_desc.join(' | '),
+                                        desc: share_desc,
                                         path: '/pages/plugins/realstore/staff-detail/staff-detail',
                                         query: 'id=' + staff.id,
                                         img: share_img,
