@@ -51,7 +51,7 @@
                         <view v-if="(item.add_time || null) != null">{{ item.add_time }}</view>
                         <view v-if="list_address_text(item)" class="margin-top-xs multi-text">{{ list_address_text(item) }}</view>
                     </view>
-                    <view v-for="(detail, di) in item.items" :key="di" class="br-b-dashed oh padding-vertical-main" :data-value="'/pages/plugins/realstore/staff-order-detail/staff-order-detail?id=' + item.id" @tap="url_event">
+                    <view v-for="(detail, di) in item.items" :key="di" class="oh padding-vertical-main" :class="di < item.items.length - 1 ? 'br-b-dashed' : ''" :data-value="'/pages/plugins/realstore/staff-order-detail/staff-order-detail?id=' + item.id" @tap="url_event">
                         <image class="goods-image fl radius" :src="detail.images" mode="aspectFill"></image>
                         <view class="goods-base pr">
                             <view class="multi-text">{{ detail.title }}</view>
@@ -67,6 +67,9 @@
                             </view>
                         </view>
                     </view>
+                    <view :data-value="'/pages/plugins/realstore/staff-order-detail/staff-order-detail?id=' + item.id" @tap="url_event">
+                        <component-orderallot-progress-mini :propProgress="item.status_progress" :propCallNo="item.call_no_text"></component-orderallot-progress-mini>
+                    </view>
                     <view class="padding-vertical-main tr cr-base text-size">
                         <text>{{$t('common.total')}}<text class="fw-b">{{ item.buy_number_count }}</text>{{$t('common.total_pieces')}}<text class="sales-price margin-right-xs">{{ item.currency_data.currency_symbol }}{{ item.total_price }}</text></text>
                     </view>
@@ -76,6 +79,7 @@
                         <button v-if="(item.operate_data.is_take || 0) == 1" class="round bg-white cr-blue br-blue" type="default" size="mini" @tap="operate_event" data-action="take" :data-value="item.id" :data-index="index" hover-class="none">{{ $t('staff-order.take') }}</button>
                         <button v-if="(item.operate_data.is_delivery || 0) == 1" class="round bg-white cr-blue br-blue" type="default" size="mini" @tap="operate_event" data-action="delivery" :data-value="item.id" :data-index="index" hover-class="none">{{ $t('staff-order.delivery') }}</button>
                         <button v-if="(item.operate_data.is_make_done || 0) == 1" class="round bg-white cr-green br-green" type="default" size="mini" @tap="operate_event" data-action="makedone" :data-value="item.id" :data-index="index" hover-class="none">{{ $t('staff-order.make_done') }}</button>
+                        <button v-if="(item.operate_data.is_call_again || 0) == 1" class="round bg-white cr-yellow br-yellow" type="default" size="mini" @tap="operate_event" data-action="callagain" :data-value="item.id" :data-index="index" hover-class="none">{{ $t('staff-order.call_again') }}</button>
                         <button v-if="(item.operate_data.is_collect || 0) == 1" class="round bg-white cr-green br-green" type="default" size="mini" @tap="operate_event" data-action="collect" :data-value="item.id" :data-index="index" hover-class="none">{{ $t('common.receiving_goods') }}</button>
                         <button v-if="staff_more_actions(item).length > 0" class="round bg-white cr-base br-base" type="default" size="mini" @tap="more_open_event" :data-index="index" hover-class="none">{{ $t('common.more') }}</button>
                     </view>
@@ -125,6 +129,7 @@
     import componentPopup from '@/components/popup/popup';
     import componentStaffOrderOperate from '../components/staff-order-operate/staff-order-operate';
     import componentOrderallotStaffBooking from '../components/orderallot-staff-booking/orderallot-staff-booking';
+    import componentOrderallotProgressMini from '../components/orderallot-progress-mini/orderallot-progress-mini';
     import pluginLocale from '../locale/index.js';
 
     var bar_height = parseInt(app.globalData.get_system_info('statusBarHeight', 0, true));
@@ -174,6 +179,7 @@
             componentPopup,
             componentStaffOrderOperate,
             componentOrderallotStaffBooking,
+            componentOrderallotProgressMini,
         },
         onLoad(params) {
             params = app.globalData.launch_params_handle(params);
@@ -372,6 +378,7 @@
                     (op.is_take || 0) +
                     (op.is_delivery || 0) +
                     (op.is_make_done || 0) +
+                    (op.is_call_again || 0) +
                     (op.is_collect || 0) +
                     this.staff_more_actions(item).length
                 ) > 0;
@@ -499,6 +506,10 @@
                     }
                     return;
                 }
+                if (action == 'callagain') {
+                    this.submit_operate(action, id, {});
+                    return;
+                }
                 var title_map = {
                     receive: this.$t('staff-order.confirm_receive'),
                     makedone: this.$t('staff-order.confirm_make_done'),
@@ -527,7 +538,7 @@
                     success: (res) => {
                         uni.hideLoading();
                         app.globalData.showToast(res.data.msg);
-                        if (res.data.code == 0) {
+                        if (res.data.code == 0 && action != 'callagain') {
                             this.operate_success();
                         }
                     },

@@ -25,7 +25,7 @@
                             >{{ item.status_name }}<text v-if="(item.is_under_line_text || null) != null">（{{ item.is_under_line_text }}）</text></text
                         >
                     </view>
-                    <view v-for="(detail, di) in item.items" :key="di" class="br-b-dashed oh padding-vertical-main">
+                    <view v-for="(detail, di) in item.items" :key="di" class="oh padding-vertical-main" :class="di < item.items.length - 1 ? 'br-b-dashed' : ''">
                         <view :data-value="'/pages/plugins/realstore/orderallot-detail/orderallot-detail?id=' + item.id" @tap="url_event" class="cp">
                             <image class="goods-image fl radius" :src="detail.images" mode="aspectFill"></image>
                             <view class="goods-base pr">
@@ -42,6 +42,9 @@
                                 </view>
                             </view>
                         </view>
+                    </view>
+                    <view :data-value="'/pages/plugins/realstore/orderallot-detail/orderallot-detail?id=' + item.id" @tap="url_event" class="cp">
+                        <component-orderallot-progress-mini :propProgress="item.status_progress" :propCallNo="item.call_no_text"></component-orderallot-progress-mini>
                     </view>
                     <view class="padding-vertical-main tr cr-base text-size">
                         <text>{{$t('common.total')}}<text class="fw-b">{{ item.buy_number_count }}</text>{{$t('common.total_pieces')}}<text class="sales-price margin-right-xs">{{ item.currency_data.currency_symbol }}{{ item.total_price }}</text></text>
@@ -116,6 +119,7 @@
     import componentBottomLine from "@/components/bottom-line/bottom-line";
     import componentPayment from '@/pages/common/components/payment/payment';
     import componentOrderallotStaffBooking from '../components/orderallot-staff-booking/orderallot-staff-booking';
+    import componentOrderallotProgressMini from '../components/orderallot-progress-mini/orderallot-progress-mini';
     import pluginLocale from '../locale/index.js';
 
     // 状态栏高度
@@ -178,6 +182,7 @@
             componentBottomLine,
             componentPayment,
             componentOrderallotStaffBooking,
+            componentOrderallotProgressMini,
         },
 
         onLoad(params) {

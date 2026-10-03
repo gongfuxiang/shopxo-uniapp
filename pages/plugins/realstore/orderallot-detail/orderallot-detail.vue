@@ -40,6 +40,10 @@
                             <text class="text-size-xl margin-left-xs">{{ detail.total_price }}</text>
                         </view>
                         <view v-if="status_progress_tips" class="cr-grey text-size-xs margin-top-sm">{{ status_progress_tips }}</view>
+                        <view v-if="detail_call_no" class="tv-call-no margin-top-main">
+                            <text class="cr-grey text-size-xs">{{ $t('staff-order.call_no') }}</text>
+                            <text class="text-size-xl fw-b cr-green margin-left-sm">{{ detail_call_no }}</text>
+                        </view>
                         <view v-if="status_progress_steps.length > 0" class="make-progress-steps margin-top-main">
                             <view
                                 v-for="(step, index) in status_progress_steps"
@@ -389,6 +393,9 @@
                 const steps = ((this.status_progress || {}).steps) || null;
                 return (steps != null && steps.length > 0) ? steps : [];
             },
+            detail_call_no() {
+                return String(((this.detail || {}).call_no_text) || '').trim();
+            },
 
             // 是否展示详情操作按钮区
             show_detail_operate() {
@@ -503,6 +510,7 @@
                                     detail_list: [
                                         { name: this.$t('orderallot-detail.order_type'), value: data.data.order_type_name || '' },
                                         { name: this.$t('common.user_order_detail_order_number'), value: data.data.order_allot_no || '', is_copy: 1 },
+                                        { name: this.$t('staff-order.call_no'), value: data.data.call_no_text || '' },
                                         { name: this.$t('common.order_status'), value: data.data.status_name || '' },
                                         { name: this.$t('common.total_order_price'), value: data.data.total_price || '' },
                                         { name: this.$t('common.creation_time'), value: data.data.add_time || '' },

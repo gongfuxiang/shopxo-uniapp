@@ -36,6 +36,10 @@
                             <text class="text-size-xl margin-top-sm va-m margin-left-sm">{{ status_progress_name }}</text>
                         </block>
                         <view v-if="status_progress_tips" class="cr-grey text-size-xs margin-top-sm">{{ status_progress_tips }}</view>
+                        <view v-if="detail_call_no" class="tv-call-no margin-top-main">
+                            <text class="cr-grey text-size-xs">{{ $t('staff-order.call_no') }}</text>
+                            <text class="text-size-xl fw-b cr-green margin-left-sm">{{ detail_call_no }}</text>
+                        </view>
                         <view v-if="status_progress_steps.length > 0" class="make-progress-steps margin-top-main">
                             <view
                                 v-for="(step, index) in status_progress_steps"
@@ -61,6 +65,7 @@
                         <button v-if="(detail.operate_data.is_take || 0) == 1" class="round bg-white cr-blue br-blue" type="default" size="mini" @tap="operate_event" data-action="take" hover-class="none">{{ $t('staff-order.take') }}</button>
                         <button v-if="(detail.operate_data.is_delivery || 0) == 1" class="round bg-white cr-blue br-blue" type="default" size="mini" @tap="operate_event" data-action="delivery" hover-class="none">{{ $t('staff-order.delivery') }}</button>
                         <button v-if="(detail.operate_data.is_make_done || 0) == 1" class="round bg-white cr-green br-green" type="default" size="mini" @tap="operate_event" data-action="makedone" hover-class="none">{{ $t('staff-order.make_done') }}</button>
+                        <button v-if="(detail.operate_data.is_call_again || 0) == 1" class="round bg-white cr-yellow br-yellow" type="default" size="mini" @tap="operate_event" data-action="callagain" hover-class="none">{{ $t('staff-order.call_again') }}</button>
                         <button v-if="(detail.operate_data.is_collect || 0) == 1" class="round bg-white cr-green br-green" type="default" size="mini" @tap="operate_event" data-action="collect" hover-class="none">{{ $t('common.receiving_goods') }}</button>
                         <button v-if="(detail.operate_data.is_cancel || 0) == 1" class="round bg-white cr-yellow br-yellow" type="default" size="mini" @tap="operate_event" data-action="cancel" hover-class="none">{{ $t('common.cancel') }}</button>
                         <button v-if="(detail.plugins_express_data || 0) == 1 && (detail.express_data || null) != null && detail.express_data.length > 0" class="round bg-white cr-main br-main" type="default" size="mini" @tap="url_event" :data-value="'/pages/plugins/express/detail/detail?oid=' + detail.id + '&action_type=realstore'" hover-class="none">{{$t('common.logistics')}}</button>
@@ -241,6 +246,27 @@
                     </view>
                 </view>
 
+                <!-- 订单日志 -->
+                <view v-if="status_history_list.length > 0" class="panel-item padding-main border-radius-main bg-white spacing-mb">
+                    <view class="br-b padding-bottom-main fw-b text-size">{{ $t('staff-order.order_log') }}</view>
+                    <view class="panel-content oh">
+                        <uni-table :emptyText="$t('common.no_data')">
+                            <uni-tr>
+                                <uni-th width="90">{{ $t('staff-order.order_log_id') }}</uni-th>
+                                <uni-th>{{ $t('staff-order.order_log_msg') }}</uni-th>
+                                <uni-th width="180">{{ $t('staff-order.order_log_time') }}</uni-th>
+                            </uni-tr>
+                            <block v-for="(item, index) in status_history_list" :key="index">
+                                <uni-tr>
+                                    <uni-td>{{ item.id }}</uni-td>
+                                    <uni-td>{{ item.msg }}</uni-td>
+                                    <uni-td>{{ item.add_time }}</uni-td>
+                                </uni-tr>
+                            </block>
+                        </uni-table>
+                    </view>
+                </view>
+
                 <!-- 快递信息 -->
                 <view v-if="(detail.express_data || null) != null && detail.express_data.length > 0" class="express-data panel-item padding-main border-radius-main bg-white spacing-mb">
                     <view class="br-b padding-bottom-main fw-b text-size">{{ $t('common.express_delivery_info') }}</view>
@@ -340,6 +366,13 @@
                 const steps = ((this.status_progress || {}).steps) || null;
                 return (steps != null && steps.length > 0) ? steps : [];
             },
+            detail_call_no() {
+                return String(((this.detail || {}).call_no_text) || '').trim();
+            },
+            status_history_list() {
+                const list = ((this.detail || {}).status_history_data) || null;
+                return (list != null && list.length > 0) ? list : [];
+            },
             extraction_take_show() {
                 var data = ((this.detail || {}).extraction_data) || null;
                 if (data == null || data === '') {
@@ -423,6 +456,7 @@
                                     detail_list: [
                                         { name: this.$t('orderallot-detail.order_type'), value: data.order_type_name || '' },
                                         { name: this.$t('common.user_order_detail_order_number'), value: data.order_allot_no || '', is_copy: 1 },
+                                        { name: this.$t('staff-order.call_no'), value: data.call_no_text || '' },
                                         { name: this.$t('common.order_status'), value: data.status_name || '' },
                                         { name: this.$t('common.total_order_price'), value: data.total_price || '' },
                                         { name: this.$t('common.creation_time'), value: data.add_time || '' },
@@ -469,6 +503,7 @@
                     (op.is_take || 0) +
                     (op.is_delivery || 0) +
                     (op.is_make_done || 0) +
+                    (op.is_call_again || 0) +
                     (op.is_collect || 0) +
                     (op.is_cancel || 0) +
                     (item.plugins_express_data || 0) +
@@ -565,6 +600,10 @@
                     }
                     return;
                 }
+                if (action == 'callagain') {
+                    this.submit_operate(action, id, {});
+                    return;
+                }
                 var title_map = {
                     receive: this.$t('staff-order.confirm_receive'),
                     makedone: this.$t('staff-order.confirm_make_done'),
@@ -592,7 +631,7 @@
                     success: (res) => {
                         uni.hideLoading();
                         app.globalData.showToast(res.data.msg);
-                        if (res.data.code == 0) {
+                        if (res.data.code == 0 && action != 'callagain') {
                             this.get_data();
                         }
                     },
@@ -698,6 +737,9 @@
 .make-progress-step.is-done .make-progress-name,
 .make-progress-step.is-active .make-progress-name {
     font-weight: 500;
+}
+.tv-call-no {
+    line-height: 1.2;
 }
 .panel-item .title {
     width: 160rpx;
