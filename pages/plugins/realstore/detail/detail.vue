@@ -726,6 +726,11 @@
                 var init_data = {
                     id: ((this.info || null) == null) ? (this.params.id || 0) : (this.info.id || 0),
                 };
+                // 扫桌码进入时 tablecode_id 在页面 params 中；首次请求时购物车尚未 init，不能只依赖 cart.merge
+                if ((this.params.tablecode_id || null) != null) {
+                    init_data['tablecode_id'] = this.params.tablecode_id;
+                }
+                // 购物车请求参数合并
                 if (realstore_cart != null && typeof realstore_cart.request_params_merge === 'function') {
                     init_data = realstore_cart.request_params_merge(init_data, 'init');
                 }
