@@ -730,7 +730,6 @@
                 if ((this.params.tablecode_id || null) != null) {
                     init_data['tablecode_id'] = this.params.tablecode_id;
                 }
-                // 购物车请求参数合并
                 if (realstore_cart != null && typeof realstore_cart.request_params_merge === 'function') {
                     init_data = realstore_cart.request_params_merge(init_data, 'init');
                 }
