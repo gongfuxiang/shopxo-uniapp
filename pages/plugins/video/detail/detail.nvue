@@ -275,7 +275,7 @@
     import componentSearch from '@/pages/plugins/video/components/search.vue';
     import componentNoData from '@/components/no-data/no-data';
     import componentBottomLine from '@/components/bottom-line/bottom-line';
-    import componentUpload from '@/components/upload/upload';
+    import componentUpload from '@/pages/common/components/upload/upload';
     import componentUIcon from '@/pages/plugins/live/components/u-icon/u-icon';
     import componentUPopup from '@/pages/plugins/live/components/u-popup/u-popup';
     import componentUSharePopup from '@/pages/plugins/live/components/u-share-popup/u-share-popup';

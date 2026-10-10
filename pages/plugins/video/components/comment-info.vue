@@ -222,6 +222,9 @@
 </script>
 
 <style lang="scss" scoped>
+/* #ifdef APP-NVUE */
+@import '../../../../common/css/nvue-util.css';
+/* #endif */
 .comment-avatar {
     width: 80rpx;
     height: 80rpx;
