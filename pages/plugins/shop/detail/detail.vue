@@ -5,7 +5,7 @@
             <block v-if="shop.data_model == 3">
                 <block v-if="(data || null) != null && (data.diy_data || null) != null && (data.diy_data.config || null) != null">
                     <!-- diy组件 -->
-                    <component-diy :propValue="data.diy_data.config" :propDataId="data.diy_data.id" :propKey="random_value" :propIsHeader="(data.is_header || 0) != 1" @onLocationBack="user_back_choice_location">
+                    <component-diy :propValue="data.diy_data.config" :propDataId="data.diy_data.id" :propKey="random_value" :propIsHeader="(data.is_header || 0) != 1" @onLocationBack="user_back_choice_location" @onLangOpen="diy_lang_open_event" @onShareOpen="diy_share_open_event">
                         <!-- 头部 -->
                         <block v-if="(data.is_header || 0) == 1">
                             <template slot="header">
@@ -24,6 +24,9 @@
                             <component-common ref="common_footer" :propIsModalBusiness="false"></component-common>
                         </template>
                     </component-diy>
+                    <!-- diy 内嵌套跨分包异步组件不支持，由页面托管语言/分享 -->
+                    <component-lang-switch ref="lang_switch" @popup_sub_language_event="diy_popup_sub_language_event"></component-lang-switch>
+                    <component-share-popup ref="share"></component-share-popup>
                 </block>
                 <block v-else>
                     <component-no-data propStatus="0" propPage="home"></component-no-data>
@@ -113,6 +116,8 @@
     import componentShopHeader from '@/pages/plugins/shop/components/shop-header/shop-header';
     import componentNavBack from '@/components/nav-back/nav-back';
     import componentDiy from '@/pages/diy/components/diy/diy';
+    import componentLangSwitch from '@/pages/common/components/lang-switch/lang-switch';
+    import componentSharePopup from '@/pages/common/components/share-popup/share-popup';
     import pluginLocale from '../locale/index.js';
     var common_static_url = app.globalData.get_static_url('common');
     export default {
@@ -153,7 +158,9 @@
             componentGoodsList,
             componentShopHeader,
             componentNavBack,
-            componentDiy
+            componentDiy,
+            componentLangSwitch,
+            componentSharePopup,
         },
         onLoad(params) {
             // 设置参数
@@ -181,10 +188,8 @@
             // 初始化配置
             this.init_config();
 
-            // 公共onshow事件
-            if ((this.$refs.common || null) != null) {
-                this.$refs.common.on_show();
-            }
+            // 公共onshow事件（$refs 未就绪时自动延后重试）
+            app.globalData.page_common_on_show(this);
             if ((this.$refs.common_footer || null) != null) {
                 this.$refs.common_footer.on_show();
             }
@@ -282,7 +287,33 @@
             // url事件
             url_event(e) {
                 app.globalData.url_event(e);
-            }
+            },
+
+            // 选择用户地理位置回调
+            user_back_choice_location(e) {
+                this.get_data();
+            },
+
+            // diy 多语言打开（页面托管异步组件）
+            diy_lang_open_event() {
+                if ((this.$refs.lang_switch || null) != null) {
+                    this.$refs.lang_switch.lang_open_event();
+                }
+            },
+
+            // diy 分享打开（页面托管异步组件）
+            diy_share_open_event() {
+                if ((this.$refs.share || null) != null) {
+                    this.$refs.share.init();
+                }
+            },
+
+            // diy 多语言选择回调
+            diy_popup_sub_language_event(e) {
+                e = uni.getStorageSync(app.globalData.data.cache_lang_switch_key) || e;
+                app.globalData.set_pages_navigation_bar_title();
+                app.globalData.init_config();
+            },
         }
     };
 </script>

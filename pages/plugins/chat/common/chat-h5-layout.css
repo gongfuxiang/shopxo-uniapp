@@ -10,13 +10,21 @@
 .page-chat .input-fs-mask,
 .page-chat .ended-choice-mask,
 .page-chat .prompt-modal-mask,
-.chat-list-page .chat-list-nav,
 .msg-search-mask {
 	left: 50%;
 	right: auto;
 	transform: translateX(-50%);
 	width: 100%;
 	max-width: 1600rpx;
+	box-sizing: border-box;
+}
+
+/* 列表顶栏已改为文档流，只限宽居中，勿再 left/transform（否则会错位） */
+.chat-list-page {
+	width: 100%;
+	max-width: 1600rpx;
+	margin-left: auto;
+	margin-right: auto;
 	box-sizing: border-box;
 }
 
@@ -45,6 +53,7 @@
 .page-chat .bubble-image,
 .page-chat .video-poster,
 .page-chat .bubble-goods.is-clickable,
+.page-chat .bubble-order.is-clickable,
 .page-chat .bubble-audio,
 .page-chat .bubble-file,
 .page-chat .bubble-link,

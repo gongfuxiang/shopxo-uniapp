@@ -32,15 +32,21 @@
                 default: '',
             },
         },
+        mounted() {
+            // 字体由 App 远程 loadFontFace 注册；组件内再兜底一次
+            // #ifndef APP-NVUE
+            const app = getApp();
+            if (app && app.globalData && typeof app.globalData.load_iconfont_font === 'function') {
+                app.globalData.load_iconfont_font();
+            }
+            // #endif
+        },
     };
 </script>
 
 <style scoped>
     /* #ifndef APP-NVUE */
-    /* iconfont.css全局注册需要将src切换成绝对路径 */
-    /* @/static/icon/ */
-    @import url('@/static/icon/iconfont.css');
-    /* @import url('https://at.alicdn.com/t/c/font_4227145_kbr2f9jt68b.css'); */
+    /* 图标类名样式已在 App.vue 全局引入 common/css/iconfont.css，字体远程加载 */
     .iconfont {
         display: flex;
         font-size: inherit;

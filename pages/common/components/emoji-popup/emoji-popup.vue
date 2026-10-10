@@ -64,8 +64,10 @@
                     popup_status: false
                 });
             
-                // 调用父级
-                this.$emit('choiceConfirmEvent', e.currentTarget.dataset.value);
+                // 调用父级（跨分包异步组件：先写缓存再 $emit）
+                var back_data = e.currentTarget.dataset.value;
+                uni.setStorageSync(app.globalData.data.cache_emoji_popup_key, back_data);
+                this.$emit('choiceConfirmEvent', back_data);
             }
         }
     };

@@ -5,42 +5,59 @@
                 <!-- 基础状态和操作 -->
                 <view class="bg-white padding-main border-radius-main tc spacing-mb">
                     <view class="padding-vertical-xl">
-                        <!-- 订单状态（0待确认, 1已确认/待支付, 2已支付/待发货, 3已发货/待收货, 4已完成, 5已取消, 6已关闭） -->
-                        <block v-if="detail.status == 5 || detail.status == 6">
+                        <!-- 订单状态（优先 status_progress，兼容旧数据） -->
+                        <block v-if="status_progress_style == 'danger'">
                             <view class="dis-inline-block va-m">
                                 <iconfont name="icon-sigh-o" size="68rpx" propClass="cr-red"></iconfont>
                             </view>
-                            <text class="text-size-xl margin-top-sm va-m margin-left-sm cr-red">{{detail.status_name}}</text>
+                            <text class="text-size-xl margin-top-sm va-m margin-left-sm cr-red">{{ status_progress_name }}</text>
                         </block>
-                        <block v-else-if="detail.status == 4">
+                        <block v-else-if="status_progress_style == 'success'">
                             <view class="dis-inline-block va-m">
                                 <iconfont name="icon-enable" size="68rpx" propClass="cr-green"></iconfont>
                             </view>
-                            <text class="text-size-xl margin-top-sm va-m margin-left-sm cr-green">{{detail.status_name}}</text>
+                            <text class="text-size-xl margin-top-sm va-m margin-left-sm cr-green">{{ status_progress_name }}</text>
                         </block>
-                        <block v-else-if="detail.status == 3">
+                        <block v-else-if="status_progress_style == 'primary'">
                             <view class="dis-inline-block va-m">
                                 <iconfont name="icon-inventroy-manage" size="68rpx" propClass="cr-blue"></iconfont>
                             </view>
-                            <text class="text-size-xl margin-top-sm va-m margin-left-sm cr-blue">{{detail.status_name}}</text>
+                            <text class="text-size-xl margin-top-sm va-m margin-left-sm cr-blue">{{ status_progress_name }}</text>
                         </block>
-                        <block v-else-if="detail.status == 2">
+                        <block v-else-if="status_progress_style == 'warning'">
                             <view class="dis-inline-block va-m">
                                 <iconfont name="icon-wait-receive-delivery" size="68rpx" propClass="cr-yellow"></iconfont>
                             </view>
-                            <text class="text-size-xl margin-top-sm va-m margin-left-sm cr-yellow">{{detail.status_name}}</text>
+                            <text class="text-size-xl margin-top-sm va-m margin-left-sm cr-yellow">{{ status_progress_name }}</text>
                         </block>
                         <block v-else>
                             <view class="dis-inline-block va-m">
                                 <iconfont name="icon-wait-payment" size="68rpx"></iconfont>
                             </view>
-                            <text class="text-size-xl margin-top-sm va-m margin-left-sm">{{detail.status_name}}</text>
+                            <text class="text-size-xl margin-top-sm va-m margin-left-sm">{{ status_progress_name }}</text>
                         </block>
                         <view v-if="detail.status == 1" class="cr-price fw-b margin-top-sm">
                             <text class="text-size">{{payment_currency_symbol}}</text>
                             <text class="text-size-xl margin-left-xs">{{pay_price}}</text>
                         </view>
-                        <view v-if="(status_tips || null) != null" class="cr-grey text-size-xs margin-top-sm">{{status_tips}}</view>
+                        <view v-if="status_progress_tips" class="cr-grey text-size-xs margin-top-sm">{{ status_progress_tips }}</view>
+                        <view v-if="status_progress_steps.length > 0" class="make-progress-steps margin-top-main">
+                            <view
+                                v-for="(step, index) in status_progress_steps"
+                                :key="step.key"
+                                class="make-progress-step"
+                                :class="make_step_class(index)"
+                            >
+                                <view class="make-progress-node">
+                                    <view class="make-progress-dot" :class="make_step_done(index) || make_step_active(index) ? 'bg-main' : ''">
+                                        <text v-if="make_step_done(index)" class="make-progress-dot-check cr-white">✓</text>
+                                        <text v-else class="make-progress-dot-num" :class="make_step_active(index) ? 'cr-white' : 'cr-grey'">{{ index + 1 }}</text>
+                                    </view>
+                                    <view v-if="index < status_progress_steps.length - 1" class="make-progress-line" :class="make_step_done(index) ? 'bg-main' : ''"></view>
+                                </view>
+                                <text class="make-progress-name" :class="make_step_active(index) ? 'cr-main' : (make_step_done(index) ? 'cr-base' : 'cr-grey')">{{ step.name }}</text>
+                            </view>
+                        </view>
                     </view>
                     <component-order-operate-more
                         :propOrder="detail"
@@ -505,7 +522,7 @@
     import componentNoData from '@/components/no-data/no-data';
     import componentBottomLine from '@/components/bottom-line/bottom-line';
     import componentPopup from '@/components/popup/popup';
-    import componentPayment from '@/components/payment/payment';
+    import componentPayment from '@/pages/common/components/payment/payment';
     import componentHospitalOrderDetail from '@/pages/plugins/hospital/components/order-detail/order-detail';
     import componentOrderOperateMore from '@/pages/user-order/components/order-operate-more/order-operate-more';
     import componentFriendpayOrderPayPopup from '@/pages/plugins/friendpay/components/order-pay-popup/order-pay-popup';
@@ -569,6 +586,52 @@
             componentFriendpayOrderPayPopup,
         },
 
+        computed: {
+            // 订单状态进度数据
+            status_progress() {
+                return (this.detail || {}).status_progress || null;
+            },
+            // 状态进度标题
+            status_progress_name() {
+                const sp = this.status_progress || {};
+                return sp.status_name || sp.current_name || ((this.detail || {}).status_name) || '';
+            },
+            // 状态进度提示文案（兼容旧 status_tips）
+            status_progress_tips() {
+                const tips = String(((this.status_progress || {}).tips) || '');
+                if (tips) {
+                    return tips;
+                }
+                return (this.status_tips || null) != null ? String(this.status_tips) : '';
+            },
+            // 状态进度样式
+            status_progress_style() {
+                if (this.status_progress != null && (this.status_progress.style || null) != null) {
+                    return String(this.status_progress.style || 'default');
+                }
+                // 无进度数据时按订单状态回退
+                const status = Number(((this.detail || {}).status) || 0);
+                if (status == 5 || status == 6) {
+                    return 'danger';
+                }
+                if (status == 4) {
+                    return 'success';
+                }
+                if (status == 3) {
+                    return 'primary';
+                }
+                if (status == 2) {
+                    return 'warning';
+                }
+                return 'default';
+            },
+            // 状态进度步骤列表
+            status_progress_steps() {
+                const steps = ((this.status_progress || {}).steps) || null;
+                return (steps != null && steps.length > 0) ? steps : [];
+            },
+        },
+
         onLoad(params) {
             // 参数处理
             params = app.globalData.launch_params_handle(params);
@@ -592,10 +655,8 @@
             // 调用公共事件方法
             app.globalData.page_event_onshow_handle();
 
-            // 公共onshow事件
-            if ((this.$refs.common || null) != null) {
-                this.$refs.common.on_show();
-            }
+            // 公共onshow事件（$refs 未就绪时自动延后重试）
+            app.globalData.page_common_on_show(this);
 
             // 分享菜单处理
             app.globalData.page_share_handle();
@@ -607,6 +668,33 @@
         },
 
         methods: {
+            // 进度步骤样式类
+            make_step_class(index) {
+                if (this.make_step_done(index)) {
+                    return 'is-done';
+                }
+                if (this.make_step_active(index)) {
+                    return 'is-active';
+                }
+                return '';
+            },
+            // 步骤是否已完成
+            make_step_done(index) {
+                const cur = Number(((this.status_progress || {}).current));
+                if (isNaN(cur) || cur < 0) {
+                    return false;
+                }
+                return index < cur;
+            },
+            // 步骤是否进行中
+            make_step_active(index) {
+                const cur = Number(((this.status_progress || {}).current));
+                if (isNaN(cur) || cur < 0) {
+                    return false;
+                }
+                return index === cur;
+            },
+
             // 初始化配置
             init_config(status) {
                 if ((status || false) == true) {
@@ -667,7 +755,7 @@
                                 // 支付信息
                                 original_payment_list: data.payment_list || [],
                                 payment_list: data.payment_list || [],
-                                default_payment_id: data.default_payment_id || 0,
+                                default_payment_id: parseInt(data.default_payment_id || 0),
                                 plugins_friendpay_data: data.plugins_friendpay_data || null,
                                 payment_id: (detail == null) ? 0 : detail.payment_id,
                                 pay_url: app.globalData.get_request_url('pay', 'order'),

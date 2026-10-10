@@ -51,7 +51,7 @@
 <script>
     const app = getApp();
     import componentCommon from '@/components/common/common';
-    import componentPanelContent from "@/components/panel-content/panel-content";
+    import componentPanelContent from "@/pages/common/components/panel-content/panel-content";
     import componentNoData from '@/components/no-data/no-data';
     import componentBottomLine from '@/components/bottom-line/bottom-line';
     import pluginLocale from '../locale/index.js';
@@ -109,10 +109,8 @@
             // 初始化配置
             app.globalData.init_config(0, this, 'init_config');
 
-            // 公共onshow事件
-            if ((this.$refs.common || null) != null) {
-                this.$refs.common.on_show();
-            }
+            // 公共onshow事件（$refs 未就绪时自动延后重试）
+            app.globalData.page_common_on_show(this);
 
             // 分享菜单处理
             app.globalData.page_share_handle();

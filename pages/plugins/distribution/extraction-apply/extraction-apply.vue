@@ -88,7 +88,7 @@
     import componentCommon from '@/components/common/common';
     import componentNoData from "@/components/no-data/no-data";
     import componentChoiceLocation from '@/components/choice-location/choice-location';
-    import componentUpload from '@/components/upload/upload';
+    import componentUpload from '@/pages/common/components/upload/upload';
     import pluginLocale from '../locale/index.js';
 
     export default {
@@ -152,10 +152,8 @@
             // 用户位置初始化
             this.user_location_init();
 
-            // 公共onshow事件
-            if ((this.$refs.common || null) != null) {
-                this.$refs.common.on_show();
-            }
+            // 公共onshow事件（$refs 未就绪时自动延后重试）
+            app.globalData.page_common_on_show(this);
 
             // 分享菜单处理
             app.globalData.page_share_handle();
@@ -525,7 +523,10 @@
             },
 
             // 上传回调
-            upload_image_event(res, index) {
+            upload_image_event() {
+                var cache = uni.getStorageSync(app.globalData.data.cache_upload_callback_key) || {};
+                var res = cache.data;
+                var index = cache.call_data;
                 var temp_data = this.extraction_data || {};
                 temp_data['logo'] = res[0];
                 this.setData({

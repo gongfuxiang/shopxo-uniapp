@@ -58,7 +58,7 @@
                 </view>
             </view>
             <block v-else>
-                <view class="realstore-nav-bg" :style="'background-image:url('+(nav_title_bg || '')+')'">
+                <view class="realstore-nav-bg margin-bottom-sm" :style="'background-image:url('+(nav_title_bg || '')+')'">
                     <!-- 位置 + 搜索 + 地图 -->
                     <view class="nav-top-row padding-horizontal-main flex-row align-s pr z-i cr-white">
                         <view class="nav-location flex-row align-c">
@@ -218,10 +218,8 @@
             // 数据加载
             this.get_data();
 
-            // 公共onshow事件
-            if ((this.$refs.common || null) != null) {
-                this.$refs.common.on_show();
-            }
+            // 公共onshow事件（$refs 未就绪时自动延后重试）
+            app.globalData.page_common_on_show(this);
         },
 
         // 下拉刷新

@@ -97,9 +97,7 @@
         },
         onShow() {
             app.globalData.page_event_onshow_handle();
-            if ((this.$refs.common || null) != null) {
-                this.$refs.common.on_show();
-            }
+            app.globalData.page_common_on_show(this);
             // 从填写页返回时刷新状态
             if (this.data_list_loding_status == 3) {
                 this.get_data();

@@ -1,7 +1,7 @@
 {
   "id": "uni-swipe-action",
   "displayName": "uni-swipe-action 滑动操作",
-  "version": "1.3.16",
+  "version": "1.3.17",
   "description": "SwipeAction 滑动操作操作组件",
   "keywords": [
     "",
@@ -66,30 +66,31 @@
             }
           },
           "web": {
-            "safari": "-",
-            "chrome": "-"
+            "safari": "√",
+            "chrome": "√"
           },
           "app": {
-            "vue": "-",
-            "nvue": "-",
-            "android": "-",
-            "ios": "-",
-            "harmony": "-"
+            "vue": "√",
+            "nvue": "√",
+            "android": "√",
+            "ios": "√",
+            "harmony": "√"
           },
           "mp": {
-            "weixin": "-",
-            "alipay": "-",
-            "toutiao": "-",
-            "baidu": "-",
+            "weixin": "√",
+            "alipay": "√",
+            "toutiao": "√",
+            "baidu": "√",
             "kuaishou": "-",
             "jd": "-",
             "harmony": "-",
-            "qq": "-",
-            "lark": "-"
+            "qq": "√",
+            "lark": "-",
+            "xhs": "-"
           },
           "quickapp": {
-            "huawei": "-",
-            "union": "-"
+            "huawei": "√",
+            "union": "√"
           }
         },
         "uni-app-x": {

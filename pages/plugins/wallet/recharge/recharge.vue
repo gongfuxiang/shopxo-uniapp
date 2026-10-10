@@ -78,7 +78,7 @@
     import componentCommon from '@/components/common/common';
     import componentNavBack from '@/components/nav-back/nav-back';
     import componentNoData from '@/components/no-data/no-data';
-    import componentPayment from '@/components/payment/payment';
+    import componentPayment from '@/pages/common/components/payment/payment';
     import pluginLocale from '../locale/index.js';
     var wallet_static_url = app.globalData.get_static_url('wallet', true) + 'app/';
 
@@ -128,6 +128,9 @@
             // 调用公共事件方法
             app.globalData.page_event_onload_handle(params);
 
+            // 返回钱包页时切到充值明细 tab
+            app.globalData.wallet_user_return_type = 'recharge';
+
             // 设置参数
             this.setData({
                 params: params,
@@ -142,10 +145,8 @@
             // 加载数据
             this.init();
 
-            // 公共onshow事件
-            if ((this.$refs.common || null) != null) {
-                this.$refs.common.on_show();
-            }
+            // 公共onshow事件（$refs 未就绪时自动延后重试）
+            app.globalData.page_common_on_show(this);
 
             // 分享菜单处理
             app.globalData.page_share_handle();

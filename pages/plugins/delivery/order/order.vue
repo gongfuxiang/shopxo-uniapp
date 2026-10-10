@@ -273,7 +273,7 @@
     import componentBadge from "@/components/badge/badge";
     import componentPopup from "@/components/popup/popup";
     import componentSearch from '@/components/search/search';
-    import componentUpload from '@/components/upload/upload';
+    import componentUpload from '@/pages/common/components/upload/upload';
     import pluginLocale from '../locale/index.js';
 
     var plugins_static_url = app.globalData.get_static_url('delivery', true);
@@ -354,10 +354,8 @@
             // 调用公共事件方法
             app.globalData.page_event_onshow_handle();
 
-            // 公共onshow事件
-            if ((this.$refs.common || null) != null) {
-                this.$refs.common.on_show();
-            }
+            // 公共onshow事件（$refs 未就绪时自动延后重试）
+            app.globalData.page_common_on_show(this);
             this.load_work_info();
         },
 
@@ -659,7 +657,10 @@
             },
 
             // 上传回调
-            upload_image_event(res, index) {
+            upload_image_event() {
+                var cache = uni.getStorageSync(app.globalData.data.cache_upload_callback_key) || {};
+                var res = cache.data;
+                var index = cache.call_data;
                 this.setData({
                     form_delivery_success_images_list: res,
                 });

@@ -9,8 +9,7 @@
 
 <script>
     //#ifdef APP-NVUE
-    import dataIconfont from '@/static/icon/iconfont.json';
-    import iconUrl from '@/static/icon/iconfont.ttf';
+    import dataIconfont from '@/common/js/lib/iconfont.json';
     //#endif
     /**
      * Icons 图标
@@ -61,15 +60,20 @@
         data() {
             return {
                 dataIconfont: dataIconfont,
-                iconUrl: iconUrl
             }
         },
         mounted() {
-            const domModule = weex.requireModule("dom");
-            domModule.addRule('fontFace', {
-                'fontFamily': 'iconfont',
-                'src': `url('${this.iconUrl}')`
-            })
+            const app = getApp();
+            const iconUrl = (app && app.globalData && typeof app.globalData.get_iconfont_static_url === 'function')
+                ? (app.globalData.get_iconfont_static_url() + 'iconfont.ttf')
+                : '';
+            if (iconUrl) {
+                const domModule = weex.requireModule("dom");
+                domModule.addRule('fontFace', {
+                    'fontFamily': 'iconfont',
+                    'src': `url('${iconUrl}')`
+                });
+            }
         },
         //#endif
         methods: {
@@ -90,13 +94,7 @@
 
 <style lang="scss" scoped>
     /* #ifndef APP-NVUE */
-    @import url('@/static/icon/iconfont.css');
-        /* #ifndef MP-WEIXIN */
-        @font-face {
-            font-family: "iconfont";
-            src: url('@/static/icon/iconfont.ttf');
-        }
-        /* #endif */
+    /* 图标类名样式已在 App.vue 全局引入，字体远程加载 */
     /* #endif */
     .icon-font {
         /* #ifndef APP-NVUE */

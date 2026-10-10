@@ -224,9 +224,7 @@
             this.init_config();
 
             // 公共 onshow 事件
-            if ((this.$refs.common || null) != null) {
-                this.$refs.common.on_show();
-            }
+            app.globalData.page_common_on_show(this);
         },
 
         onUnload() {

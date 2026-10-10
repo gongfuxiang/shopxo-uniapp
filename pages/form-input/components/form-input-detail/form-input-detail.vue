@@ -91,7 +91,7 @@
 <script>
     const app = getApp();
     import componentNoData from "@/components/no-data/no-data";
-    import componentPanelContent from "@/components/panel-content/panel-content";
+    import componentPanelContent from "@/pages/common/components/panel-content/panel-content";
     export default {
         data() {
             return {

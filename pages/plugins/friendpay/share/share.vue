@@ -64,7 +64,7 @@
     const app = getApp();
     import componentCommon from '@/components/common/common';
     import componentNoData from '@/components/no-data/no-data';
-    import componentSharePopup from '@/components/share-popup/share-popup';
+    import componentSharePopup from '@/pages/common/components/share-popup/share-popup';
     import componentFriendpayGoodsList from '@/pages/plugins/friendpay/components/goods-list/goods-list';
     import pluginLocale from '../locale/index.js';
     export default {
@@ -141,10 +141,8 @@
             // 调用公共事件方法
             app.globalData.page_event_onshow_handle();
 
-            // 公共onshow事件
-            if ((this.$refs.common || null) != null) {
-                this.$refs.common.on_show();
-            }
+            // 公共onshow事件（$refs 未就绪时自动延后重试）
+            app.globalData.page_common_on_show(this);
 
             // 初始化
             this.init();

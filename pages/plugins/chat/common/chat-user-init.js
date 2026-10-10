@@ -60,7 +60,8 @@ export const ensure_chat_user_init = (options = {}) => {
 export const apply_chat_user_page_config = (extra = {}) => {
 	const patch = {
 		goods_click_enable: 1,
-		// 商品跳转优先用接口下发的 goods_url；无链接时再靠 goods_detail_path 兜底
+		// 小程序/App：走原生商品详情；接口 http 链忽略，由 goods_detail_path 兜底
+		goods_detail_path: '/pages/goods-detail/goods-detail?id={id}',
 		is_chat_record_search: 1,
 		is_chat_record_search_user: 1,
 		...(extra || {}),

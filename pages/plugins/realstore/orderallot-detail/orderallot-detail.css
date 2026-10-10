@@ -234,3 +234,6 @@
 .make-progress-step.is-active .make-progress-name {
     font-weight: 500;
 }
+.tv-call-no {
+    line-height: 1.2;
+}

@@ -2,7 +2,7 @@
     <view :class="theme_view">
         <view v-if="(data || null) != null && status == 1" class="plugins-popupscreen">
             <view class="content pr">
-                <image class="dis-block auto" :src="data.images" mode="widthFix" :data-value="data.images_url || ''" @tap="url_event"></image>
+                <image class="popupscreen-image dis-block auto" :src="data.images" mode="widthFix" :data-value="data.images_url || ''" @tap="url_event"></image>
                 <view class="tc margin-top-xl">
                     <view class="close cp round padding-sm auto" @tap.stop="close_event">
                         <iconfont name="icon-close-line" size="28rpx" color="#cacaca"></iconfont>
@@ -126,7 +126,7 @@
     .plugins-popupscreen .content {
         margin-top: calc(50vh - 200rpx) !important;
     }
-    .plugins-popupscreen .content image {
+    .plugins-popupscreen .content .popupscreen-image {
         width: 600rpx;
     }
 </style>

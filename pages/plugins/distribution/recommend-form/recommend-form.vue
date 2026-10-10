@@ -125,8 +125,8 @@
     import componentCommon from '@/components/common/common';
     import componentNoData from '@/components/no-data/no-data';
     import componentPopup from '@/components/popup/popup';
-    import componentGoodsSpecChoice from '@/components/goods-spec-choice/goods-spec-choice';
-    import componentUpload from '@/components/upload/upload';
+    import componentGoodsSpecChoice from '@/pages/common/components/goods-spec-choice/goods-spec-choice';
+    import componentUpload from '@/pages/common/components/upload/upload';
     import pluginLocale from '../locale/index.js';
 
     export default {
@@ -180,10 +180,8 @@
             // 数据加载
             this.init();
 
-            // 公共onshow事件
-            if ((this.$refs.common || null) != null) {
-                this.$refs.common.on_show();
-            }
+            // 公共onshow事件（$refs 未就绪时自动延后重试）
+            app.globalData.page_common_on_show(this);
         },
 
         // 下拉刷新
@@ -328,7 +326,10 @@
             },
 
             // 上传回调
-            upload_image_event(res, index) {
+            upload_image_event() {
+                var cache = uni.getStorageSync(app.globalData.data.cache_upload_callback_key) || {};
+                var res = cache.data;
+                var index = cache.call_data;
                 var temp_data = this.recommend_data || {};
                 temp_data['icon'] = res[0];
                 this.setData({
@@ -468,6 +469,7 @@
 
             // 规格确认回调事件
             spec_confirm_event(value) {
+                value = uni.getStorageSync(app.globalData.data.cache_goods_spec_choice_key) || value || {};
                 var goods = this.popup_search_goods_list[value.out_value];
                 var temp_data = this.recommend_data;
                 var spec_str = JSON.stringify(value.spec);

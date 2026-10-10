@@ -274,7 +274,7 @@
                             <!-- 购物车列表 -->
                             <block v-if="cart_status">
                                 <view class="cart-mask wh-auto ht-auto pf" @tap="cart_event"></view>
-                                <view class="cart-content bg-white border-radius-main pa oh" :style="cart_content_style">
+                                <view class="cart-content bg-white border-radius-main pf oh" :style="cart_content_style">
                                     <block v-if="(cart || null) != null && (cart.data || null) != null && cart.data.length > 0">
                                         <view class="oh br-b padding-vertical-main padding-horizontal-main">
                                             <text class="va-m text-size-xs cr-base">{{ $t('common.selected_product') }}</text>
@@ -329,7 +329,7 @@
                                 </view>
                             </block>
                             <!-- 购物车底部导航 -->
-                            <view class="botton-nav bg-white round pa oh padding-sm flex-row jc-sb align-c" :style="botton_nav_style+(cart_status ? 'z-index:5;' : '')">
+                            <view class="botton-nav bg-white round pf oh padding-sm flex-row jc-sb align-c" :style="botton_nav_style+(cart_status ? 'z-index:5;' : '')">
                                 <view class="flex-row align-c flex-1 flex-width">
                                     <view class="cart pr cp top-sm padding-left-sm" @tap="cart_event">
                                         <iconfont name="icon-cart" size="36rpx" color="#666"></iconfont>
@@ -537,10 +537,8 @@
             // 清除tab参数
             app.globalData.remove_page_tabbar_switch_params();
 
-            // 公共onshow事件
-            if ((this.$refs.common || null) != null) {
-                this.$refs.common.on_show({object: this, method: 'init'});
-            }
+            // 公共onshow事件（$refs 未就绪时自动延后重试）
+            app.globalData.page_common_on_show(this, {object: this, method: 'init'});
         },
 
         methods: {
@@ -737,7 +735,7 @@
                 if(this.goods_category_is_show_cart_nav == 1 && this.common_site_type != 4) {
                     right_style = 'padding-bottom: calc(120rpx + '+bottom_style_value+'rpx);';
                 }
-                // 底部导航高度
+                // 底部导航高度（内容区让位）
                 var footer_height = this.footer_height_value;
                 var footer_height_unit = 'px';
                 // #ifdef H5
@@ -749,12 +747,32 @@
                     }
                 }
                 // #endif
+                // 浮动购物车底栏：与购物车页 page_style_handle 一致，叠在 diy/原生底栏上方
+                var bottom_value = 0;
+                var bottom_unit = 'px';
+                if(app.globalData.data.is_use_native_tabbar == 1) {
+                    // #ifdef H5
+                    bottom_value += uni.getWindowInfo().windowBottom || 50;
+                    // #endif
+                } else {
+                    bottom_value += Number(this.footer_height_value || 0);
+                    // #ifdef H5
+                    if(app.globalData.is_pc()) {
+                        var sys2 = app.globalData.get_system_info(null, null, true);
+                        if(sys2.windowWidth <= 960) {
+                            bottom_value *= 2;
+                            bottom_unit = 'rpx';
+                        }
+                    }
+                    // #endif
+                }
                 this.setData({
                     category_content_style: 'height:calc(100vh - ' + (this.search_height + this.window_bottom_height)+'px - '+footer_height+footer_height_unit+');',
                     left_content_actual_style: left_style,
                     right_content_actual_style: right_style,
-                    botton_nav_style: 'bottom: 20rpx;',
-                    cart_content_style: 'bottom: 150rpx;',
+                    // 与购物车页 .bottom-fixed 一致：底栏高度 + padding 20rpx 的空隙
+                    botton_nav_style: 'bottom: calc(20rpx + ' + bottom_value + bottom_unit + ');',
+                    cart_content_style: 'bottom: calc(150rpx + ' + bottom_value + bottom_unit + ');',
                 });
             },
 

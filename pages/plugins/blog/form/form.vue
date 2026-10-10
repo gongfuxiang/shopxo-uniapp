@@ -129,7 +129,7 @@
     const app = getApp();
     import componentCommon from '@/components/common/common';
     import componentPopup from '@/components/popup/popup';
-    import componentUpload from '@/components/upload/upload';
+    import componentUpload from '@/pages/common/components/upload/upload';
     import componentNoData from '@/components/no-data/no-data';
     import pluginLocale from '../locale/index.js';
     export default {
@@ -190,10 +190,8 @@
             // 调用公共事件方法
             app.globalData.page_event_onshow_handle();
 
-            // 公共onshow事件
-            if ((this.$refs.common || null) != null) {
-                this.$refs.common.on_show();
-            }
+            // 公共onshow事件（$refs 未就绪时自动延后重试）
+            app.globalData.page_common_on_show(this);
         },
 
         // 下拉刷新
@@ -316,7 +314,8 @@
             },
 
             // 上传回调
-            retrun_image_event(data) {
+            retrun_image_event() {
+                var data = (uni.getStorageSync(app.globalData.data.cache_upload_callback_key) || {}).data;
                 var new_data = this.data;
                 new_data.cover = data[0];
                 this.setData({

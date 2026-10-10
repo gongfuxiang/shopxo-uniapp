@@ -230,8 +230,8 @@
     import componentCommon from '@/components/common/common';
     import componentNoData from '@/components/no-data/no-data';
     import componentPopup from '@/components/popup/popup';
-    import componentPayment from '@/components/payment/payment';
-    import componentSharePopup from '@/components/share-popup/share-popup';
+    import componentPayment from '@/pages/common/components/payment/payment';
+    import componentSharePopup from '@/pages/common/components/share-popup/share-popup';
     import componentBottomLine from '@/components/bottom-line/bottom-line';
     import componentSearch from '@/components/search/search';
     import pluginLocale from '../locale/index.js';
@@ -310,10 +310,8 @@
                 is_user_login: parseInt(app.globalData.get_user_cache_info('id', 0) || 0) > 0,
             });
 
-            // 公共onshow事件
-            if ((this.$refs.common || null) != null) {
-                this.$refs.common.on_show();
-            }
+            // 公共onshow事件（$refs 未就绪时自动延后重试）
+            app.globalData.page_common_on_show(this);
 
             // 锁定内容返回后刷新
             if (this.doc_content_id > 0 && this.content_data && this.content_data.is_lock == 1) {

@@ -70,7 +70,7 @@
     const app = getApp();
     import base64 from '@/common/js/lib/base64.js';
     import componentCommon from '@/components/common/common';
-    import componentUpload from '@/components/upload/upload';
+    import componentUpload from '@/pages/common/components/upload/upload';
     import componentNoData from '@/components/no-data/no-data';
     import pluginLocale from '../locale/index.js';
     export default {
@@ -122,10 +122,8 @@
             // 初始化配置
             app.globalData.init_config(0, this, 'init_config');
 
-            // 公共onshow事件
-            if ((this.$refs.common || null) != null) {
-                this.$refs.common.on_show();
-            }
+            // 公共onshow事件（$refs 未就绪时自动延后重试）
+            app.globalData.page_common_on_show(this);
         },
 
         // 下拉刷新
@@ -206,7 +204,8 @@
             },
 
             // 上传回调
-            retrun_image_event(res) {
+            retrun_image_event() {
+                var res = (uni.getStorageSync(app.globalData.data.cache_upload_callback_key) || {}).data;
                 var temp_data = this.data;
                 temp_data['images'] = res;
                 this.setData({

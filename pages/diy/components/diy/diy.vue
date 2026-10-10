@@ -108,10 +108,6 @@
                             </uni-popup>
                             <!-- 快捷导航 -->
                             <component-quick-nav ref="quick_nav" :propIsBtn="false"></component-quick-nav>
-                            <!-- 语言选择 -->
-                            <component-lang-switch ref="lang_switch" @popup_sub_language_event="popup_sub_language_event"></component-lang-switch>
-                            <!-- 分享页面 -->
-                            <component-share-popup ref="share"></component-share-popup>
                         </view>
                     </view>
                 </view>
@@ -182,8 +178,6 @@
     import componentGoodsBuy from '@/components/goods-buy/goods-buy';
     import componentSearch from '@/components/search/search';
     import componentQuickNav from '@/components/quick-nav/quick-nav';
-    import componentLangSwitch from '@/components/lang-switch/lang-switch';
-    import componentSharePopup from '@/components/share-popup/share-popup';
     var system = app.globalData.get_system_info(null, null, true);
     var sys_width = app.globalData.window_width_handle(system.windowWidth);
     var sys_height = app.globalData.window_height_handle(system);
@@ -263,8 +257,6 @@
             componentBottomLine,
             componentGoodsBuy,
             componentSearch,
-            componentLangSwitch,
-            componentSharePopup,
             componentQuickNav,
             componentDiyGoodsMagic
         },
@@ -932,17 +924,13 @@
                             this.$refs.quick_nav.quick_open_event();
                         }
                         break;
-                    // 多语言
+                    // 多语言（跨分包异步组件不能嵌套，交由使用 diy 的父级页面打开）
                     case 'lang' :
-                        if ((this.$refs.lang_switch || null) != null) {
-                            this.$refs.lang_switch.lang_open_event();
-                        }
+                        this.$emit('onLangOpen');
                         break;
-                    // 分享页面
+                    // 分享页面（跨分包异步组件不能嵌套，交由使用 diy 的父级页面打开）
                     case 'share' :
-                        if ((this.$refs.share || null) != null) {
-                            this.$refs.share.init();
-                        }
+                        this.$emit('onShareOpen');
                         break;
                     // 回到顶部
                     case 'gotop' :
@@ -953,13 +941,7 @@
                         });
                         break;
                 }
-            }, 
-            popup_sub_language_event(e) {
-                // 重新设置当前页面导航标题
-                app.globalData.set_pages_navigation_bar_title();
-                // 重新读取数据配置
-                app.globalData.init_config();
-            }
+            },
         },
     };
 </script>

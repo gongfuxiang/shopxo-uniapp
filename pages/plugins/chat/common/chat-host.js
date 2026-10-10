@@ -199,8 +199,12 @@ export const refresh_request_uuid = () => {
 	return request_uuid();
 };
 
-/** 对齐商城 App.globalData.application_client_type（h5/weixin/app 等） */
+/** 对齐商城 App.globalData.application_client_type（h5/weixin/app 等；勿默认 pc，否则后端会拼 PC http 详情链） */
 export const get_application_client_type = () => {
+	const from_chat = get_chat_client_type();
+	if (from_chat) {
+		return from_chat;
+	}
 	const app = get_app();
 	if (app && app.globalData && typeof app.globalData.application_client_type == 'function') {
 		const value = String(app.globalData.application_client_type() || '').trim();
@@ -208,7 +212,7 @@ export const get_application_client_type = () => {
 			return value;
 		}
 	}
-	return 'pc';
+	return 'h5';
 };
 
 export const showToast = (msg, status) => {

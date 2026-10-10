@@ -183,13 +183,16 @@
 							</view>
 							<view
 								v-else-if="item.data_type == 'goods' && item.goods"
-								class="bubble-goods"
-								:class="{ 'is-clickable': goodsClickable }"
-								:data-json="JSON.stringify(item.goods)"
-								@tap="emit_open_goods"
+								class="bubble-goods is-clickable"
+								@tap.stop="emit_open_goods"
 							>
-								<image class="goods-cover" :src="item.goods.images || defaultAvatar" mode="aspectFill"></image>
-								<view class="goods-meta">
+								<image
+									class="goods-cover"
+									:src="item.goods.images || defaultAvatar"
+									mode="aspectFill"
+									@tap.stop="emit_open_goods"
+								></image>
+								<view class="goods-meta" @tap.stop="emit_open_goods">
 									<text class="goods-title">{{ item.goods.title || $t('chat.goods') }}</text>
 									<text v-if="!isEmpty(item.goods.price)" class="goods-price">¥{{ item.goods.price }}</text>
 								</view>
@@ -197,7 +200,9 @@
 							<!-- 对齐 PC order / aftersale 卡片 -->
 							<view
 								v-else-if="item.data_type == 'order' && item.order"
-								class="bubble-order"
+								class="bubble-order is-clickable"
+								:data-json="JSON.stringify(item.order)"
+								@tap.stop="emit_open_order"
 							>
 								<view class="order-head">
 									<text class="order-head-line">{{ order_card_meta_primary(item.order) }}</text>
@@ -218,7 +223,9 @@
 							</view>
 							<view
 								v-else-if="item.data_type == 'aftersale' && item.aftersale"
-								class="bubble-order is-aftersale"
+								class="bubble-order is-aftersale is-clickable"
+								:data-json="JSON.stringify(item.aftersale)"
+								@tap.stop="emit_open_aftersale"
 							>
 								<text class="order-head">{{ aftersale_card_head(item.aftersale) }}</text>
 								<view v-if="item.aftersale.goods_title || item.aftersale.images" class="order-goods-row">
@@ -470,7 +477,29 @@
 			emit_preview_image(e) { this.emit_msg('previewImage', { event: e }); },
 			emit_video_poster_error(e) { this.emit_msg('videoPosterError', { event: e }); },
 			emit_open_video(e) { this.emit_msg('openVideo', { event: e }); },
-			emit_open_goods(e) { this.emit_msg('openGoods', { event: e }); },
+			emit_open_goods() {
+				const g = (this.item && this.item.goods) || null;
+				// 小程序组件 $emit 后原生 event.dataset 会丢，商品数据必须走 data
+				this.emit_msg('openGoods', {
+					data: g ? {
+						id: g.id || g.goods_id || 0,
+						goods_id: g.goods_id || g.id || 0,
+						title: g.title || '',
+						price: g.price || '',
+						images: g.images || '',
+						goods_url: g.goods_url || g.url || '',
+						url: g.url || g.goods_url || '',
+					} : null,
+				});
+			},
+			emit_open_order() {
+				const o = (this.item && this.item.order) || null;
+				this.emit_msg('openOrder', { data: o ? Object.assign({}, o) : null });
+			},
+			emit_open_aftersale() {
+				const a = (this.item && this.item.aftersale) || null;
+				this.emit_msg('openAftersale', { data: a ? Object.assign({}, a) : null });
+			},
 			emit_toggle_audio(e) { this.emit_msg('toggleAudio', { event: e }); },
 			emit_quote(e) { this.emit_msg('quote', { event: e }); },
 			emit_press_start(e) { this.emit_msg('pressStart', { event: e }); },
