@@ -2200,6 +2200,18 @@
             ]
         },
         {
+            "root": "pages/plugins/samecityexpress",
+            "pages": [
+                {
+                    "path": "order/track",
+                    "style": {
+                        "enablePullDownRefresh": false,
+                        "navigationBarTitleText": ""
+                    }
+                }
+            ]
+        },
+        {
             "root": "pages/plugins/aichat",
             "pages": [
                 {
