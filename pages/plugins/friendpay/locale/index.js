@@ -31,7 +31,8 @@ var zh = {
         "order_id_error": "订单id有误",
         "pay_success_title": "代付成功",
         "pay_success_tips": "感谢您的帮助，订单已支付完成",
-        "view_records": "查看代付记录"
+        "view_records": "查看代付记录",
+        "back_home": "返回首页"
     }
 };
 var en = {
@@ -66,7 +67,8 @@ var en = {
         "order_id_error": "Invalid order id",
         "pay_success_title": "Pay success",
         "pay_success_tips": "Thank you, the order has been paid",
-        "view_records": "View records"
+        "view_records": "View records",
+        "back_home": "Back to home"
     }
 };
 export default createPageLocaleMixin({ zh, en });

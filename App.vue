@@ -7,10 +7,10 @@
             data: {
                 // 基础配置
                 // 数据接口请求地址
-                request_url:'https://new.shopxo.vip/',
+                request_url:'https://d1.shopxo.vip/',
 
                 // 静态资源地址（如系统根目录不在public目录下面请在静态地址后面加public目录、如：https://d1.shopxo.vip/public/）
-                static_url:'https://new.shopxo.vip/',
+                static_url:'https://d1.shopxo.vip/',
 
                 // 系统类型（默认default、如额外独立小程序、可与程序分身插件实现不同主体小程序及支付独立）
                 system_type: 'default',
@@ -2624,6 +2624,8 @@
                     uni.removeStorageSync(this.data.cache_user_login_key);
                     // 用户信息缓存
                     uni.removeStorageSync(this.data.cache_user_info_key);
+                    // 支付待续缓存（避免退出后再进支付页自动跳微信授权死循环）
+                    uni.removeStorageSync(this.data.cache_page_pay_key);
                 }
                 // 未登录提示缓存记录
                 uni.removeStorageSync(this.data.cache_user_no_login_page_status_data_key);
