@@ -22,7 +22,8 @@ var zh = {
         "plugins-distribution-visit-list": "客户拜访",
         "plugins-distribution-visit-form": "客户拜访新增/编辑",
         "plugins-distribution-apply": "申请分销",
-        "plugins-distribution-apply-form": "填写申请"
+        "plugins-distribution-apply-form": "填写申请",
+        "plugins-distribution-periodrebate": "周期达标奖励"
     },
     "apply": {
         "distribution_application_been_approved": "您的分销申请已通过",
@@ -93,7 +94,11 @@ var zh = {
         "custom": "自定义",
         "searching": "查询中...",
         "search_users_first": "请先搜索用户",
-        "apply_distribution": "申请分销"
+        "apply_distribution": "申请分销",
+        "period_rebate_title": "周期达标奖励",
+        "period_rebate_view_list": "查看奖励列表 >>",
+        "period_rebate_rules": "档位",
+        "period_rebate_estimate": "预计收益"
     },
     "order-detail": {
         "user_profile_picture": "用户头像",
@@ -207,7 +212,8 @@ var en = {
         "plugins-distribution-visit-list": "Customer visits",
         "plugins-distribution-visit-form": "Customer visit addition/editing",
         "plugins-distribution-apply": "Apply for distribution",
-        "plugins-distribution-apply-form": "Fill in application"
+        "plugins-distribution-apply-form": "Fill in application",
+        "plugins-distribution-periodrebate": "Period rebate"
     },
     "apply": {
         "distribution_application_been_approved": "Your distribution application has been approved",
@@ -278,7 +284,11 @@ var en = {
         "custom": "custom",
         "searching": "Searching",
         "search_users_first": "Please search for users first",
-        "apply_distribution": "Apply for distribution"
+        "apply_distribution": "Apply for distribution",
+        "period_rebate_title": "Period rebate",
+        "period_rebate_view_list": "View reward list >>",
+        "period_rebate_rules": "Tiers",
+        "period_rebate_estimate": "Estimated earnings"
     },
     "order-detail": {
         "user_profile_picture": "User profile picture",

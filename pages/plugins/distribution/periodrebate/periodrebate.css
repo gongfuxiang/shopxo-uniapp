@@ -1,0 +1,8 @@
+/*
+* 导航
+*/
+.nav-base .item {
+    display: inline-block;
+    padding: 0 28rpx;
+    font-size: 26rpx;
+}

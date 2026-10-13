@@ -82,6 +82,41 @@
                             </view>
                         </view>
 
+                        <!-- 周期达标奖励进度（与 PC 分销中心同一套档位数据） -->
+                        <view v-if="period_rebate_list.length > 0" class="padding-horizontal-main oh">
+                            <view class="period-rebate-box padding-main border-radius-main bg-white spacing-mb">
+                                <view class="flex-row jc-sb align-c">
+                                    <view class="title-left-border text-size fw-b">{{$t('user.period_rebate_title')}}</view>
+                                    <view class="cr-main text-size-xs" data-value="/pages/plugins/distribution/periodrebate/periodrebate" @tap="url_event">{{$t('user.period_rebate_view_list')}}</view>
+                                </view>
+                                <view v-for="(item, index) in period_rebate_list" :key="index" class="period-rebate-item">
+                                    <view class="flex-row align-c">
+                                        <text class="period-rebate-badge round cr-white text-size-xs">{{ item.period_name }}</text>
+                                        <text class="cr-grey text-size-xs margin-left-sm single-text flex-1 flex-width">{{ item.period_start_short }} ~ {{ item.period_end_short }}</text>
+                                    </view>
+                                    <view class="flex-row jc-sb align-c margin-top-sm text-size-xs">
+                                        <view class="flex-1 flex-width single-text">
+                                            <text class="period-rebate-percent fw-b">{{ item.progress_percent }}%</text>
+                                            <text class="fw-b margin-left-sm">{{ item.consume_price }}</text>
+                                            <text class="cr-grey">/{{ item.target_price }}</text>
+                                        </view>
+                                        <view class="cr-grey margin-left-sm">
+                                            <text>{{$t('user.period_rebate_estimate')}}</text>
+                                            <text class="period-rebate-profit fw-b margin-left-xs">{{ currency_symbol }}{{ item.estimate_profit }}</text>
+                                        </view>
+                                    </view>
+                                    <view class="period-rebate-progress margin-top-sm">
+                                        <view class="period-rebate-progress-bar" :style="'width:' + item.progress_percent + '%'"></view>
+                                    </view>
+                                    <view v-if="(item.rules || null) != null && item.rules.length > 0" class="period-rebate-rules flex-row flex-wrap align-c">
+                                        <text class="cr-grey text-size-xs">{{$t('user.period_rebate_rules')}}:</text>
+                                        <text v-for="(rule, ri) in item.rules" :key="ri" class="period-rebate-rule-chip text-size-xs" :class="(rule.is_hit == 1 || rule.is_current == 1) ? 'is-hit' : ''">≥{{ rule.threshold }}→{{ rule.rate }}%</text>
+                                    </view>
+                                    <view v-if="(item.msg || null) != null && item.msg !== ''" class="cr-grey text-size-xs margin-top-xs">{{ item.msg }}</view>
+                                </view>
+                            </view>
+                        </view>
+
                         <!-- 数据统计 -->
                         <view v-if="stats_user_promotion_data_list.length > 0 || stats_base_data_list.length > 0 || stats_profit_data_list.length > 0" class="padding-horizontal-main oh">
                             <view class="stats-container padding-main border-radius-main bg-white pr spacing-mb">
@@ -309,6 +344,7 @@
                 extraction: null,
                 superior: null,
                 profit_ladder: null,
+                period_rebate_list: [],
                 nav_list: [],
                 time_data: null,
                 base_data: null,
@@ -410,6 +446,7 @@
                                 superior: data.superior || null,
                                 user_referrer: data.user_referrer || null,
                                 profit_ladder: data.profit_ladder || null,
+                                period_rebate_list: ((data.period_rebate || null) != null && Array.isArray(data.period_rebate.list)) ? data.period_rebate.list : [],
                                 nav_list: data.nav_list || [],
                                 time_data: time_data,
                                 stats_user_promotion_data_list: data.stats_user_promotion_data_list || [],
