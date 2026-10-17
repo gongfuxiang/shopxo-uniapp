@@ -1234,6 +1234,19 @@
                             "component-upload": "view"
                         }
                     }
+                },
+                {
+                    "path": "periodrebate/periodrebate",
+                    "style": {
+                        "enablePullDownRefresh": true,
+                        "navigationBarTitleText": "",
+                        "usingComponents": {
+                            "component-panel-content": "/pages/common/components/panel-content/panel-content"
+                        },
+                        "componentPlaceholder": {
+                            "component-panel-content": "view"
+                        }
+                    }
                 }
             ]
         },
@@ -2194,6 +2207,18 @@
                     "path": "profit/profit",
                     "style": {
                         "enablePullDownRefresh": true,
+                        "navigationBarTitleText": ""
+                    }
+                }
+            ]
+        },
+        {
+            "root": "pages/plugins/samecityexpress",
+            "pages": [
+                {
+                    "path": "order/track",
+                    "style": {
+                        "enablePullDownRefresh": false,
                         "navigationBarTitleText": ""
                     }
                 }

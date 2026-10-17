@@ -115,6 +115,51 @@
 }
 
 /**
+ * 周期达标奖励
+ */
+.period-rebate-item {
+    margin-top: 28rpx;
+    padding-top: 24rpx;
+    border-top: 1px solid #f5f5f5;
+}
+
+.period-rebate-badge {
+    padding: 0 16rpx;
+    height: 36rpx;
+    line-height: 36rpx;
+    background: #5eb95e;
+}
+
+.period-rebate-percent,
+.period-rebate-profit,
+.period-rebate-rule-chip.is-hit {
+    color: #5eb95e;
+}
+
+.period-rebate-progress {
+    height: 16rpx;
+    border-radius: 16rpx;
+    overflow: hidden;
+    background: rgba(94, 185, 94, 0.12);
+}
+
+.period-rebate-progress-bar {
+    height: 16rpx;
+    border-radius: 16rpx;
+    background: linear-gradient(90deg, #b7e0b7 0%, #5eb95e 100%);
+}
+
+.period-rebate-rules {
+    margin-top: 12rpx;
+    line-height: 1.8;
+}
+
+.period-rebate-rule-chip {
+    margin-left: 12rpx;
+    color: #999;
+}
+
+/**
  * 修改用户上级
  */
 .user-search .custom-info {

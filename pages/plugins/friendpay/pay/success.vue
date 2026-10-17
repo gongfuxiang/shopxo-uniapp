@@ -6,7 +6,7 @@
                 <view class="fw-b text-size-lg margin-top-main">{{ $t('friendpay.pay_success_title') }}</view>
                 <view class="cr-grey text-size-sm margin-top-sm">{{ successTips }}</view>
                 <view class="margin-top-xl">
-                    <button class="bg-main cr-white round text-size wh-auto margin-bottom-main" @tap="url_open_event" :data-value="record_list_url">{{ $t('friendpay.view_records') }}</button>
+                    <button class="bg-main cr-white round text-size wh-auto margin-bottom-main" @tap="home_event">{{ $t('friendpay.back_home') }}</button>
                     <button class="bg-white cr-base br-grey round text-size wh-auto" @tap="back_event">{{ $t('common.back') }}</button>
                 </view>
             </view>
@@ -34,6 +34,7 @@
                 id: '',
                 page_text: {},
                 record_list_url: '/pages/plugins/friendpay/share/list?type=payer',
+                is_weixin_auth_back: 0,
                 data_list_loding_status: 1,
                 data_list_loding_msg: '',
             };
@@ -52,6 +53,8 @@
 
             this.setData({
                 id: params.id || params.i || '',
+                // 误进成功页（如微信授权回跳）：回到代付页继续支付
+                is_weixin_auth_back: parseInt(params.is_weixin_auth_web_openid || 0) == 1 ? 1 : 0,
             });
         },
         onShow() {
@@ -72,6 +75,11 @@
                         data_list_loding_status: 0,
                         data_list_loding_msg: this.$t('friendpay.link_error'),
                     });
+                    return;
+                }
+                // 微信授权误跳成功页：回代付页
+                if (this.is_weixin_auth_back == 1) {
+                    app.globalData.url_open('/pages/plugins/friendpay/pay/index?id=' + encodeURIComponent(this.id), true);
                     return;
                 }
                 this.setData({
@@ -97,6 +105,11 @@
                                 app.globalData.is_login_check(res.data, this, 'get_data');
                                 return;
                             }
+                            // 尚未支付等：引导回代付页
+                            if ((this.id || '') != '') {
+                                app.globalData.url_open('/pages/plugins/friendpay/pay/index?id=' + encodeURIComponent(this.id), true);
+                                return;
+                            }
                             this.setData({
                                 data_list_loding_status: 0,
                                 data_list_loding_msg: res.data.msg || '',
@@ -112,9 +125,9 @@
                 });
             },
 
-            // url事件
-            url_open_event(e) {
-                app.globalData.url_event(e);
+            // 返回首页
+            home_event() {
+                app.globalData.url_open('/pages/index/index');
             },
 
             // 返回

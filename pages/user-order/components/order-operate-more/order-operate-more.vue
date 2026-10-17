@@ -147,6 +147,16 @@
                         value: '/pages/plugins/delivery/logistics/logistics?id=' + order.plugins_delivery_data,
                     });
                 }
+                // 同城急送 - 查看骑手
+                var sce = order.plugins_samecityexpress_data || null;
+                if (sce != null && (sce.is_track || 0) == 1) {
+                    actions.push({
+                        key: 'samecityexpress',
+                        name: sce.btn_name || this.$t('common.rider'),
+                        type: 'url',
+                        value: sce.page || ('/pages/plugins/samecityexpress/order/track?id=' + order.id),
+                    });
+                }
                 if (order.status == 2 && order.order_model != 2) {
                     actions.push({
                         key: 'rush',

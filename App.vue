@@ -2624,6 +2624,8 @@
                     uni.removeStorageSync(this.data.cache_user_login_key);
                     // 用户信息缓存
                     uni.removeStorageSync(this.data.cache_user_info_key);
+                    // 支付待续缓存（避免退出后再进支付页自动跳微信授权死循环）
+                    uni.removeStorageSync(this.data.cache_page_pay_key);
                 }
                 // 未登录提示缓存记录
                 uni.removeStorageSync(this.data.cache_user_no_login_page_status_data_key);
