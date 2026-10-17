@@ -774,6 +774,7 @@
 		"available_time_slots_date": "No available time slots for this date",
 		"booked": "Booked",
 		"taken": "Taken",
+		"skip_staff_booking": "Skip for now",
 		"confirm_checkout": "Confirm and checkout",
 		"time_slot_occupied_select_again": "This time slot is occupied, please select again",
 		"date_available": "This date is not available",

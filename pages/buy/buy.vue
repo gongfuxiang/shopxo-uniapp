@@ -122,19 +122,19 @@
                                         </view>
                                     </view>
                                 </view>
+                                <!-- 需预约但尚未选择：与已选同位置（商品表单前）；布局对齐 buy-data-item / 运费行 -->
+                                <view v-else-if="index == 0 && index2 == 0 && is_staff_booking_required_type() && !has_staff_booking_data()" class="buy-data-item goods-item-staff-booking-empty oh margin-top-sm padding-top-sm br-t-dashed" @tap.stop="staff_booking_edit_event">
+                                    <text class="cr-base">{{ $t('realstore-cart.select_staff_time_slot') }}</text>
+                                    <view class="right-value fr cp tr">
+                                        <text class="right-value-content single-text cr-grey va-m">{{ $t('buy.please_select_ellipsis') }}</text>
+                                        <view class="dis-inline-block va-m lh-xs">
+                                            <iconfont name="icon-arrow-right" color="#999"></iconfont>
+                                        </view>
+                                    </view>
+                                </view>
                                 <!-- 订单商品表单 -->
                                 <view v-if="(item.plugins_ordergoodsform_data || null) != null" class="goods-item-ordergoodsform">
                                     <component-form-input-base ref="form_input_base" :propConfig="item.plugins_ordergoodsform_data.config" :propBackData="item.goods_id" :propFormInputId="item.plugins_ordergoodsform_data.id"></component-form-input-base>
-                                </view>
-                            </view>
-                        </view>
-                        <!-- 需预约但尚未选择：空状态入口（仅第一组展示一次） -->
-                        <view v-if="index == 0 && is_staff_booking_required_type() && !has_staff_booking_data()" class="buy-data-item oh" @tap="staff_booking_edit_event">
-                            <text class="cr-base">{{ $t('realstore-cart.select_staff_time_slot') }}</text>
-                            <view class="right-value fr cp tr">
-                                <text class="right-value-content single-text cr-grey va-m">{{ $t('buy.please_select_ellipsis') }}</text>
-                                <view class="dis-inline-block va-m lh-xs">
-                                    <iconfont name="icon-arrow-right" color="#999"></iconfont>
                                 </view>
                             </view>
                         </view>

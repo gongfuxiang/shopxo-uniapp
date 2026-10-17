@@ -71,6 +71,14 @@
     width: 36rpx;
     height: 36rpx;
 }
+/* 未选入口：勿沿用已选区 padding-right（给「修改」预留），左右与 buy-data-item 一致 */
+.goods-item-staff-booking-empty {
+    padding-right: 0;
+    line-height: 80rpx;
+}
+.goods-item-staff-booking-empty.buy-data-item {
+    margin-bottom: 0;
+}
 
 /**
 * 导航

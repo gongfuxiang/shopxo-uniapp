@@ -2707,7 +2707,7 @@
                 };
             },
 
-            // 是否需要进行门店员工预定（强制选择时才拦截进入确认页）
+            // 是否需要进行门店员工预定（开启选人且类型适用时先弹窗；是否必选由弹窗 is_force 控制）
             is_staff_booking_required(buy_data) {
                 buy_data = buy_data || {};
                 if((buy_data.staff_booking_data || null) != null) {
@@ -2723,9 +2723,6 @@
                     return false;
                 }
                 if(parseInt(buy_data.is_buy_staff_booking || 0) != 1) {
-                    return false;
-                }
-                if(parseInt(buy_data.is_buy_staff_booking_force || 0) != 1) {
                     return false;
                 }
                 var type_list = buy_data.staff_booking_buy_use_type_list || [];

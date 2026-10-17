@@ -774,6 +774,7 @@
 		"available_time_slots_date": "该日期暂无可用时段",
 		"booked": "已约",
 		"taken": "被约",
+		"skip_staff_booking": "暂不选择",
 		"confirm_checkout": "确认并去结算",
 		"time_slot_occupied_select_again": "该时段已被占用，请重新选择",
 		"date_available": "该日期不可选",

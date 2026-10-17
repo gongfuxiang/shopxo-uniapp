@@ -235,9 +235,14 @@
                 </scroll-view>
 
                 <view class="padding-main">
-                    <button type="default" hover-class="none" :loading="staff_booking_submit_loading" :disabled="staff_booking_submit_loading || staff_booking_init_loading_status != 3" class="round bg-main cr-white text-size-md wh-auto" @tap="staff_booking_submit_event">
-                        {{ staff_booking_edit_mode ? $t('common.confirm') : $t('realstore-cart.confirm_checkout') }}
-                    </button>
+                    <view class="flex-row align-c gap-10">
+                        <button v-if="parseInt(is_staff_booking_force || 0) != 1 && !staff_booking_edit_mode" type="default" hover-class="none" :disabled="staff_booking_submit_loading || staff_booking_init_loading_status != 3" class="round bg-main-light cr-main br-main text-size-md flex-1" @tap="staff_booking_skip_event">
+                            {{ $t('realstore-cart.skip_staff_booking') }}
+                        </button>
+                        <button type="default" hover-class="none" :loading="staff_booking_submit_loading" :disabled="staff_booking_submit_loading || staff_booking_init_loading_status != 3" class="round bg-main cr-white text-size-md" :class="(parseInt(is_staff_booking_force || 0) != 1 && !staff_booking_edit_mode) ? 'flex-1' : 'wh-auto'" @tap="staff_booking_submit_event">
+                            {{ staff_booking_edit_mode ? $t('common.confirm') : $t('realstore-cart.confirm_checkout') }}
+                        </button>
+                    </view>
                 </view>
             </view>
         </component-popup>
@@ -1787,6 +1792,24 @@
                 } else {
                     this.staff_booking_success_event(booking_data);
                 }
+            },
+
+            // 非强制：暂不选择，空预约继续去结算
+            staff_booking_skip_event() {
+                if(parseInt(this.is_staff_booking_force || 0) == 1) {
+                    return false;
+                }
+                if(this.staff_booking_edit_mode === true) {
+                    return false;
+                }
+                var booking_data = [];
+                this.setData({ staff_booking_popup_status: false, staff_booking_submit_loading: false, staff_booking_edit_mode: false });
+                if((app.globalData.data.staff_booking_pending || null) != null) {
+                    app.globalData.staff_booking_success(booking_data);
+                } else {
+                    this.staff_booking_success_event(booking_data);
+                }
+                return true;
             },
 
             // 关闭员工预定弹窗
