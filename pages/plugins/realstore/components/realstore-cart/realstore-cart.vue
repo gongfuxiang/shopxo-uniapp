@@ -291,6 +291,7 @@
                 realstore_cart_content_style: '',
                 // 员工预定
                 is_staff_booking: 0,
+                is_staff_booking_force: 0,
                 staff_booking_buy_use_type_list: [],
                 staff_booking_popup_status: false,
                 staff_booking_popup_title: '',
@@ -372,6 +373,7 @@
                             source: params.source,
                             realstore_cart_content_style: 'bottom: '+tabbar_height+'rpx',
                             is_staff_booking: parseInt((info || {}).is_buy_staff_booking || 0),
+                            is_staff_booking_force: parseInt((info || {}).is_buy_staff_booking_force || 0),
                             staff_booking_buy_use_type_list: (info || {}).staff_booking_buy_use_type_list || [],
                         });
 
@@ -682,6 +684,7 @@
                     }, 'buy');
                 data['staff_booking_cart_list'] = (this.cart || null) != null ? (this.cart.data || []) : [];
                 data['is_buy_staff_booking'] = parseInt(this.is_staff_booking || 0);
+                data['is_buy_staff_booking_force'] = parseInt(this.is_staff_booking_force || 0);
                 data['staff_booking_buy_use_type_list'] = this.staff_booking_buy_use_type_list || [];
                 app.globalData.to_buy_handle(data, '/pages/buy/buy', this);
             },
@@ -1260,7 +1263,7 @@
             },
 
             // 打开员工预定弹窗并初始化
-            // params: realstore_id, cart_list, prefer_staff_*, booking_data(回填), edit_mode(确认页改约)
+            // params: realstore_id, cart_list, prefer_staff_*, booking_data(回填), edit_mode(确认页改约), is_force(强制选择)
             staff_booking_init(params) {
                 params = params || {};
                 var cart_list = params.cart_list || null;
@@ -1270,6 +1273,10 @@
                 var prefer_staff_avatar = params.prefer_staff_avatar || '';
                 var prefer_mode = prefer_staff_id > 0 ? 1 : 0;
                 var edit_mode = params.edit_mode === true || parseInt(params.edit_mode || 0) == 1;
+                // 打开弹窗时可显式传入强制开关；未传则沿用门店配置
+                if(params.is_force !== undefined && params.is_force !== null && params.is_force !== '') {
+                    this.is_staff_booking_force = parseInt(params.is_force || 0);
+                }
                 var prefill_list = [];
                 if((params.booking_data || null) != null) {
                     if(typeof params.booking_data == 'string') {
@@ -1717,20 +1724,30 @@
                 this.setData({ staff_booking_form: form });
             },
 
-            // 校验并提交员工预定
+            // 单元是否已选齐人员+日期+时段
+            staff_booking_is_unit_complete(item) {
+                item = item || {};
+                return parseInt(item.staff_id || 0) > 0 && parseInt(item.ymd || 0) > 0 && parseInt(item.booking_periods_id || 0) > 0;
+            },
+
+            // 校验并提交员工预定（强制时须全部完成；非强制可部分选/不选）
             staff_booking_submit_event() {
                 if((this.staff_booking_cart_list || null) == null || this.staff_booking_cart_list.length <= 0) {
                     app.globalData.showToast(this.$t('realstore-cart.cart_empty'));
                     return false;
                 }
+                var is_force = parseInt(this.is_staff_booking_force || 0) == 1;
                 var booking_data = [];
                 for(var gi in this.staff_booking_cart_list) {
                     var units = this.staff_booking_form[gi] || [];
                     for(var ui in units) {
                         var item = units[ui];
-                        if((item.staff_id || 0) == 0 || (item.ymd || 0) == 0 || (item.booking_periods_id || 0) == 0) {
-                            app.globalData.showToast(this.$t('realstore-cart.select_staff_date_time_slot_each'));
-                            return false;
+                        if(!this.staff_booking_is_unit_complete(item)) {
+                            if(is_force) {
+                                app.globalData.showToast(this.$t('realstore-cart.select_staff_date_time_slot_each'));
+                                return false;
+                            }
+                            continue;
                         }
                         var periods = this.staff_booking_get_unit_periods(gi, ui);
                         var matched = null;

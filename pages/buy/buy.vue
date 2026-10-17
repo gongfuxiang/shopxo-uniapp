@@ -1222,8 +1222,8 @@
                     }
                 }
 
-                // 当前类型需预约但未选择
-                if(this.is_staff_booking_required_type() && !this.has_staff_booking_data()) {
+                // 当前类型强制预约但未选择
+                if(this.is_staff_booking_required_type() && this.is_staff_booking_force() && !this.has_staff_booking_data()) {
                     app.globalData.showToast(this.$t('realstore-cart.select_staff_date_time_slot_each'));
                     this.staff_booking_edit_event();
                     return false;
@@ -1660,7 +1660,7 @@
                 this.init();
             },
 
-            // 当前下单类型是否需要员工预约（本地预约数据可保留，仅控制展示与提交）
+            // 当前下单类型是否适用员工预约（展示入口；与是否强制无关）
             is_staff_booking_required_type(buy_use_type_index) {
                 var params = this.params || {};
                 if(parseInt(params.is_buy_staff_booking || 0) != 1) {
@@ -1678,6 +1678,11 @@
                 }
                 var type_index = parseInt(buy_use_type_index);
                 return type_list.map(function(v) { return parseInt(v); }).indexOf(type_index) >= 0;
+            },
+
+            // 是否强制选择服务人员时段
+            is_staff_booking_force() {
+                return parseInt((this.params || {}).is_buy_staff_booking_force || 0) == 1;
             },
 
             // 本地是否已有预约数据
@@ -1779,6 +1784,7 @@
                     cart_list: cart_list,
                     booking_data: prefill,
                     edit_mode: true,
+                    is_force: parseInt(params.is_buy_staff_booking_force || 0),
                 });
                 return true;
             },
