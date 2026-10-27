@@ -1,7 +1,7 @@
 <template>
     <view :class="theme_view">
         <!-- 批发规则展示 -->
-        <view v-if="(data || null) != null" class="plugins-wholesale-container scroll-view-horizontal" :class="propIsAlone ? 'is-alone' : ''">
+        <view v-if="!propOnlyPopup && (data || null) != null" class="plugins-wholesale-container scroll-view-horizontal" :class="propIsAlone ? 'is-alone' : ''">
             <scroll-view scroll-x="true">
                 <view :class="'plugins-wholesale-container-rules-view wh-auto padding-horizontal-main padding-top-main padding-bottom-sm bs-bb item-number-'+data.rules.length" @tap="popup_wholesale_event">
                     <view v-for="(item, index) in data.rules" :key="index" class="item">
@@ -78,6 +78,11 @@ export default {
         propData: {
             type: [Array, Object, String],
             default: {},
+        },
+        // 只保留弹层，不画页面上的批发条
+        propOnlyPopup: {
+            type: Boolean,
+            default: false,
         },
         // 是否独立行
         propIsAlone: {

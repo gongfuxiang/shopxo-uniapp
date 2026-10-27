@@ -26,6 +26,10 @@
                                         <component-diy-carousel v-else-if="item.key == 'carousel'" :propOuterContainerPadding="outer_container_padding" :propIndex="get_prop_index(item)" :propKey="item.id + index" :propValue="item.com_data" @onVideoPlay="video_play"></component-diy-carousel>
                                         <component-diy-nav-group v-else-if="item.key == 'nav-group'" :propIndex="get_prop_index(item)" :propKey="item.id + index" :propValue="item.com_data"></component-diy-nav-group>
                                         <component-diy-user-info v-else-if="item.key == 'user-info'" :propIndex="get_prop_index(item)" :propKey="item.id + index" :propValue="item.com_data"></component-diy-user-info>
+                                        <component-diy-order-nav v-else-if="item.key == 'user-order-nav'" :propIndex="get_prop_index(item)" :propKey="item.id + index" :propValue="item.com_data"></component-diy-order-nav>
+                                        <component-diy-plugins-realstore-order-nav v-else-if="item.key == 'plugins-realstore-order-nav' || item.key == 'store-order-nav'" :propIndex="get_prop_index(item)" :propKey="item.id + index" :propValue="item.com_data"></component-diy-plugins-realstore-order-nav>
+                                        <component-diy-line-nav v-else-if="item.key == 'line-nav'" :propIndex="get_prop_index(item)" :propKey="item.id + index" :propValue="item.com_data"></component-diy-line-nav>
+                                        <component-diy-service-nav v-else-if="item.key == 'service-nav' || item.key == 'my-service'" :propIndex="get_prop_index(item)" :propKey="item.id + index" :propValue="item.com_data"></component-diy-service-nav>
                                         <component-diy-notice v-else-if="item.key == 'notice'" :propIndex="get_prop_index(item)" :propKey="item.id + index" :propValue="item.com_data"></component-diy-notice>
                                         <component-diy-video v-else-if="item.key == 'video'" :propIndex="get_prop_index(item)" :propKey="item.id + index" :propValue="item.com_data"></component-diy-video>
                                         <component-diy-article-list v-else-if="item.key == 'article-list'" :propIndex="get_prop_index(item)" :propKey="item.id + index" :propValue="item.com_data"></component-diy-article-list>
@@ -59,6 +63,22 @@
                                         <component-diy-ask-tabs v-else-if="item.key == 'ask-tabs'" :propIndex="get_prop_index(item)" :propKey="item.id + index" :propValue="item.com_data" :propTop="get_diy_prop_top(item.com_data)" :propScrollTop="scroll_top" :propCustomNavHeight="get_diy_custom_nav_height(item.com_data)" :propIsTabsUseSafeDistance="getPropIsTabsUseSafeDistance"></component-diy-ask-tabs>
                                         <component-diy-activity v-else-if="item.key == 'activity'" :ref="'diy_goods_buy' + index" :propDiyIndex="index" :propIndex="get_prop_index(item)" :propKey="item.id + index" :propValue="item.com_data" @goods_buy_event="goods_buy_event"></component-diy-activity>
                                         <component-diy-salerecords v-else-if="item.key == 'salerecords'" :propIndex="get_prop_index(item)" :propKey="item.id + index" :propValue="item.com_data"></component-diy-salerecords>
+                                        <component-diy-plugins-goods-detail-goodsservice v-else-if="item.key == 'plugins-goods-detail-goodsservice'" :propIndex="get_prop_index(item)" :propKey="item.id + index" :propValue="item.com_data" :propGoodsService="propGoodsService"></component-diy-plugins-goods-detail-goodsservice>
+                                        <component-diy-plugins-goods-detail-vip v-else-if="item.key == 'plugins-goods-detail-vip'" :propIndex="get_prop_index(item)" :propKey="item.id + index" :propValue="item.com_data" :propVipTips="propVipTips"></component-diy-plugins-goods-detail-vip>
+                                        <component-diy-plugins-goods-detail-distribution v-else-if="item.key == 'plugins-goods-detail-distribution'" :propIndex="get_prop_index(item)" :propKey="item.id + index" :propValue="item.com_data" :propDistributionTips="propDistributionTips"></component-diy-plugins-goods-detail-distribution>
+                                        <component-diy-goods-detail-photo v-else-if="item.key == 'goods-detail-photo'" :propIndex="get_prop_index(item)" :propKey="item.id + index" :propValue="item.com_data" :propGoods="propGoods"></component-diy-goods-detail-photo>
+                                        <component-diy-goods-detail-info v-else-if="item.key == 'goods-detail-info'" :propIndex="get_prop_index(item)" :propKey="item.id + index" :propValue="item.com_data" :propGoods="propGoods"></component-diy-goods-detail-info>
+                                        <component-diy-goods-detail-base v-else-if="item.key == 'goods-detail-base'" :propIndex="get_prop_index(item)" :propKey="item.id + index" :propValue="item.com_data" :propGoods="propGoods"></component-diy-goods-detail-base>
+                                        <component-diy-goods-detail-spec v-else-if="item.key == 'goods-detail-spec'" :propIndex="get_prop_index(item)" :propKey="item.id + index" :propValue="item.com_data" :propGoods="propGoods"></component-diy-goods-detail-spec>
+                                        <component-diy-goods-detail-params v-else-if="item.key == 'goods-detail-params'" :propIndex="get_prop_index(item)" :propKey="item.id + index" :propValue="item.com_data" :propGoods="propGoods"></component-diy-goods-detail-params>
+                                        <component-diy-goods-detail-detail v-else-if="item.key == 'goods-detail-detail'" :propIndex="get_prop_index(item)" :propKey="item.id + index" :propValue="item.com_data" :propGoods="propGoods"></component-diy-goods-detail-detail>
+                                        <component-diy-goods-detail-comment v-else-if="item.key == 'goods-detail-comment'" :propIndex="get_prop_index(item)" :propKey="item.id + index" :propValue="item.com_data" :propGoods="propGoods"></component-diy-goods-detail-comment>
+                                        <component-diy-goods-detail-discount-info v-else-if="item.key == 'goods-detail-discount-info'" :propIndex="get_prop_index(item)" :propKey="item.id + index" :propValue="item.com_data" :propGoods="propGoods"></component-diy-goods-detail-discount-info>
+                                        <component-diy-plugins-goods-detail-shop v-else-if="item.key == 'plugins-goods-detail-shop'" :propIndex="get_prop_index(item)" :propKey="item.id + index" :propValue="item.com_data" :propGoods="propGoods"></component-diy-plugins-goods-detail-shop>
+                                        <component-diy-plugins-goods-detail-realstore v-else-if="item.key == 'plugins-goods-detail-realstore'" :propIndex="get_prop_index(item)" :propKey="item.id + index" :propValue="item.com_data" :propGoods="propGoods"></component-diy-plugins-goods-detail-realstore>
+                                        <component-diy-plugins-goods-detail-wholesale v-else-if="item.key == 'plugins-goods-detail-wholesale' || item.key == 'wholesale-rules'" :propIndex="get_prop_index(item)" :propKey="item.id + index" :propValue="item.com_data" :propGoods="propGoods"></component-diy-plugins-goods-detail-wholesale>
+                                        <component-diy-plugins-goods-detail-ask v-else-if="item.key == 'plugins-goods-detail-ask' || item.key == 'plugins-goods-ask' || item.key == 'goods-qa'" :propIndex="get_prop_index(item)" :propKey="item.id + index" :propValue="item.com_data" :propGoods="propGoods" :propAskData="propAskData"></component-diy-plugins-goods-detail-ask>
+                                        <component-diy-plugins-user-vip v-else-if="item.key == 'plugins-user-vip'" :propIndex="get_prop_index(item)" :propKey="item.id + index" :propValue="item.com_data"></component-diy-plugins-user-vip>
                                         <!-- 工具组件 -->
                                         <component-diy-float-window v-else-if="(item.key == 'float-window' && item.com_data.content.button_jump !== 'gotop') || (item.key == 'float-window' && item.com_data.content.button_jump === 'gotop' && getPropIsHalf)" :propKey="item.id + index" :propValue="item.com_data" @btn_event="btn_event"></component-diy-float-window>
                                         <component-diy-title v-else-if="item.key == 'title'" :propKey="item.id + index" :propIndex="get_prop_index(item)" :propValue="item.com_data"></component-diy-title>
@@ -132,6 +152,9 @@
     import componentDiySearch from '@/pages/diy/components/diy/search';
     import componentDiyCarousel from '@/pages/diy/components/diy/carousel';
     import componentDiyUserInfo from '@/pages/diy/components/diy/user-info';
+    import componentDiyOrderNav from '@/pages/diy/components/diy/order-nav';
+    import componentDiyLineNav from '@/pages/diy/components/diy/line-nav';
+    import componentDiyServiceNav from '@/pages/diy/components/diy/service-nav';
     import componentDiyNotice from '@/pages/diy/components/diy/notice';
     import componentDiyVideo from '@/pages/diy/components/diy/video';
     import componentDiyArticleList from '@/pages/diy/components/diy/article-list';
@@ -169,6 +192,23 @@
     import componentDiyAskTabs from '@/pages/diy/components/diy/ask-tabs';
     import componentDiyActivity from '@/pages/diy/components/diy/activity';
     import componentDiySalerecords from '@/pages/diy/components/diy/salerecords'
+    import componentDiyPluginsGoodsDetailGoodsservice from '@/pages/diy/components/diy/plugins-goods-detail-goodsservice'
+    import componentDiyPluginsGoodsDetailVip from '@/pages/diy/components/diy/plugins-goods-detail-vip'
+    import componentDiyPluginsGoodsDetailDistribution from '@/pages/diy/components/diy/plugins-goods-detail-distribution'
+    import componentDiyGoodsDetailPhoto from '@/pages/diy/components/diy/goods-detail-photo'
+    import componentDiyGoodsDetailInfo from '@/pages/diy/components/diy/goods-detail-info'
+    import componentDiyGoodsDetailBase from '@/pages/diy/components/diy/goods-detail-base'
+    import componentDiyGoodsDetailSpec from '@/pages/diy/components/diy/goods-detail-spec'
+    import componentDiyGoodsDetailParams from '@/pages/diy/components/diy/goods-detail-params'
+    import componentDiyGoodsDetailDetail from '@/pages/diy/components/diy/goods-detail-detail'
+    import componentDiyGoodsDetailComment from '@/pages/diy/components/diy/goods-detail-comment'
+    import componentDiyGoodsDetailDiscountInfo from '@/pages/diy/components/diy/goods-detail-discount-info'
+    import componentDiyPluginsGoodsDetailShop from '@/pages/diy/components/diy/plugins-goods-detail-shop'
+    import componentDiyPluginsGoodsDetailRealstore from '@/pages/diy/components/diy/plugins-goods-detail-realstore'
+    import componentDiyPluginsRealstoreOrderNav from '@/pages/diy/components/diy/plugins-realstore-order-nav';
+    import componentDiyPluginsGoodsDetailWholesale from '@/pages/diy/components/diy/plugins-goods-detail-wholesale'
+    import componentDiyPluginsGoodsDetailAsk from '@/pages/diy/components/diy/plugins-goods-detail-ask'
+    import componentDiyPluginsUserVip from '@/pages/diy/components/diy/plugins-user-vip'
     import componentDiyTabsCarousel from '@/pages/diy/components/diy/tabs-carousel';
     import componentDiyTabsMagic from '@/pages/diy/components/diy/tabs-magic';
     import componentDataTabs from '@/pages/diy/components/diy/data-tabs';
@@ -204,7 +244,27 @@
             propIsHeader: {
                 type: Boolean,
                 default: true,
-            }
+            },
+            propGoods: {
+                type: Object,
+                default: null,
+            },
+            propAskData: {
+                type: Object,
+                default: null,
+            },
+            propVipTips: {
+                type: Object,
+                default: null,
+            },
+            propDistributionTips: {
+                type: Object,
+                default: null,
+            },
+            propGoodsService: {
+                type: Array,
+                default: null,
+            },
         },
         components: {
             componentDiyFooter,
@@ -213,6 +273,9 @@
             componentDiySearch,
             componentDiyCarousel,
             componentDiyUserInfo,
+            componentDiyOrderNav,
+            componentDiyLineNav,
+            componentDiyServiceNav,
             componentDiyNotice,
             componentDiyVideo,
             componentDiyArticleList,
@@ -249,6 +312,23 @@
             componentDiyAskTabs,
             componentDiyActivity,
             componentDiySalerecords,
+            componentDiyPluginsGoodsDetailGoodsservice,
+            componentDiyPluginsGoodsDetailVip,
+            componentDiyPluginsGoodsDetailDistribution,
+            componentDiyGoodsDetailPhoto,
+            componentDiyGoodsDetailInfo,
+            componentDiyGoodsDetailBase,
+            componentDiyGoodsDetailSpec,
+            componentDiyGoodsDetailParams,
+            componentDiyGoodsDetailDetail,
+            componentDiyGoodsDetailComment,
+            componentDiyGoodsDetailDiscountInfo,
+            componentDiyPluginsGoodsDetailShop,
+            componentDiyPluginsGoodsDetailRealstore,
+            componentDiyPluginsRealstoreOrderNav,
+            componentDiyPluginsGoodsDetailWholesale,
+            componentDiyPluginsGoodsDetailAsk,
+            componentDiyPluginsUserVip,
             componentDiyTabsCarousel,
             componentDiyTabsMagic,
             componentDataTabs,

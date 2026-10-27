@@ -1,7 +1,20 @@
 <template>
     <view :class="theme_view">
+        <!-- 后台指定了商品详情DIY时，按首页同样的方式渲染装修页 -->
+        <block v-if="data_mode == 3 && (diy_data || null) != null && (diy_data.config || null) != null">
+            <component-diy :propValue="diy_data.config" :propDataId="diy_data.id" :propKey="random_value" :propGoods="goods" :propAskData="plugins_ask_data" :propVipTips="plugins_vip_goods_detail_open_tips_data" :propDistributionTips="plugins_distribution_goods_detail_profit_tips_data" :propGoodsService="plugins_goodsservice_data" @onLangOpen="diy_lang_open_event" @onShareOpen="diy_share_open_event">
+                <component-no-data propStatus="1" :propLoadingUseSkeleton="true" propPage="goods"></component-no-data>
+                <template slot="diy-bottom-content">
+                    <component-bottom-line :propStatus="data_bottom_line_status"></component-bottom-line>
+                </template>
+                <template slot="diy-bottom-common">
+                    <component-common ref="common_footer" :propIsModalBusiness="false"></component-common>
+                </template>
+            </component-diy>
+            <component-lang-switch ref="lang_switch" @popup_sub_language_event="diy_popup_sub_language_event"></component-lang-switch>
+        </block>
         <!-- 顶部导航 -->
-        <view v-if="goods != null" :class="'page ' + (is_single_page == 1 ? ' single-page-top' : '')">
+        <view v-else-if="goods != null" :class="'page ' + (is_single_page == 1 ? ' single-page-top' : '')">
             <!-- 单页模式不展示导航栏 -->
             <block v-if="is_single_page == 0">
                 <!-- #ifdef MP-WEIXIN || MP-QQ || MP-KUAISHOU || H5 || APP -->
@@ -644,178 +657,6 @@
                 </block>
             </block>
 
-            <!-- 商品参数弹窗 -->
-            <component-popup :propShow="popup_params_status" propPosition="bottom" @onclose="popup_params_close_event">
-                <view class="padding-horizontal-main padding-top-main bg-white">
-                    <view class="close oh">
-                        <view class="fr" @tap.stop="popup_params_close_event">
-                            <iconfont name="icon-close-line" size="28rpx" color="#999"></iconfont>
-                        </view>
-                    </view>
-                    <view class="popup-params-container">
-                        <block v-if="(goods.parameters || null) != null && (goods.parameters[popup_params_type_field] || null) != null && goods.parameters[popup_params_type_field].length > 0">
-                            <block v-for="(item, index) in goods.parameters[popup_params_type_field]" :key="index">
-                                <view class="item padding-vertical-main br-b oh">
-                                    <view class="name fl br-r">{{ item.name }}</view>
-                                    <view class="value fr">{{ item.value }}</view>
-                                </view>
-                            </block>
-                        </block>
-                        <block v-else>
-                            <view class="cr-grey tc padding-top-xl padding-bottom-xxxl">{{$t('common.no_relevant_data_tips')}}</view>
-                        </block>
-                    </view>
-                </view>
-            </component-popup>
-            
-            <!-- 聚合优惠数据弹层 -->
-            <component-popup :propShow="popup_discount_status" propPosition="bottom" @onclose="popup_discount_close_event">
-                <view class="padding-horizontal-main padding-top-main bg-white">
-                    <view class="close oh padding-bottom-sm">
-                        <view class="fr" @tap.stop="popup_discount_close_event">
-                            <iconfont name="icon-close-line" size="28rpx" color="#999"></iconfont>
-                        </view>
-                    </view>
-                    <scroll-view :scroll-y="true" class="max-h-8h">
-                        <!-- 优惠券 -->
-                        <view v-if="(plugins_coupon_data || null) != null && plugins_coupon_data.data.length > 0" class="plugins-coupon-container spacing-mb">
-                            <view class="fw-b tc text-size-lg padding-bottom">{{$t('goods-detail.coupon')}}</view>
-                            <block v-for="(item, index) in plugins_coupon_data.data" :key="index">
-                                <component-coupon-card :propData="item" :propStatusType="item.status_type" :propStatusOperableName="item.status_operable_name" :propIndex="index" propIsProgress @call-back="coupon_receive_back_event"></component-coupon-card>
-                            </block>
-                        </view>
-                        <!-- 优购返现 / 返卡券 -->
-                        <view v-if="(plugins_excellentbuyreturntocash_data || null) != null && (
-                            ((plugins_excellentbuyreturntocash_data.data || null) != null && plugins_excellentbuyreturntocash_data.data.length > 0) ||
-                            ((plugins_excellentbuyreturntocash_data.cash || null) != null)
-                        )" class="plugins-excellentbuyreturntocash-container spacing-mb">
-                            <view v-if="(plugins_excellentbuyreturntocash_data.cash || null) != null" class="padding-bottom-main">
-                                <view class="fw-b tc text-size-lg padding-bottom">{{ plugins_excellentbuyreturntocash_data.cash.icon || '返现' }}</view>
-                                <view class="margin-top-sm">
-                                    <view class="dis-inline-block br-green cr-green bg-white radius padding-vertical-xss padding-horizontal-sm margin-right-sm margin-bottom-sm">{{ plugins_excellentbuyreturntocash_data.cash.tag }}</view>
-                                </view>
-                                <view class="text-size-xs cr-grey-9 margin-top-sm">{{ plugins_excellentbuyreturntocash_data.cash.tip }}</view>
-                            </view>
-                            <block v-if="(plugins_excellentbuyreturntocash_data.data || null) != null && plugins_excellentbuyreturntocash_data.data.length > 0">
-                                <view class="fw-b tc text-size-lg padding-bottom">{{plugins_excellentbuyreturntocash_data.title}}</view>
-                                <block v-for="(item, index) in plugins_excellentbuyreturntocash_data.data" :key="index">
-                                    <component-coupon-card :propData="item" :propStatusType="item.status_type" :propStatusOperableName="item.status_operable_name" :propIndex="index" propIsProgress></component-coupon-card>
-                                </block>
-                            </block>
-                        </view>
-                        <!-- 满减满折 -->
-                        <view v-if="(plugins_fullreduce_data || null) != null && (plugins_fullreduce_data.data || null) != null" class="plugins-fullreduce-container spacing-mb">
-                            <view class="fw-b tc text-size-lg padding-bottom">{{plugins_fullreduce_data.title}}</view>
-                            <block v-for="(item, index) in plugins_fullreduce_data.data" :key="index">
-                                <view class="padding-bottom-main">
-                                    <view class="text-size-sm">{{ item.name }}</view>
-                                    <view class="margin-top-sm">
-                                        <block v-for="(item2, index2) in item.rule_lines" :key="index2">
-                                            <view class="dis-inline-block br-main cr-main bg-white radius padding-vertical-xss padding-horizontal-sm margin-right-sm margin-bottom-sm">{{item2}}</view>
-                                        </block>
-                                    </view>
-                                </view>
-                            </block>
-                        </view>
-                        <!-- 满送 -->
-                        <view v-if="(plugins_fullgive_data || null) != null && (plugins_fullgive_data.data || null) != null && plugins_fullgive_data.data.length > 0" class="plugins-fullgive-popup spacing-mb">
-                            <view class="fw-b tc text-size-lg padding-bottom">{{plugins_fullgive_data.title}}</view>
-                            <view class="cr-main padding-bottom-sm">{{ plugins_fullgive_data.msg }}</view>
-                            <block v-for="(act, index) in plugins_fullgive_data.data" :key="index">
-                                <view :class="'padding-bottom '+ (index > 0 ? 'margin-top-xl' : '')">
-                                    <view class="text-size-sm padding-bottom-sm">{{ act.name }}</view>
-                                    <block v-if="(act.tier_detail_rows || null) != null && act.tier_detail_rows.length > 0">
-                                        <block v-for="(trow, ti) in act.tier_detail_rows" :key="ti">
-                                            <view :class="ti > 0 ? 'margin-top-lg' : ''">
-                                                <view class="cr-grey text-size-xs margin-bottom-main">{{ trow.summary }}</view>
-                                                <view v-if="(trow.coupon_items || null) != null && trow.coupon_items.length > 0">
-                                                    <view class="text-size-xs cr-grey-9 margin-bottom-xs">{{ plugins_fullgive_data.const.gift_coupon_title }}</view>
-                                                    <view class="padding-sm br-f5 radius">
-                                                        <view v-for="(cp, ci) in trow.coupon_items" :key="ci" class="cr-base text-size-sm">{{ cp.name }}</view>
-                                                    </view>
-                                                </view>
-                                                <view v-if="(trow.gift_items || null) != null && trow.gift_items.length > 0">
-                                                    <view class="text-size-xs cr-grey-9 margin-bottom-xs margin-top-main">{{ plugins_fullgive_data.const.gift_goods_title }}</view>
-                                                    <view class="br-f5 radius">
-                                                        <view v-for="(git, gi) in trow.gift_items" :key="gi" :class="'padding-sm '+(gi > 0 ? 'br-t-f9' : '')">
-                                                            <view v-if="(git.goods || null) != null" class="wh-auto flex-row align-s oh" :data-value="git.goods.goods_url" @tap="url_event">
-                                                                <image class="radius margin-right-sm goods-img" :src="git.goods.images" mode="aspectFill" />
-                                                                <view class="flex-1 flex-width">
-                                                                    <view class="multi-text cr-base">{{ git.goods.title }}</view>
-                                                                    <view v-if="(git.give_num || 0) > 0" class="text-size-xs cr-grey-9 margin-top-xs">{{ plugins_fullgive_data.const.gift_give_num_label }}：{{ git.give_num }}</view>
-                                                                </view>
-                                                            </view>
-                                                        </view>
-                                                    </view>
-                                                </view>
-                                            </view>
-                                        </block>
-                                    </block>
-                                    <block v-else>
-                                        <view v-if="(act.rule_lines || null) != null && act.rule_lines.length > 0" class="margin-top-sm">
-                                            <block v-for="(line, li) in act.rule_lines" :key="li">
-                                                <view class="dis-inline-block br-main cr-main bg-white radius padding-vertical-xss padding-horizontal-sm margin-right-sm margin-bottom-sm">{{ line }}</view>
-                                            </block>
-                                        </view>
-                                    </block>
-                                    <block v-if="(act.extra_describe_lines || null) != null && act.extra_describe_lines.length > 0">
-                                        <view v-for="(dline, di) in act.extra_describe_lines" :key="di" class="text-size-xs cr-grey-9 margin-top-sm padding-top-xs">{{ dline }}</view>
-                                    </block>
-                                </view>
-                            </block>
-                        </view>
-                        <!-- N件N优惠 -->
-                        <view v-if="(plugins_npiecendis_data || null) != null && (plugins_npiecendis_data.data || null) != null && plugins_npiecendis_data.data.length > 0" class="plugins-npiecendis-popup spacing-mb">
-                            <view class="fw-b tc text-size-lg padding-bottom">{{plugins_npiecendis_data.title}}</view>
-                            <view v-if="(plugins_npiecendis_data.msg || null) != null && plugins_npiecendis_data.msg != ''" class="cr-main padding-bottom-sm">{{ plugins_npiecendis_data.msg }}</view>
-                            <block v-for="(act, index) in plugins_npiecendis_data.data" :key="index">
-                                <view :class="'padding-bottom '+(index > 0 ? 'margin-top-xl' : '')">
-                                    <view class="padding-bottom-xs">
-                                        <text class="text-size-sm fw-b">{{ act.name }}</text>
-                                        <text v-if="(act.activity_type_name || null) != null && act.activity_type_name != ''" class="text-size-xs cr-grey-9 margin-left-sm">{{ act.activity_type_name }}</text>
-                                    </view>
-                                    <view v-if="(act.rule_lines || null) != null && act.rule_lines.length > 0" class="margin-top-sm">
-                                        <block v-for="(line, li) in act.rule_lines" :key="li">
-                                            <view class="dis-inline-block br-main cr-main bg-white radius padding-vertical-xss padding-horizontal-sm margin-right-sm margin-bottom-sm">{{ line }}</view>
-                                        </block>
-                                    </view>
-                                </view>
-                            </block>
-                        </view>
-                        <!-- 新人礼包 -->
-                        <view v-if="(plugins_newpersongift_data || null) != null && (plugins_newpersongift_data.data || null) != null && plugins_newpersongift_data.data.length > 0" class="plugins-newpersongift-popup spacing-mb">
-                            <view class="fw-b tc text-size-lg padding-bottom">{{plugins_newpersongift_data.title}}</view>
-                            <view v-if="(plugins_newpersongift_data.user_tip || null) != null && plugins_newpersongift_data.user_tip != ''" class="padding-bottom-sm">
-                                <view class="flex-row align-c">
-                                    <view class="dis-inline-block va-m">
-                                        <iconfont name="icon-sigh" size="30rpx" propClass="cr-red"></iconfont>
-                                    </view>
-                                    <text class="text-size-xs cr-red margin-left-xs va-m">{{ plugins_newpersongift_data.user_tip }}</text>
-                                </view>
-                            </view>
-                            <view v-else-if="(plugins_newpersongift_data.msg || null) != null && plugins_newpersongift_data.msg != ''" class="cr-main padding-bottom-sm">{{ plugins_newpersongift_data.msg }}</view>
-                            <block v-for="(act, index) in plugins_newpersongift_data.data" :key="index">
-                                <view class="padding-bottom">
-                                    <view class="padding-bottom-xs">
-                                        <text class="text-size-sm fw-b">{{ act.name }}</text>
-                                        <text v-if="(act.activity_type_name || null) != null && act.activity_type_name != ''" class="text-size-xs cr-grey-9 margin-left-sm">{{ act.activity_type_name }}</text>
-                                    </view>
-                                    <view v-if="((act.rule_lines || null) != null && act.rule_lines.length > 0) || ((act.rule_lines_grey || null) != null && act.rule_lines_grey.length > 0)" class="margin-top-sm">
-                                        <block v-for="(line, li) in act.rule_lines" :key="li">
-                                            <view class="dis-inline-block br-main cr-main bg-white radius padding-vertical-xss padding-horizontal-sm margin-right-sm margin-bottom-sm">{{ line }}</view>
-                                        </block>
-                                        <text v-if="(act.rule_lines_grey || null) != null && act.rule_lines_grey.length > 0" class="text-size-xs cr-grey-9 single-text">{{ act.rule_lines_grey.join(' ') }}</text>
-                                    </view>
-                                </view>
-                            </block>
-                            <view v-if="(plugins_newpersongift_data.rules_html || null) != null && plugins_newpersongift_data.rules_html != ''" class="padding-bottom">
-                                <mp-html :content="plugins_newpersongift_data.rules_html" />
-                            </view>
-                        </view>
-                    </scroll-view>
-                </view>
-            </component-popup>
-
             <!-- 门店弹层 -->
             <component-popup :propShow="popup_realstore_status" propPosition="bottom" @onclose="popup_realstore_close_event">
                 <view class="padding-horizontal-main padding-top-main bg-grey-f5">
@@ -830,35 +671,6 @@
                             <view class="tc margin-top-sm margin-bottom-lg">
                                 <text :data-value="'/pages/plugins/realstore/search/search?goods_id='+goods.id" @tap="url_event" class="arrow-right padding-right cr-grey cp">{{$t('common.more')}}{{$t('goods-detail.related_stores')}}</text>
                             </view>
-                        </block>
-                        <block v-else>
-                            <view class="cr-grey tc padding-top-xl padding-bottom-xxxl">{{$t('common.no_relevant_data_tips')}}</view>
-                        </block>
-                    </view>
-                </view>
-            </component-popup>
-
-            <!-- 商品服务弹层 -->
-            <component-popup :propShow="popup_goodsservice_status" propPosition="bottom" @onclose="popup_goodsservice_close_event">
-                <view class="padding-horizontal-main padding-top-main bg-white">
-                    <view class="close oh pa top-0 right-0 z-i-deep">
-                        <view class="fr padding-top padding-right padding-left-sm padding-bottom-sm" @tap.stop="popup_goodsservice_close_event">
-                            <iconfont name="icon-close-line" size="28rpx" color="#999"></iconfont>
-                        </view>
-                    </view>
-                    <view class="plugins-goodsservice-container">
-                        <block v-if="(plugins_goodsservice_data || null) != null && plugins_goodsservice_data.length > 0">
-                            <block v-for="(item, index) in plugins_goodsservice_data" :key="index">
-                                <view :class="'item oh padding-vertical-main ' + (index > 0 ? 'br-t' : '')">
-                                    <view class="fl left">
-                                        <image class="dis-block radius" :src="item.images" mode="widthFix"></image>
-                                    </view>
-                                    <view class="fr right tl">
-                                        <view class="cr-base fw-b text-size-sm">{{ item.name }}</view>
-                                        <view class="cr-grey text-size-xs margin-top-xs">{{ item.describe }}</view>
-                                    </view>
-                                </view>
-                            </block>
                         </block>
                         <block v-else>
                             <view class="cr-grey tc padding-top-xl padding-bottom-xxxl">{{$t('common.no_relevant_data_tips')}}</view>
@@ -889,7 +701,213 @@
         </view>
 
         <!-- 提示信息 -->
-        <component-no-data :propStatus="data_list_loding_status" :propMsg="data_list_loding_msg" propPage="goods" :propIsHeader="true"></component-no-data>
+        <component-no-data v-if="data_mode != 3" :propStatus="data_list_loding_status" :propMsg="data_list_loding_msg" propPage="goods" :propIsHeader="true"></component-no-data>
+
+        <!-- 装修页批发弹层：横条在组件里，弹窗仍用详情页这一份 -->
+        <component-wholesale-rules v-if="data_mode == 3 && (plugins_wholesale_data || null) != null" ref="diy_wholesale_rules" :propIsPopup="true" :propOnlyPopup="true" :propCurrencySymbol="currency_symbol" :propData="plugins_wholesale_data"></component-wholesale-rules>
+
+        <!-- 聚合优惠数据弹层 -->
+        <component-popup :propShow="popup_discount_status" propPosition="bottom" @onclose="popup_discount_close_event">
+            <view class="padding-horizontal-main padding-top-main bg-white">
+                <view class="close oh padding-bottom-sm">
+                    <view class="fr" @tap.stop="popup_discount_close_event">
+                        <iconfont name="icon-close-line" size="28rpx" color="#999"></iconfont>
+                    </view>
+                </view>
+                <scroll-view :scroll-y="true" class="max-h-8h">
+                    <!-- 优惠券 -->
+                    <view v-if="(plugins_coupon_data || null) != null && plugins_coupon_data.data.length > 0" class="plugins-coupon-container spacing-mb">
+                        <view class="fw-b tc text-size-lg padding-bottom">{{$t('goods-detail.coupon')}}</view>
+                        <block v-for="(item, index) in plugins_coupon_data.data" :key="index">
+                            <component-coupon-card :propData="item" :propStatusType="item.status_type" :propStatusOperableName="item.status_operable_name" :propIndex="index" propIsProgress @call-back="coupon_receive_back_event"></component-coupon-card>
+                        </block>
+                    </view>
+                    <!-- 优购返现 / 返卡券 -->
+                    <view v-if="(plugins_excellentbuyreturntocash_data || null) != null && (
+                        ((plugins_excellentbuyreturntocash_data.data || null) != null && plugins_excellentbuyreturntocash_data.data.length > 0) ||
+                        ((plugins_excellentbuyreturntocash_data.cash || null) != null)
+                    )" class="plugins-excellentbuyreturntocash-container spacing-mb">
+                        <view v-if="(plugins_excellentbuyreturntocash_data.cash || null) != null" class="padding-bottom-main">
+                            <view class="fw-b tc text-size-lg padding-bottom">{{ plugins_excellentbuyreturntocash_data.cash.icon || '返现' }}</view>
+                            <view class="margin-top-sm">
+                                <view class="dis-inline-block br-green cr-green bg-white radius padding-vertical-xss padding-horizontal-sm margin-right-sm margin-bottom-sm">{{ plugins_excellentbuyreturntocash_data.cash.tag }}</view>
+                            </view>
+                            <view class="text-size-xs cr-grey-9 margin-top-sm">{{ plugins_excellentbuyreturntocash_data.cash.tip }}</view>
+                        </view>
+                        <block v-if="(plugins_excellentbuyreturntocash_data.data || null) != null && plugins_excellentbuyreturntocash_data.data.length > 0">
+                            <view class="fw-b tc text-size-lg padding-bottom">{{plugins_excellentbuyreturntocash_data.title}}</view>
+                            <block v-for="(item, index) in plugins_excellentbuyreturntocash_data.data" :key="index">
+                                <component-coupon-card :propData="item" :propStatusType="item.status_type" :propStatusOperableName="item.status_operable_name" :propIndex="index" propIsProgress></component-coupon-card>
+                            </block>
+                        </block>
+                    </view>
+                    <!-- 满减满折 -->
+                    <view v-if="(plugins_fullreduce_data || null) != null && (plugins_fullreduce_data.data || null) != null" class="plugins-fullreduce-container spacing-mb">
+                        <view class="fw-b tc text-size-lg padding-bottom">{{plugins_fullreduce_data.title}}</view>
+                        <block v-for="(item, index) in plugins_fullreduce_data.data" :key="index">
+                            <view class="padding-bottom-main">
+                                <view class="text-size-sm">{{ item.name }}</view>
+                                <view class="margin-top-sm">
+                                    <block v-for="(item2, index2) in item.rule_lines" :key="index2">
+                                        <view class="dis-inline-block br-main cr-main bg-white radius padding-vertical-xss padding-horizontal-sm margin-right-sm margin-bottom-sm">{{item2}}</view>
+                                    </block>
+                                </view>
+                            </view>
+                        </block>
+                    </view>
+                    <!-- 满送 -->
+                    <view v-if="(plugins_fullgive_data || null) != null && (plugins_fullgive_data.data || null) != null && plugins_fullgive_data.data.length > 0" class="plugins-fullgive-popup spacing-mb">
+                        <view class="fw-b tc text-size-lg padding-bottom">{{plugins_fullgive_data.title}}</view>
+                        <view class="cr-main padding-bottom-sm">{{ plugins_fullgive_data.msg }}</view>
+                        <block v-for="(act, index) in plugins_fullgive_data.data" :key="index">
+                            <view :class="'padding-bottom '+ (index > 0 ? 'margin-top-xl' : '')">
+                                <view class="text-size-sm padding-bottom-sm">{{ act.name }}</view>
+                                <block v-if="(act.tier_detail_rows || null) != null && act.tier_detail_rows.length > 0">
+                                    <block v-for="(trow, ti) in act.tier_detail_rows" :key="ti">
+                                        <view :class="ti > 0 ? 'margin-top-lg' : ''">
+                                            <view class="cr-grey text-size-xs margin-bottom-main">{{ trow.summary }}</view>
+                                            <view v-if="(trow.coupon_items || null) != null && trow.coupon_items.length > 0">
+                                                <view class="text-size-xs cr-grey-9 margin-bottom-xs">{{ plugins_fullgive_data.const.gift_coupon_title }}</view>
+                                                <view class="padding-sm br-f5 radius">
+                                                    <view v-for="(cp, ci) in trow.coupon_items" :key="ci" class="cr-base text-size-sm">{{ cp.name }}</view>
+                                                </view>
+                                            </view>
+                                            <view v-if="(trow.gift_items || null) != null && trow.gift_items.length > 0">
+                                                <view class="text-size-xs cr-grey-9 margin-bottom-xs margin-top-main">{{ plugins_fullgive_data.const.gift_goods_title }}</view>
+                                                <view class="br-f5 radius">
+                                                    <view v-for="(git, gi) in trow.gift_items" :key="gi" :class="'padding-sm '+(gi > 0 ? 'br-t-f9' : '')">
+                                                        <view v-if="(git.goods || null) != null" class="wh-auto flex-row align-s oh" :data-value="git.goods.goods_url" @tap="url_event">
+                                                            <image class="radius margin-right-sm goods-img" :src="git.goods.images" mode="aspectFill" />
+                                                            <view class="flex-1 flex-width">
+                                                                <view class="multi-text cr-base">{{ git.goods.title }}</view>
+                                                                <view v-if="(git.give_num || 0) > 0" class="text-size-xs cr-grey-9 margin-top-xs">{{ plugins_fullgive_data.const.gift_give_num_label }}：{{ git.give_num }}</view>
+                                                            </view>
+                                                        </view>
+                                                    </view>
+                                                </view>
+                                            </view>
+                                        </view>
+                                    </block>
+                                </block>
+                                <block v-else>
+                                    <view v-if="(act.rule_lines || null) != null && act.rule_lines.length > 0" class="margin-top-sm">
+                                        <block v-for="(line, li) in act.rule_lines" :key="li">
+                                            <view class="dis-inline-block br-main cr-main bg-white radius padding-vertical-xss padding-horizontal-sm margin-right-sm margin-bottom-sm">{{ line }}</view>
+                                        </block>
+                                    </view>
+                                </block>
+                                <block v-if="(act.extra_describe_lines || null) != null && act.extra_describe_lines.length > 0">
+                                    <view v-for="(dline, di) in act.extra_describe_lines" :key="di" class="text-size-xs cr-grey-9 margin-top-sm padding-top-xs">{{ dline }}</view>
+                                </block>
+                            </view>
+                        </block>
+                    </view>
+                    <!-- N件N优惠 -->
+                    <view v-if="(plugins_npiecendis_data || null) != null && (plugins_npiecendis_data.data || null) != null && plugins_npiecendis_data.data.length > 0" class="plugins-npiecendis-popup spacing-mb">
+                        <view class="fw-b tc text-size-lg padding-bottom">{{plugins_npiecendis_data.title}}</view>
+                        <view v-if="(plugins_npiecendis_data.msg || null) != null && plugins_npiecendis_data.msg != ''" class="cr-main padding-bottom-sm">{{ plugins_npiecendis_data.msg }}</view>
+                        <block v-for="(act, index) in plugins_npiecendis_data.data" :key="index">
+                            <view :class="'padding-bottom '+(index > 0 ? 'margin-top-xl' : '')">
+                                <view class="padding-bottom-xs">
+                                    <text class="text-size-sm fw-b">{{ act.name }}</text>
+                                    <text v-if="(act.activity_type_name || null) != null && act.activity_type_name != ''" class="text-size-xs cr-grey-9 margin-left-sm">{{ act.activity_type_name }}</text>
+                                </view>
+                                <view v-if="(act.rule_lines || null) != null && act.rule_lines.length > 0" class="margin-top-sm">
+                                    <block v-for="(line, li) in act.rule_lines" :key="li">
+                                        <view class="dis-inline-block br-main cr-main bg-white radius padding-vertical-xss padding-horizontal-sm margin-right-sm margin-bottom-sm">{{ line }}</view>
+                                    </block>
+                                </view>
+                            </view>
+                        </block>
+                    </view>
+                    <!-- 新人礼包 -->
+                    <view v-if="(plugins_newpersongift_data || null) != null && (plugins_newpersongift_data.data || null) != null && plugins_newpersongift_data.data.length > 0" class="plugins-newpersongift-popup spacing-mb">
+                        <view class="fw-b tc text-size-lg padding-bottom">{{plugins_newpersongift_data.title}}</view>
+                        <view v-if="(plugins_newpersongift_data.user_tip || null) != null && plugins_newpersongift_data.user_tip != ''" class="padding-bottom-sm">
+                            <view class="flex-row align-c">
+                                <view class="dis-inline-block va-m">
+                                    <iconfont name="icon-sigh" size="30rpx" propClass="cr-red"></iconfont>
+                                </view>
+                                <text class="text-size-xs cr-red margin-left-xs va-m">{{ plugins_newpersongift_data.user_tip }}</text>
+                            </view>
+                        </view>
+                        <view v-else-if="(plugins_newpersongift_data.msg || null) != null && plugins_newpersongift_data.msg != ''" class="cr-main padding-bottom-sm">{{ plugins_newpersongift_data.msg }}</view>
+                        <block v-for="(act, index) in plugins_newpersongift_data.data" :key="index">
+                            <view class="padding-bottom">
+                                <view class="padding-bottom-xs">
+                                    <text class="text-size-sm fw-b">{{ act.name }}</text>
+                                    <text v-if="(act.activity_type_name || null) != null && act.activity_type_name != ''" class="text-size-xs cr-grey-9 margin-left-sm">{{ act.activity_type_name }}</text>
+                                </view>
+                                <view v-if="((act.rule_lines || null) != null && act.rule_lines.length > 0) || ((act.rule_lines_grey || null) != null && act.rule_lines_grey.length > 0)" class="margin-top-sm">
+                                    <block v-for="(line, li) in act.rule_lines" :key="li">
+                                        <view class="dis-inline-block br-main cr-main bg-white radius padding-vertical-xss padding-horizontal-sm margin-right-sm margin-bottom-sm">{{ line }}</view>
+                                    </block>
+                                    <text v-if="(act.rule_lines_grey || null) != null && act.rule_lines_grey.length > 0" class="text-size-xs cr-grey-9 single-text">{{ act.rule_lines_grey.join(' ') }}</text>
+                                </view>
+                            </view>
+                        </block>
+                        <view v-if="(plugins_newpersongift_data.rules_html || null) != null && plugins_newpersongift_data.rules_html != ''" class="padding-bottom">
+                            <mp-html :content="plugins_newpersongift_data.rules_html" />
+                        </view>
+                    </view>
+                </scroll-view>
+            </view>
+        </component-popup>
+
+
+        <!-- 商品参数弹窗：放在页面根上，避免装修滚动区域把定位限制在组件里 -->
+        <component-popup :propShow="popup_params_status" propPosition="bottom" @onclose="popup_params_close_event">
+            <view class="padding-main bg-white">
+                <view class="close oh pa top-0 right-0 z-i-deep">
+                    <view class="fr padding-top padding-right padding-left-sm padding-bottom-sm" @tap.stop="popup_params_close_event">
+                        <iconfont name="icon-close-line" size="28rpx" color="#999"></iconfont>
+                    </view>
+                </view>
+                <view class="padding-top-xxl">
+                    <scroll-view scroll-y class="popup-params-scroll">
+                        <uni-table :emptyText="$t('common.no_data')">
+                            <block v-if="(goods || null) != null && (goods.parameters || null) != null && (goods.parameters[popup_params_type_field] || null) != null">
+                                <block v-for="(item, index) in goods.parameters[popup_params_type_field]" :key="index">
+                                    <uni-tr>
+                                        <uni-th width="90">{{ item.name }}</uni-th>
+                                        <uni-td>{{ item.value }}</uni-td>
+                                    </uni-tr>
+                                </block>
+                            </block>
+                        </uni-table>
+                    </scroll-view>
+                </view>
+            </view>
+        </component-popup>
+
+        <!-- 商品服务弹层：放在页面根上，装修组件和系统页都打开这一份 -->
+        <component-popup :propShow="popup_goodsservice_status" propPosition="bottom" @onclose="popup_goodsservice_close_event">
+            <view class="padding-horizontal-main padding-top-main bg-white">
+                <view class="close oh pa top-0 right-0 z-i-deep">
+                    <view class="fr padding-top padding-right padding-left-sm padding-bottom-sm" @tap.stop="popup_goodsservice_close_event">
+                        <iconfont name="icon-close-line" size="28rpx" color="#999"></iconfont>
+                    </view>
+                </view>
+                <view class="plugins-goodsservice-container">
+                    <block v-if="(plugins_goodsservice_data || null) != null && plugins_goodsservice_data.length > 0">
+                        <block v-for="(item, index) in plugins_goodsservice_data" :key="index">
+                            <view :class="'item oh padding-vertical-main ' + (index > 0 ? 'br-t' : '')">
+                                <view class="fl left">
+                                    <image class="dis-block radius" :src="item.images" mode="widthFix"></image>
+                                </view>
+                                <view class="fr right tl">
+                                    <view class="cr-base fw-b text-size-sm">{{ item.name }}</view>
+                                    <view class="cr-grey text-size-xs margin-top-xs">{{ item.describe }}</view>
+                                </view>
+                            </view>
+                        </block>
+                    </block>
+                    <block v-else>
+                        <view class="cr-grey tc padding-top-xl padding-bottom-xxxl">{{$t('common.no_relevant_data_tips')}}</view>
+                    </block>
+                </view>
+            </view>
+        </component-popup>
 
         <!-- 分享弹窗 -->
         <component-share-popup ref="share"></component-share-popup>
@@ -914,7 +932,7 @@
         </block>
 
         <!-- 公共 -->
-        <component-common ref="common"></component-common>
+        <component-common ref="common" :propIsFooter="data_mode != 3"></component-common>
     </view>
 </template>
 <script>
@@ -933,6 +951,8 @@
     import componentShopList from '@/pages/plugins/shop/components/shop-list/shop-list';
     import componentBindingDetailList from '@/pages/plugins/binding/components/binding-detail-list/binding-detail-list';
     import componentSharePopup from '@/pages/common/components/share-popup/share-popup';
+    import componentDiy from '@/pages/diy/components/diy/diy';
+    import componentLangSwitch from '@/pages/common/components/lang-switch/lang-switch';
     import componentGoodsComments from '@/pages/goods-detail/components/goods-comments/goods-comments';
     import componentCategorylimitWarmTips from '@/pages/goods-detail/components/categorylimit-warm-tips/categorylimit-warm-tips';
     import componentRealstoreCart from '@/pages/plugins/realstore/components/realstore-cart/realstore-cart';
@@ -973,6 +993,8 @@
                 photo_height: photo_height,
                 is_ready: 0,
                 goods: null,
+                data_mode: 0,
+                diy_data: null,
                 guess_you_like: [],
                 goods_photo: [],
                 goods_specifications_choose: [],
@@ -1121,6 +1143,8 @@
             componentShopList,
             componentBindingDetailList,
             componentSharePopup,
+            componentDiy,
+            componentLangSwitch,
             componentGoodsComments,
             componentCategorylimitWarmTips,
             componentRealstoreCart,
@@ -1353,6 +1377,8 @@
                             // 基础数据
                             this.setData({
                                 random_value: Math.random(),
+                                data_mode: parseInt(data.data_mode || 0),
+                                diy_data: data.diy_data || null,
                                 data_loading_status: 1,
                                 goods_bottom_nav_status: true,
                                 goods_bottom_opt_nav_status: true,
@@ -1724,14 +1750,95 @@
                 }
             },
 
+            // 平铺规格使用页面上的购买组件，不打开弹窗
+            diy_flat_buy() {
+                if ((this.goods || null) == null) {
+                    return null;
+                }
+                var buy = app.globalData.page_ref(this, 'goods_buy');
+                if (buy == null) {
+                    return null;
+                }
+                var same = buy.goods && (buy.goods.id == this.goods.id || buy.goods.goods_id == this.goods.id);
+                var ready = same && Array.isArray(buy.goods_spec_choose) && buy.goods_spec_choose.length > 0;
+                if (!ready) {
+                    if (buy.init(this.goods, Object.assign({}, this.params || {}, {
+                        buy_event_type: 'spec-show',
+                        buy_button: this.buy_button,
+                        popup_show: 0,
+                        is_init: 1,
+                    })) === false) {
+                        return null;
+                    }
+                }
+                if (buy.popup_status) {
+                    buy.setData({ popup_status: false });
+                }
+                return buy;
+            },
+
+            diy_flat_sync(buy) {
+                if (buy == null || this.data_mode != 3 || (this.goods || null) == null) {
+                    return;
+                }
+                this.setData({
+                    'goods.diy_buy_number': buy.buy_number,
+                    'goods.diy_spec_inventory': buy.goods_spec_base_inventory,
+                    'goods.diy_spec_inventory_unit': buy.goods_spec_base_inventory_unit || '',
+                });
+            },
+
+            // 平铺规格在页面上直接切换，不打开规格弹窗
+            diy_flat_spec_choice(e) {
+                var buy = this.diy_flat_buy();
+                if (buy == null || typeof buy.goods_spec_choice_handle != 'function') {
+                    return;
+                }
+                var level = e && e.level != null ? e.level : 0;
+                var index = e && e.index != null ? e.index : 0;
+                buy.goods_spec_choice_handle(level, index);
+                this.diy_flat_sync(buy);
+            },
+
+            diy_flat_number_event(e) {
+                var buy = this.diy_flat_buy();
+                if (buy == null || typeof buy.goods_buy_number_func != 'function') {
+                    return;
+                }
+                var type = e && parseInt(e.type) == 1 ? 1 : 0;
+                var number = parseInt(buy.buy_number || 1);
+                buy.goods_buy_number_func(type == 0 ? number - 1 : number + 1);
+                this.diy_flat_sync(buy);
+            },
+
+            diy_flat_number_input(e) {
+                var buy = this.diy_flat_buy();
+                if (buy == null || typeof buy.goods_buy_number_func != 'function') {
+                    return;
+                }
+                var number = parseInt(e && e.value);
+                if (isNaN(number)) {
+                    number = this.goods.buy_min_number || 1;
+                }
+                buy.goods_buy_number_func(number);
+                this.diy_flat_sync(buy);
+            },
+
             // 数量和规格回调-释放
             goods_buy_back_release_event(e) {
-                this.setData({
+                var upd_data = {
                     goods_spec_base_price: this.goods.price,
                     goods_spec_base_original_price: this.goods.original_price || 0,
                     goods_show_price_unit: this.goods.show_price_unit,
                     goods_show_original_price_unit: this.goods.show_original_price_unit,
-                });
+                };
+                if (this.data_mode == 3 && this.goods) {
+                    upd_data['goods.diy_spec_price'] = null;
+                    upd_data['goods.diy_spec_original_price'] = null;
+                    upd_data['goods.diy_spec_inventory'] = this.goods.inventory;
+                    upd_data['goods.diy_spec_inventory_unit'] = this.goods.inventory_unit || '';
+                }
+                this.setData(upd_data);
             },
 
             // 数量和规格详情回调-成功
@@ -1751,6 +1858,13 @@
                 // 批发数据
                 if((e.back_data.plugins_wholesale_data || null) != null) {
                     upd_data['plugins_wholesale_data'] = e.back_data.plugins_wholesale_data;
+                }
+                if (this.data_mode == 3 && this.goods) {
+                    upd_data['goods.diy_spec_price'] = e.back_data.spec_base.price;
+                    upd_data['goods.diy_spec_original_price'] = e.back_data.spec_base.original_price || 0;
+                    upd_data['goods.diy_spec_inventory'] = e.back_data.spec_base.inventory;
+                    upd_data['goods.diy_spec_inventory_unit'] = e.back_data.spec_base.inventory_unit || '';
+                    upd_data['goods.diy_buy_number'] = e.buy_number;
                 }
                 this.setData(upd_data);
             },
@@ -1864,6 +1978,19 @@
             },
 
             // 分享开启弹层
+            diy_lang_open_event() {
+                if ((this.$refs.lang_switch || null) != null) {
+                    this.$refs.lang_switch.lang_open_event();
+                }
+            },
+            diy_share_open_event() {
+                this.popup_share_event();
+            },
+            diy_popup_sub_language_event(e) {
+                e = uni.getStorageSync(app.globalData.data.cache_lang_switch_key) || e;
+                app.globalData.set_pages_navigation_bar_title();
+                app.globalData.init_config();
+            },
             popup_share_event(e) {
                 app.globalData.page_ref_call(this, 'share', 'init', [{
                     status: true,
@@ -1881,6 +2008,15 @@
                 this.setData({
                     popup_discount_status: true,
                 });
+            },
+
+            // 装修批发组件打开详情页批发弹层
+            diy_wholesale_popup_event() {
+                const ref = this.$refs.diy_wholesale_rules;
+                const vm = Array.isArray(ref) ? ref[0] : ref;
+                if (vm && typeof vm.popup_wholesale_event === 'function') {
+                    vm.popup_wholesale_event();
+                }
             },
 
             // 聚合优惠数据弹层关闭

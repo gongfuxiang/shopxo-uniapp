@@ -89,22 +89,84 @@
             onEditorReady() {
                 // #ifdef MP-BAIDU
                 this.editorCtx = requireDynamicLib('editorLib').createEditorContext('editor');
+                this.bind_editor();
                 // #endif
 
                 // #ifdef APP-PLUS || MP-WEIXIN || H5
+                this.bind_editor();
                 uni.createSelectorQuery()
                     .in(this)
                     .select('#editor')
                     .context((res) => {
-                        this.editorCtx = res.context;
-                        this.$emit('init', this.editorCtx);
-                        // 启用preRender方法时会预先渲染templates内容，但是在小程序中会导致页面自动聚焦至富文本的区域
-                        if (this.templates) {
-                            this.preRender();
+                        if (res && res.context) {
+                            this.editorCtx = res.context;
                         }
+                        this.bind_editor();
                     })
-                    .exec((result) => {});
+                    .exec();
                 // #endif
+            },
+            bind_editor() {
+                if (this._editor_inited) {
+                    return;
+                }
+                const ctx = this.editorCtx && typeof this.editorCtx.setContents === 'function' ? this.editorCtx : this.h5_editor_ctx();
+                if (!ctx) {
+                    const times = this._editor_bind_times || 0;
+                    if (times < 8) {
+                        this._editor_bind_times = times + 1;
+                        setTimeout(() => this.bind_editor(), 50);
+                    }
+                    return;
+                }
+                this.editorCtx = ctx;
+                this._editor_inited = true;
+                this.$emit('init', ctx);
+                if (this.templates) {
+                    this.preRender();
+                }
+            },
+            h5_editor_ctx() {
+                const root = this.$el;
+                if (!root || typeof root.querySelector !== 'function') {
+                    return null;
+                }
+                const quill = find_quill(root);
+                const editor = root.querySelector('.ql-editor');
+                if (!quill && !editor) {
+                    return null;
+                }
+                return {
+                    setContents({ html }) {
+                        apply_editor_html(quill, editor, html);
+                    },
+                    getContents({ success, fail }) {
+                        try {
+                            const node = (quill && quill.root) || editor;
+                            success && success({
+                                html: (node && node.innerHTML) || '',
+                                text: quill && typeof quill.getText === 'function' ? quill.getText() : ((node && (node.innerText || node.textContent)) || ''),
+                            });
+                        } catch (err) {
+                            fail && fail(err);
+                        }
+                    },
+                    format(name, value) {
+                        quill && quill.format(name, value);
+                    },
+                    undo() {
+                        quill && quill.history && quill.history.undo();
+                    },
+                    redo() {
+                        quill && quill.history && quill.history.redo();
+                    },
+                    insertText(opt) {
+                        quill && quill.insertText(Math.max(0, quill.getLength() - 1), (opt && opt.text) || '');
+                    },
+                    insertImage(opt) {
+                        quill && quill.insertEmbed(Math.max(0, quill.getLength() - 1), 'image', opt && opt.src);
+                    },
+                };
             },
             preRender() {
                 // 初始化富文本时自带的文字模板
@@ -193,30 +255,92 @@
                 // #endif
             },
             onEditorInput(e) {
-                let maxlength = parseInt(this.maxlength);
-
+                const detail = e && e.detail;
+                if (detail && typeof detail === 'object' && (detail.html != null || detail.text != null)) {
+                    this.emit_editor_content(detail.html || '', detail.text || '');
+                    return;
+                }
+                // H5 的 editor 走的是原生 input，内容在可编辑节点上，此时 editorCtx 还没有
+                const node = this.editor_root(e);
+                if (node) {
+                    this.emit_editor_content(node.innerHTML || '', node.innerText || node.textContent || '');
+                    return;
+                }
+                if (!this.editorCtx || typeof this.editorCtx.getContents !== 'function') {
+                    return;
+                }
                 this.editorCtx.getContents({
                     success: (res) => {
-                        let { html, text } = res;
-                        let textStr = text.replace(/\s/g, '');
-
-                        if (textStr.length > maxlength && maxlength != -1) {
-                            uni.showModal({
-                                content: `超过${maxlength}字数啦~`,
-                                confirmText: '确定',
-                                showCancel: false,
-                                success: () => {
-                                    this.$emit('overMax', { html, text });
-                                },
-                            });
-                        } else {
-                            this.$emit('input', { html, text });
-                        }
+                        this.emit_editor_content((res && res.html) || '', (res && res.text) || '');
                     },
                 });
             },
+            editor_root(e) {
+                const node = e && (e.target || e.currentTarget);
+                if (!node || typeof node.closest !== 'function') {
+                    return null;
+                }
+                return node.closest('[contenteditable="true"]') || node.closest('.ql-editor');
+            },
+            emit_editor_content(html, text) {
+                let maxlength = parseInt(this.maxlength);
+                let textStr = String(text || '').replace(/\s/g, '');
+                if (textStr.length > maxlength && maxlength != -1) {
+                    uni.showModal({
+                        content: `超过${maxlength}字数啦~`,
+                        confirmText: '确定',
+                        showCancel: false,
+                        success: () => {
+                            this.$emit('overMax', { html, text });
+                        },
+                    });
+                    return;
+                }
+                this.$emit('input', { html, text });
+            },
         },
     };
+    function find_quill(root) {
+        if (!root) {
+            return null;
+        }
+        if (root.__quill) {
+            return root.__quill;
+        }
+        const nodes = root.querySelectorAll ? root.querySelectorAll('*') : [];
+        for (let i = 0; i < nodes.length; i++) {
+            if (nodes[i].__quill) {
+                return nodes[i].__quill;
+            }
+        }
+        return null;
+    }
+    function apply_editor_html(quill, editor, html) {
+        const value = html || '';
+        if (quill && quill.clipboard && typeof quill.setContents === 'function') {
+            try {
+                let delta = null;
+                try {
+                    delta = quill.clipboard.convert(value);
+                } catch (e) {
+                    delta = quill.clipboard.convert({ html: value });
+                }
+                if (delta) {
+                    quill.setContents(delta, 'silent');
+                    return;
+                }
+            } catch (e) {}
+        }
+        const node = (quill && quill.root) || editor;
+        if (!node) {
+            return;
+        }
+        node.innerHTML = value || '<p><br></p>';
+        if (node.classList) {
+            const plain = value.replace(/<[^>]+>/g, '').replace(/&nbsp;/gi, '').replace(/\s/g, '');
+            node.classList.toggle('ql-blank', !plain);
+        }
+    }
 </script>
 
 <style scoped>

@@ -1,5 +1,22 @@
 <template>
     <view :class="theme_view">
+        <!-- 后台指定了用户中心DIY时，按首页同样的方式渲染装修页 -->
+        <block v-if="data_mode == 3 && (diy_data || null) != null && (diy_data.config || null) != null">
+            <component-diy :propValue="diy_data.config" :propDataId="diy_data.id" :propKey="random_value" @onLangOpen="diy_lang_open_event" @onShareOpen="diy_share_open_event">
+                <component-no-data propStatus="1" :propLoadingUseSkeleton="true" propPage="home"></component-no-data>
+                <template slot="diy-bottom-content">
+                    <component-bottom-line :propStatus="data_bottom_line_status"></component-bottom-line>
+                    <component-copyright></component-copyright>
+                </template>
+                <template slot="diy-bottom-common">
+                    <component-common ref="common_footer" :propIsModalBusiness="false"></component-common>
+                </template>
+            </component-diy>
+            <component-lang-switch ref="lang_switch" @popup_sub_language_event="diy_popup_sub_language_event"></component-lang-switch>
+            <component-share-popup ref="share"></component-share-popup>
+            <component-common ref="common" :propIsFooter="false"></component-common>
+        </block>
+        <block v-else>
         <!-- 顶部内容 -->
         <view class="top-content">
             <!-- 内容 -->
@@ -199,6 +216,7 @@
 
         <!-- 公共 -->
         <component-common ref="common"></component-common>
+        </block>
     </view>
 </template>
 <script>
@@ -208,6 +226,11 @@
     import componentBadge from '@/components/badge/badge';
     import componentCopyright from '@/components/copyright/copyright';
     import componentOnlineService from '@/components/online-service/online-service';
+    import componentDiy from '@/pages/diy/components/diy/diy';
+    import componentNoData from '@/components/no-data/no-data';
+    import componentBottomLine from '@/components/bottom-line/bottom-line';
+    import componentLangSwitch from '@/pages/common/components/lang-switch/lang-switch';
+    import componentSharePopup from '@/pages/common/components/share-popup/share-popup';
 
     var common_static_url = app.globalData.get_static_url('common');
     var static_url = app.globalData.get_static_url('user');
@@ -217,6 +240,10 @@
                 theme_view: app.globalData.get_theme_value_view(),
                 common_static_url: common_static_url,
                 load_status: 0,
+                data_mode: 0,
+                diy_data: null,
+                random_value: 0,
+                data_bottom_line_status: true,
                 static_url: static_url,
                 avatar: app.globalData.data.default_user_head_src,
                 user: null,
@@ -252,7 +279,12 @@
             componentQuickNav,
             componentBadge,
             componentCopyright,
-            componentOnlineService
+            componentOnlineService,
+            componentDiy,
+            componentNoData,
+            componentBottomLine,
+            componentLangSwitch,
+            componentSharePopup,
         },
 
         onLoad(params) {
@@ -399,6 +431,21 @@
                 }
             },
 
+            diy_lang_open_event() {
+                if ((this.$refs.lang_switch || null) != null) {
+                    this.$refs.lang_switch.lang_open_event();
+                }
+            },
+            diy_share_open_event() {
+                if ((this.$refs.share || null) != null) {
+                    this.$refs.share.init();
+                }
+            },
+            diy_popup_sub_language_event(e) {
+                e = uni.getStorageSync(app.globalData.data.cache_lang_switch_key) || e;
+                app.globalData.set_pages_navigation_bar_title();
+                app.globalData.init_config();
+            },
             // 获取数据
             get_data() {
                 uni.request({
@@ -486,6 +533,9 @@
                             // 数据设置
                             var upd_data = {
                                 load_status: 1,
+                                data_mode: parseInt(data.data_mode || 0),
+                                diy_data: data.diy_data || null,
+                                random_value: Math.random(),
                                 message_total: parseInt(data.message_total || 0),
                                 head_nav_list: temp_head_nav_list,
                                 navigation: temp_navigation,

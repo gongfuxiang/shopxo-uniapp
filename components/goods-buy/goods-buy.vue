@@ -281,8 +281,11 @@
                 var init_params = Object.assign({}, params);
                 delete init_params.data_params;
 
-                // 状态默认开启弹窗；页内模式不弹层
+                // 状态默认开启弹窗；页内模式不弹层。popup_show 为 0 时只初始化规格，不打开弹层
                 var status = this.propPageMode ? false : true;
+                if (init_params.popup_show === 0 || init_params.popup_show === '0') {
+                    status = false;
+                }
                 // 商品可选规格
                 var goods_spec_choose = this.goods_spec_choose_init(goods);
                 // 是否存在多规格

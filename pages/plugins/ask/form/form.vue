@@ -12,7 +12,7 @@
                     <view class="margin-bottom-sm">{{ $t('ask.question_content') }}<text class="form-group-tips-must">*</text></view>
                     <sp-editor @init="initEditor" @input="rich_text_event" @upinImage="up_in_image_event"></sp-editor>
                 </view>
-                <view class="form-gorup border-radius-main oh flex-row jc-sb align-c margin-bottom-main">
+                <view v-if="ask_category_list.length > 0" class="form-gorup border-radius-main oh flex-row jc-sb align-c margin-bottom-main">
                     <view class="">{{ $t('ask.question_category') }}</view>
                     <view class="flex-row jc-e align-c flex-1 flex-width">
                         <picker @change="select_change_event" :value="category_id_index" :range="ask_category_list" range-key="name" name="category_id" data-field="category_id" class="margin-right-sm wh-auto tr">
@@ -189,11 +189,11 @@
                     { fields: 'title', msg: this.$t('form.fill_content') },
                 ];
                 const new_data = {
-                    goods_id: this.params.goods_id || 0,
+                    goods_id: this.params.goods_id || this.data.goods_id || 0,
                     id: this.params.id || null,
                     ...e.detail.value,
                     content: this.data.content,
-                    category_id: this.data.category_id,
+                    category_id: this.ask_category_list.length > 0 ? this.data.category_id : 0,
                 };
                 if (app.globalData.fields_check(new_data, validation)) {
                     uni.showLoading({
@@ -245,9 +245,11 @@
             // },
 
             initEditor(editor) {
-                // 初始化编辑器内容
+                if (!editor || typeof editor.setContents !== 'function') {
+                    return;
+                }
                 editor.setContents({
-                    html: (this.data || null) !== null ? this.data.content : '',
+                    html: (this.data && this.data.content) || '',
                 });
             },
 

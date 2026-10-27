@@ -325,16 +325,8 @@
 /**
  * 商品参数弹窗
  */
-.popup-params-container {
-    max-height: 80vh;
-    overflow-y: scroll;
-    overflow-x: hidden;
-}
-.popup-params-container .item .name {
-    width: 220rpx;
-}
-.popup-params-container .item .value {
-    width: calc(100% - 240rpx);
+.popup-params-scroll {
+    height: 70vh;
 }
 
 /*
