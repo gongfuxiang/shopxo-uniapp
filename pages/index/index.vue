@@ -557,7 +557,7 @@
                     this.setData({
                         page_load_status: 1,
                         currency_symbol: app.globalData.get_config('currency_symbol'),
-                        data_mode: parseInt(app.globalData.get_config('config.home_index_floor_data_type', 0)),
+                        data_mode: parseInt(app.globalData.get_config('config.common_app_home_diy_id', 0) || 0) > 0 ? 3 : parseInt(app.globalData.get_config('config.home_index_floor_data_type', 0)),
                         common_shop_notice: app.globalData.get_config('config.common_shop_notice'),
                         common_app_is_enable_search: app.globalData.get_config('config.common_app_is_enable_search'),
                         common_app_is_header_nav_fixed: app.globalData.get_config('config.common_app_is_header_nav_fixed'),

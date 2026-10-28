@@ -99,7 +99,17 @@
                 "titlePenetrate": "YES",
                 // #endif
                 "enablePullDownRefresh": true,
-                "navigationBarTitleText": ""
+                "navigationBarTitleText": "",
+                "usingComponents": {
+                    "component-diy": "/pages/diy/components/diy/diy",
+                    "component-share-popup": "/pages/common/components/share-popup/share-popup",
+                    "component-lang-switch": "/pages/common/components/lang-switch/lang-switch"
+                },
+                "componentPlaceholder": {
+                    "component-diy": "view",
+                    "component-share-popup": "view",
+                    "component-lang-switch": "view"
+                }
             }
         }
     ],
@@ -242,7 +252,10 @@
                             "component-goods-compare": "/pages/plugins/goodscompare/components/goods-compare/goods-compare",
                             "component-form-input-base": "/pages/form-input/components/form-input/form-input-base",
                             "component-region-picker": "/pages/common/components/region-picker/region-picker",
-                            "component-share-popup": "/pages/common/components/share-popup/share-popup"
+                            "component-share-popup": "/pages/common/components/share-popup/share-popup",
+                            "component-diy": "/pages/diy/components/diy/diy",
+                            "component-diy-goods-detail-buy-nav": "/pages/diy/components/diy/goods-detail-buy-nav",
+                            "component-lang-switch": "/pages/common/components/lang-switch/lang-switch"
                         },
                         "componentPlaceholder": {
                             "component-goods-comments": "view",
@@ -255,7 +268,10 @@
                             "component-goods-compare": "view",
                             "component-form-input-base": "view",
                             "component-region-picker": "view",
-                            "component-share-popup": "view"
+                            "component-share-popup": "view",
+                            "component-diy": "view",
+                            "component-diy-goods-detail-buy-nav": "view",
+                            "component-lang-switch": "view"
                         }
                     }
                 }

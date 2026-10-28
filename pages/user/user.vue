@@ -3,7 +3,8 @@
         <!-- 后台指定了用户中心DIY时，按首页同样的方式渲染装修页 -->
         <block v-if="data_mode == 3 && (diy_data || null) != null && (diy_data.config || null) != null">
             <component-diy :propValue="diy_data.config" :propDataId="diy_data.id" :propKey="random_value" @onLangOpen="diy_lang_open_event" @onShareOpen="diy_share_open_event">
-                <component-no-data propStatus="1" :propLoadingUseSkeleton="true" propPage="home"></component-no-data>
+                <!-- 由于diy组件异步加载、默认先加载骨架屏展示 -->
+                <component-no-data propStatus="1" :propLoadingUseSkeleton="true" propPage="user"></component-no-data>
                 <template slot="diy-bottom-content">
                     <component-bottom-line :propStatus="data_bottom_line_status"></component-bottom-line>
                     <component-copyright></component-copyright>
@@ -15,6 +16,9 @@
             <component-lang-switch ref="lang_switch" @popup_sub_language_event="diy_popup_sub_language_event"></component-lang-switch>
             <component-share-popup ref="share"></component-share-popup>
             <component-common ref="common" :propIsFooter="false"></component-common>
+        </block>
+        <block v-else-if="user_center_use_diy && load_status == 0">
+            <component-no-data propStatus="1" :propLoadingUseSkeleton="true" propPage="user"></component-no-data>
         </block>
         <block v-else>
         <!-- 顶部内容 -->
@@ -241,6 +245,7 @@
                 common_static_url: common_static_url,
                 load_status: 0,
                 data_mode: 0,
+                user_center_use_diy: parseInt(app.globalData.get_config('config.common_app_user_center_diy_id', 0) || 0) > 0,
                 diy_data: null,
                 random_value: 0,
                 data_bottom_line_status: true,
@@ -376,6 +381,7 @@
                         vip_page_url = '/pages/plugins/vip/member-code/member-code';
                     }
                     this.setData({
+                        user_center_use_diy: parseInt(app.globalData.get_config('config.common_app_user_center_diy_id', 0) || 0) > 0,
                         common_app_customer_service_tel: app.globalData.get_config('config.common_app_customer_service_tel'),
                         common_user_center_notice: app.globalData.get_config('config.common_user_center_notice'),
                         common_app_is_online_service: app.globalData.get_config('config.common_app_is_online_service'),

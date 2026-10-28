@@ -50,6 +50,12 @@
                         <x-skeleton propType="info"></x-skeleton>
                         <x-skeleton propType="waterfall" propRowNumber="4"></x-skeleton>
                     </block>
+                    <!-- 用户中心 -->
+                    <block v-else-if="propPage == 'user'">
+                        <x-skeleton propType="info"></x-skeleton>
+                        <x-skeleton propType="menu" propRowNumber="1"></x-skeleton>
+                        <x-skeleton propType="list" propRowNumber="6"></x-skeleton>
+                    </block>
                 </block>
                 <block v-else>
                     <view v-if="loading_content_type == 1" class="loading-title-animation">

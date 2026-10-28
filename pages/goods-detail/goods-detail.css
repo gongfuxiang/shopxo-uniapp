@@ -147,6 +147,16 @@
         width: 100%;
     }
 }
+.goods-buy-nav-scroll-spacer {
+    height: 180rpx;
+}
+.goods-detail-chat-holder {
+    width: 0;
+    height: 0;
+    overflow: hidden;
+    position: absolute;
+    left: -999px;
+}
 .goods-buy-nav .btn-items .btn {
     height: 70rpx;
     line-height: 70rpx;

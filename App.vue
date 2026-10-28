@@ -1939,6 +1939,30 @@
                     } else if (value.substr(0, 7) == 'scan://') {
                         // 扫码协议
                         this.scan_handle();
+                    } else if (value.substr(0, 15) == 'goods-detail://') {
+                        // 商品详情操作：收藏 / 客服 / 分享，仅详情页有效
+                        // 小程序页面实例的方法在 $vm 上，直接读 page 上的方法是空的
+                        var goods_detail_action = value.substr(15);
+                        var goods_detail_pages = getCurrentPages();
+                        var goods_detail_page = goods_detail_pages.length > 0 ? goods_detail_pages[goods_detail_pages.length - 1] : null;
+                        var goods_detail_vm = goods_detail_page && (goods_detail_page.$vm || goods_detail_page);
+                        var goods_detail_route = (goods_detail_page && (goods_detail_page.route || '')) || '';
+                        if (goods_detail_vm != null && goods_detail_route.indexOf('goods-detail/goods-detail') != -1) {
+                            if (goods_detail_action == 'favor' && typeof goods_detail_vm.goods_favor_event == 'function') {
+                                goods_detail_vm.goods_favor_event();
+                                return;
+                            }
+                            if (goods_detail_action == 'chat' && typeof goods_detail_vm.goods_detail_chat_event == 'function') {
+                                goods_detail_vm.goods_detail_chat_event();
+                                return;
+                            }
+                            if (goods_detail_action == 'share' && typeof goods_detail_vm.popup_share_event == 'function') {
+                                goods_detail_vm.popup_share_event();
+                                return;
+                            }
+                        }
+                        this.showToast('请在商品详情页使用');
+                        return false;
                     } else if(value.substr(0, 17) == 'plugin-private://') {
                         // 是否打开插件地址
                         // #ifdef APP
