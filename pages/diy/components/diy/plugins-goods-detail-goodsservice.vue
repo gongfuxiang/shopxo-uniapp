@@ -163,11 +163,7 @@
                 return opt.goods_id || '';
             },
             get_list(content, theme, field_show) {
-                const number = Number(content.number) > 0 ? Number(content.number) : 10;
-                const data = {
-                    keywords: content.keywords || '',
-                    number: number,
-                };
+                const data = {};
                 const goods_id = this.page_goods_id();
                 if (goods_id) {
                     data.goods_id = goods_id;

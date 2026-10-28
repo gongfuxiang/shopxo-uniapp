@@ -79,6 +79,7 @@
                                         <component-diy-plugins-goods-detail-wholesale v-else-if="item.key == 'plugins-goods-detail-wholesale' || item.key == 'wholesale-rules'" :propIndex="get_prop_index(item)" :propKey="item.id + index" :propValue="item.com_data" :propGoods="propGoods"></component-diy-plugins-goods-detail-wholesale>
                                         <component-diy-plugins-goods-detail-ask v-else-if="item.key == 'plugins-goods-detail-ask' || item.key == 'plugins-goods-ask' || item.key == 'goods-qa'" :propIndex="get_prop_index(item)" :propKey="item.id + index" :propValue="item.com_data" :propGoods="propGoods" :propAskData="propAskData"></component-diy-plugins-goods-detail-ask>
                                         <component-diy-plugins-user-vip v-else-if="item.key == 'plugins-user-vip'" :propIndex="get_prop_index(item)" :propKey="item.id + index" :propValue="item.com_data"></component-diy-plugins-user-vip>
+                                        <component-diy-plugins-signin v-else-if="item.key == 'plugins-signin' || item.key == 'sign-in'" :propIndex="get_prop_index(item)" :propKey="item.id + index" :propValue="item.com_data"></component-diy-plugins-signin>
                                         <!-- 工具组件 -->
                                         <component-diy-float-window v-else-if="(item.key == 'float-window' && item.com_data.content.button_jump !== 'gotop') || (item.key == 'float-window' && item.com_data.content.button_jump === 'gotop' && getPropIsHalf)" :propKey="item.id + index" :propValue="item.com_data" @btn_event="btn_event"></component-diy-float-window>
                                         <component-diy-title v-else-if="item.key == 'title'" :propKey="item.id + index" :propIndex="get_prop_index(item)" :propValue="item.com_data"></component-diy-title>
@@ -209,6 +210,7 @@
     import componentDiyPluginsGoodsDetailWholesale from '@/pages/diy/components/diy/plugins-goods-detail-wholesale'
     import componentDiyPluginsGoodsDetailAsk from '@/pages/diy/components/diy/plugins-goods-detail-ask'
     import componentDiyPluginsUserVip from '@/pages/diy/components/diy/plugins-user-vip'
+    import componentDiyPluginsSignin from '@/pages/diy/components/diy/plugins-signin'
     import componentDiyTabsCarousel from '@/pages/diy/components/diy/tabs-carousel';
     import componentDiyTabsMagic from '@/pages/diy/components/diy/tabs-magic';
     import componentDataTabs from '@/pages/diy/components/diy/data-tabs';
@@ -329,6 +331,7 @@
             componentDiyPluginsGoodsDetailWholesale,
             componentDiyPluginsGoodsDetailAsk,
             componentDiyPluginsUserVip,
+            componentDiyPluginsSignin,
             componentDiyTabsCarousel,
             componentDiyTabsMagic,
             componentDataTabs,
