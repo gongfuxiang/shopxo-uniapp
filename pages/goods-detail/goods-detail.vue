@@ -61,7 +61,7 @@
                 <!-- 视频 -->
                 <block v-if="(goods.video || null) != null">
                     <view v-if="goods_video_is_autoplay" class="goods-video pa tc">
-                        <video class="video" :src="goods.video" :autoplay="goods_video_is_autoplay" :show-center-play-btn="true" :controls="false" :show-play-btn="false" :enable-progress-gesture="false" :show-fullscreen-btn="false" :style="'height: ' + photo_height + ' !important;'">
+                        <video class="video" :src="goods.video" :poster="goods.video_cover || goods.images || ''" :autoplay="goods_video_is_autoplay" :show-center-play-btn="true" :controls="false" :show-play-btn="false" :enable-progress-gesture="false" :show-fullscreen-btn="false" :style="'height: ' + photo_height + ' !important;'">
                             <cover-view class="goods-video-submit pa">
                                 <cover-image class="image cp" @tap="goods_video_close_event" :src="common_static_url + 'video-close-icon.png'" mode="aspectFit"></cover-image>
                             </cover-view>

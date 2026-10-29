@@ -145,11 +145,14 @@ export function goods_cover(goods) {
     return (goods && goods.images) || '';
 }
 
-/** DIY 视频封面：配置优先，否则商品主图 */
+/** DIY 视频封面：DIY配置 > 商品视频封面 > 商品主图 */
 export function resolve_video_poster(content, goods) {
     const custom = media_url(content && content.video_poster_img);
     if (custom) {
         return custom;
+    }
+    if (goods && goods.video_cover) {
+        return goods.video_cover;
     }
     return goods_cover(goods);
 }
