@@ -1,5 +1,5 @@
 <template>
-    <view class="diy-buy-nav-fixed">
+    <view class="diy-buy-nav-fixed buy-nav">
         <view class="bottom-line-exclude">
             <view :style="style_container">
                 <view class="bar flex-row align-c" :style="style_img_container">

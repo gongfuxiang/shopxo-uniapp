@@ -64,6 +64,9 @@
                                         <component-diy-activity v-else-if="item.key == 'activity'" :ref="'diy_goods_buy' + index" :propDiyIndex="index" :propIndex="get_prop_index(item)" :propKey="item.id + index" :propValue="item.com_data" @goods_buy_event="goods_buy_event"></component-diy-activity>
                                         <component-diy-salerecords v-else-if="item.key == 'salerecords'" :propIndex="get_prop_index(item)" :propKey="item.id + index" :propValue="item.com_data"></component-diy-salerecords>
                                         <component-diy-plugins-goods-detail-goodsservice v-else-if="item.key == 'plugins-goods-detail-goodsservice'" :propIndex="get_prop_index(item)" :propKey="item.id + index" :propValue="item.com_data" :propGoodsService="propGoodsService"></component-diy-plugins-goods-detail-goodsservice>
+                                        <component-diy-goods-detail-panel-tips v-else-if="item.key == 'goods-detail-panel-tips'" :propIndex="get_prop_index(item)" :propKey="item.id + index" :propValue="item.com_data" :propGoods="propGoods"></component-diy-goods-detail-panel-tips>
+                                        <component-diy-plugins-goods-detail-intellectstools-base v-else-if="item.key == 'plugins-goods-detail-intellectstools-base'" :propIndex="get_prop_index(item)" :propKey="item.id + index" :propValue="item.com_data" :propIntellectstools="propIntellectstools"></component-diy-plugins-goods-detail-intellectstools-base>
+                                        <component-diy-plugins-goods-detail-intellectstools-bottom v-else-if="item.key == 'plugins-goods-detail-intellectstools-bottom'" :propIndex="get_prop_index(item)" :propKey="item.id + index" :propValue="item.com_data" :propIntellectstools="propIntellectstools"></component-diy-plugins-goods-detail-intellectstools-bottom>
                                         <component-diy-plugins-goods-detail-vip v-else-if="item.key == 'plugins-goods-detail-vip'" :propIndex="get_prop_index(item)" :propKey="item.id + index" :propValue="item.com_data" :propVipTips="propVipTips"></component-diy-plugins-goods-detail-vip>
                                         <component-diy-plugins-goods-detail-distribution v-else-if="item.key == 'plugins-goods-detail-distribution'" :propIndex="get_prop_index(item)" :propKey="item.id + index" :propValue="item.com_data" :propDistributionTips="propDistributionTips"></component-diy-plugins-goods-detail-distribution>
                                         <component-diy-goods-detail-photo v-else-if="item.key == 'goods-detail-photo'" :propIndex="get_prop_index(item)" :propKey="item.id + index" :propValue="item.com_data" :propGoods="propGoods"></component-diy-goods-detail-photo>
@@ -194,6 +197,9 @@
     import componentDiyActivity from '@/pages/diy/components/diy/activity';
     import componentDiySalerecords from '@/pages/diy/components/diy/salerecords'
     import componentDiyPluginsGoodsDetailGoodsservice from '@/pages/diy/components/diy/plugins-goods-detail-goodsservice'
+    import componentDiyGoodsDetailPanelTips from '@/pages/diy/components/diy/goods-detail-panel-tips'
+    import componentDiyPluginsGoodsDetailIntellectstoolsBase from '@/pages/diy/components/diy/plugins-goods-detail-intellectstools-base'
+    import componentDiyPluginsGoodsDetailIntellectstoolsBottom from '@/pages/diy/components/diy/plugins-goods-detail-intellectstools-bottom'
     import componentDiyPluginsGoodsDetailVip from '@/pages/diy/components/diy/plugins-goods-detail-vip'
     import componentDiyPluginsGoodsDetailDistribution from '@/pages/diy/components/diy/plugins-goods-detail-distribution'
     import componentDiyGoodsDetailPhoto from '@/pages/diy/components/diy/goods-detail-photo'
@@ -267,6 +273,10 @@
                 type: Array,
                 default: null,
             },
+            propIntellectstools: {
+                type: Object,
+                default: null,
+            },
         },
         components: {
             componentDiyFooter,
@@ -315,6 +325,9 @@
             componentDiyActivity,
             componentDiySalerecords,
             componentDiyPluginsGoodsDetailGoodsservice,
+            componentDiyGoodsDetailPanelTips,
+            componentDiyPluginsGoodsDetailIntellectstoolsBase,
+            componentDiyPluginsGoodsDetailIntellectstoolsBottom,
             componentDiyPluginsGoodsDetailVip,
             componentDiyPluginsGoodsDetailDistribution,
             componentDiyGoodsDetailPhoto,

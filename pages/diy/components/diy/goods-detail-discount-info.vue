@@ -150,7 +150,9 @@
 </script>
 <style lang="scss" scoped>
 .bar { width: 100%; display: flex; flex-direction: row; align-items: center; box-sizing: border-box; }
-.scroll { flex: 1; width: 0; min-width: 0; white-space: nowrap; }
+.scroll { flex: 1; width: 0; min-width: 0; white-space: nowrap; scrollbar-width: none; }
+.scroll::-webkit-scrollbar,
+.scroll ::-webkit-scrollbar { display: none; width: 0; height: 0; }
 .items { display: inline-flex; flex-direction: row; align-items: center; flex-wrap: nowrap; }
 .chip, .text-item { flex-shrink: 0; line-height: 1.4; box-sizing: border-box; }
 .comma-wrap { flex: 1; min-width: 0; }

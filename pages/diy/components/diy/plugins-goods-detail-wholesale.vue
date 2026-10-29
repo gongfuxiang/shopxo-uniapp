@@ -3,7 +3,8 @@
         <view :style="outer_img">
             <view class="card" :style="card_style" @tap="open_popup">
                 <view class="main">
-                    <view class="tiers">
+                    <scroll-view scroll-x class="tiers" :show-scrollbar="false">
+                        <view class="tier-track">
                         <view v-for="(tier, index) in tiers" :key="index" class="tier">
                             <view class="value" :style="value_style">
                                 <text v-if="tier.kind == 'price'" class="symbol" :style="symbol_style">{{ symbol }}</text>
@@ -12,7 +13,8 @@
                             </view>
                             <text class="desc" :style="desc_style">{{ tier.desc }}</text>
                         </view>
-                    </view>
+                        </view>
+                    </scroll-view>
                     <view v-if="more_show" class="more">
                         <text v-if="more_text" class="more-text" :style="more_text_style">{{ more_text }}</text>
                         <image v-if="more_img" class="more-img" :style="more_img_style" :src="more_img" mode="aspectFit"></image>
@@ -119,10 +121,12 @@
 </script>
 <style lang="scss" scoped>
 .card { width: 100%; box-sizing: border-box; }
-.main, .tiers { display: flex; flex-direction: row; align-items: center; width: 100%; min-width: 0; }
-.main { gap: 16rpx; }
-.tiers { flex: 1; }
-.tier { flex: 1; min-width: 0; display: flex; flex-direction: column; align-items: center; }
+.main { display: flex; flex-direction: row; align-items: center; width: 100%; min-width: 0; gap: 16rpx; }
+.tiers { flex: 1; width: 0; min-width: 0; white-space: nowrap; scrollbar-width: none; }
+.tiers::-webkit-scrollbar,
+.tiers ::-webkit-scrollbar { display: none; width: 0; height: 0; }
+.tier-track { display: inline-flex; flex-direction: row; align-items: flex-start; min-width: 100%; }
+.tier { flex: 1 0 auto; display: flex; flex-direction: column; align-items: center; padding: 0 8rpx; box-sizing: border-box; }
 .value { font-weight: 700; line-height: 1.15; white-space: nowrap; }
 .unit { font-weight: 400; }
 .desc { margin-top: 12rpx; line-height: 1.2; text-align: center; }

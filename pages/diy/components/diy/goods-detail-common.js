@@ -294,19 +294,48 @@ export function price_pack(style) {
     };
 }
 
+/** H5 页面最大 800px。750rpx 会按浏览器宽度换算，宽屏下相册会比内容区更高。 */
+function h5_page_width() {
+    let width = 375;
+    try {
+        const info = uni.getSystemInfoSync() || {};
+        width = Number(info.windowWidth || info.screenWidth) || width;
+    } catch (e) {}
+    if (width > 800) {
+        width = 800;
+    }
+    return width;
+}
+
 export function hero_height(style) {
     const mode = String((style && style.hero_height_mode) || 'square');
     if (mode === 'square') {
+        // #ifdef H5
+        return h5_page_width() + 'px';
+        // #endif
+        // #ifndef H5
         return '750rpx';
+        // #endif
     }
     if (mode === 'screen') {
         const ratio = Number(style.hero_height_ratio);
         const percent = Number.isFinite(ratio) && ratio > 0 ? ratio : 50;
-        let window_height = 667;
+        let screen_height = 667;
         try {
-            window_height = uni.getSystemInfoSync().windowHeight || window_height;
+            screen_height = uni.getSystemInfoSync().windowHeight || screen_height;
         } catch (e) {}
-        return (window_height * percent / 100) + 'px';
+        // #ifdef H5
+        // 设计器手机屏是 39rem × 84.6rem。宽屏页面只有 800 宽，高度按这个比例跟着内容宽度走。
+        let window_width = 0;
+        try {
+            const info = uni.getSystemInfoSync() || {};
+            window_width = Number(info.windowWidth || info.screenWidth) || 0;
+        } catch (e) {}
+        if (window_width > 800) {
+            screen_height = h5_page_width() * (84.6 / 39);
+        }
+        // #endif
+        return (screen_height * percent / 100) + 'px';
     }
     const h = Number(style && style.hero_height);
     const height = Number.isFinite(h) && h > 0 ? h : 375;
