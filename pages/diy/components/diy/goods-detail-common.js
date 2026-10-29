@@ -1,4 +1,4 @@
-import { common_styles_computer, common_img_computer, gradient_handle, background_computer, padding_computer, radius_computer, margin_computer } from '@/common/js/common/common.js';
+import { common_styles_computer, common_img_computer, gradient_handle, background_computer, padding_computer, radius_computer, margin_computer, border_computer } from '@/common/js/common/common.js';
 
 export function text_style(color, size, extra) {
     const n = Number(size);
@@ -130,6 +130,152 @@ export function visible_sku(list, limit) {
         }
     });
     return shown;
+}
+
+export function goods_video(goods) {
+    const video = goods && goods.video;
+    if (video == null || video === '') {
+        return '';
+    }
+    return String(video);
+}
+
+function media_radius(value, fallback) {
+    if (value && typeof value === 'object') {
+        return value;
+    }
+    const n = value == null || value === '' ? fallback : Number(value);
+    const size = Number.isFinite(n) ? n : fallback;
+    return {
+        radius: size,
+        radius_top_left: size,
+        radius_top_right: size,
+        radius_bottom_right: size,
+        radius_bottom_left: size,
+    };
+}
+
+function media_padding(value, fallback) {
+    if (value && typeof value === 'object') {
+        return value;
+    }
+    return fallback;
+}
+
+/** 视频播放控件图标：图片优先，其次字体图标名；空则用默认图标 */
+export function video_ctrl_icons(content) {
+    content = content || {};
+    const one = (img_key, icon_key, fallback) => {
+        const img = media_url(content[img_key]);
+        let icon = content[icon_key] == null ? '' : String(content[icon_key]);
+        if (!img && !icon) {
+            icon = fallback;
+        }
+        return { img: img, icon: icon };
+    };
+    return {
+        play: one('video_play_img', 'video_play_icon', 'player'),
+        pause: one('video_pause_img', 'video_pause_icon', 'player-pause'),
+        sound: one('video_sound_img', 'video_sound_icon', 'speaker'),
+        mute: one('video_mute_img', 'video_mute_icon', 'mute'),
+    };
+}
+
+/** 视频播放控件按钮样式 */
+export function video_ctrl_styles(style) {
+    style = style || {};
+    const pick = (value, fallback) => (value == null ? fallback : value);
+    const radius = media_radius(style.video_ctrl_radius, 14);
+    const padding = media_padding(style.video_ctrl_padding, {
+        padding: 6,
+        padding_top: 6,
+        padding_bottom: 6,
+        padding_left: 6,
+        padding_right: 6,
+    });
+    const size = Number(style.video_ctrl_size);
+    const icon_size = Number.isFinite(size) && size > 0 ? size : 14;
+    const gap = Number(style.video_ctrl_gap);
+    const gap_px = Number.isFinite(gap) ? gap : 8;
+    const color = pick(style.video_ctrl_color, 'rgba(255,255,255,1)');
+    const btn =
+        'background:' +
+        pick(style.video_ctrl_bg, 'rgba(0,0,0,0.45)') +
+        ';color:' +
+        color +
+        ';' +
+        radius_computer(radius) +
+        padding_computer(padding) +
+        'box-sizing:border-box;';
+    const icon = 'color:' + color + ';font-size:' + icon_size * 2 + 'rpx;line-height:' + icon_size * 2 + 'rpx;';
+    const img = 'width:' + icon_size * 2 + 'rpx;height:' + icon_size * 2 + 'rpx;display:block;';
+    const gap_style = 'margin-top:' + gap_px * 2 + 'rpx;';
+    return { btn: btn, icon: icon, img: img, gap: gap_style, color: color, size: icon_size };
+}
+
+/** 视频图集指示器：外层与选中项各自圆角、内边距 */
+export function media_indicator_styles(style) {
+    style = style || {};
+    const box_radius = media_radius(style.indicator_media_radius, 12);
+    const active_radius = media_radius(style.indicator_media_active_radius, 10);
+    const box_padding = media_padding(style.indicator_media_padding, {
+        padding: 2,
+        padding_top: 2,
+        padding_bottom: 2,
+        padding_left: 2,
+        padding_right: 2,
+    });
+    const active_padding = media_padding(style.indicator_media_active_padding, {
+        padding: 2,
+        padding_top: 2,
+        padding_bottom: 2,
+        padding_left: 8,
+        padding_right: 8,
+    });
+    const pick = (value, fallback) => (value == null ? fallback : value);
+    const size_n = Number(style.indicator_media_size);
+    const font_size = Number.isFinite(size_n) && size_n > 0 ? size_n : 11;
+    const active_size_n = Number(style.indicator_media_active_size);
+    const active_font_size = Number.isFinite(active_size_n) && active_size_n > 0 ? active_size_n : font_size;
+    const font = 'font-size:' + font_size * 2 + 'rpx;line-height:' + Math.round(font_size * 2 * 1.45) + 'rpx;';
+    const active_font = 'font-size:' + active_font_size * 2 + 'rpx;line-height:' + Math.round(active_font_size * 2 * 1.45) + 'rpx;';
+    const box_border = border_computer({
+        border_is_show: style.indicator_media_border_is_show || '0',
+        border_color: pick(style.indicator_media_border_color, 'rgba(255,255,255,0.35)'),
+        border_style: style.indicator_media_border_style || 'solid',
+        border_size: style.indicator_media_border_size || { padding: 1, padding_top: 1, padding_right: 1, padding_bottom: 1, padding_left: 1 },
+    });
+    const active_border = border_computer({
+        border_is_show: style.indicator_media_active_border_is_show || '0',
+        border_color: pick(style.indicator_media_active_border_color, 'rgba(255,255,255,1)'),
+        border_style: style.indicator_media_active_border_style || 'solid',
+        border_size: style.indicator_media_active_border_size || { padding: 1, padding_top: 1, padding_right: 1, padding_bottom: 1, padding_left: 1 },
+    });
+    const box =
+        'background:' +
+        pick(style.indicator_media_bg, 'rgba(0,0,0,0.45)') +
+        ';box-sizing:border-box;' +
+        radius_computer(box_radius) +
+        padding_computer(box_padding) +
+        box_border;
+    const active =
+        'background:' +
+        pick(style.indicator_media_active_bg, '#fff') +
+        ';color:' +
+        pick(style.indicator_media_active_color, '#333') +
+        ';box-sizing:border-box;' +
+        active_font +
+        radius_computer(active_radius) +
+        padding_computer(active_padding) +
+        active_border;
+    const idle =
+        'color:' +
+        pick(style.indicator_media_color, 'rgba(255,255,255,0.9)') +
+        ';background:transparent;box-sizing:border-box;' +
+        font +
+        radius_computer(active_radius) +
+        padding_computer(active_padding);
+    return { box: box, active: active, idle: idle };
 }
 
 export function goods_photos(goods) {

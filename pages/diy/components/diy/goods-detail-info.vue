@@ -1,18 +1,32 @@
 <template>
     <view v-if="propGoods" class="oh" :style="outer.container">
         <view :style="outer.img">
-            <view v-if="view.photos.length" class="hero pr" :style="'height:' + height + ';'">
-                <swiper class="swiper" :style="'height:' + height + ';'" :circular="view.photos.length > 1" :autoplay="view.photos.length > 1" :vertical="vertical" @change="photo_change">
-                    <swiper-item v-for="(img, index) in view.photos" :key="index">
-                        <image class="slide" :src="img" mode="aspectFill" :style="'height:' + height + ';'" :data-index="index" @tap="photo_tap"></image>
-                    </swiper-item>
-                </swiper>
-                <view v-if="show_indicator" class="indicator" :class="indicator_type == 'line' ? 'is-line' : indicator_class" :style="indicator_type == 'line' ? line_layout.box : ''">
-                    <text v-if="indicator_type == 'number'" class="num">{{ photo_index + 1 }}/{{ view.photos.length }}</text>
+            <view v-if="slide_total" class="hero pr" :style="'height:' + height + ';'">
+                <goods-detail-hero-swiper ref="hero" :photos="view.photos" :video="video" :height="height" :vertical="vertical" :prop-key="propKey" :ctrl-icons="ctrl_icons" :ctrl-style="ctrl_style" @change="photo_change" @preview="photo_preview" @ctrl="on_ctrl"></goods-detail-hero-swiper>
+                <view v-if="show_indicator && indicator_type == 'media'" class="indicator" :class="indicator_class">
+                    <view class="media-switch" :style="media_box_style">
+                        <view v-if="video" class="media-item" :style="media_item_style(photo_index === 0)" @tap.stop="media_jump(0)">{{ video_label }}</view>
+                        <view class="media-item" :style="media_item_style(photo_index > 0 || !video)" @tap.stop="media_jump(video ? 1 : 0)">{{ album_text }}</view>
+                    </view>
+                </view>
+                <view v-else-if="show_indicator" class="indicator" :class="indicator_type == 'line' ? 'is-line' : indicator_class" :style="indicator_type == 'line' ? line_layout.box : ''">
+                    <text v-if="indicator_type == 'number'" class="num">{{ photo_index + 1 }}/{{ slide_total }}</text>
                     <block v-else>
-                        <view v-for="(img, index) in view.photos" :key="index" :class="indicator_type == 'line' ? 'line' : 'dot'" :style="mark_style(index)"></view>
+                        <view v-for="index in slide_total" :key="index" :class="indicator_type == 'line' ? 'line' : 'dot'" :style="mark_style(index - 1)"></view>
                     </block>
                 </view>
+                <!-- #ifdef H5 -->
+                <view v-if="show_h5_ctrls" class="video-ctrl-layer">
+                    <view class="horn-btn" :style="ctrl_style.btn" @tap.stop="hero_toggle_pause">
+                        <image v-if="h5_pause_img" class="horn-img" :src="h5_pause_img" :style="ctrl_style.img" mode="aspectFit"></image>
+                        <text v-else class="horn-icon" :class="h5_pause_class" :style="ctrl_style.icon">{{ h5_pause_text }}</text>
+                    </view>
+                    <view class="horn-btn" :style="ctrl_style.btn + (ctrl_style.gap || '')" @tap.stop="hero_toggle_mute">
+                        <image v-if="h5_mute_img" class="horn-img" :src="h5_mute_img" :style="ctrl_style.img" mode="aspectFit"></image>
+                        <text v-else class="horn-icon" :class="h5_mute_class" :style="ctrl_style.icon">{{ h5_mute_text }}</text>
+                    </view>
+                </view>
+                <!-- #endif -->
                 <scroll-view v-if="theme == '0' && show('sku') && view.sku.length" scroll-x class="hero-sku" :show-scrollbar="false" @tap.stop="spec_tap">
                     <view class="sku-row" :style="theme0_row_style">
                         <block v-for="(item, index) in sku_show" :key="index">
@@ -121,8 +135,10 @@
     </view>
 </template>
 <script>
-    import { field_on, show_brief, goods_view, outer_style, card_style, price_pack, hero_height, preview_photos, open_spec, call_page, icon_name, page_vm, visible_sku, indicator_layout } from './goods-detail-common.js';
+    import { field_on, show_brief, goods_view, goods_video, outer_style, card_style, price_pack, hero_height, preview_photos, open_spec, call_page, icon_name, page_vm, visible_sku, indicator_layout, media_indicator_styles, video_ctrl_icons, video_ctrl_styles } from './goods-detail-common.js';
+    import GoodsDetailHeroSwiper from './goods-detail-hero-swiper.vue';
     export default {
+        components: { GoodsDetailHeroSwiper },
         props: {
             propValue: { type: Object, default: () => ({}) },
             propGoods: { type: Object, default: null },
@@ -130,7 +146,13 @@
             propIndex: { type: Number, default: 0 },
         },
         data() {
-            return { photo_index: 0 };
+            return {
+                photo_index: 0,
+                video_playing: false,
+                video_paused: false,
+                video_muted: false,
+                video_fullscreen: false,
+            };
         },
         computed: {
             content() { return (this.propValue && this.propValue.content) || {}; },
@@ -140,6 +162,8 @@
                 return ['0', '1', '2', '3', '4'].indexOf(theme) === -1 ? '0' : theme;
             },
             view() { return goods_view(this.propGoods); },
+            video() { return goods_video(this.propGoods); },
+            slide_total() { return this.view.photos.length + (this.video ? 1 : 0); },
             outer() { return outer_style(this.style); },
             card() { return card_style(this.style); },
             pack() { return price_pack(this.style); },
@@ -147,12 +171,14 @@
             vertical() { return this.content.scroll_direction === 'vertical'; },
             indicator_type() {
                 const type = String(this.content.indicator_type || 'dot');
-                return type === 'line' || type === 'number' ? type : 'dot';
+                if (type === 'line' || type === 'number' || type === 'media') return type;
+                return 'dot';
             },
             show_indicator() {
-                if (this.view.photos.length < 2) return false;
-                if (this.content.indicator_show == null) return true;
-                return this.content.indicator_show !== false;
+                const shown = this.content.indicator_show == null ? true : this.content.indicator_show !== false;
+                if (!shown) return false;
+                if (this.indicator_type === 'media') return this.view.photos.length > 0 || !!this.video;
+                return this.slide_total >= 2;
             },
             indicator_class() { return 'is-' + String(this.content.indicator_position || 'center-bottom'); },
             line_layout() {
@@ -163,6 +189,74 @@
                     bottom = this.sku_has_img ? 16 + this.sku_img_px : 24;
                 }
                 return indicator_layout(this.content, this.style, { gap: 20, bottom: bottom });
+            },
+            video_label() {
+                return this.content.indicator_video_text == null ? '视频' : String(this.content.indicator_video_text);
+            },
+            album_label() {
+                return this.content.indicator_album_text == null ? '图集' : String(this.content.indicator_album_text);
+            },
+            album_count() {
+                const total = this.view.photos.length;
+                if (!total) return '';
+                if (this.video && this.photo_index === 0) return String(total);
+                const pos = this.video ? this.photo_index : this.photo_index + 1;
+                return pos + '/' + total;
+            },
+            album_text() {
+                if (this.album_label && this.album_count) return this.album_label + ' ' + this.album_count;
+                return this.album_label || this.album_count;
+            },
+            media_styles() {
+                return media_indicator_styles(this.style);
+            },
+            media_box_style() {
+                return this.media_styles.box;
+            },
+            ctrl_icons() {
+                return video_ctrl_icons(this.content);
+            },
+            ctrl_style() {
+                return video_ctrl_styles(this.style);
+            },
+            show_h5_ctrls() {
+                return !!this.video && this.photo_index === 0 && this.video_playing && !this.video_fullscreen;
+            },
+            h5_pause_img() {
+                const icons = this.ctrl_icons || {};
+                const item = this.video_paused ? icons.play : icons.pause;
+                return (item && item.img) || '';
+            },
+            h5_mute_img() {
+                const icons = this.ctrl_icons || {};
+                const item = this.video_muted ? icons.mute : icons.sound;
+                return (item && item.img) || '';
+            },
+            h5_pause_class() {
+                const icons = this.ctrl_icons || {};
+                const item = this.video_paused ? icons.play : icons.pause;
+                const name = item && item.icon ? String(item.icon) : '';
+                if (!name) return '';
+                return 'iconfont ' + (name.indexOf('icon-') === 0 ? name : 'icon-' + name);
+            },
+            h5_mute_class() {
+                const icons = this.ctrl_icons || {};
+                const item = this.video_muted ? icons.mute : icons.sound;
+                const name = item && item.icon ? String(item.icon) : '';
+                if (!name) return 'iconfont';
+                return 'iconfont ' + (name.indexOf('icon-') === 0 ? name : 'icon-' + name);
+            },
+            h5_pause_text() {
+                const icons = this.ctrl_icons || {};
+                const item = this.video_paused ? icons.play : icons.pause;
+                if (item && item.icon) return '';
+                return this.video_paused ? '▶' : '❚❚';
+            },
+            h5_mute_text() {
+                const icons = this.ctrl_icons || {};
+                const item = this.video_muted ? icons.mute : icons.sound;
+                if (item && item.icon) return '';
+                return this.video_muted ? '\ue7e0' : '\ue7ef';
             },
             tag_before() { return this.content.tag_position !== 'row'; },
             tag_before_list() { return this.show('tags') && this.tag_before ? this.view.tags : []; },
@@ -286,10 +380,34 @@
                 const n = Number(value);
                 return Number.isFinite(n) ? n : fallback;
             },
-            photo_change(e) { this.photo_index = (e.detail && e.detail.current) || 0; },
-            photo_tap(e) { preview_photos(this.view.photos, e.currentTarget.dataset.index || 0); },
+            photo_change(index) { this.photo_index = index || 0; },
+            photo_preview(index) { preview_photos(this.view.photos, index || 0); },
+            media_item_style(on) {
+                return on ? this.media_styles.active : this.media_styles.idle;
+            },
+            media_jump(index) {
+                const hero = this.$refs.hero;
+                if (hero && hero.jump) hero.jump(index);
+            },
+            on_ctrl(state) {
+                state = state || {};
+                this.video_playing = !!state.playing;
+                this.video_paused = !!state.paused;
+                this.video_muted = !!state.muted;
+                this.video_fullscreen = !!state.fullscreen;
+            },
+            hero_toggle_pause() {
+                const hero = this.$refs.hero;
+                if (hero && hero.toggle_pause) hero.toggle_pause();
+            },
+            hero_toggle_mute() {
+                const hero = this.$refs.hero;
+                if (hero && hero.toggle_mute) hero.toggle_mute();
+            },
             mark_style(index) {
-                const bg = index == this.photo_index ? (this.style.indicator_active_color || this.pack.accent) : (this.style.indicator_color || 'rgba(255,255,255,0.75)');
+                const active = this.style.indicator_active_color == null ? this.pack.accent : this.style.indicator_active_color;
+                const idle = this.style.indicator_color == null ? 'rgba(255,255,255,0.75)' : this.style.indicator_color;
+                const bg = index == this.photo_index ? active : idle;
                 if (this.indicator_type != 'line') {
                     return 'background:' + bg + ';';
                 }
@@ -341,9 +459,38 @@
 <style lang="scss" scoped>
 .hero, .swiper, .slide { width: 100%; }
 .slide { display: block; }
-.indicator { position: absolute; z-index: 2; display: flex; gap: 8rpx; align-items: center; }
+.indicator { position: absolute; z-index: 2; display: flex; gap: 8rpx; align-items: center; pointer-events: none; }
+.video-ctrl-layer {
+    position: absolute;
+    right: 16rpx;
+    bottom: 100rpx;
+    z-index: 6;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    pointer-events: auto;
+}
+.video-ctrl-layer .horn-btn {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    line-height: 1;
+    color: #fff;
+}
+.video-ctrl-layer .horn-icon {
+    color: #fff;
+    line-height: 1;
+    text-align: center;
+}
+.video-ctrl-layer .horn-img {
+    display: block;
+}
 .indicator.is-line { left: auto; right: auto; top: auto; bottom: auto; gap: 0; }
 .indicator.is-center-bottom { left: 0; right: 0; bottom: 24rpx; justify-content: center; }
+.media-switch { display: flex; flex-direction: row; align-items: center; box-sizing: border-box; pointer-events: auto; }
+.media-item { box-sizing: border-box; text-align: center; pointer-events: auto; }
+.indicator .num, .indicator .dot, .indicator .line { pointer-events: auto; }
 .indicator.is-left-bottom { left: 24rpx; bottom: 24rpx; }
 .indicator.is-right-bottom { right: 24rpx; bottom: 24rpx; }
 .indicator.is-center-top { left: 0; right: 0; top: 24rpx; justify-content: center; }
