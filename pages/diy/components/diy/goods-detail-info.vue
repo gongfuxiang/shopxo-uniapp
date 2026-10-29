@@ -2,7 +2,7 @@
     <view v-if="propGoods" class="oh" :style="outer.container">
         <view :style="outer.img">
             <view v-if="slide_total" class="hero pr" :style="'height:' + height + ';'">
-                <goods-detail-hero-swiper ref="hero" :photos="view.photos" :video="video" :height="height" :vertical="vertical" :prop-key="propKey" :ctrl-icons="ctrl_icons" :ctrl-style="ctrl_style" @change="photo_change" @preview="photo_preview" @ctrl="on_ctrl"></goods-detail-hero-swiper>
+                <goods-detail-hero-swiper ref="hero" :photos="view.photos" :video="video" :video-poster="video_poster" :height="height" :vertical="vertical" :prop-key="propKey" :ctrl-icons="ctrl_icons" :ctrl-style="ctrl_style" :is-roll="is_roll" :interval-time="interval_time" :scroll-duration="scroll_duration" @change="photo_change" @preview="photo_preview" @ctrl="on_ctrl"></goods-detail-hero-swiper>
                 <view v-if="show_indicator && indicator_type == 'media'" class="indicator" :class="indicator_class">
                     <view class="media-switch" :style="media_box_style">
                         <view v-if="video" class="media-item" :style="media_item_style(photo_index === 0)" @tap.stop="media_jump(0)">{{ video_label }}</view>
@@ -135,7 +135,7 @@
     </view>
 </template>
 <script>
-    import { field_on, show_brief, goods_view, goods_video, outer_style, card_style, price_pack, hero_height, preview_photos, open_spec, call_page, icon_name, page_vm, visible_sku, indicator_layout, media_indicator_styles, video_ctrl_icons, video_ctrl_styles } from './goods-detail-common.js';
+    import { field_on, show_brief, goods_view, goods_video, media_url, resolve_video_poster, outer_style, card_style, price_pack, hero_height, preview_photos, open_spec, call_page, icon_name, page_vm, visible_sku, indicator_layout, media_indicator_styles, video_ctrl_icons, video_ctrl_styles } from './goods-detail-common.js';
     import GoodsDetailHeroSwiper from './goods-detail-hero-swiper.vue';
     export default {
         components: { GoodsDetailHeroSwiper },
@@ -163,12 +163,22 @@
             },
             view() { return goods_view(this.propGoods); },
             video() { return goods_video(this.propGoods); },
+            video_poster() { return resolve_video_poster(this.content, this.propGoods); },
             slide_total() { return this.view.photos.length + (this.video ? 1 : 0); },
             outer() { return outer_style(this.style); },
             card() { return card_style(this.style); },
             pack() { return price_pack(this.style); },
             height() { return hero_height(this.style); },
             vertical() { return this.content.scroll_direction === 'vertical'; },
+            is_roll() { return this.content.is_roll != '0'; },
+            interval_time() {
+                const n = Number(this.content.interval_time);
+                return Number.isFinite(n) && n > 0 ? n : 3;
+            },
+            scroll_duration() {
+                const n = Number(this.content.scroll_duration);
+                return Number.isFinite(n) && n > 0 ? n : 400;
+            },
             indicator_type() {
                 const type = String(this.content.indicator_type || 'dot');
                 if (type === 'line' || type === 'number' || type === 'media') return type;

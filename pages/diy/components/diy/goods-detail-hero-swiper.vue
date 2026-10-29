@@ -1,6 +1,6 @@
 <template>
     <view class="hero-media">
-        <swiper class="swiper" :style="box_style" :current="current" :circular="loop" :autoplay="auto" :vertical="vertical" :duration="400" @change="on_change">
+        <swiper class="swiper" :style="box_style" :current="current" :circular="loop" :autoplay="auto" :interval="interval_ms" :vertical="vertical" :duration="duration_ms" @change="on_change">
             <swiper-item v-if="video">
                 <view class="slide-box" :id="box_id" :style="box_style">
                     <image v-if="poster" class="slide" :src="poster" mode="aspectFill" :style="box_style"></image>
@@ -78,12 +78,20 @@
         props: {
             photos: { type: Array, default: () => [] },
             video: { type: String, default: '' },
+            /** DIY/主图封面，空则再退回相册首图 */
+            videoPoster: { type: String, default: '' },
             height: { type: String, default: '375px' },
             vertical: { type: Boolean, default: false },
             switchBottom: { type: String, default: '24rpx' },
             propKey: { type: [String, Number], default: '' },
             ctrlIcons: { type: Object, default: () => ({}) },
             ctrlStyle: { type: Object, default: () => ({}) },
+            /** 自动轮播开关 */
+            isRoll: { type: Boolean, default: true },
+            /** 间隔秒数 */
+            intervalTime: { type: [Number, String], default: 3 },
+            /** 切换动画毫秒 */
+            scrollDuration: { type: [Number, String], default: 400 },
         },
         data() {
             return {
@@ -111,13 +119,29 @@
                 return 'width:100%;height:' + this.height + ';';
             },
             poster() {
+                if (this.videoPoster) {
+                    return this.videoPoster;
+                }
                 return this.photos.length ? this.photos[0] : '';
             },
+            slide_total() {
+                return this.photos.length + (this.video ? 1 : 0);
+            },
             loop() {
-                return !this.video && this.photos.length > 1;
+                return this.slide_total > 1;
             },
             auto() {
-                return !this.video && this.photos.length > 1;
+                // 有视频也可自动轮播；正在播视频时暂停，避免和播放冲突
+                return this.isRoll && this.slide_total > 1 && !this.playing;
+            },
+            interval_ms() {
+                const n = Number(this.intervalTime);
+                const sec = Number.isFinite(n) && n > 0 ? n : 3;
+                return Math.round(sec * 1000);
+            },
+            duration_ms() {
+                const n = Number(this.scrollDuration);
+                return Number.isFinite(n) && n > 0 ? Math.round(n) : 400;
             },
             video_id() {
                 return 'goods-hero-video-' + String(this.propKey || '0');

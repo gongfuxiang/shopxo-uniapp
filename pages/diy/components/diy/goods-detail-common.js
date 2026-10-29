@@ -140,6 +140,20 @@ export function goods_video(goods) {
     return String(video);
 }
 
+/** 商品主图 */
+export function goods_cover(goods) {
+    return (goods && goods.images) || '';
+}
+
+/** DIY 视频封面：配置优先，否则商品主图 */
+export function resolve_video_poster(content, goods) {
+    const custom = media_url(content && content.video_poster_img);
+    if (custom) {
+        return custom;
+    }
+    return goods_cover(goods);
+}
+
 function media_radius(value, fallback) {
     if (value && typeof value === 'object') {
         return value;

@@ -20,41 +20,41 @@
                         <x-skeleton propType="banner"></x-skeleton>
                         <x-skeleton propType="menu"></x-skeleton>
                         <x-skeleton propType="waterfall"></x-skeleton>
-                        <x-skeleton propType="list" propRowNumber="4"></x-skeleton>
+                        <x-skeleton propType="list" :propRowNumber="4"></x-skeleton>
                     </block>
                     <!-- 商品分类-整体内容 -->
                     <block v-else-if="propPage == 'goods-category'">
-                        <x-skeleton propType="menu" propRowNumber="1"></x-skeleton>
+                        <x-skeleton propType="menu" :propRowNumber="1"></x-skeleton>
                         <view class="goods-category-content flex-row jc-sb">
                             <view class="left">
                                 <x-skeleton :propConfig="skeleton_goods_category_left_config"></x-skeleton>
                             </view>
                             <view class="right">
-                                <x-skeleton propType="list" propRowNumber="7"></x-skeleton>
+                                <x-skeleton propType="list" :propRowNumber="7"></x-skeleton>
                             </view>
                         </view>
                     </block>
                     <!-- 商品分类-内容项 -->
                     <block v-else-if="propPage == 'goods-category-item'">
-                        <x-skeleton propType="list" propRowNumber="6"></x-skeleton>
+                        <x-skeleton propType="list" :propRowNumber="6"></x-skeleton>
                     </block>
                     <!-- 购物车 -->
                     <block v-else-if="propPage == 'cart'">
-                        <x-skeleton propType="list" propRowNumber="3"></x-skeleton>
-                        <x-skeleton propType="waterfall" propRowNumber="4"></x-skeleton>
+                        <x-skeleton propType="list" :propRowNumber="3"></x-skeleton>
+                        <x-skeleton propType="waterfall" :propRowNumber="4"></x-skeleton>
                     </block>
                     <!-- 商品详情 -->
                     <block v-else-if="propPage == 'goods'">
-                        <x-skeleton propType="banner" propHeightNumber="600"></x-skeleton>
+                        <x-skeleton propType="banner" :propHeightNumber="600"></x-skeleton>
                         <x-skeleton propType="text"></x-skeleton>
                         <x-skeleton propType="info"></x-skeleton>
-                        <x-skeleton propType="waterfall" propRowNumber="4"></x-skeleton>
+                        <x-skeleton propType="waterfall" :propRowNumber="4"></x-skeleton>
                     </block>
                     <!-- 用户中心 -->
                     <block v-else-if="propPage == 'user'">
                         <x-skeleton propType="info"></x-skeleton>
-                        <x-skeleton propType="menu" propRowNumber="1"></x-skeleton>
-                        <x-skeleton propType="list" propRowNumber="6"></x-skeleton>
+                        <x-skeleton propType="menu" :propRowNumber="1"></x-skeleton>
+                        <x-skeleton propType="list" :propRowNumber="6"></x-skeleton>
                     </block>
                 </block>
                 <block v-else>
