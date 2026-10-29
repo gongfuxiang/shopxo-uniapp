@@ -2,7 +2,7 @@
     <view :class="theme_view">
         <!-- 后台指定了商品详情DIY时，按首页同样的方式渲染装修页 -->
         <block v-if="data_mode == 3 && (diy_data || null) != null && (diy_data.config || null) != null">
-            <component-diy :propValue="diy_data.config" :propDataId="diy_data.id" :propKey="random_value" :propGoods="goods" :propAskData="plugins_ask_data" :propVipTips="plugins_vip_goods_detail_open_tips_data" :propDistributionTips="plugins_distribution_goods_detail_profit_tips_data" :propGoodsService="plugins_goodsservice_data" :propIntellectstools="plugins_intellectstools_data" :propBinding="plugins_binding_data" @onLangOpen="diy_lang_open_event" @onShareOpen="diy_share_open_event">
+            <component-diy :propValue="diy_data.config" :propDataId="diy_data.id" :propKey="random_value" :propGoods="goods" :propAskData="plugins_ask_data" :propVipTips="plugins_vip_goods_detail_open_tips_data" :propDistributionTips="plugins_distribution_goods_detail_profit_tips_data" :propGoodsService="plugins_goodsservice_data" :propIntellectstools="plugins_intellectstools_data" :propBinding="plugins_binding_data" :propSeckill="plugins_seckill_data" :propPresale="plugins_presale_data" @onLangOpen="diy_lang_open_event" @onShareOpen="diy_share_open_event">
                 <!-- 由于diy组件异步加载、默认先加载骨架屏展示 -->
                 <component-no-data propStatus="1" :propLoadingUseSkeleton="true" propPage="goods"></component-no-data>
                 <template slot="diy-bottom-content">
@@ -1111,6 +1111,8 @@
                 popup_realstore_status: false,
                 // 组合搭配插件
                 plugins_binding_data: null,
+                plugins_seckill_data: null,
+                plugins_presale_data: null,
                 // 商品服务插件
                 plugins_goodsservice_data: null,
                 popup_goodsservice_status: false,
@@ -1441,6 +1443,8 @@
                                 plugins_intellectstools_data: data.plugins_intellectstools_data || null,
                                 plugins_realstore_data: data.plugins_realstore_data || null,
                                 plugins_binding_data: data.plugins_binding_data || null,
+                                plugins_seckill_data: data.plugins_seckill_data || null,
+                                plugins_presale_data: data.plugins_presale_data || null,
                                 plugins_goodsservice_data: data.plugins_goodsservice_data || null,
                                 plugins_batchbuy_data: data.plugins_batchbuy_data || null,
                                 plugins_ask_data: data.plugins_ask_data || null,

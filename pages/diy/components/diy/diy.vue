@@ -81,6 +81,8 @@
                                         <component-diy-plugins-goods-detail-realstore v-else-if="item.key == 'plugins-goods-detail-realstore'" :propIndex="get_prop_index(item)" :propKey="item.id + index" :propValue="item.com_data" :propGoods="propGoods"></component-diy-plugins-goods-detail-realstore>
                                         <component-diy-plugins-goods-detail-binding v-else-if="item.key == 'plugins-goods-detail-binding'" :propIndex="get_prop_index(item)" :propKey="item.id + index" :propValue="item.com_data" :propGoods="propGoods" :propBinding="propBinding"></component-diy-plugins-goods-detail-binding>
                                         <component-diy-plugins-goods-detail-binding-relevant v-else-if="item.key == 'plugins-goods-detail-binding-relevant'" :propIndex="get_prop_index(item)" :propKey="item.id + index" :propValue="item.com_data" :propGoods="propGoods" :propBinding="propBinding"></component-diy-plugins-goods-detail-binding-relevant>
+                                        <component-diy-plugins-goods-detail-seckill v-else-if="item.key == 'plugins-goods-detail-seckill'" :propIndex="get_prop_index(item)" :propKey="item.id + index" :propValue="item.com_data" :propGoods="propGoods" :propSeckill="propSeckill"></component-diy-plugins-goods-detail-seckill>
+                                        <component-diy-plugins-goods-detail-presale v-else-if="item.key == 'plugins-goods-detail-presale'" :propIndex="get_prop_index(item)" :propKey="item.id + index" :propValue="item.com_data" :propGoods="propGoods" :propPresale="propPresale"></component-diy-plugins-goods-detail-presale>
                                         <component-diy-plugins-goods-detail-wholesale v-else-if="item.key == 'plugins-goods-detail-wholesale' || item.key == 'wholesale-rules'" :propIndex="get_prop_index(item)" :propKey="item.id + index" :propValue="item.com_data" :propGoods="propGoods"></component-diy-plugins-goods-detail-wholesale>
                                         <component-diy-plugins-goods-detail-ask v-else-if="item.key == 'plugins-goods-detail-ask' || item.key == 'plugins-goods-ask' || item.key == 'goods-qa'" :propIndex="get_prop_index(item)" :propKey="item.id + index" :propValue="item.com_data" :propGoods="propGoods" :propAskData="propAskData"></component-diy-plugins-goods-detail-ask>
                                         <component-diy-plugins-user-vip v-else-if="item.key == 'plugins-user-vip'" :propIndex="get_prop_index(item)" :propKey="item.id + index" :propValue="item.com_data"></component-diy-plugins-user-vip>
@@ -216,6 +218,8 @@
     import componentDiyPluginsGoodsDetailRealstore from '@/pages/diy/components/diy/plugins-goods-detail-realstore'
     import componentDiyPluginsGoodsDetailBinding from '@/pages/diy/components/diy/plugins-goods-detail-binding'
     import componentDiyPluginsGoodsDetailBindingRelevant from '@/pages/diy/components/diy/plugins-goods-detail-binding-relevant'
+    import componentDiyPluginsGoodsDetailSeckill from '@/pages/diy/components/diy/plugins-goods-detail-seckill'
+    import componentDiyPluginsGoodsDetailPresale from '@/pages/diy/components/diy/plugins-goods-detail-presale'
     import componentDiyPluginsRealstoreOrderNav from '@/pages/diy/components/diy/plugins-realstore-order-nav';
     import componentDiyPluginsGoodsDetailWholesale from '@/pages/diy/components/diy/plugins-goods-detail-wholesale'
     import componentDiyPluginsGoodsDetailAsk from '@/pages/diy/components/diy/plugins-goods-detail-ask'
@@ -285,6 +289,14 @@
                 type: Object,
                 default: null,
             },
+            propSeckill: {
+                type: Object,
+                default: null,
+            },
+            propPresale: {
+                type: Object,
+                default: null,
+            },
         },
         components: {
             componentDiyFooter,
@@ -350,6 +362,8 @@
             componentDiyPluginsGoodsDetailRealstore,
             componentDiyPluginsGoodsDetailBinding,
             componentDiyPluginsGoodsDetailBindingRelevant,
+            componentDiyPluginsGoodsDetailSeckill,
+            componentDiyPluginsGoodsDetailPresale,
             componentDiyPluginsRealstoreOrderNav,
             componentDiyPluginsGoodsDetailWholesale,
             componentDiyPluginsGoodsDetailAsk,
