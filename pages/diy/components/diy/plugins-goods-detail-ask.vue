@@ -137,7 +137,7 @@
             outer_img() { return common_img_computer(this.style.common_style || {}, this.propIndex); },
             wrap_style() {
                 const gap = Number(this.style.header_gap);
-                return 'gap:' + ((Number.isFinite(gap) ? gap : 0) * 2) + 'rpx;';
+                return 'gap:' + ((Number.isFinite(gap) ? gap : 8) * 2) + 'rpx;';
             },
             header_box_style() {
                 const colors = this.style.header_color_list || [];
@@ -148,7 +148,7 @@
                 const radius = radius_computer(this.style.header_radius || {});
                 const pad = this.style.header_padding && typeof this.style.header_padding === 'object'
                     ? padding_computer(this.style.header_padding)
-                    : 'padding:24rpx 0 16rpx 0;box-sizing:border-box;';
+                    : 'padding:0;box-sizing:border-box;';
                 return bg + img + radius + pad + 'overflow:hidden;';
             },
             body_style() {

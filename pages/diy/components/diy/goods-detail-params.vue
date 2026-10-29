@@ -1,7 +1,7 @@
 <template>
     <view v-if="params.length" class="oh" :style="outer.container">
         <view :style="outer.img">
-            <view class="card" :style="card" @tap="open_popup">
+            <view class="wrap" :style="wrap_style">
                 <view v-if="show_header" class="header" :style="header_style">
                     <view v-if="title_bar_show == '1' && title_bar_type == 'line'" class="title-bar" :style="title_bar_style"></view>
                     <image v-else-if="title_bar_show == '1' && title_bar_img" class="title-bar-img" :style="title_bar_img_style" :src="title_bar_img" mode="heightFix"></image>
@@ -10,18 +10,20 @@
                     </view>
                     <text v-if="title_show == '1' && title_text" class="title" :style="title_style">{{ title_text }}</text>
                 </view>
-                <view v-if="theme == '0'" class="row">
-                    <text class="summary">{{ summary }}</text>
-                    <iconfont name="icon-arrow-right" size="24rpx" color="#ccc"></iconfont>
-                </view>
-                <view v-else>
-                    <view v-for="(item, index) in display_params" :key="index" class="param">
-                        <text class="label">{{ item.name }}</text>
-                        <text class="value">{{ item.value }}</text>
+                <view class="card" :style="card" @tap="open_popup">
+                    <view v-if="theme == '0'" class="row">
+                        <text class="summary">{{ summary }}</text>
+                        <iconfont name="icon-arrow-right" size="24rpx" color="#ccc"></iconfont>
                     </view>
-                    <view v-if="show_more" class="more">
-                        <text>{{ more_text }}</text>
-                        <iconfont name="icon-arrow-right" size="24rpx" color="#999"></iconfont>
+                    <view v-else>
+                        <view v-for="(item, index) in display_params" :key="index" class="param">
+                            <text class="label">{{ item.name }}</text>
+                            <text class="value">{{ item.value }}</text>
+                        </view>
+                        <view v-if="show_more" class="more">
+                            <text>{{ more_text }}</text>
+                            <iconfont name="icon-arrow-right" size="24rpx" color="#999"></iconfont>
+                        </view>
                     </view>
                 </view>
             </view>
@@ -29,6 +31,7 @@
     </view>
 </template>
 <script>
+    import { padding_computer } from '@/common/js/common/common.js';
     import { goods_view, outer_style, card_style, call_page, media_url, icon_name } from './goods-detail-common.js';
     export default {
         props: {
@@ -64,10 +67,15 @@
             can_open() {
                 return this.theme === '0' || this.show_more;
             },
+            wrap_style() {
+                const gap = this.px(this.style.header_gap, 8) * 2;
+                return this.show_header ? 'gap:' + gap + 'rpx;' : '';
+            },
             header_style() {
                 const align = String(this.content.header_align || 'left');
                 const justify = align === 'center' ? 'center' : (align === 'right' ? 'flex-end' : 'flex-start');
-                return 'justify-content:' + justify + ';';
+                const pad = this.style.header_padding ? padding_computer(this.style.header_padding) : '';
+                return 'justify-content:' + justify + ';' + pad;
             },
             title_bar_type() {
                 return this.content.title_bar_type === 'img-icon' ? 'img-icon' : 'line';
@@ -131,10 +139,10 @@
     };
 </script>
 <style lang="scss" scoped>
+.wrap { width: 100%; display: flex; flex-direction: column; }
 .card { width: 100%; }
 .header, .row, .param, .more { display: flex; flex-direction: row; align-items: center; }
 .header { width: 100%; min-width: 0; }
-.header { margin-bottom: 16rpx; }
 .title-bar { border-radius: 4rpx; flex-shrink: 0; }
 .title-bar-img { flex: 0 1 auto; min-width: 0; max-width: 100%; margin-right: 12rpx; }
 .title-mark { flex-shrink: 0; margin-right: 12rpx; }

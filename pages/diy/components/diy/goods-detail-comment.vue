@@ -251,7 +251,7 @@
             arrow_color() { return this.style.arrow_color || this.rate_color; },
             wrap_style() {
                 const radius = this.corner(this.style.content_radius, 0);
-                const gap = this.px(this.style.header_gap, 0) * 2;
+                const gap = this.px(this.style.header_gap, 8) * 2;
                 return radius_computer(radius) + 'overflow:hidden;gap:' + gap + 'rpx;';
             },
             header_box_style() {
@@ -260,7 +260,7 @@
                 const imgs = this.style.header_background_img || [];
                 const img = Array.isArray(imgs) && imgs.length ? background_computer({ background_img: imgs, background_img_style: this.style.header_background_img_style || '2' }) : '';
                 const radius = this.style.header_radius && typeof this.style.header_radius === 'object' ? radius_computer(this.style.header_radius) : '';
-                const pad = this.style.header_padding && typeof this.style.header_padding === 'object' ? padding_computer(this.style.header_padding) : 'padding:24rpx 0 8rpx 0;box-sizing:border-box;';
+                const pad = this.style.header_padding && typeof this.style.header_padding === 'object' ? padding_computer(this.style.header_padding) : 'padding:0;box-sizing:border-box;';
                 return gradient + img + radius + pad + 'overflow:hidden;box-sizing:border-box;';
             },
             body_style() {
@@ -269,7 +269,7 @@
                 const imgs = this.style.content_background_img || [];
                 const img = Array.isArray(imgs) && imgs.length ? background_computer({ background_img: imgs, background_img_style: this.style.content_background_img_style || '2' }) : '';
                 const margin = this.style.content_margin && typeof this.style.content_margin === 'object' ? margin_computer(this.style.content_margin) : '';
-                const pad = this.style.content_padding && typeof this.style.content_padding === 'object' ? padding_computer(this.style.content_padding) : 'padding:8rpx 0 28rpx 0;box-sizing:border-box;';
+                const pad = this.style.content_padding && typeof this.style.content_padding === 'object' ? padding_computer(this.style.content_padding) : 'padding:0 0 28rpx 0;box-sizing:border-box;';
                 return gradient + img + margin + pad + 'box-sizing:border-box;gap:24rpx;';
             },
             list_style() {
