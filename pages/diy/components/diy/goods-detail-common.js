@@ -542,6 +542,34 @@ export function preview_photos(photos, index) {
     });
 }
 
+/** 站点配置：优先页面实例字段，否则读全局 config */
+export function site_config(key, fallback = '0') {
+    const page = page_vm();
+    if (page && page[key] != null && page[key] !== '') {
+        return String(page[key]);
+    }
+    try {
+        const app = getApp();
+        if (app && app.globalData && typeof app.globalData.get_config === 'function') {
+            const val = app.globalData.get_config('config.' + key, fallback);
+            if (val != null && val !== '') {
+                return String(val);
+            }
+        }
+    } catch (e) {}
+    return String(fallback == null ? '0' : fallback);
+}
+
+/** 是否使用手机独立详情 */
+export function use_mobile_detail() {
+    return site_config('common_app_is_use_mobile_detail', '0') === '1';
+}
+
+/** 详情正文顶部是否展示商品相册（对齐经典商品详情） */
+export function detail_show_photo() {
+    return site_config('common_is_goods_detail_content_show_photo', '0') === '1';
+}
+
 export function open_comments(goods) {
     if (!goods || !goods.id) {
         return;
