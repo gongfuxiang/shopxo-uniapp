@@ -14,13 +14,35 @@
                                         <view class="model-head-content flex-row align-c jc-sb gap-16 wh-auto pr" :style="header_style">
                                             <!-- 支付宝小程序自带返回按钮，这里就不给返回按钮了，这里给留出一点空间就行 -->
                                             <!-- #ifndef MP-ALIPAY -->
-                                            <view v-if="!is_tabbar_pages && is_left_back_btn_show == '1'" class="z-i dis-inline-block margin-top-xs" @tap="top_nav_left_back_event">
-                                                <iconfont name="icon-arrow-left" size="40rpx" propContainerDisplay="flex" :propStyle="up_slide_left_back_btn_style"></iconfont>
+                                            <view v-if="!is_tabbar_pages && is_left_back_btn_show == '1'" class="z-i left-back-btn-wrap flex-row align-c jc-c" :style="left_back_btn_box_style" @tap="top_nav_left_back_event">
+                                                <iconfont name="icon-arrow-left" :size="left_back_btn_icon_size" propContainerDisplay="flex" :propStyle="up_slide_left_back_btn_style"></iconfont>
                                             </view>
                                             <!-- #endif -->
                                             <!-- #ifdef MP-ALIPAY -->
                                             <view class="dis-inline-block padding-left-sm"></view>
                                             <!-- #endif -->
+                                            <!-- 左侧图标下拉：有返回时在返回右侧，无返回时最左 -->
+                                            <view v-if="left_dropdown_visible" class="left-dropdown-wrap pr z-i">
+                                                <view class="left-dropdown-trigger flex-row align-c jc-c" :style="left_dropdown_trigger_style" @tap.stop="left_dropdown_toggle">
+                                                    <view class="oh flex-row align-c jc-c" :style="{ width: left_dropdown_icon_size, height: left_dropdown_icon_size }">
+                                                        <image-empty v-if="!isEmpty(form.content.left_icon_dropdown_img)" :propImageSrc="form.content.left_icon_dropdown_img[0].url" propImgFit="aspectFit" :propErrorStyle="'width: ' + left_dropdown_icon_size + ';height:' + left_dropdown_icon_size + ';'" :propStyle="'width:' + left_dropdown_icon_size + ';height:' + left_dropdown_icon_size + ';'"></image-empty>
+                                                        <iconfont v-else-if="form.content.left_icon_dropdown_icon" :name="'icon-' + form.content.left_icon_dropdown_icon" :size="left_dropdown_icon_size" :propStyle="left_dropdown_icon_color_style" propContainerDisplay="flex"></iconfont>
+                                                    </view>
+                                                </view>
+                                                <view v-if="left_dropdown_open && !isEmpty(form.content.left_icon_setting)" class="left-dropdown-panel pa" :style="left_dropdown_panel_style">
+                                                    <view class="left-dropdown-arrow" :style="left_dropdown_arrow_style"></view>
+                                                    <view v-for="(item, index) in form.content.left_icon_setting" :key="'left-drop-' + index" class="flex-row align-c pr" :style="left_dropdown_item_style(index)" :data-value="item.link && item.link.page" @tap.stop="left_dropdown_item_event">
+                                                        <view class="flex-row align-c jc-c" :style="{ width: left_dropdown_list_icon_size, height: left_dropdown_list_icon_size }">
+                                                            <image-empty v-if="!isEmpty(item.img)" :propImageSrc="item.img[0].url" :propErrorStyle="'width: ' + left_dropdown_list_icon_size + ';height:' + left_dropdown_list_icon_size + ';'"></image-empty>
+                                                            <iconfont v-else-if="item.icon" :name="'icon-' + item.icon" :size="left_dropdown_list_icon_size" :propStyle="'color:' + (form.style.left_dropdown_list_color || '#333')" propContainerDisplay="flex"></iconfont>
+                                                        </view>
+                                                        <text class="text-line-1" :style="'color:' + (form.style.left_dropdown_list_color || '#333') + ';font-size:' + ((Number(form.style.left_dropdown_list_size) || 13) * 2) + 'rpx;'">{{ item.name || '' }}</text>
+                                                        <view v-if="!isEmpty(item.badge) && item.badge !== 0" class="pa badge-style">
+                                                            <component-badge :propNumber="item.badge || 0"></component-badge>
+                                                        </view>
+                                                    </view>
+                                                </view>
+                                            </view>
                                             <view v-if="['1', '2', '3'].includes(form.content.theme)" class="flex-1">
                                                 <view class="flex-row align-c jc-c ht-auto gap-16" :class="position_class" :style="text_style + up_slide_title_style + 'justify-content:' + form.content.indicator_location || 'center'">
                                                     <template v-if="['2', '3'].includes(form.content.theme)">
@@ -115,7 +137,7 @@
     import imageEmpty from '@/pages/diy/components/diy/modules/image-empty';
     import componentChoiceLocation from '@/components/choice-location/choice-location';
     import componentBadge from '@/components/badge/badge';
-    import { isEmpty, background_computer, gradient_computer, margin_computer, padding_computer, radius_computer } from '@/common/js/common/common.js';
+    import { isEmpty, background_computer, border_computer, gradient_computer, margin_computer, padding_computer, radius_computer } from '@/common/js/common/common.js';
     // 状态栏高度
     var bar_height = parseInt(app.globalData.get_system_info('statusBarHeight', 0));
     // #ifdef MP-TOUTIAO
@@ -184,6 +206,8 @@
                 up_slide_title_style: '',
                 up_slide_location_style: '',
                 up_slide_left_back_btn_style: '',
+                left_back_btn_box_style: '',
+                left_back_btn_icon_size: '40rpx',
                 // 当前页面是否在底部菜单中
                 is_tabbar_pages: app.globalData.is_tabbar_pages(),
                 is_left_back_btn_show: '0',
@@ -203,12 +227,22 @@
                 old_radius: { radius: 0, radius_top_left: 0, radius_top_right: 0, radius_bottom_left: 0, radius_bottom_right: 0 },
                 old_padding: { padding: 0, padding_top: 0, padding_bottom: 0, padding_left: 0, padding_right: 0 },
                 old_margin: { margin: 0, margin_top: 0, margin_bottom: 0, margin_left: 0, margin_right: 0 },
+                // 左侧图标下拉
+                left_dropdown_visible: false,
+                left_dropdown_open: false,
+                left_dropdown_trigger_style: '',
+                left_dropdown_panel_style: '',
+                left_dropdown_arrow_style: '',
+                left_dropdown_icon_size: '36rpx',
+                left_dropdown_list_icon_size: '32rpx',
+                left_dropdown_icon_color_style: 'color:#333;',
             };
         },
         watch: {
             // 监听滚动距离
             propScrollTop(newVal) {
-                const { up_slide_background_color_list, up_slide_background_direction, up_slide_background_img, up_slide_background_img_style, up_slide_display, img_color = '', up_slide_icon_color = '',  header_background_title_color = '', up_slide_title_color = '',  location_color = '', up_slide_location_color = '', left_back_btn_color = '#333', up_slide_left_back_btn_color = '' } = this.propValue.style || {};
+                const style = this.normalize_header_style(this.propValue.style || {});
+                const { up_slide_background_color_list, up_slide_background_direction, up_slide_background_img, up_slide_background_img_style, up_slide_display, img_color = '', up_slide_icon_color = '',  header_background_title_color = '', up_slide_title_color = '',  location_color = '', up_slide_location_color = '' } = style;
                 if (up_slide_display == '1') {
                     // 渐变
                     const gradient = { color_list: up_slide_background_color_list, direction: up_slide_background_direction };
@@ -228,9 +262,10 @@
                     this.up_slide_title_style = this.get_up_slide_style(header_background_title_color, up_slide_title_color, opacity);
                     // 定位更换
                     this.up_slide_location_style = this.get_up_slide_style(location_color, up_slide_location_color, opacity);
-                    // 返回图标更换
-                    this.up_slide_left_back_btn_style = this.get_up_slide_style(left_back_btn_color, up_slide_left_back_btn_color, opacity);
                     this.up_slide_img_style = background_computer(back);
+                    const use_up = newVal > 20;
+                    this.apply_left_back_btn_style(style, use_up, opacity);
+                    this.apply_left_dropdown_trigger_style(style, use_up);
                 }
             },
             propKey(val) {
@@ -251,7 +286,7 @@
             // 初始化
             init() {
                 const new_content = this.propValue.content || {};
-                const new_style = this.propValue.style || {};
+                const new_style = this.normalize_header_style(this.propValue.style || {});
                 let new_roll_style = '';
                 let new_roll_img_style = '';
                 const { header_background_img, header_background_img_style, header_background_color_list, header_background_direction, header_background_type, immersive_style } = new_style;
@@ -308,11 +343,221 @@
                     up_slide_title_style: `color: ${ new_style.header_background_title_color };`,
                     // 定位更换
                     up_slide_location_style: `color: ${ new_style.location_color };`,
-                    // 返回图标更换
-                    up_slide_left_back_btn_style:`color: ${ new_style.left_back_btn_color };`,
                     location_margin: `padding: ${location_margin.margin_top * 2}rpx ${location_margin.margin_right * 2}rpx ${location_margin.margin_bottom * 2}rpx ${location_margin.margin_left * 2}rpx;`, // 悬浮之后有间距，所以要将margin设置成外padding
+                    left_dropdown_visible: !isEmpty(new_content.left_icon_dropdown_img) || !isEmpty(new_content.left_icon_dropdown_icon),
+                    left_dropdown_open: false,
+                    left_dropdown_icon_size: (Number(new_style.left_dropdown_icon_size) || 18) * 2 + 'rpx',
+                    left_dropdown_list_icon_size: (Number(new_style.left_dropdown_list_icon_size) || 16) * 2 + 'rpx',
+                    left_dropdown_panel_style: this.get_left_dropdown_panel_style(new_style),
+                    left_dropdown_arrow_style: this.get_left_dropdown_arrow_style(new_style),
                 });
+                this.apply_left_back_btn_style(new_style, false, 0);
+                this.apply_left_dropdown_trigger_style(new_style, false);
                 // this.$emit('onImmersionModelCallBack', this.is_immersion_model);
+            },
+            /** 老数据：颜色是字符串时迁到新对象，避免报错 */
+            normalize_header_style(style) {
+                const s = style && typeof style === 'object' ? style : {};
+                const legacy_color = (v) => (typeof v === 'string' ? v : v && typeof v === 'object' && typeof v.color === 'string' ? v.color : '');
+                const box_default = () => ({
+                    bg: '',
+                    color: '#333',
+                    icon_size: '23',
+                    radius: { ...this.old_radius, radius: 4, radius_top_left: 4, radius_top_right: 4, radius_bottom_left: 4, radius_bottom_right: 4 },
+                    padding: { ...this.old_padding, padding: 4, padding_top: 4, padding_right: 4, padding_bottom: 4, padding_left: 4 },
+                    border_is_show: '0',
+                    border_color: '#333',
+                    border_style: 'solid',
+                    border_size: { ...this.old_padding, padding: 1, padding_top: 1, padding_right: 1, padding_bottom: 1, padding_left: 1 },
+                });
+                const up_default = () => ({
+                    is_enable: '0',
+                    bg: '',
+                    color: '',
+                    border_is_show: '0',
+                    border_color: '#333',
+                    border_style: 'solid',
+                    border_size: { ...this.old_padding, padding: 1, padding_top: 1, padding_right: 1, padding_bottom: 1, padding_left: 1 },
+                });
+                // 返回
+                if (typeof s.left_back_btn === 'string') {
+                    const c = s.left_back_btn || legacy_color(s.left_back_btn_color) || '#333';
+                    s.left_back_btn = Object.assign(box_default(), { color: c });
+                } else if (!s.left_back_btn || typeof s.left_back_btn !== 'object') {
+                    s.left_back_btn = Object.assign(box_default(), { color: legacy_color(s.left_back_btn_color) || '#333' });
+                } else if (s.left_back_btn_ready !== true && s.left_back_btn_ready !== '1') {
+                    const legacy = legacy_color(s.left_back_btn_color);
+                    if (legacy) {
+                        s.left_back_btn.color = legacy;
+                    }
+                    if (!s.left_back_btn.padding || typeof s.left_back_btn.padding !== 'object') {
+                        s.left_back_btn.padding = box_default().padding;
+                    }
+                    if (!s.left_back_btn.radius || typeof s.left_back_btn.radius !== 'object') {
+                        s.left_back_btn.radius = box_default().radius;
+                    }
+                    if (!s.left_back_btn.border_size || typeof s.left_back_btn.border_size !== 'object') {
+                        s.left_back_btn.border_size = box_default().border_size;
+                    }
+                }
+                s.left_back_btn_ready = '1';
+                s.left_back_btn_color = (s.left_back_btn && s.left_back_btn.color) || '#333';
+                // 返回上滑
+                if (typeof s.up_slide_left_back_btn === 'string') {
+                    const c = s.up_slide_left_back_btn;
+                    s.up_slide_left_back_btn = Object.assign(up_default(), { color: c, is_enable: c ? '1' : '0' });
+                } else if (!s.up_slide_left_back_btn || typeof s.up_slide_left_back_btn !== 'object') {
+                    const c = legacy_color(s.up_slide_left_back_btn_color) || '';
+                    s.up_slide_left_back_btn = Object.assign(up_default(), { color: c, is_enable: c ? '1' : '0' });
+                } else {
+                    if (s.up_slide_left_back_btn.is_enable == null || s.up_slide_left_back_btn.is_enable === '') {
+                        s.up_slide_left_back_btn.is_enable = '0';
+                    }
+                    if (s.up_slide_left_back_btn_ready !== true && s.up_slide_left_back_btn_ready !== '1') {
+                        const legacy = legacy_color(s.up_slide_left_back_btn_color);
+                        if (legacy) {
+                            s.up_slide_left_back_btn.color = legacy;
+                            s.up_slide_left_back_btn.is_enable = '1';
+                        }
+                    }
+                    if (!s.up_slide_left_back_btn.border_size || typeof s.up_slide_left_back_btn.border_size !== 'object') {
+                        s.up_slide_left_back_btn.border_size = up_default().border_size;
+                    }
+                }
+                s.up_slide_left_back_btn_ready = '1';
+                s.up_slide_left_back_btn_color = (s.up_slide_left_back_btn && s.up_slide_left_back_btn.color) || '';
+                // 触发上滑
+                if (typeof s.up_slide_left_dropdown === 'string') {
+                    const c = s.up_slide_left_dropdown;
+                    s.up_slide_left_dropdown = Object.assign(up_default(), { color: c, is_enable: c ? '1' : '0' });
+                } else if (!s.up_slide_left_dropdown || typeof s.up_slide_left_dropdown !== 'object') {
+                    s.up_slide_left_dropdown = up_default();
+                } else {
+                    if (s.up_slide_left_dropdown.is_enable == null || s.up_slide_left_dropdown.is_enable === '') {
+                        s.up_slide_left_dropdown.is_enable = '0';
+                    }
+                    if (!s.up_slide_left_dropdown.border_size || typeof s.up_slide_left_dropdown.border_size !== 'object') {
+                        s.up_slide_left_dropdown.border_size = up_default().border_size;
+                    }
+                }
+                return s;
+            },
+            /** 上滑：开关关用默认；开则整份覆盖（空背景可去掉默认背景） */
+            resolve_up_slide_box(base, up, use_up_scroll) {
+                const result = {
+                    bg: (base && base.bg) || '',
+                    color: (base && base.color) || '#333',
+                    border_is_show: (base && base.border_is_show) || '0',
+                    border_color: (base && base.border_color) || '#333',
+                    border_style: (base && base.border_style) || 'solid',
+                    border_size: (base && base.border_size) || this.old_padding,
+                };
+                if (!use_up_scroll || !up || up.is_enable !== '1') {
+                    return result;
+                }
+                result.bg = up.bg ?? '';
+                result.color = up.color || result.color;
+                result.border_is_show = up.border_is_show || '0';
+                // 空字符串表示已清除，不要回落成黑色
+                result.border_color = up.border_color == null ? result.border_color : up.border_color;
+                result.border_style = up.border_style || result.border_style;
+                result.border_size = up.border_size || result.border_size;
+                return result;
+            },
+            // 边线色空时用透明，避免浏览器把空 border-color 画成黑
+            border_color_css(c) {
+                return c == null || c === '' ? 'transparent' : c;
+            },
+            apply_left_back_btn_style(style, use_up, opacity) {
+                const box = style.left_back_btn || {};
+                const up = style.up_slide_left_back_btn || {};
+                const resolved = this.resolve_up_slide_box(
+                    {
+                        bg: box.bg || '',
+                        color: box.color || style.left_back_btn_color || '#333',
+                        border_is_show: box.border_is_show || '0',
+                        border_color: box.border_color == null ? '#333' : box.border_color,
+                        border_style: box.border_style || 'solid',
+                        border_size: box.border_size || this.old_padding,
+                    },
+                    up,
+                    use_up
+                );
+                const border = border_computer({
+                    border_is_show: resolved.border_is_show || '0',
+                    border_color: this.border_color_css(resolved.border_color),
+                    border_style: resolved.border_style || 'solid',
+                    border_size: resolved.border_size || this.old_padding,
+                });
+                const pad = box.padding ? padding_computer(box.padding) : '';
+                const radius = box.radius ? radius_computer(box.radius) : '';
+                const bg = resolved.bg ? 'background:' + resolved.bg + ';' : '';
+                const icon_size = (Number(box.icon_size) || 23) * 2 + 'rpx';
+                let color_style = 'color:' + resolved.color + ';';
+                if (use_up && up.is_enable == '1' && up.color && opacity !== undefined && opacity !== null) {
+                    color_style = this.get_up_slide_style(box.color || '#333', up.color, opacity);
+                }
+                this.left_back_btn_icon_size = icon_size;
+                this.left_back_btn_box_style = bg + pad + radius + border + 'box-sizing:border-box;';
+                this.up_slide_left_back_btn_style = color_style;
+            },
+            apply_left_dropdown_trigger_style(style, use_up) {
+                const up = style.up_slide_left_dropdown || {};
+                const resolved = this.resolve_up_slide_box(
+                    {
+                        bg: style.left_dropdown_bg || '',
+                        color: style.left_dropdown_color || '#333',
+                        border_is_show: style.left_dropdown_border_is_show || '0',
+                        border_color: style.left_dropdown_border_color == null ? '#333' : style.left_dropdown_border_color,
+                        border_style: style.left_dropdown_border_style || 'solid',
+                        border_size: style.left_dropdown_border_size || this.old_padding,
+                    },
+                    up,
+                    use_up
+                );
+                const border = border_computer({
+                    border_is_show: resolved.border_is_show || '0',
+                    border_color: this.border_color_css(resolved.border_color),
+                    border_style: resolved.border_style || 'solid',
+                    border_size: resolved.border_size || this.old_padding,
+                });
+                const pad = style.left_dropdown_padding ? padding_computer(style.left_dropdown_padding) : '';
+                const radius = style.left_dropdown_radius ? radius_computer(style.left_dropdown_radius) : '';
+                const bg = resolved.bg ? 'background:' + resolved.bg + ';' : '';
+                this.left_dropdown_trigger_style = bg + pad + radius + border + 'box-sizing:border-box;color:' + resolved.color + ';';
+                this.left_dropdown_icon_color_style = 'color:' + resolved.color + ';';
+            },
+            get_left_dropdown_panel_style(style) {
+                const border = border_computer({
+                    border_is_show: style.left_dropdown_panel_border_is_show || '0',
+                    border_color: style.left_dropdown_panel_border_color || 'rgba(0,0,0,0.08)',
+                    border_style: style.left_dropdown_panel_border_style || 'solid',
+                    border_size: style.left_dropdown_panel_border_size || this.old_padding,
+                });
+                const pad = style.left_dropdown_panel_padding ? padding_computer(style.left_dropdown_panel_padding) : '';
+                const radius = style.left_dropdown_panel_radius ? radius_computer(style.left_dropdown_panel_radius) : '';
+                const bg = 'background:' + (style.left_dropdown_panel_bg || '#fff') + ';';
+                const width = (Number(style.left_dropdown_panel_width) || 120) * 2;
+                // 下移一些，给顶部箭头留空；箭头对准触发图标
+                return bg + pad + radius + border + 'box-sizing:border-box;width:' + width + 'rpx;z-index:30;top:100%;left:0;margin-top:40rpx;box-shadow:0 8rpx 24rpx rgba(0,0,0,0.08);';
+            },
+            get_left_dropdown_arrow_style(style) {
+                const bg = style.left_dropdown_panel_bg || '#fff';
+                // 三角箭头指向上方触发图标；left 对齐触发图标中心附近
+                return 'border-bottom-color:' + bg + ';';
+            },
+            left_dropdown_item_style(index) {
+                const style = (this.form && this.form.style) || {};
+                const space = (Number(style.left_dropdown_list_space) || 12) * 2;
+                const gap = (Number(style.left_dropdown_list_gap) || 8) * 2;
+                return 'gap:' + gap + 'rpx;' + (index > 0 ? 'margin-top:' + space + 'rpx;' : '');
+            },
+            left_dropdown_toggle() {
+                this.left_dropdown_open = !this.left_dropdown_open;
+            },
+            left_dropdown_item_event(e) {
+                this.left_dropdown_open = false;
+                this.url_event(e);
             },
             get_location_name_style(new_content) {
                 const is_search_alone_row = new_content.data_alone_row_value && new_content.data_alone_row_value.includes('search');
@@ -446,5 +691,22 @@
     .badge-style {
         top: -20rpx;
         right: 5rpx;
+    }
+    .left-dropdown-wrap {
+        z-index: 20;
+    }
+    .left-dropdown-panel {
+        white-space: nowrap;
+    }
+    .left-dropdown-arrow {
+        position: absolute;
+        top: -12rpx;
+        left: 20rpx;
+        width: 0;
+        height: 0;
+        border-left: 8rpx solid transparent;
+        border-right: 8rpx solid transparent;
+        border-bottom: 12rpx solid #fff;
+        z-index: 1;
     }
 </style>

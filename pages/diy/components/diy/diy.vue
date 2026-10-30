@@ -67,7 +67,7 @@
                                         <component-diy-goods-detail-panel-tips v-else-if="item.key == 'goods-detail-panel-tips'" :propIndex="get_prop_index(item)" :propKey="item.id + index" :propValue="item.com_data" :propGoods="propGoods"></component-diy-goods-detail-panel-tips>
                                         <component-diy-plugins-goods-detail-intellectstools-base v-else-if="item.key == 'plugins-goods-detail-intellectstools-base'" :propIndex="get_prop_index(item)" :propKey="item.id + index" :propValue="item.com_data" :propIntellectstools="propIntellectstools"></component-diy-plugins-goods-detail-intellectstools-base>
                                         <component-diy-plugins-goods-detail-intellectstools-bottom v-else-if="item.key == 'plugins-goods-detail-intellectstools-bottom'" :propIndex="get_prop_index(item)" :propKey="item.id + index" :propValue="item.com_data" :propIntellectstools="propIntellectstools"></component-diy-plugins-goods-detail-intellectstools-bottom>
-                                        <component-diy-plugins-goods-detail-vip v-else-if="item.key == 'plugins-goods-detail-vip'" :propIndex="get_prop_index(item)" :propKey="item.id + index" :propValue="item.com_data" :propVipTips="propVipTips"></component-diy-plugins-goods-detail-vip>
+                                        <component-diy-plugins-goods-detail-vip-tips v-else-if="item.key == 'plugins-goods-detail-vip-tips'" :propIndex="get_prop_index(item)" :propKey="item.id + index" :propValue="item.com_data" :propVipTips="propVipTips"></component-diy-plugins-goods-detail-vip-tips>
                                         <component-diy-plugins-goods-detail-distribution v-else-if="item.key == 'plugins-goods-detail-distribution'" :propIndex="get_prop_index(item)" :propKey="item.id + index" :propValue="item.com_data" :propDistributionTips="propDistributionTips"></component-diy-plugins-goods-detail-distribution>
                                         <component-diy-goods-detail-photo v-else-if="item.key == 'goods-detail-photo'" :propIndex="get_prop_index(item)" :propKey="item.id + index" :propValue="item.com_data" :propGoods="propGoods"></component-diy-goods-detail-photo>
                                         <component-diy-goods-detail-info v-else-if="item.key == 'goods-detail-info'" :propIndex="get_prop_index(item)" :propKey="item.id + index" :propValue="item.com_data" :propGoods="propGoods"></component-diy-goods-detail-info>
@@ -85,7 +85,7 @@
                                         <component-diy-plugins-goods-detail-presale v-else-if="item.key == 'plugins-goods-detail-presale'" :propIndex="get_prop_index(item)" :propKey="item.id + index" :propValue="item.com_data" :propGoods="propGoods" :propPresale="propPresale"></component-diy-plugins-goods-detail-presale>
                                         <component-diy-plugins-goods-detail-wholesale v-else-if="item.key == 'plugins-goods-detail-wholesale' || item.key == 'wholesale-rules'" :propIndex="get_prop_index(item)" :propKey="item.id + index" :propValue="item.com_data" :propGoods="propGoods"></component-diy-plugins-goods-detail-wholesale>
                                         <component-diy-plugins-goods-detail-ask v-else-if="item.key == 'plugins-goods-detail-ask' || item.key == 'plugins-goods-ask' || item.key == 'goods-qa'" :propIndex="get_prop_index(item)" :propKey="item.id + index" :propValue="item.com_data" :propGoods="propGoods" :propAskData="propAskData"></component-diy-plugins-goods-detail-ask>
-                                        <component-diy-plugins-user-vip v-else-if="item.key == 'plugins-user-vip'" :propIndex="get_prop_index(item)" :propKey="item.id + index" :propValue="item.com_data"></component-diy-plugins-user-vip>
+                                        <component-diy-plugins-vip-open v-else-if="item.key == 'plugins-vip-open'" :propIndex="get_prop_index(item)" :propKey="item.id + index" :propValue="item.com_data"></component-diy-plugins-vip-open>
                                         <component-diy-plugins-signin v-else-if="item.key == 'plugins-signin' || item.key == 'sign-in'" :propIndex="get_prop_index(item)" :propKey="item.id + index" :propValue="item.com_data"></component-diy-plugins-signin>
                                         <!-- 工具组件 -->
                                         <component-diy-float-window v-else-if="(item.key == 'float-window' && item.com_data.content.button_jump !== 'gotop') || (item.key == 'float-window' && item.com_data.content.button_jump === 'gotop' && getPropIsHalf)" :propKey="item.id + index" :propValue="item.com_data" @btn_event="btn_event"></component-diy-float-window>
@@ -204,7 +204,7 @@
     import componentDiyGoodsDetailPanelTips from '@/pages/diy/components/diy/goods-detail-panel-tips'
     import componentDiyPluginsGoodsDetailIntellectstoolsBase from '@/pages/diy/components/diy/plugins-goods-detail-intellectstools-base'
     import componentDiyPluginsGoodsDetailIntellectstoolsBottom from '@/pages/diy/components/diy/plugins-goods-detail-intellectstools-bottom'
-    import componentDiyPluginsGoodsDetailVip from '@/pages/diy/components/diy/plugins-goods-detail-vip'
+    import componentDiyPluginsGoodsDetailVipTips from '@/pages/diy/components/diy/plugins-goods-detail-vip-tips'
     import componentDiyPluginsGoodsDetailDistribution from '@/pages/diy/components/diy/plugins-goods-detail-distribution'
     import componentDiyGoodsDetailPhoto from '@/pages/diy/components/diy/goods-detail-photo'
     import componentDiyGoodsDetailInfo from '@/pages/diy/components/diy/goods-detail-info'
@@ -223,7 +223,7 @@
     import componentDiyPluginsRealstoreOrderNav from '@/pages/diy/components/diy/plugins-realstore-order-nav';
     import componentDiyPluginsGoodsDetailWholesale from '@/pages/diy/components/diy/plugins-goods-detail-wholesale'
     import componentDiyPluginsGoodsDetailAsk from '@/pages/diy/components/diy/plugins-goods-detail-ask'
-    import componentDiyPluginsUserVip from '@/pages/diy/components/diy/plugins-user-vip'
+    import componentDiyPluginsVipOpen from '@/pages/diy/components/diy/plugins-vip-open'
     import componentDiyPluginsSignin from '@/pages/diy/components/diy/plugins-signin'
     import componentDiyTabsCarousel from '@/pages/diy/components/diy/tabs-carousel';
     import componentDiyTabsMagic from '@/pages/diy/components/diy/tabs-magic';
@@ -348,7 +348,7 @@
             componentDiyGoodsDetailPanelTips,
             componentDiyPluginsGoodsDetailIntellectstoolsBase,
             componentDiyPluginsGoodsDetailIntellectstoolsBottom,
-            componentDiyPluginsGoodsDetailVip,
+            componentDiyPluginsGoodsDetailVipTips,
             componentDiyPluginsGoodsDetailDistribution,
             componentDiyGoodsDetailPhoto,
             componentDiyGoodsDetailInfo,
@@ -367,7 +367,7 @@
             componentDiyPluginsRealstoreOrderNav,
             componentDiyPluginsGoodsDetailWholesale,
             componentDiyPluginsGoodsDetailAsk,
-            componentDiyPluginsUserVip,
+            componentDiyPluginsVipOpen,
             componentDiyPluginsSignin,
             componentDiyTabsCarousel,
             componentDiyTabsMagic,
