@@ -167,38 +167,22 @@
                 return (item && item.img) || '';
             },
             h5_pause_class() {
-                const icons = this.ctrl_icons || {};
-                const item = this.video_paused ? icons.play : icons.pause;
-                const name = item && item.icon ? String(item.icon) : '';
-                if (!name) {
-                    return '';
-                }
-                return 'iconfont ' + (name.indexOf('icon-') === 0 ? name : 'icon-' + name);
+                return '';
             },
             h5_mute_class() {
-                const icons = this.ctrl_icons || {};
-                const item = this.video_muted ? icons.mute : icons.sound;
-                const name = item && item.icon ? String(item.icon) : '';
-                if (!name) {
-                    return 'iconfont';
-                }
-                return 'iconfont ' + (name.indexOf('icon-') === 0 ? name : 'icon-' + name);
+                return '';
             },
             h5_pause_text() {
-                const icons = this.ctrl_icons || {};
-                const item = this.video_paused ? icons.play : icons.pause;
-                if (item && item.icon) {
+                if (this.h5_pause_img) {
                     return '';
                 }
                 return this.video_paused ? '▶' : '❚❚';
             },
             h5_mute_text() {
-                const icons = this.ctrl_icons || {};
-                const item = this.video_muted ? icons.mute : icons.sound;
-                if (item && item.icon) {
+                if (this.h5_mute_img) {
                     return '';
                 }
-                return this.video_muted ? '\ue7e0' : '\ue7ef';
+                return this.video_muted ? '🔇' : '🔊';
             },
             accent() {
                 return this.style.accent_color == null ? '#ff4d4f' : this.style.accent_color;
@@ -280,11 +264,12 @@
     justify-content: center;
     line-height: 1;
     color: #fff;
+    box-sizing: border-box;
 }
 .video-ctrl-layer .horn-icon {
     color: #fff;
-    line-height: 1;
     text-align: center;
+    overflow: hidden;
 }
 .video-ctrl-layer .horn-img {
     display: block;

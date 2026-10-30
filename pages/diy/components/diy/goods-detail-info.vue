@@ -3,13 +3,13 @@
         <view :style="outer.img">
             <view v-if="slide_total" class="hero pr" :style="'height:' + height + ';'">
                 <goods-detail-hero-swiper ref="hero" :photos="view.photos" :video="video" :video-poster="video_poster" :height="height" :vertical="vertical" :prop-key="propKey" :ctrl-icons="ctrl_icons" :ctrl-style="ctrl_style" :is-roll="is_roll" :interval-time="interval_time" :scroll-duration="scroll_duration" @change="photo_change" @preview="photo_preview" @ctrl="on_ctrl"></goods-detail-hero-swiper>
-                <view v-if="show_indicator && indicator_type == 'media'" class="indicator" :class="indicator_class">
+                <view v-if="show_indicator && indicator_type == 'media'" class="indicator" :class="indicator_class" :style="indicator_box_style">
                     <view class="media-switch" :style="media_box_style">
                         <view v-if="video" class="media-item" :style="media_item_style(photo_index === 0)" @tap.stop="media_jump(0)">{{ video_label }}</view>
                         <view class="media-item" :style="media_item_style(photo_index > 0 || !video)" @tap.stop="media_jump(video ? 1 : 0)">{{ album_text }}</view>
                     </view>
                 </view>
-                <view v-else-if="show_indicator" class="indicator" :class="indicator_type == 'line' ? 'is-line' : indicator_class" :style="indicator_type == 'line' ? line_layout.box : ''">
+                <view v-else-if="show_indicator" class="indicator" :class="indicator_type == 'line' ? 'is-line' : indicator_class" :style="indicator_type == 'line' ? line_layout.box : indicator_box_style">
                     <text v-if="indicator_type == 'number'" class="num">{{ photo_index + 1 }}/{{ slide_total }}</text>
                     <block v-else>
                         <view v-for="index in slide_total" :key="index" :class="indicator_type == 'line' ? 'line' : 'dot'" :style="mark_style(index - 1)"></view>
@@ -27,7 +27,7 @@
                     </view>
                 </view>
                 <!-- #endif -->
-                <scroll-view v-if="theme == '0' && show('sku') && view.sku.length" scroll-x class="hero-sku" :show-scrollbar="false" @tap.stop="spec_tap">
+                <scroll-view v-if="theme == '0' && show('sku') && view.sku.length" scroll-x class="hero-sku" :style="hero_sku_style" :show-scrollbar="false" @tap.stop="spec_tap">
                     <view class="sku-row" :style="theme0_row_style">
                         <block v-for="(item, index) in sku_show" :key="index">
                             <image v-if="item.img" class="thumb theme0" :class="item.active ? 'active' : ''" :style="theme0_thumb_style(item.active)" :src="item.img" mode="aspectFill"></image>
@@ -36,7 +36,7 @@
                         <view class="more theme0" :style="theme0_more_style">{{ view.sku.length }}款可选</view>
                     </view>
                 </scroll-view>
-                <scroll-view v-if="theme == '3' && show('sku') && view.sku.length" scroll-x class="hero-float" :show-scrollbar="false" @tap.stop="spec_tap">
+                <scroll-view v-if="theme == '3' && show('sku') && view.sku.length" scroll-x class="hero-float" :style="hero_float_style" :show-scrollbar="false" @tap.stop="spec_tap">
                     <view class="sku-row">
                         <view v-for="(item, index) in sku_show" :key="index" class="float-item" :class="item.active ? 'active' : ''" :style="float_item_style(item)">
                             <image v-if="item.img" class="float-img" :style="sku_img_style" :src="item.img" mode="aspectFill"></image>
@@ -45,7 +45,7 @@
                     </view>
                 </scroll-view>
             </view>
-            <view class="card" :class="view.photos.length ? 'overlap' : ''" :style="card">
+            <view class="card" :style="card">
                 <block v-if="theme == '1' && show('sku') && view.sku.length">
                     <scroll-view scroll-x class="sku-scroll" :show-scrollbar="false" @tap="spec_tap">
                         <view class="sku-row" :style="bar_row_style">
@@ -166,7 +166,18 @@
             video_poster() { return resolve_video_poster(this.content, this.propGoods); },
             slide_total() { return this.view.photos.length + (this.video ? 1 : 0); },
             outer() { return outer_style(this.style); },
-            card() { return card_style(this.style); },
+            /** 对齐 DIY：有相册时信息卡上叠主图 margin-top = 外边距上 - 圆角 */
+            card() {
+                let style = card_style(this.style);
+                if (this.view.photos.length) {
+                    const margin = this.style.content_margin || {};
+                    const top = Number(margin.margin_top);
+                    const margin_top = Number.isFinite(top) ? top : 0;
+                    const overlap = margin_top - this.content_radius_px;
+                    style += 'margin-top:' + (overlap * 2) + 'rpx;';
+                }
+                return style;
+            },
             pack() { return price_pack(this.style); },
             height() { return hero_height(this.style); },
             vertical() { return this.content.scroll_direction === 'vertical'; },
@@ -191,14 +202,84 @@
                 return this.slide_total >= 2;
             },
             indicator_class() { return 'is-' + String(this.content.indicator_position || 'center-bottom'); },
+            /** 信息卡圆角（px），对齐 DIY --gi-radius */
+            content_radius_px() {
+                const box = this.style.content_radius;
+                if (box && typeof box === 'object') {
+                    const n = Math.max(Number(box.radius_top_left) || 0, Number(box.radius_top_right) || 0);
+                    return Number.isFinite(n) ? n : 16;
+                }
+                const n = Number(box);
+                return Number.isFinite(n) ? n : 16;
+            },
+            /** 指示器边距配置（px），允许为 0 */
+            indicator_gap_px() {
+                if (this.style.indicator_bottom == null || this.style.indicator_bottom === '') return 20;
+                const gap = Number(this.style.indicator_bottom);
+                return Number.isFinite(gap) ? Math.max(0, gap) : 20;
+            },
+            /** 相册上叠规格时，把底部指示器抬到规格条上方（对齐 DIY） */
+            hero_sku_overlay() {
+                if (!this.show('sku') || !this.view.sku.length) return false;
+                return this.theme == '0' || this.theme == '3';
+            },
+            /**
+             * DIY:
+             * - 无规格：radius + indicator_bottom
+             * - 风格0：radius + 52 + indicator_bottom
+             * - 风格3：radius + 14 + 8 + sku_img + indicator_bottom
+             */
+            indicator_lift_bottom_rpx() {
+                const r = this.content_radius_px;
+                const g = this.indicator_gap_px;
+                if (!this.hero_sku_overlay) {
+                    return (r + g) * 2;
+                }
+                if (this.theme == '3') {
+                    return (r + 14 + 8 + this.sku_img_px + g) * 2;
+                }
+                return (r + 52 + g) * 2;
+            },
+            indicator_box_style() {
+                const pos = String(this.content.indicator_position || 'center-bottom');
+                if (pos.indexOf('top') >= 0) {
+                    return '';
+                }
+                // 底部指示器（含默认 center-bottom）上移，避免被规格挡住
+                if (pos.indexOf('bottom') >= 0 || pos === '' || pos === 'center' || pos === 'left' || pos === 'right') {
+                    return 'bottom:' + this.indicator_lift_bottom_rpx + 'rpx;';
+                }
+                return '';
+            },
             line_layout() {
-                let bottom = 12;
+                // extra.bottom 为 px，indicator_layout 内再 *2；与 gap(indicator_bottom) 相加
+                const r = this.content_radius_px;
+                let bottom = r;
                 if (this.theme == '0' && this.show('sku') && this.view.sku.length) {
-                    bottom = this.sku_has_img ? 48 : 24;
+                    bottom = r + 52;
                 } else if (this.theme == '3' && this.show('sku') && this.view.sku.length) {
-                    bottom = this.sku_has_img ? 16 + this.sku_img_px : 24;
+                    bottom = r + 14 + 8 + this.sku_img_px;
                 }
                 return indicator_layout(this.content, this.style, { gap: 20, bottom: bottom });
+            },
+            /** DIY: pad_x = content_padding.padding_left，默认 14 */
+            pad_x_px() {
+                const pad = this.style.content_padding;
+                if (pad && typeof pad === 'object') {
+                    const n = Number(pad.padding_left);
+                    return Number.isFinite(n) ? n : 14;
+                }
+                return 14;
+            },
+            /** DIY: hero-sku bottom = radius + 12，padding: 0 pad_x */
+            hero_sku_style() {
+                const pad = this.pad_x_px * 2;
+                return 'bottom:' + ((this.content_radius_px + 12) * 2) + 'rpx;padding:0 ' + pad + 'rpx;box-sizing:border-box;';
+            },
+            /** DIY: float-sku bottom = radius + 14，padding: 0 pad_x */
+            hero_float_style() {
+                const pad = this.pad_x_px * 2;
+                return 'bottom:' + ((this.content_radius_px + 14) * 2) + 'rpx;padding:0 ' + pad + 'rpx;box-sizing:border-box;';
             },
             video_label() {
                 return this.content.indicator_video_text == null ? '视频' : String(this.content.indicator_video_text);
@@ -243,30 +324,18 @@
                 return (item && item.img) || '';
             },
             h5_pause_class() {
-                const icons = this.ctrl_icons || {};
-                const item = this.video_paused ? icons.play : icons.pause;
-                const name = item && item.icon ? String(item.icon) : '';
-                if (!name) return '';
-                return 'iconfont ' + (name.indexOf('icon-') === 0 ? name : 'icon-' + name);
+                return '';
             },
             h5_mute_class() {
-                const icons = this.ctrl_icons || {};
-                const item = this.video_muted ? icons.mute : icons.sound;
-                const name = item && item.icon ? String(item.icon) : '';
-                if (!name) return 'iconfont';
-                return 'iconfont ' + (name.indexOf('icon-') === 0 ? name : 'icon-' + name);
+                return '';
             },
             h5_pause_text() {
-                const icons = this.ctrl_icons || {};
-                const item = this.video_paused ? icons.play : icons.pause;
-                if (item && item.icon) return '';
+                if (this.h5_pause_img) return '';
                 return this.video_paused ? '▶' : '❚❚';
             },
             h5_mute_text() {
-                const icons = this.ctrl_icons || {};
-                const item = this.video_muted ? icons.mute : icons.sound;
-                if (item && item.icon) return '';
-                return this.video_muted ? '\ue7e0' : '\ue7ef';
+                if (this.h5_mute_img) return '';
+                return this.video_muted ? '🔇' : '🔊';
             },
             tag_before() { return this.content.tag_position !== 'row'; },
             tag_before_list() { return this.show('tags') && this.tag_before ? this.view.tags : []; },
@@ -487,11 +556,12 @@
     justify-content: center;
     line-height: 1;
     color: #fff;
+    box-sizing: border-box;
 }
 .video-ctrl-layer .horn-icon {
     color: #fff;
-    line-height: 1;
     text-align: center;
+    overflow: hidden;
 }
 .video-ctrl-layer .horn-img {
     display: block;
@@ -507,7 +577,7 @@
 .dot { width: 12rpx; height: 12rpx; border-radius: 50%; background: rgba(255,255,255,0.75); }
 .line { width: 28rpx; height: 6rpx; border-radius: 6rpx; background: rgba(255,255,255,0.75); }
 .num { color: #fff; background: rgba(0,0,0,0.45); border-radius: 20rpx; padding: 4rpx 16rpx; font-size: 22rpx; }
-.hero-sku, .hero-float { position: absolute; left: 0; right: 0; bottom: 16rpx; z-index: 2; white-space: nowrap; }
+.hero-sku, .hero-float { position: absolute; left: 0; right: 0; z-index: 3; white-space: nowrap; }
 .sku-row, .price-row, .meta, .tags, .grid, .price-action, .actions, .sku-select { display: flex; flex-direction: row; align-items: center; }
 .thumb { width: 88rpx; height: 88rpx; border-radius: 12rpx; margin-right: 12rpx; background: #fff; box-sizing: border-box; }
 .thumb.theme0 { margin-right: 0; }
@@ -516,7 +586,6 @@
 .thumb.active { border: 1px solid #ff4d4f; }
 .more { font-size: 22rpx; color: #666; background: rgba(255,255,255,0.9); border-radius: 8rpx; padding: 8rpx 12rpx; }
 .card { width: 100%; position: relative; z-index: 3; }
-.card.overlap { margin-top: -24rpx; }
 .price-row { flex-wrap: wrap; gap: 8rpx; }
 .title { margin-top: 12rpx; line-height: 1.45; }
 .brief { line-height: 1.5; }

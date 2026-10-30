@@ -102,8 +102,9 @@
                 fullscreen: false,
                 current_time: 0,
                 duration: 0,
-                default_speaker: '\ue7ef',
-                default_mute: '\ue7e0',
+                // cover-view 不支持自定义字体，禁用 iconfont 私用区字符，改用通用符号
+                default_speaker: '🔊',
+                default_mute: '🔇',
                 default_play: '▶',
                 default_pause: '❚❚',
             };
@@ -184,39 +185,30 @@
                 const item = this.muted ? icons.mute : icons.sound;
                 return (item && item.img) || '';
             },
+            // cover-view 无法渲染 iconfont，class 留空避免真机空白
             pause_icon_class() {
-                const icons = this.ctrlIcons || {};
-                const item = this.paused ? icons.play : icons.pause;
-                const name = item && item.icon ? String(item.icon) : '';
-                if (!name) {
-                    return '';
-                }
-                return 'iconfont ' + (name.indexOf('icon-') === 0 ? name : 'icon-' + name);
+                return '';
             },
             mute_icon_class() {
-                const icons = this.ctrlIcons || {};
-                const item = this.muted ? icons.mute : icons.sound;
-                const name = item && item.icon ? String(item.icon) : '';
-                if (!name) {
-                    return 'iconfont';
-                }
-                return 'iconfont ' + (name.indexOf('icon-') === 0 ? name : 'icon-' + name);
+                return '';
             },
             pause_text() {
+                if (this.pause_img) {
+                    return '';
+                }
                 const icons = this.ctrlIcons || {};
                 const item = this.paused ? icons.play : icons.pause;
-                if (item && item.icon) {
-                    return '';
-                }
-                return this.paused ? this.default_play : this.default_pause;
+                const fallback = this.paused ? this.default_play : this.default_pause;
+                return this.cover_glyph(item && item.icon, fallback);
             },
             mute_text() {
-                const icons = this.ctrlIcons || {};
-                const item = this.muted ? icons.mute : icons.sound;
-                if (item && item.icon) {
+                if (this.mute_img) {
                     return '';
                 }
-                return this.muted ? this.default_mute : this.default_speaker;
+                const icons = this.ctrlIcons || {};
+                const item = this.muted ? icons.mute : icons.sound;
+                const fallback = this.muted ? this.default_mute : this.default_speaker;
+                return this.cover_glyph(item && item.icon, fallback);
             },
         },
         watch: {
@@ -246,6 +238,34 @@
             // #endif
         },
         methods: {
+            /**
+             * 小程序 cover-view 不支持 iconfont / ::before。
+             * DIY 配的是字体图标名时，映射成 cover-view 能显示的符号；有上传图片时走 cover-image。
+             */
+            cover_glyph(icon_name, fallback) {
+                const key = String(icon_name || '')
+                    .replace(/^icon-/, '')
+                    .toLowerCase();
+                if (!key) {
+                    return fallback;
+                }
+                const map = {
+                    player: '▶',
+                    play: '▶',
+                    'player-play': '▶',
+                    'player-pause': '❚❚',
+                    pause: '❚❚',
+                    speaker: '🔊',
+                    sound: '🔊',
+                    volume: '🔊',
+                    'volume-o': '🔊',
+                    voice: '🔊',
+                    mute: '🔇',
+                    jingyin: '🔇',
+                    'volume-mute': '🔇',
+                };
+                return map[key] || fallback;
+            },
             format_time(sec) {
                 sec = Math.floor(Number(sec) || 0);
                 const m = Math.floor(sec / 60);
@@ -518,16 +538,20 @@
     flex-direction: row;
     align-items: center;
     justify-content: center;
+    box-sizing: border-box;
 }
 .horn-icon {
     color: #fff;
-    font-size: 32rpx;
-    line-height: 1;
+    width: 28rpx;
+    height: 28rpx;
+    font-size: 20rpx;
+    line-height: 28rpx;
     text-align: center;
+    overflow: hidden;
 }
 .horn-img {
-    width: 32rpx;
-    height: 32rpx;
+    width: 28rpx;
+    height: 28rpx;
     display: block;
 }
 .inline-ctrls {

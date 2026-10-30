@@ -179,22 +179,17 @@ function media_padding(value, fallback) {
     return fallback;
 }
 
-/** 视频播放控件图标：图片优先，其次字体图标名；空则用默认图标 */
+/** 视频播放控件：只认上传图片；无图时端上用通用符号（cover-view 不支持 iconfont） */
 export function video_ctrl_icons(content) {
     content = content || {};
-    const one = (img_key, icon_key, fallback) => {
-        const img = media_url(content[img_key]);
-        let icon = content[icon_key] == null ? '' : String(content[icon_key]);
-        if (!img && !icon) {
-            icon = fallback;
-        }
-        return { img: img, icon: icon };
+    const one = (img_key) => {
+        return { img: media_url(content[img_key]), icon: '' };
     };
     return {
-        play: one('video_play_img', 'video_play_icon', 'player'),
-        pause: one('video_pause_img', 'video_pause_icon', 'player-pause'),
-        sound: one('video_sound_img', 'video_sound_icon', 'speaker'),
-        mute: one('video_mute_img', 'video_mute_icon', 'mute'),
+        play: one('video_play_img'),
+        pause: one('video_pause_img'),
+        sound: one('video_sound_img'),
+        mute: one('video_mute_img'),
     };
 }
 
@@ -215,6 +210,18 @@ export function video_ctrl_styles(style) {
     const gap = Number(style.video_ctrl_gap);
     const gap_px = Number.isFinite(gap) ? gap : 8;
     const color = pick(style.video_ctrl_color, 'rgba(255,255,255,1)');
+    // 符号/emoji 视觉宽度不一致：图标区固定为正方形，按钮 = 内边距 + 固定盒，切换时背景不再跳
+    const box = icon_size * 2;
+    const pad_t = Number(padding.padding_top);
+    const pad_b = Number(padding.padding_bottom);
+    const pad_l = Number(padding.padding_left);
+    const pad_r = Number(padding.padding_right);
+    const pt = Number.isFinite(pad_t) ? pad_t : 6;
+    const pb = Number.isFinite(pad_b) ? pad_b : 6;
+    const pl = Number.isFinite(pad_l) ? pad_l : 6;
+    const pr = Number.isFinite(pad_r) ? pad_r : 6;
+    const btn_w = (icon_size + pl + pr) * 2;
+    const btn_h = (icon_size + pt + pb) * 2;
     const btn =
         'background:' +
         pick(style.video_ctrl_bg, 'rgba(0,0,0,0.45)') +
@@ -222,10 +229,24 @@ export function video_ctrl_styles(style) {
         color +
         ';' +
         radius_computer(radius) +
-        padding_computer(padding) +
-        'box-sizing:border-box;';
-    const icon = 'color:' + color + ';font-size:' + icon_size * 2 + 'rpx;line-height:' + icon_size * 2 + 'rpx;';
-    const img = 'width:' + icon_size * 2 + 'rpx;height:' + icon_size * 2 + 'rpx;display:block;';
+        'padding:0;box-sizing:border-box;width:' +
+        btn_w +
+        'rpx;height:' +
+        btn_h +
+        'rpx;display:flex;align-items:center;justify-content:center;';
+    const icon =
+        'color:' +
+        color +
+        ';font-size:' +
+        Math.round(box * 0.72) +
+        'rpx;line-height:' +
+        box +
+        'rpx;width:' +
+        box +
+        'rpx;height:' +
+        box +
+        'rpx;text-align:center;overflow:hidden;';
+    const img = 'width:' + box + 'rpx;height:' + box + 'rpx;display:block;';
     const gap_style = 'margin-top:' + gap_px * 2 + 'rpx;';
     return { btn: btn, icon: icon, img: img, gap: gap_style, color: color, size: icon_size };
 }
