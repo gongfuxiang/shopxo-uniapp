@@ -43,12 +43,14 @@
                         <x-skeleton propType="list" :propRowNumber="3"></x-skeleton>
                         <x-skeleton propType="waterfall" :propRowNumber="4"></x-skeleton>
                     </block>
-                    <!-- 商品详情 -->
+                    <!-- 商品详情：顶部留白约 30px，避免贴顶/沉浸式导航 -->
                     <block v-else-if="propPage == 'goods'">
-                        <x-skeleton propType="banner" :propHeightNumber="600"></x-skeleton>
-                        <x-skeleton propType="text"></x-skeleton>
-                        <x-skeleton propType="info"></x-skeleton>
-                        <x-skeleton propType="waterfall" :propRowNumber="4"></x-skeleton>
+                        <view class="skeleton-goods-top">
+                            <x-skeleton propType="banner" :propHeightNumber="600"></x-skeleton>
+                            <x-skeleton propType="text"></x-skeleton>
+                            <x-skeleton propType="info"></x-skeleton>
+                            <x-skeleton propType="waterfall" :propRowNumber="4"></x-skeleton>
+                        </view>
                     </block>
                     <!-- 用户中心 -->
                     <block v-else-if="propPage == 'user'">
@@ -418,6 +420,10 @@
         padding-top: var(--status-bar-height);
         padding-bottom: 55px;
         /* #endif */
+    }
+    /* 商品详情骨架顶距，需要再调就改这里 */
+    .skeleton-goods-top {
+        padding-top: 30px;
     }
     .no-data-box.skeleton {
         padding: 0;
