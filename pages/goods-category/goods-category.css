@@ -1,5 +1,5 @@
 /**
- * 头部背景
+ * å¤´é¨èæ¯
  */
 .goods-top-bg {
     height: calc(320rpx + var(--status-bar-height) + 5px);
@@ -13,7 +13,7 @@
 }
 
 /**
- * 导航搜索、内容区域
+ * å¯¼èªæç´¢ãåå®¹åºå
  */
 .nav-search {
     padding-right: 250rpx;
@@ -38,7 +38,7 @@
 }
 
 /**
-* 左侧导航
+* å·¦ä¾§å¯¼èª
 */
 .left-nav {
     width: 200rpx;
@@ -57,7 +57,7 @@
 }
 
 /**
-*  右侧内容
+*  å³ä¾§åå®¹
 */
 .right-container {
     width: calc(100% - 200rpx);
@@ -158,7 +158,7 @@
 
 
 /**
- * 商品列表模式
+ * åååè¡¨æ¨¡å¼
  */
 .category-content {
     height: 100vh;
@@ -263,7 +263,7 @@
 }
 
 /**
- * 底部导航
+ * åºé¨å¯¼èª
  */
 .botton-nav {
     width: calc(100% - 60rpx);
@@ -285,7 +285,7 @@
 }
 
 /**
- * 购物车
+ * è´­ç©è½¦
  */
 .cart-mask {
     left: 0;
@@ -317,18 +317,67 @@
 }
 
 /**
- * 无数据
+ * æ æ°æ®
  */
 .no-data {
     z-index: 101;
 }
 
 /* 
- * 隐藏滚动条
+ * éèæ»å¨æ¡
  */
 scroll-view ::-webkit-scrollbar {
     display: none;
     width: 0;
     height: 0;
     color: transparent;
+}
+/* ·ç¸ñÈý/ËÄ£ºÎÞ¶¥²¿Ò»¼¶£¬×ó²àÒ»¼¶ */
+.category-content.goods-model.category-goods-style-3,
+.category-content.goods-model.category-goods-style-4 {
+    padding-top: 0;
+}
+.category-goods-style-3 .goods-right-content,
+.category-goods-style-4 .goods-right-content {
+    top: 0;
+    height: 100%;
+}
+
+/* ???/??????????? + aspectFill????? 160 ??? */
+.goods-list .goods-style-vertical {
+    overflow: visible;
+}
+.goods-list .goods-style-vertical.spacing-mb {
+    margin-bottom: 48rpx;
+}
+.goods-list .goods-style-vertical .goods-cover-vertical {
+    width: 100%;
+    height: 340rpx;
+    overflow: hidden;
+    background: #f5f5f5;
+}
+.goods-list .goods-style-vertical .goods-cover-vertical-img {
+    width: 100%;
+    height: 100%;
+    display: block;
+}
+.goods-list .goods-style-vertical .goods-base,
+.goods-list .goods-style-vertical .goods-base-vertical {
+    width: 100% !important;
+    margin-top: 16rpx;
+    padding-left: 0 !important;
+    padding-right: 0;
+}
+.goods-list .goods-style-vertical .goods-base-content {
+    margin-bottom: 12rpx;
+    min-height: auto;
+}
+
+
+/* 风格三/四：三级独立底块（横滑） */
+.level3-block {
+    background: #f5f5f5;
+    border-radius: 12rpx;
+    padding: 16rpx;
+    margin-bottom: 20rpx;
 }

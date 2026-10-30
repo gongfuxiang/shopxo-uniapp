@@ -22,7 +22,7 @@
                     </block>
                     <view class="category-container">
                         <!-- 分类内容 -->
-                        <view :class="'category-content bs-bb pr ' + (category_show_level == 0 ? 'goods-model' : '')" :style="category_content_style">
+                        <view :class="'category-content bs-bb pr ' + (category_show_level == 0 ? 'goods-model' : '') + ' category-goods-style-' + category_goods_style" :style="category_content_style">
                             <block v-if="category_show_level == 1">
                                 <!-- 一级模式 -->
                                 <scroll-view scroll-y class="ht-auto" :show-scrollbar="false">
@@ -44,54 +44,68 @@
                             <block v-else>
                                 <!-- 商品列表模式 -->
                                 <block v-if="category_show_level == 0">
-                                    <!-- 一级导航 -->
-                                    <view class="top-nav wh-auto pa scroll-view-horizontal bottom-0">
-                                        <scroll-view :scroll-x="true" :show-scrollbar="false" :scroll-with-animation="true" :scroll-into-view="'one-nav-item-' + nav_active_index" class="top-nav-scroll">
-                                            <block v-for="(item, index) in category_list" :key="index">
-                                                <view class="item tc cp dis-inline-block text-size-xss" :id="'one-nav-item-' + index" :data-index="index" :data-itemtwoindex="-1" :data-itemthreeindex="-1" @tap="nav_event">
-                                                    <view :class="'icon-content circle br auto ' + (nav_active_index == index ? 'border-color-main' : '')">
-                                                        <image :src="(item[goods_category_model_icon_field] || null) == null ? common_static_url + 'images.png' : item[goods_category_model_icon_field]" mode="aspectFit" class="icon dis-block auto wh-auto ht-auto circle"></image>
+                                    <!-- 风格一/二：顶部一级 -->
+                                    <block v-if="category_goods_style == 1 || category_goods_style == 2">
+                                        <view class="top-nav wh-auto pa scroll-view-horizontal bottom-0">
+                                            <scroll-view :scroll-x="true" :show-scrollbar="false" :scroll-with-animation="true" :scroll-into-view="'one-nav-item-' + nav_active_index" class="top-nav-scroll">
+                                                <block v-for="(item, index) in category_list" :key="index">
+                                                    <view class="item tc cp dis-inline-block text-size-xss" :id="'one-nav-item-' + index" :data-index="index" :data-itemtwoindex="-1" :data-itemthreeindex="-1" @tap="nav_event">
+                                                        <view :class="'icon-content circle br auto ' + (nav_active_index == index ? 'border-color-main' : '')">
+                                                            <image :src="(item[goods_category_model_icon_field] || null) == null ? common_static_url + 'images.png' : item[goods_category_model_icon_field]" mode="aspectFit" class="icon dis-block auto wh-auto ht-auto circle"></image>
+                                                        </view>
+                                                        <view class="padding-left-sm padding-right-sm round margin-top-xs" :class="nav_active_index == index ? 'bg-main border-color-main cr-white' : ''">{{ item.name }} </view>
                                                     </view>
-                                                    <view class="padding-left-sm padding-right-sm round margin-top-xs" :class="nav_active_index == index ? 'bg-main border-color-main cr-white' : ''">{{ item.name }} </view>
+                                                </block>
+                                            </scroll-view>
+                                            <component-nav-more class="nav-more-top" :propTop="search_height + 'px'" :propStatus="popup_status" @open-popup="open_popup_event">
+                                                <scroll-view scroll-y="true" class="nav-list-more">
+                                                    <view class="flex-row flex-wrap align-c">
+                                                        <block v-for="(item, index) in category_list" :key="index">
+                                                            <view class="item tc cr-base cp text-size-xss" :id="'one-nav-item-' + index" :data-index="index" :data-itemtwoindex="-1" :data-itemthreeindex="-1" @tap="nav_event">
+                                                                <view :class="'icon-content circle br auto ' + (nav_active_index == index ? 'border-color-main' : '')">
+                                                                    <image :src="(item[goods_category_model_icon_field] || null) == null ? common_static_url + 'images.png' : item[goods_category_model_icon_field]" mode="aspectFit" class="icon dis-block auto wh-auto ht-auto circle"></image>
+                                                                </view>
+                                                                <view class="dis-inline-block padding-left-sm padding-right-sm round margin-top-xs" :class="nav_active_index == index ? 'bg-main border-color-main cr-white' : ''">
+                                                                    {{ item.name }}
+                                                                </view>
+                                                            </view>
+                                                        </block>
+                                                    </view>
+                                                </scroll-view>
+                                            </component-nav-more>
+                                        </view>
+                                        <!-- 二级导航 -->
+                                        <view v-if="category_one_subset_count > 0" class="left-nav" :style="left_content_actual_style">
+                                            <scroll-view :scroll-y="true" :show-scrollbar="false" class="ht-auto">
+                                                <view :class="'text-size-sm item tc cr-base cp oh ' + (nav_active_item_two_index == -1 ? 'nav-active cr-main nav-left-border' : '')" :data-index="nav_active_index" :data-itemtwoindex="-1" :data-itemthreeindex="-1" @tap="nav_event">
+                                                    <text>{{ $t('common.all') }}</text>
                                                 </view>
-                                            </block>
-                                        </scroll-view>
-                                        <component-nav-more class="nav-more-top" :propTop="search_height + 'px'" :propStatus="popup_status" @open-popup="open_popup_event">
-                                            <scroll-view scroll-y="true" class="nav-list-more">
-                                                <view class="flex-row flex-wrap align-c">
-                                                    <block v-for="(item, index) in category_list" :key="index">
-                                                        <view class="item tc cr-base cp text-size-xss" :id="'one-nav-item-' + index" :data-index="index" :data-itemtwoindex="-1" :data-itemthreeindex="-1" @tap="nav_event">
-                                                            <view :class="'icon-content circle br auto ' + (nav_active_index == index ? 'border-color-main' : '')">
-                                                                <image :src="(item[goods_category_model_icon_field] || null) == null ? common_static_url + 'images.png' : item[goods_category_model_icon_field]" mode="aspectFit" class="icon dis-block auto wh-auto ht-auto circle"></image>
-                                                            </view>
-                                                            <view class="dis-inline-block padding-left-sm padding-right-sm round margin-top-xs" :class="nav_active_index == index ? 'bg-main border-color-main cr-white' : ''">
-                                                                {{ item.name }}
-                                                            </view>
+                                                <block v-if="(data_content || null) != null && (data_content.items || null) != null && data_content.items.length > 0">
+                                                    <block v-for="(item, index) in data_content.items" :key="index">
+                                                        <view :class="'text-size-sm item tc cr-base cp oh ' + (nav_active_item_two_index == index ? 'nav-active cr-main nav-left-border' : '')" :data-index="nav_active_index" :data-itemtwoindex="index" :data-itemthreeindex="-1" @tap="nav_event">
+                                                            <text>{{ item.name }}</text>
                                                         </view>
                                                     </block>
-                                                </view>
+                                                </block>
                                             </scroll-view>
-                                        </component-nav-more>
-                                    </view>
-                                    <!-- 二级导航 -->
-                                    <view v-if="category_one_subset_count > 0" class="left-nav" :style="left_content_actual_style">
-                                        <scroll-view :scroll-y="true" :show-scrollbar="false" class="ht-auto">
-                                            <view :class="'text-size-sm item tc cr-base cp oh ' + (nav_active_item_two_index == -1 ? 'nav-active cr-main nav-left-border' : '')" :data-index="nav_active_index" :data-itemtwoindex="-1" :data-itemthreeindex="-1" @tap="nav_event">
-                                                <text>{{ $t('common.all') }}</text>
-                                            </view>
-                                            <block v-if="(data_content || null) != null && (data_content.items || null) != null && data_content.items.length > 0">
-                                                <block v-for="(item, index) in data_content.items" :key="index">
-                                                    <view :class="'text-size-sm item tc cr-base cp oh ' + (nav_active_item_two_index == index ? 'nav-active cr-main nav-left-border' : '')" :data-index="nav_active_index" :data-itemtwoindex="index" :data-itemthreeindex="-1" @tap="nav_event">
+                                        </view>
+                                    </block>
+                                    <!-- 风格三/四：左侧一级 -->
+                                    <block v-else>
+                                        <view class="left-nav" :style="left_content_actual_style">
+                                            <scroll-view :scroll-y="true" :show-scrollbar="false" class="ht-auto">
+                                                <block v-for="(item, index) in category_list" :key="index">
+                                                    <view :class="'text-size-sm item tc cr-base cp oh ' + (nav_active_index == index ? 'nav-active cr-main nav-left-border' : '')" :data-index="index" :data-itemtwoindex="-1" :data-itemthreeindex="-1" @tap="nav_event">
                                                         <text>{{ item.name }}</text>
                                                     </view>
                                                 </block>
-                                            </block>
-                                        </scroll-view>
-                                    </view>
+                                            </scroll-view>
+                                        </view>
+                                    </block>
                                     <!-- 商品列表 -->
-                                    <view :class="'goods-right-content bg-white pa bs-bb ' + (category_one_subset_count > 0 ? '' : 'category-one-subset-content')">
+                                    <view :class="'goods-right-content bg-white pa bs-bb ' + ((category_goods_style == 1 || category_goods_style == 2) && category_one_subset_count > 0 ? '' : ((category_goods_style == 3 || category_goods_style == 4) ? '' : 'category-one-subset-content'))">
                                         <scroll-view :scroll-y="true" :show-scrollbar="false" class="ht-auto goods-list" :scroll-top="scroll_top" @scroll="scroll_event" @scrolltolower="scroll_lower" lower-threshold="60">
-                                            <view class="padding-left-main" :style="right_content_actual_style">
+                                            <view :class="'padding-left-main ' + ((category_goods_style == 2 || category_goods_style == 4) ? 'padding-right-main' : '')" :style="right_content_actual_style">
                                                 <!-- 操作导航 -->
                                                 <view class="goods-list-top-nav bg-white">
                                                     <!-- 排序 -->
@@ -103,54 +117,114 @@
                                                             </view>
                                                         </block>
                                                     </view>
-                                                    <!-- 三级导航 -->
-                                                    <view v-if="(data_three_content || null) != null && (data_three_content.items || null) != null && data_three_content.items.length > 0" class="word-list scroll-view-horizontal padding-bottom-main">
-                                                        <scroll-view :scroll-x="true" :show-scrollbar="false" :scroll-with-animation="true" :scroll-into-view="'three-nav-item-' + nav_active_item_three_index">
-                                                            <view :class="'word-icon dis-inline-block text-size-xs round padding-top-xs padding-bottom-xs padding-left padding-right ' + (nav_active_item_three_index == -1 ? 'bg-main-light br-main-light cr-main' : 'br-grey cr-grey')" :data-index="nav_active_index" :data-itemtwoindex="nav_active_item_two_index" :data-itemthreeindex="-1" @tap="nav_event">{{ $t('common.all') }}</view>
-                                                            <block v-for="(item, index) in data_three_content.items" :key="index">
-                                                                <view :class="'word-icon dis-inline-block text-size-xs round padding-top-xs padding-bottom-xs padding-left padding-right ' + (nav_active_item_three_index == index ? 'bg-main-light br-main-light cr-main' : 'br-grey cr-grey')" :id="'three-nav-item-' + index" :data-index="nav_active_index" :data-itemtwoindex="nav_active_item_two_index" :data-itemthreeindex="index" @tap="nav_event">{{ item.name }}</view>
-                                                            </block>
-                                                        </scroll-view>
-                                                    </view>
+                                                    <!-- 风格一/二：三级标签；风格三/四：二级顶栏 -->
+                                                    <block v-if="category_goods_style == 1 || category_goods_style == 2">
+                                                        <view v-if="(data_three_content || null) != null && (data_three_content.items || null) != null && data_three_content.items.length > 0" class="word-list scroll-view-horizontal padding-bottom-main">
+                                                            <scroll-view :scroll-x="true" :show-scrollbar="false" :scroll-with-animation="true" :scroll-into-view="category_nav_scroll_into_three">
+                                                                <view id="three-nav-item-all" :class="'word-icon dis-inline-block text-size-xs round padding-top-xs padding-bottom-xs padding-left padding-right ' + (nav_active_item_three_index == -1 ? 'bg-main-light br-main-light cr-main' : 'br-grey cr-grey')" :data-index="nav_active_index" :data-itemtwoindex="nav_active_item_two_index" :data-itemthreeindex="-1" @tap="nav_event">{{ $t('common.all') }}</view>
+                                                                <block v-for="(item, index) in data_three_content.items" :key="index">
+                                                                    <view :class="'word-icon dis-inline-block text-size-xs round padding-top-xs padding-bottom-xs padding-left padding-right ' + (nav_active_item_three_index == index ? 'bg-main-light br-main-light cr-main' : 'br-grey cr-grey')" :id="'three-nav-item-' + index" :data-index="nav_active_index" :data-itemtwoindex="nav_active_item_two_index" :data-itemthreeindex="index" @tap="nav_event">{{ item.name }}</view>
+                                                                </block>
+                                                            </scroll-view>
+                                                        </view>
+                                                    </block>
+                                                    <block v-else>
+                                                        <view v-if="(data_content || null) != null && (data_content.items || null) != null && data_content.items.length > 0" class="word-list scroll-view-horizontal padding-bottom-main">
+                                                            <scroll-view :scroll-x="true" :show-scrollbar="false" :scroll-with-animation="true" :scroll-into-view="category_nav_scroll_into_two">
+                                                                <view id="two-nav-item-all" :class="'word-icon dis-inline-block text-size-xs round padding-top-xs padding-bottom-xs padding-left padding-right ' + (nav_active_item_two_index == -1 ? 'bg-main-light br-main-light cr-main' : 'br-grey cr-grey')" :data-index="nav_active_index" :data-itemtwoindex="-1" :data-itemthreeindex="-1" @tap="nav_event">{{ $t('common.all') }}</view>
+                                                                <block v-for="(item, index) in data_content.items" :key="index">
+                                                                    <view :class="'word-icon dis-inline-block text-size-xs round padding-top-xs padding-bottom-xs padding-left padding-right ' + (nav_active_item_two_index == index ? 'bg-main-light br-main-light cr-main' : 'br-grey cr-grey')" :id="'two-nav-item-' + index" :data-index="nav_active_index" :data-itemtwoindex="index" :data-itemthreeindex="-1" @tap="nav_event">{{ item.name }}</view>
+                                                                </block>
+                                                            </scroll-view>
+                                                        </view>
+                                                        <!-- 点击二级后展示三级：独立底块 + 横向滚动，与二级区分且不占过多高度 -->
+                                                        <view v-if="(data_three_content || null) != null && (data_three_content.items || null) != null && data_three_content.items.length > 0" class="level3-block word-list scroll-view-horizontal">
+                                                            <scroll-view :scroll-x="true" :show-scrollbar="false" :scroll-with-animation="true" :scroll-into-view="category_nav_scroll_into_three">
+                                                                <view id="three-nav-item-all" :class="'word-icon dis-inline-block text-size-xs round padding-top-xs padding-bottom-xs padding-left padding-right ' + (nav_active_item_three_index == -1 ? 'bg-main-light br-main-light cr-main' : 'br-grey cr-grey')" :data-index="nav_active_index" :data-itemtwoindex="nav_active_item_two_index" :data-itemthreeindex="-1" @tap="nav_event">{{ $t('common.all') }}</view>
+                                                                <block v-for="(item, index) in data_three_content.items" :key="index">
+                                                                    <view :class="'word-icon dis-inline-block text-size-xs round padding-top-xs padding-bottom-xs padding-left padding-right ' + (nav_active_item_three_index == index ? 'bg-main-light br-main-light cr-main' : 'br-grey cr-grey')" :id="'three-nav-item-' + index" :data-index="nav_active_index" :data-itemtwoindex="nav_active_item_two_index" :data-itemthreeindex="index" @tap="nav_event">{{ item.name }}</view>
+                                                                </block>
+                                                            </scroll-view>
+                                                        </view>
+                                                    </block>
                                                 </view>
                                                 <!-- 右侧商品列表 -->
                                                 <view v-if="(data_list || null) != null && data_list.length > 0" class="oh">
-                                                    <view v-for="(item, index) in data_list" :key="index" class="item oh pr spacing-mb">
-                                                        <!-- 商品主体内容 -->
-                                                        <view class="flex-row jc-sb" data-type="type" :data-index="index" :data-value="item.goods_url + '&is_opt_back=1'" @tap="goods_event">
-                                                            <image :src="item.images" mode="widthFix" class="goods-img radius dis-block"></image>
-                                                            <view class="goods-base flex-col jc-sb">
-                                                                <view class="goods-base-content">
-                                                                    <view class="goods-title multi-text">{{ item.title }}</view>
-                                                                    <view v-if="(item.simple_desc || null) != null" class="simple-desc cr-grey-9 text-size-xs margin-top-sm single-text">{{ item.simple_desc }}</view>
+                                                    <view v-for="(item, index) in data_list" :key="index" :class="'item pr spacing-mb ' + ((category_goods_style == 2 || category_goods_style == 4) ? 'goods-style-vertical' : 'oh')">
+                                                        <!-- 商品主体内容：风格二/四竖排独立封面，避免 widthFix+固定高塌成 0 -->
+                                                        <block v-if="category_goods_style == 2 || category_goods_style == 4">
+                                                            <view class="flex-col goods-vertical-body" data-type="type" :data-index="index" :data-value="item.goods_url + '&is_opt_back=1'" @tap="goods_event">
+                                                                <view class="goods-cover-vertical radius">
+                                                                    <image :src="item.images" mode="aspectFill" class="goods-cover-vertical-img"></image>
                                                                 </view>
-                                                                <view v-if="(item.show_field_price_status || 0) == 1" class="oh flex-row jc-sb align-c">
-                                                                    <view class="single-text va-m">
-                                                                        <text class="sales-price">
-                                                                            <text class="text-size-xss">{{ item.show_price_symbol }}</text>
-                                                                            <text class="text-size">{{ item.min_price }}</text>
-                                                                        </text>
-                                                                        <text class="text-size-xss cr-grey">{{ item.show_price_unit }}</text>
+                                                                <view class="goods-base goods-base-vertical flex-col jc-sb">
+                                                                    <view class="goods-base-content">
+                                                                        <view class="goods-title multi-text">{{ item.title }}</view>
                                                                     </view>
-                                                                    <view v-if="common_site_type != 4" class="buy-opt flex-row align-c tc">
-                                                                        <block v-if="(item.is_error || 0) == 0">
-                                                                            <view v-if="(item.buy_number || 0) > 0" class="cp pr top-sm" :data-index="index" data-type="0" @tap.stop="buy_number_event">
-                                                                                <iconfont name="icon-reduce" size="48rpx" :color="theme_color"></iconfont>
-                                                                            </view>
-                                                                            <view v-if="(item.buy_number || 0) > 0" class="buy-number cr-black text-size-sm padding-left-xs padding-right-xs">
-                                                                                {{ item.buy_number }}
-                                                                            </view>
-                                                                            <view class="cp pr top-sm" :data-index="index" data-type="1" @tap.stop="buy_number_event">
-                                                                                <iconfont name="icon-add-solid" size="48rpx" :color="theme_color"></iconfont>
-                                                                            </view>
-                                                                        </block>
-                                                                        <block v-else>
-                                                                            <text class="cr-grey text-size-xs">{{ item.error_msg }}</text>
-                                                                        </block>
+                                                                    <view v-if="(item.show_field_price_status || 0) == 1" class="oh flex-row jc-sb align-c">
+                                                                        <view class="single-text va-m">
+                                                                            <text class="sales-price">
+                                                                                <text class="text-size-xss">{{ item.show_price_symbol }}</text>
+                                                                                <text class="text-size">{{ item.min_price }}</text>
+                                                                            </text>
+                                                                            <text class="text-size-xss cr-grey">{{ item.show_price_unit }}</text>
+                                                                        </view>
+                                                                        <view v-if="common_site_type != 4" class="buy-opt flex-row align-c tc">
+                                                                            <block v-if="(item.is_error || 0) == 0">
+                                                                                <view v-if="(item.buy_number || 0) > 0" class="cp pr top-sm" :data-index="index" data-type="0" @tap.stop="buy_number_event">
+                                                                                    <iconfont name="icon-reduce" size="48rpx" :color="theme_color"></iconfont>
+                                                                                </view>
+                                                                                <view v-if="(item.buy_number || 0) > 0" class="buy-number cr-black text-size-sm padding-left-xs padding-right-xs">
+                                                                                    {{ item.buy_number }}
+                                                                                </view>
+                                                                                <view class="cp pr top-sm" :data-index="index" data-type="1" @tap.stop="buy_number_event">
+                                                                                    <iconfont name="icon-add-solid" size="48rpx" :color="theme_color"></iconfont>
+                                                                                </view>
+                                                                            </block>
+                                                                            <block v-else>
+                                                                                <text class="cr-grey text-size-xs">{{ item.error_msg }}</text>
+                                                                            </block>
+                                                                        </view>
                                                                     </view>
                                                                 </view>
                                                             </view>
-                                                        </view>
+                                                        </block>
+                                                        <block v-else>
+                                                            <view class="flex-row jc-sb" data-type="type" :data-index="index" :data-value="item.goods_url + '&is_opt_back=1'" @tap="goods_event">
+                                                                <image :src="item.images" mode="widthFix" class="goods-img radius dis-block"></image>
+                                                                <view class="goods-base flex-col jc-sb">
+                                                                    <view class="goods-base-content">
+                                                                        <view class="goods-title multi-text">{{ item.title }}</view>
+                                                                        <view v-if="(item.simple_desc || null) != null" class="simple-desc cr-grey-9 text-size-xs margin-top-sm single-text">{{ item.simple_desc }}</view>
+                                                                    </view>
+                                                                    <view v-if="(item.show_field_price_status || 0) == 1" class="oh flex-row jc-sb align-c">
+                                                                        <view class="single-text va-m">
+                                                                            <text class="sales-price">
+                                                                                <text class="text-size-xss">{{ item.show_price_symbol }}</text>
+                                                                                <text class="text-size">{{ item.min_price }}</text>
+                                                                            </text>
+                                                                            <text class="text-size-xss cr-grey">{{ item.show_price_unit }}</text>
+                                                                        </view>
+                                                                        <view v-if="common_site_type != 4" class="buy-opt flex-row align-c tc">
+                                                                            <block v-if="(item.is_error || 0) == 0">
+                                                                                <view v-if="(item.buy_number || 0) > 0" class="cp pr top-sm" :data-index="index" data-type="0" @tap.stop="buy_number_event">
+                                                                                    <iconfont name="icon-reduce" size="48rpx" :color="theme_color"></iconfont>
+                                                                                </view>
+                                                                                <view v-if="(item.buy_number || 0) > 0" class="buy-number cr-black text-size-sm padding-left-xs padding-right-xs">
+                                                                                    {{ item.buy_number }}
+                                                                                </view>
+                                                                                <view class="cp pr top-sm" :data-index="index" data-type="1" @tap.stop="buy_number_event">
+                                                                                    <iconfont name="icon-add-solid" size="48rpx" :color="theme_color"></iconfont>
+                                                                                </view>
+                                                                            </block>
+                                                                            <block v-else>
+                                                                                <text class="cr-grey text-size-xs">{{ item.error_msg }}</text>
+                                                                            </block>
+                                                                        </view>
+                                                                    </view>
+                                                                </view>
+                                                            </view>
+                                                        </block>
                                                         <!-- 标签插件 -->
                                                         <view v-if="(plugins_label_data || null) != null && plugins_label_data.data.length > 0" :class="'plugins-label oh pa plugins-label-' + ((plugins_label_data.base.is_user_goods_label_icon || 0) == 0 ? 'text' : 'img') + ' plugins-label-' + (plugins_label_data.base.user_goods_show_style || 'top-left')">
                                                             <block v-for="(lv, li) in plugins_label_data.data" :key="li">
@@ -441,6 +515,9 @@
                 nav_active_index: 0,
                 nav_active_item_two_index: -1,
                 nav_active_item_three_index: -1,
+                // 二/三级横滑定位（上一级切换后回到最前）
+                category_nav_scroll_into_two: 'two-nav-item-all',
+                category_nav_scroll_into_three: 'three-nav-item-all',
                 scroll_top: 0,
                 scroll_top_old: 0,
                 cart_status: false,
@@ -448,6 +525,8 @@
                 category_one_subset_count: 0,
                 // 分类显示层级
                 category_show_level: 0,
+                // 分类+商品风格（1~4）
+                category_goods_style: 1,
                 // 排序导航
                 search_nav_sort_index: 0,
                 search_nav_sort_list: [],
@@ -588,6 +667,10 @@
                         currency_symbol: app.globalData.get_config('currency_symbol'),
                         common_site_type: app.globalData.get_config('config.common_site_type'),
                         category_show_level: parseInt(app.globalData.get_config('config.common_show_goods_category_level', 0)),
+                        category_goods_style: (() => {
+                            var style = parseInt(app.globalData.get_config('config.common_goods_category_goods_style', 1));
+                            return style >= 1 && style <= 4 ? style : 1;
+                        })(),
                         goods_category_model_icon_field: icon_type == 0 ? 'realistic_images' : icon_type == 1 ? 'icon' : 'big_images',
                         goods_category_is_search_alone: parseInt(app.globalData.get_config('config.common_goods_category_is_search_alone', 0)),
                         goods_category_is_show_cart_nav: parseInt(app.globalData.get_config('config.common_goods_category_is_show_cart_nav', 0)),
@@ -910,14 +993,25 @@
 
             // 导航事件
             nav_event(e) {
-                var index = e.currentTarget.dataset.index;
-                var two_index = e.currentTarget.dataset.itemtwoindex;
-                var three_index = e.currentTarget.dataset.itemthreeindex;
+                var index = parseInt(e.currentTarget.dataset.index);
+                var two_index = parseInt(e.currentTarget.dataset.itemtwoindex);
+                var three_index = parseInt(e.currentTarget.dataset.itemthreeindex);
+                var one_changed = index != this.nav_active_index;
+                var two_changed = two_index != this.nav_active_item_two_index;
+                // 上一级切换：下级回到「全部」并从头部展示
+                if (one_changed) {
+                    two_index = -1;
+                    three_index = -1;
+                } else if (two_changed) {
+                    three_index = -1;
+                }
                 var temp_data_content = this.category_list[index] || null;
                 var temp_data_three_content = null;
-                if (two_index != -1 && temp_data_content != null) {
-                    temp_data_three_content = temp_data_content['items'][two_index];
+                if (two_index != -1 && temp_data_content != null && (temp_data_content.items || null) != null) {
+                    temp_data_three_content = temp_data_content['items'][two_index] || null;
                 }
+                var into_two = two_index == -1 ? 'two-nav-item-all' : 'two-nav-item-' + two_index;
+                var into_three = three_index == -1 ? 'three-nav-item-all' : 'three-nav-item-' + three_index;
                 this.setData({
                     nav_active_index: index,
                     nav_active_item_two_index: two_index,
@@ -928,8 +1022,18 @@
                     data_page: 1,
                     data_list: [],
                     data_list_loding_status: 1,
-                    data_bottom_line_status: false
+                    data_bottom_line_status: false,
+                    // 先清空再赋值，确保 scroll-into-view 重新触发回到最前
+                    category_nav_scroll_into_two: '',
+                    category_nav_scroll_into_three: '',
                 });
+                var self = this;
+                setTimeout(function () {
+                    self.setData({
+                        category_nav_scroll_into_two: into_two,
+                        category_nav_scroll_into_three: into_three,
+                    });
+                }, 30);
                 this.reset_scroll();
                 this.get_goods_list(1);
             },
