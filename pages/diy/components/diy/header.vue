@@ -31,7 +31,7 @@
                                                 </view>
                                                 <view v-if="left_dropdown_open && !isEmpty(form.content.left_icon_setting)" class="left-dropdown-panel pa" :style="left_dropdown_panel_style">
                                                     <view class="left-dropdown-arrow" :style="left_dropdown_arrow_style"></view>
-                                                    <view v-for="(item, index) in form.content.left_icon_setting" :key="'left-drop-' + index" class="flex-row align-c pr" :style="left_dropdown_item_style(index)" :data-value="item.link && item.link.page" @tap.stop="left_dropdown_item_event">
+                                                    <view v-for="(item, index) in form.content.left_icon_setting" :key="index" class="flex-row align-c pr" :style="left_dropdown_item_style(index)" :data-value="item.link && item.link.page" @tap.stop="left_dropdown_item_event">
                                                         <view class="flex-row align-c jc-c" :style="{ width: left_dropdown_list_icon_size, height: left_dropdown_list_icon_size }">
                                                             <image-empty v-if="!isEmpty(item.img)" :propImageSrc="item.img[0].url" :propErrorStyle="'width: ' + left_dropdown_list_icon_size + ';height:' + left_dropdown_list_icon_size + ';'"></image-empty>
                                                             <iconfont v-else-if="item.icon" :name="'icon-' + item.icon" :size="left_dropdown_list_icon_size" :propStyle="'color:' + (form.style.left_dropdown_list_color || '#333')" propContainerDisplay="flex"></iconfont>

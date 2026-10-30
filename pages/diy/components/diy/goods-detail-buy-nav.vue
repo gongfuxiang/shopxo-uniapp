@@ -4,7 +4,7 @@
             <view :style="style_container">
                 <view class="bar flex-row align-c" :style="style_img_container">
                     <view v-if="icons.length > 0" class="icons flex-row align-c">
-                        <view v-for="(item, index) in icons" :key="item.key || index" class="icon-item flex-col align-c jc-c">
+                        <view v-for="(item, index) in icons" :key="index" class="icon-item flex-col align-c jc-c">
                             <view v-if="item.key == 'cart' && cartCount > 0" class="cart-badge">
                                 <component-badge :propNumber="cartCount"></component-badge>
                             </view>
