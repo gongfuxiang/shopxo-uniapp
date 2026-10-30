@@ -970,8 +970,13 @@
     var win_width = parseInt(system_info.windowWidth || system_info.screenWidth || 0);
     var win_height = parseInt(system_info.windowHeight || system_info.screenHeight || 0);
     var photo_height = (win_width <= 0) ? '55vh' : app.globalData.window_width_handle(win_width) + 'px';
-    // 公共接口带回的商品详情装修 id，有值才算使用 DIY
+    // 公共接口：默认或任意品类配置了 DIY 则为启用；具体模板等详情接口
     function goods_detail_diy_configured() {
+        var enable = parseInt(app.globalData.get_config('config.common_app_goods_detail_diy_enable', 0) || 0);
+        if(enable > 0) {
+            return true;
+        }
+        // 兼容旧公共字段
         return parseInt(app.globalData.get_config('config.common_app_goods_detail_diy_id', 0) || 0) > 0;
     }
     export default {
@@ -1413,6 +1418,8 @@
                                 random_value: Math.random(),
                                 data_mode: parseInt(data.data_mode || 0),
                                 diy_data: data.diy_data || null,
+                                // 详情返回后按实际是否 DIY 收口，避免仅公共 enable 时一直按 DIY 骨架逻辑
+                                goods_detail_use_diy: parseInt(data.data_mode || 0) == 3,
                                 diy_custom_buy_nav: diy_custom_buy_nav,
                                 diy_buy_nav_com_data: diy_footer.com_data || null,
                                 data_loading_status: 1,

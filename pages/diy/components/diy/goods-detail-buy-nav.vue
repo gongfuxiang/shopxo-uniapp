@@ -490,10 +490,11 @@
         white-space: nowrap;
         box-sizing: border-box;
     }
+    /* 角标略靠左上，避免贴购买按钮并溢出到相邻区域 */
     .cart-badge {
         position: absolute;
-        top: 0;
-        right: 8rpx;
+        top: -8rpx;
+        right: 28rpx;
         z-index: 1;
     }
 </style>
