@@ -5,6 +5,13 @@
             <view class="ask-container bg-white spacing-mb">
                 <view class="padding-main">
                     <view v-if="(info.title || null) != null" class="fw-b text-size-xl spacing-mb">{{ info.title }}</view>
+                    <view v-if="(info.user_home_url || null) != null && info.user_home_url !== '' && (info.user || null) != null" class="flex-row align-c margin-bottom-sm cp" :data-value="info.user_home_url" @tap="url_event">
+                        <image v-if="info.user.avatar" class="circle br-f5 margin-right-sm" :src="info.user.avatar" mode="aspectFill" style="width:48rpx;height:48rpx;"></image>
+                        <text class="text-size-sm">{{ info.user.user_name_view }}</text>
+                        <view class="margin-left-xs">
+                            <iconfont name="icon-arrow-right" color="#999" size="24rpx"></iconfont>
+                        </view>
+                    </view>
                     <view class="cr-grey-9 text-size-xs margin-bottom-sm flex-row">
                         {{ $t('detail.message_time') }}{{ info.add_time_date }}
                         <view class="fw-b padding-horizontal-xs">·</view>

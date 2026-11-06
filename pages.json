@@ -2984,6 +2984,38 @@
             ]
         },
         {
+            "root": "pages/plugins/userhome",
+            "pages": [
+                {
+                    "path": "home/home",
+                    "style": {
+                        "enablePullDownRefresh": true,
+                        "navigationBarTitleText": ""
+                    }
+                },
+                {
+                    "path": "follow-list/follow-list",
+                    "style": {
+                        "enablePullDownRefresh": true,
+                        "navigationBarTitleText": ""
+                    }
+                },
+                {
+                    "path": "moment-form/moment-form",
+                    "style": {
+                        "enablePullDownRefresh": false,
+                        "navigationBarTitleText": "",
+                        "usingComponents": {
+                            "component-upload": "/pages/common/components/upload/upload"
+                        },
+                        "componentPlaceholder": {
+                            "component-upload": "view"
+                        }
+                    }
+                }
+            ]
+        },
+        {
             "root": "pages/plugins/live",
             "pages": [
                 {

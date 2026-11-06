@@ -4,6 +4,13 @@
             <view class="padding-main bg-white spacing-mb">
                 <view class="spacing-mb">
                     <view class="fw-b text-size-xl">{{ info.title }}</view>
+                    <view v-if="(info.user_home_url || null) != null && info.user_home_url !== '' && (info.user || null) != null" class="flex-row align-c margin-top-main cp" :data-value="info.user_home_url" @tap="url_event">
+                        <image v-if="info.user.avatar" class="circle br-f5 margin-right-sm" :src="info.user.avatar" mode="aspectFill" style="width:48rpx;height:48rpx;"></image>
+                        <text class="text-size-sm">{{ info.user.user_name_view }}</text>
+                        <view class="margin-left-xs">
+                            <iconfont name="icon-arrow-right" color="#999" size="24rpx"></iconfont>
+                        </view>
+                    </view>
                     <view class="cr-grey-9 margin-top-lg oh br-t padding-top-main text-size-xs">
                         <view class="fl">
                             <text>{{ $t('common.article_detail_time') }}</text>
