@@ -31,15 +31,15 @@
                                 <view class="form-gorup-title">{{$t('recommend-form.related_products')}}<text class="form-group-tips-must">*</text></view>
                                 <view v-if="(recommend_data.detail_list || null) != null && recommend_data.detail_list.length > 0" class="margin-top-lg view-goods-list">
                                     <block v-for="(item, index) in recommend_data.detail_list" :key="index">
-                                        <view v-if="(item.goods || null) != null" :class="'item oh pr ' + (index > 0 ? 'br-t-dashed padding-top-lg margin-top-lg' : '')">
-                                            <view :data-value="item.goods.goods_url" @tap="url_event" class="cp br dis-block fl radius oh">
-                                                <image :src="item.goods.images" mode="aspectFill" class="dis-block"></image>
+                                        <view v-if="(item.goods || null) != null" :class="'item flex-row pr ' + (index > 0 ? 'br-t-dashed padding-top-lg margin-top-lg' : '')">
+                                            <view :data-value="item.goods.goods_url" @tap="url_event" class="cp br radius oh goods-cover">
+                                                <image :src="item.goods.images" mode="aspectFit" class="goods-cover-img"></image>
                                             </view>
-                                            <view class="base fr">
+                                            <view class="base flex-1 flex-width padding-left-main pr">
                                                 <view class="cr-base single-text">{{ item.goods.title }}</view>
-                                                <view class="margin-top-xs">
+                                                <view class="margin-top-xs flex-row jc-sb align-c">
                                                     <text class="sales-price">{{ currency_symbol }}{{ item.goods.price }}</text>
-                                                    <text class="fr cr-grey">{{ item.goods.inventory }}{{ item.goods.inventory_unit }}</text>
+                                                    <text class="cr-grey">{{ item.goods.inventory }}{{ item.goods.inventory_unit }}</text>
                                                 </view>
                                                 <view v-if="(item.spec_text_view || null) != null" class="cr-grey margin-top-xs text-size-xs">{{ item.spec_text_view }}</view>
                                                 <text class="br-red cr-red text-size-xs padding-horizontal-main padding-top-xs padding-bottom-xs round pa cp operate-submit" :data-index="index" @tap="goods_remove_event">{{$t('common.remove')}}</text>
@@ -81,14 +81,14 @@
                                 <input type="search" :value="popup_keywords_value" placeholder-class="cr-grey text-size-xs" class="cr-base item br round fl padding-horizontal-main margin-left-main" :placeholder="$t('recommend-form.enter_product_name')" @input="popup_keywords_value_event" @confirm="popup_goods_search_event" />
                                 <button type="default" size="mini" class="bg-main br-main cr-white text-size-xs round fr" @tap="popup_goods_search_event">{{$t('common.search')}}</button>
                             </view>
-                            <view class="view-goods-list padding-horizontal-main">
+                            <scroll-view :scroll-y="true" class="view-goods-list padding-horizontal-main">
                                 <block v-if="popup_search_goods_list.length > 0">
                                     <block v-for="(item, index) in popup_search_goods_list" :key="index">
-                                        <view :class="'item oh pr margin-top-lg ' + (index > 0 ? 'br-t-dashed padding-top-lg' : '')">
-                                            <view :data-value="item.goods_url" @tap="url_event" class="cp br dis-block fl radius oh">
-                                                <image :src="item.images" mode="aspectFill" class="dis-block"></image>
+                                        <view :class="'item flex-row pr margin-top-lg ' + (index > 0 ? 'br-t-dashed padding-top-lg' : '')">
+                                            <view :data-value="item.goods_url" @tap="url_event" class="cp br radius oh goods-cover">
+                                                <image :src="item.images" mode="aspectFit" class="goods-cover-img"></image>
                                             </view>
-                                            <view class="base fr">
+                                            <view class="base flex-1 flex-width padding-left-main pr">
                                                 <view class="cr-base single-text">{{ item.title }}</view>
                                                 <view class="margin-top-xs sales-price">{{ currency_symbol }}{{ item.price }}</view>
                                                 <view class="cr-grey margin-top-xs text-size-xs">{{ item.inventory }}{{ item.inventory_unit }}</view>
@@ -101,7 +101,7 @@
                                 <block v-else>
                                     <component-no-data :propStatus="search_data_list_loding_status" :propMsg="search_data_list_loding_msg"></component-no-data>
                                 </block>
-                            </view>
+                            </scroll-view>
                         </view>
                     </view>
                 </component-popup>

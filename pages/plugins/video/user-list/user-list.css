@@ -1,0 +1,66 @@
+.video-cover-wrap {
+    width: 180rpx;
+    height: 240rpx;
+}
+
+.video-cover {
+    width: 100%;
+    height: 100%;
+    display: block;
+}
+
+.cover-duration {
+    right: 8rpx;
+    bottom: 8rpx;
+    padding: 2rpx 10rpx;
+    border-radius: 6rpx;
+    background: rgba(0, 0, 0, 0.55);
+    line-height: 1.4;
+}
+
+.badge {
+    display: inline-block;
+    height: 32rpx;
+    line-height: 32rpx;
+    border-radius: 18rpx;
+    font-size: 10px;
+    padding: 0 16rpx;
+    margin-right: 10rpx;
+    margin-top: 4rpx;
+}
+
+.badge.success {
+    color: #52C41A;
+    background: rgb(82 196 26 / 10%);
+}
+
+.badge.info {
+    color: #999;
+    background: #f4f4f4;
+}
+
+.badge.warning {
+    color: #fa8c16;
+    background: rgba(250, 140, 22, 0.1);
+}
+
+.badge.error {
+    color: #E22C08;
+    background: rgba(226, 45, 8, 0.1);
+}
+
+.add-icon {
+    height: 80rpx;
+    line-height: 76rpx;
+    margin-right: 6rpx;
+}
+
+.multi-text {
+    min-height: auto;
+}
+
+.goods-link .goods-img {
+    width: 80rpx;
+    height: 80rpx;
+    flex-shrink: 0;
+}

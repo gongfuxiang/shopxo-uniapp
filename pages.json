@@ -2960,6 +2960,26 @@
                         "disableScroll": true,
                         "navigationBarTitleText": ""
                     }
+                },
+                {
+                    "path": "user-list/user-list",
+                    "style": {
+                        "enablePullDownRefresh": true,
+                        "navigationBarTitleText": ""
+                    }
+                },
+                {
+                    "path": "form/form",
+                    "style": {
+                        "enablePullDownRefresh": true,
+                        "navigationBarTitleText": "",
+                        "usingComponents": {
+                            "component-upload": "/pages/common/components/upload/upload"
+                        },
+                        "componentPlaceholder": {
+                            "component-upload": "view"
+                        }
+                    }
                 }
             ]
         },

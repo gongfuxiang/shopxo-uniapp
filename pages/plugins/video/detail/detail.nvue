@@ -571,8 +571,8 @@
                                 
                                     this.get_last_or_next_data_list(this.params.id, 0, 1);
                                 } else {
-                                    this.data_list_loding_status =  0;
-                                    this.data_tabs_loding_msg = data.msg;
+                                    this.data_list_loding_status = 0;
+                                    this.data_list_loding_msg = data.msg;
                                 }
                             } catch {
                                 console.error('get_video_detail error:', error);

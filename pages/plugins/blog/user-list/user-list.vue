@@ -4,7 +4,7 @@
             <scroll-view :scroll-y="true" class="scroll-box" @scrolltolower="scroll_lower" lower-threshold="60">
                 <view class="page-bottom-fixed padding-top-main">
                     <view v-for="(item, index) in data_list" class="bg-white spacing-mb" :key="index">
-                        <view class="padding-main flex-row">
+                        <view class="padding-main flex-row" :data-value="'/pages/plugins/blog/detail/detail?id=' + item.id" @tap="url_event">
                             <view v-if="item.cover" class="padding-right-main">
                                 <image class="blog-img radius" :src="item.cover" mode="aspectFit"></image>
                             </view>
@@ -12,6 +12,7 @@
                                 <view class="multi-text text-size fw-b margin-bottom-xs">{{ item.title }}</view>
                                 <view class="text-size-sm cr-grey-9 margin-bottom-sm">{{ item.date }}</view>
                                 <view class="badge" :class="item.status == '0' ? 'info' : item.status == 1 ? 'success' : 'error'">{{ item.status_name }}</view>
+                                <view v-if="item.status == 2 && item.reason" class="text-size-xs cr-red margin-top-sm">{{ item.reason }}</view>
                             </view>
                         </view>
                         <view class="br-t-f5 flex-row jc-sa align-c text-size tc">
@@ -19,9 +20,9 @@
                                 <view class="margin-right-xs dis-inline-block">
                                     <iconfont name="icon-edit-below-line" size="32rpx"></iconfont>
                                 </view>{{$t('common.edit')}}</view>
-                            <view class="cr-main flex-1 padding-vertical-main" :data-id="item.id" @tap="del_event">
+                            <view class="cr-red flex-1 padding-vertical-main" :data-id="item.id" @tap="del_event">
                                 <view class="margin-right-xs dis-inline-block">
-                                    <iconfont name="icon-delete" size="32rpx"></iconfont>
+                                    <iconfont name="icon-delete" size="32rpx" color="#E22C08"></iconfont>
                                 </view>{{$t('common.del')}}</view>
                         </view>
                     </view>
@@ -30,7 +31,7 @@
                 </view>
             </scroll-view>
         </block>
-        <block vc-else>
+        <block v-else>
             <!-- 提示信息 -->
             <component-no-data :propStatus="data_list_loding_status" :propMsg="data_list_loding_msg"></component-no-data>
         </block>
@@ -57,6 +58,7 @@
     import componentNoData from '@/components/no-data/no-data';
     import componentBottomLine from '@/components/bottom-line/bottom-line';
     import pluginLocale from '../locale/index.js';
+    const CACHE_LIST_REFRESH = 'cache_plugins_blog_user_list_refresh';
     export default {
         mixins: [pluginLocale],
         data() {
@@ -101,10 +103,7 @@
 
         // 下拉刷新
         onPullDownRefresh() {
-            this.setData({
-                data_page: 1,
-            });
-            this.get_data_list(1);
+            this.reload_all();
         },
 
         // 页面销毁时执行
@@ -113,15 +112,57 @@
         methods: {
             init() {
                 var user = app.globalData.get_user_info(this, 'init');
-                if (user != false) {
-                    this.get_data_list(1);
-                } else {
-                    // 提示错误
+                if (user == false) {
                     this.setData({
                         data_list_loding_status: 2,
                         data_list_loding_msg: this.$t('common.user_not_logged'),
                     });
+                    return;
                 }
+                var refresh = uni.getStorageSync(CACHE_LIST_REFRESH) || null;
+                if (refresh) {
+                    uni.removeStorageSync(CACHE_LIST_REFRESH);
+                    if (refresh.type == 'edit' && parseInt(refresh.id || 0) > 0 && (this.data_list || []).length > 0) {
+                        this.refresh_item(refresh.id);
+                        return;
+                    }
+                    this.reload_all();
+                    return;
+                }
+                // 首次进入或空列表才拉，避免 onShow 整表重刷打乱分页
+                if ((this.data_list || []).length <= 0) {
+                    this.reload_all();
+                }
+            },
+            reload_all() {
+                this.setData({
+                    data_page: 1,
+                    data_list: [],
+                    data_bottom_line_status: false,
+                });
+                this.get_data_list(1);
+            },
+            refresh_item(id) {
+                uni.request({
+                    url: app.globalData.get_request_url('saveinfo', 'blog', 'blog'),
+                    method: 'POST',
+                    data: { id: id },
+                    success: (res) => {
+                        if (res.data.code == 0 && (res.data.data.data || null) != null) {
+                            var item = res.data.data.data;
+                            var list = this.data_list || [];
+                            for (var i in list) {
+                                if (parseInt(list[i]['id']) == parseInt(item.id)) {
+                                    list[i] = Object.assign({}, list[i], item);
+                                    break;
+                                }
+                            }
+                            this.setData({
+                                data_list: list,
+                            });
+                        }
+                    },
+                });
             },
             get_data_list(is_mandatory) {
                 // 分页是否还有数据
@@ -148,6 +189,9 @@
                 uni.request({
                     url: app.globalData.get_request_url('index', 'blog', 'blog'),
                     method: 'POST',
+                    data: {
+                        page: this.data_page,
+                    },
                     success: (res) => {
                         if(this.data_page > 1) {
                             uni.hideLoading();

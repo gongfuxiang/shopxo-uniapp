@@ -9,6 +9,21 @@
                 </view>
             </component-panel-content>
 
+            <component-panel-content v-if="(data.goods || null) != null" :propTitle="$t('common.goods')">
+                <view class="item br-b-f5 oh padding-vertical-main">
+                    <view class="goods-link bg-grey-f9 padding-sm border-radius-sm" :data-value="data.goods.goods_url || '/pages/goods-detail/goods-detail?id=' + data.goods.id" @tap="url_event">
+                        <view class="flex-row align-c">
+                            <image v-if="data.goods.images" class="goods-img radius" :src="data.goods.images" mode="aspectFill"></image>
+                            <view class="flex-1 flex-width padding-left-sm">
+                                <view class="text-size-sm multi-text">{{ data.goods.title }}</view>
+                                <view class="cr-red text-size-sm margin-top-xs">{{ currency_symbol }}{{ data.goods.price }}</view>
+                            </view>
+                            <iconfont name="icon-arrow-right" color="#999"></iconfont>
+                        </view>
+                    </view>
+                </view>
+            </component-panel-content>
+
             <component-panel-content :propTitle="$t('ask.reply_content')">
                 <block v-if="(data.is_reply || 0) == 1 && (data.reply || null) != null && data.reply !== ''">
                     <view class="item br-b-f5 oh padding-vertical-main">
@@ -47,6 +62,7 @@
                 field_list: [],
                 data_list_loding_status: 1,
                 params: '',
+                currency_symbol: app.globalData.currency_symbol(),
             };
         },
 
@@ -143,6 +159,11 @@
                 app.globalData.page_back_prev_event();
             },
 
+            // url事件
+            url_event(e) {
+                app.globalData.url_event(e);
+            },
+
             // 页面滚动监听
             onPageScroll(res) {
                 uni.$emit('onPageScroll', res);
@@ -151,4 +172,9 @@
     };
 </script>
 <style>
+    .goods-link .goods-img {
+        width: 100rpx;
+        height: 100rpx;
+        flex-shrink: 0;
+    }
 </style>

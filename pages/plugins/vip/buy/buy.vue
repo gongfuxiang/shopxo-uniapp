@@ -19,7 +19,7 @@
                     <block v-for="(item, index) in data_list" :key="index">
                         <block v-if="selected_tabs_index == index">
                             <block v-if="(item.pay_period_rules || null) != null">
-                                <view class="data-list flex-row flex-wrap align-c">
+                                <view class="data-list flex-row flex-wrap" :class="item.pay_period_rules.length == 1 ? 'only-one' : 'only-two'">
                                     <block v-for="(rules, ri) in item.pay_period_rules" :key="ri">
                                         <view class="list padding-sm oh" @tap="content_event" :data-index="ri" :data-value="currency_symbol + rules.price + '/' + ((rules.number || null) == null ? $t('common.lifetime') : rules.value + rules.unit)">
                                             <view class="item flex-col" :class="selected_content_index === ri ? 'active' : ''">
@@ -35,10 +35,10 @@
                                             </view>
                                         </view>
                                     </block>
-                                    <view class="bottom-fixed" :style="bottom_fixed_style">
-                                        <view class="bottom-line-exclude">
-                                            <button class="item bg-main br-main cr-white round text-size" type="default" hover-class="none" @tap="submit_event" :disabled="submit_disabled_status">{{$t('buy.active')}}{{ selected_tabs_value }}</button>
-                                        </view>
+                                </view>
+                                <view class="bottom-fixed" :style="bottom_fixed_style">
+                                    <view class="bottom-line-exclude">
+                                        <button class="item bg-main br-main cr-white round text-size" type="default" hover-class="none" @tap="submit_event" :disabled="submit_disabled_status">{{$t('buy.active')}}{{ selected_tabs_value }}</button>
                                     </view>
                                 </view>
                             </block>

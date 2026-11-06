@@ -42,9 +42,21 @@
 
 /**
 * 内容
+* 1个：整行；2个及以上：一行最多两个（各约50%）
 */
 .data-list .list {
-    width: calc((100% / 3) - 24rpx);
+    box-sizing: border-box;
+}
+
+.data-list.only-one .list {
+    width: 100%;
+    flex: 0 0 100%;
+}
+
+.data-list.only-two .list {
+    width: 50%;
+    flex: 0 0 50%;
+    max-width: 50%;
 }
 
 .data-list .list .item {

@@ -31,6 +31,11 @@ var zh = {
         "reply_time": "回复时间:",
         "my_question": "我的提问"
     },
+    "user-list": {
+        "sure_want_delete_ask": "确定要删除这条提问吗？",
+        "show_yes": "已显示",
+        "show_pending": "未显示"
+    },
     "form": {
         "fill_content": "请填写内容"
     },
@@ -73,6 +78,11 @@ var en = {
         "administrator_reply": "Administrator's reply",
         "reply_time": "Reply time:",
         "my_question": "My question"
+    },
+    "user-list": {
+        "sure_want_delete_ask": "Are you sure you want to delete this question?",
+        "show_yes": "Visible",
+        "show_pending": "Hidden"
     },
     "form": {
         "fill_content": "Please fill in the content"

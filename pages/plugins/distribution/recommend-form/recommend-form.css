@@ -1,12 +1,23 @@
 /**
  * 商品列表
  */
-.view-goods-list image {
+.view-goods-list {
+    width: 100%;
+    box-sizing: border-box;
+    overflow: hidden;
+}
+.view-goods-list .goods-cover {
     width: 130rpx;
     height: 130rpx;
+    flex-shrink: 0;
+}
+.view-goods-list .goods-cover-img {
+    width: 130rpx;
+    height: 130rpx;
+    display: block;
 }
 .view-goods-list .base {
-    width: calc(100% - 150rpx);
+    min-width: 0;
 }
 .view-goods-list .operate-submit {
     right: 0;
@@ -16,6 +27,11 @@
 /**
  * 商品选择弹窗
  */
+.popup-goods-choice-container {
+    width: 100%;
+    box-sizing: border-box;
+    overflow: hidden;
+}
 .popup-goods-choice-container .nav-search {
     height: 90rpx;
 }
@@ -23,6 +39,7 @@
     width: calc(50% - 140rpx);
     height: 60rpx;
     line-height: 60rpx;
+    box-sizing: border-box;
 }
 .popup-goods-choice-container .nav-search input.item,
 .popup-goods-choice-container .nav-search button {
@@ -30,7 +47,7 @@
     line-height: 64rpx;
 }
 .popup-goods-choice-container .view-goods-list {
-    height: 80vh;
-    overflow-y: scroll;
-    overflow-x: hidden;
+    height: 70vh;
+    width: 100%;
+    box-sizing: border-box;
 }

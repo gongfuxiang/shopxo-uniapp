@@ -1,0 +1,74 @@
+.upload-box {
+    width: 200rpx;
+    height: 200rpx;
+}
+
+.video-preview {
+    width: 100%;
+    max-height: 420rpx;
+    background: #000;
+}
+
+.video-preview .delete-icon {
+    top: 12rpx;
+    right: 12rpx;
+}
+
+.p-content {
+    max-height: 50vh;
+    overflow-y: auto;
+}
+
+/**
+ * 关联商品
+ */
+.view-goods-list {
+    width: 100%;
+    box-sizing: border-box;
+    overflow: hidden;
+}
+.view-goods-list .goods-cover {
+    width: 130rpx;
+    height: 130rpx;
+    flex-shrink: 0;
+}
+.view-goods-list .goods-cover-img {
+    width: 130rpx;
+    height: 130rpx;
+    display: block;
+}
+.view-goods-list .base {
+    min-width: 0;
+}
+.view-goods-list .operate-submit {
+    right: 0;
+    bottom: 0;
+}
+
+/**
+ * 商品选择弹窗
+ */
+.popup-goods-choice-container {
+    width: 100%;
+    box-sizing: border-box;
+    overflow: hidden;
+}
+.popup-goods-choice-container .nav-search {
+    height: 90rpx;
+}
+.popup-goods-choice-container .nav-search .item {
+    width: calc(50% - 140rpx);
+    height: 60rpx;
+    line-height: 60rpx;
+    box-sizing: border-box;
+}
+.popup-goods-choice-container .nav-search input.item,
+.popup-goods-choice-container .nav-search button {
+    height: 64rpx;
+    line-height: 64rpx;
+}
+.popup-goods-choice-container .view-goods-list {
+    height: 70vh;
+    width: 100%;
+    box-sizing: border-box;
+}

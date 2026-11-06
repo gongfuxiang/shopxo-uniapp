@@ -524,7 +524,7 @@
                         } else {
                             this.setData({
                                 data_list_loding_status: 0,
-                                data_tabs_loding_msg: data.msg,
+                                data_list_loding_msg: data.msg,
                             });
                         }
                     },

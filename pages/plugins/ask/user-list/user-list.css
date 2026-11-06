@@ -1,3 +1,9 @@
 .ask-status {
     padding: 4rpx 10rpx;
 }
+
+.goods-link .goods-img {
+    width: 80rpx;
+    height: 80rpx;
+    flex-shrink: 0;
+}

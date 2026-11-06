@@ -409,9 +409,10 @@
                     this.setData({
                         form_submit_loading: true,
                     });
+                    // 表单字段需覆盖 data 中的旧值，否则编辑不生效仍提示成功
                     var new_data = {
-                        ...e.detail.value,
                         ...this.data,
+                        ...e.detail.value,
                     };
                     // 网络请求
                     uni.request({
@@ -422,6 +423,12 @@
                         success: (res) => {
                             uni.hideLoading();
                             if (res.data.code == 0) {
+                                // 通知列表：编辑只刷新当前条，新增整表重拉
+                                var edit_id = parseInt(new_data.id || 0);
+                                uni.setStorageSync('cache_plugins_blog_user_list_refresh', {
+                                    type: edit_id > 0 ? 'edit' : 'add',
+                                    id: edit_id,
+                                });
                                 app.globalData.showToast(res.data.msg, 'success');
                                 setTimeout(function () {
                                     app.globalData.page_back_prev_event();
