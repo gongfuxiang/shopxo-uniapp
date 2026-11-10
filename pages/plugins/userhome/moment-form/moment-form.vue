@@ -1,40 +1,50 @@
 <template>
     <view :class="theme_view">
-        <form @submit="form_submit" class="form-container">
-            <view class="page-bottom-fixed padding-main">
-                <view class="bg-white border-radius-main padding-main spacing-mb">
-                    <textarea name="content" class="wh-auto" :value="form.content" maxlength="1000" :placeholder="$t('moment-form.content_placeholder')" placeholder-class="cr-grey-9" @input="content_event" />
-                    <view class="margin-top-main">
-                        <component-upload :propData="image_list" :propMaxNum="9" :propPathType="editor_path_type" @call-back="return_image_event"></component-upload>
-                    </view>
-                </view>
+        <view class="page-bottom-fixed padding-main">
+            <view class="bg-white border-radius-main padding-main spacing-mb">
+                <component-moment-compose
+                    ref="compose"
+                    :propPlaceholder="$t('moment-form.content_placeholder')"
+                    :propSubmitText="$t('moment-form.submit')"
+                    :propMaxlength="1000"
+                    :propLoading="form_submit_loading"
+                    :propEditorPathType="editor_path_type"
+                    :propImagesMax="images_max"
+                    :propEmojiList="emoji_list"
+                    :propTools="compose_tools"
+                    @compose-submit="form_submit"
+                ></component-moment-compose>
             </view>
-            <view class="bottom-fixed">
-                <view class="bottom-line-exclude">
-                    <button class="item cr-white bg-main round text-size wh-auto" type="default" form-type="submit" hover-class="none" :loading="form_submit_loading" :disabled="form_submit_loading">{{$t('moment-form.submit')}}</button>
-                </view>
-            </view>
-        </form>
+        </view>
         <component-common ref="common"></component-common>
     </view>
 </template>
 <script>
     const app = getApp();
     import componentCommon from '@/components/common/common';
-    import componentUpload from '@/pages/common/components/upload/upload';
+    import componentMomentCompose from '../components/moment-compose/moment-compose';
     import pluginLocale from '../locale/index.js';
     export default {
         mixins: [pluginLocale],
         data() {
             return {
                 theme_view: app.globalData.get_theme_value_view(),
-                form: { content: '' },
-                image_list: [],
-                editor_path_type: '',
                 form_submit_loading: false,
+                editor_path_type: '',
+                images_max: 9,
+                emoji_list: [],
+                compose_tools: {
+                    emoji: 0,
+                    images: 0,
+                    video: 0,
+                    at: 0,
+                    topic: 0,
+                    at_follow: 0,
+                    at_fans: 0,
+                },
             };
         },
-        components: { componentCommon, componentUpload },
+        components: { componentCommon, componentMomentCompose },
         onLoad(params) {
             params = app.globalData.launch_params_handle(params);
             app.globalData.page_event_onload_handle(params);
@@ -56,24 +66,28 @@
                     data: {},
                     dataType: 'json',
                     success: (res) => {
-                        if (res.data.code == 0) {
-                            this.setData({
-                                editor_path_type: res.data.data.editor_path_type || '',
-                            });
+                        if (res.data.code != 0) {
+                            return;
                         }
+                        var data = res.data.data || {};
+                        this.setData({
+                            editor_path_type: data.editor_path_type || '',
+                            images_max: parseInt(data.images_max_number || 9) || 9,
+                            emoji_list: data.emoji_list || [],
+                            compose_tools: {
+                                emoji: data.is_publish_emoji == 1 ? 1 : 0,
+                                images: data.is_publish_images == 1 ? 1 : 0,
+                                video: data.is_publish_video == 1 ? 1 : 0,
+                                at: data.is_publish_at == 1 ? 1 : 0,
+                                topic: data.is_publish_topic == 1 ? 1 : 0,
+                                at_follow: data.is_moment_at_follow == 1 ? 1 : 0,
+                                at_fans: data.is_moment_at_fans == 1 ? 1 : 0,
+                            },
+                        });
                     },
                 });
             },
-            content_event(e) {
-                this.setData({
-                    form: { ...this.form, content: e.detail.value },
-                });
-            },
-            return_image_event() {
-                var data = (uni.getStorageSync(app.globalData.data.cache_upload_callback_key) || {}).data || [];
-                this.setData({ image_list: data });
-            },
-            form_submit() {
+            form_submit(data) {
                 if (this.form_submit_loading) {
                     return;
                 }
@@ -83,8 +97,10 @@
                     url: app.globalData.get_request_url('save', 'moment', 'userhome'),
                     method: 'POST',
                     data: {
-                        content: this.form.content || '',
-                        images: JSON.stringify(this.image_list || []),
+                        content: data.content || '',
+                        images: JSON.stringify(data.images || []),
+                        video_url: data.video_url || '',
+                        at_user_ids: JSON.stringify(data.at_user_ids || []),
                     },
                     dataType: 'json',
                     success: (res) => {
@@ -109,8 +125,5 @@
         },
     };
 </script>
-<style>
-    textarea {
-        min-height: 240rpx;
-    }
+<style scoped>
 </style>

@@ -2987,7 +2987,28 @@
             "root": "pages/plugins/userhome",
             "pages": [
                 {
+                    "path": "index/index",
+                    "style": {
+                        "enablePullDownRefresh": true,
+                        "navigationBarTitleText": ""
+                    }
+                },
+                {
                     "path": "home/home",
+                    "style": {
+                        "enablePullDownRefresh": true,
+                        "navigationBarTitleText": ""
+                    }
+                },
+                {
+                    "path": "detail/detail",
+                    "style": {
+                        "enablePullDownRefresh": false,
+                        "navigationBarTitleText": ""
+                    }
+                },
+                {
+                    "path": "list/list",
                     "style": {
                         "enablePullDownRefresh": true,
                         "navigationBarTitleText": ""
@@ -3011,6 +3032,13 @@
                         "componentPlaceholder": {
                             "component-upload": "view"
                         }
+                    }
+                },
+                {
+                    "path": "profile-edit/profile-edit",
+                    "style": {
+                        "enablePullDownRefresh": false,
+                        "navigationBarTitleText": ""
                     }
                 }
             ]

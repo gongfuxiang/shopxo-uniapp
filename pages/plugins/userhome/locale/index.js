@@ -1,9 +1,13 @@
 import { createPageLocaleMixin } from '@/locale/merge-page-locale.js';
 var zh = {
     "pages": {
+        "plugins-userhome-index": "动态广场",
         "plugins-userhome-home": "个人主页",
         "plugins-userhome-follow-list": "关注粉丝",
-        "plugins-userhome-moment-form": "发布动态"
+        "plugins-userhome-moment-form": "发布动态",
+        "plugins-userhome-list": "我的动态",
+        "plugins-userhome-detail": "动态详情",
+        "plugins-userhome-profile-edit": "编辑资料"
     },
     "home": {
         "follow": "关注",
@@ -13,19 +17,78 @@ var zh = {
         "blog": "博文",
         "ask": "问答",
         "video": "短视频",
-        "publish_moment": "发动态",
-        "no_signature": "这个人很懒，什么都没写"
+        "publish_moment": "发布动态",
+        "no_signature": "这个人很懒，什么都没写",
+        "theme_switch": "主题风格",
+        "cover_upload": "自定义背景",
+        "cover_overlay": "风格主题色",
+        "cover_audit_pending": "背景审核中",
+        "cover_audit_reject": "背景审核未通过",
+        "follow_list_deny_tips": "对方未公开该列表"
+    },
+    "profile": {
+        "nickname": "展示名称",
+        "nickname_placeholder": "请输入展示名称",
+        "avatar": "头像",
+        "avatar_tips": "未设置时默认使用账号头像",
+        "signature": "个性签名",
+        "signature_placeholder": "介绍一下自己吧",
+        "follow_list_view": "关注列表谁可见",
+        "follow_list_view_tips": "控制其他人是否可查看你的关注列表",
+        "fans_list_view": "粉丝列表谁可见",
+        "fans_list_view_tips": "控制其他人是否可查看你的粉丝列表",
+        "list_follow_system": "跟随系统",
+        "list_allow": "允许查看",
+        "list_deny": "不允许查看"
+    },
+    "feed": {
+        "sort_new": "最新",
+        "sort_hot": "热门",
+        "sort_like": "最赞",
+        "all_topic": "全部",
+        "my_moment": "我的动态"
+    },
+    "moment": {
+        "like": "赞",
+        "liked": "已赞",
+        "comment": "评论",
+        "views": "浏览",
+        "delete": "删除",
+        "delete_confirm": "删除后不可恢复，确认删除吗？",
+        "comment_placeholder": "说点儿什么吧",
+        "comment_publish": "评论",
+        "comment_login": "登录后评论",
+        "comment_more": "更多评论",
+        "comment_empty": "暂无评论",
+        "reply": "回复",
+        "reply_publish": "回复",
+        "reply_cancel": "取消回复",
+        "reply_holder": "回复 "
     },
     "moment-form": {
         "content_placeholder": "分享此刻心情...",
-        "submit": "发布"
+        "content_empty": "请填写内容",
+        "content_empty_images": "请填写内容或上传图片",
+        "content_empty_video": "请填写内容或上传视频",
+        "content_empty_images_video": "请填写内容或上传图片/视频",
+        "submit": "发布",
+        "images_max": "最多上传{max}张图片",
+        "video_replace": "仅可上传1个视频，再次选择将覆盖已选视频",
+        "at": "@好友",
+        "at_follow": "我关注的人",
+        "at_fans": "关注我的人",
+        "at_empty": "暂无可选用户"
     }
 };
 var en = {
     "pages": {
+        "plugins-userhome-index": "Moments",
         "plugins-userhome-home": "Profile",
         "plugins-userhome-follow-list": "Follow / Fans",
-        "plugins-userhome-moment-form": "New Moment"
+        "plugins-userhome-moment-form": "New Moment",
+        "plugins-userhome-list": "My Moments",
+        "plugins-userhome-detail": "Moment Detail",
+        "plugins-userhome-profile-edit": "Edit Profile"
     },
     "home": {
         "follow": "Follow",
@@ -35,12 +98,67 @@ var en = {
         "blog": "Blog",
         "ask": "Q&A",
         "video": "Video",
-        "publish_moment": "Post",
-        "no_signature": "No signature yet"
+        "publish_moment": "Publish Moment",
+        "no_signature": "No signature yet",
+        "theme_switch": "Theme",
+        "cover_upload": "Custom cover",
+        "cover_overlay": "Theme color overlay",
+        "cover_audit_pending": "Cover pending review",
+        "cover_audit_reject": "Cover rejected",
+        "follow_list_deny_tips": "This list is private"
+    },
+    "profile": {
+        "nickname": "Display name",
+        "nickname_placeholder": "Enter display name",
+        "avatar": "Avatar",
+        "avatar_tips": "Account avatar is used when empty",
+        "signature": "Signature",
+        "signature_placeholder": "Introduce yourself",
+        "follow_list_view": "Who can see following",
+        "follow_list_view_tips": "Control who can view your following list",
+        "fans_list_view": "Who can see fans",
+        "fans_list_view_tips": "Control who can view your fans list",
+        "list_follow_system": "Follow system",
+        "list_allow": "Allow",
+        "list_deny": "Deny"
+    },
+    "feed": {
+        "sort_new": "Latest",
+        "sort_hot": "Hot",
+        "sort_like": "Liked",
+        "all_topic": "All",
+        "my_moment": "My Moments"
+    },
+    "moment": {
+        "like": "Like",
+        "liked": "Liked",
+        "comment": "Comment",
+        "views": "Views",
+        "delete": "Delete",
+        "delete_confirm": "Delete permanently?",
+        "comment_placeholder": "Write a comment...",
+        "comment_publish": "Comment",
+        "comment_login": "Login to comment",
+        "comment_more": "More comments",
+        "comment_empty": "No comments yet",
+        "reply": "Reply",
+        "reply_publish": "Reply",
+        "reply_cancel": "Cancel",
+        "reply_holder": "Reply to "
     },
     "moment-form": {
         "content_placeholder": "Share your moment...",
-        "submit": "Publish"
+        "content_empty": "Please enter content",
+        "content_empty_images": "Please enter content or upload images",
+        "content_empty_video": "Please enter content or upload a video",
+        "content_empty_images_video": "Please enter content or upload images/video",
+        "submit": "Publish",
+        "images_max": "Up to {max} images",
+        "video_replace": "Only 1 video allowed. Choosing again will replace the current one.",
+        "at": "@Friend",
+        "at_follow": "Following",
+        "at_fans": "Followers",
+        "at_empty": "No users available"
     }
 };
 export default createPageLocaleMixin({ zh, en });
