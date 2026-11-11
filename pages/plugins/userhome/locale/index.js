@@ -5,6 +5,7 @@ var zh = {
         "plugins-userhome-home": "个人主页",
         "plugins-userhome-follow-list": "关注粉丝",
         "plugins-userhome-moment-form": "发布动态",
+        "plugins-userhome-moment-form-edit": "编辑动态",
         "plugins-userhome-list": "我的动态",
         "plugins-userhome-detail": "动态详情",
         "plugins-userhome-profile-edit": "编辑资料"
@@ -46,13 +47,15 @@ var zh = {
         "sort_hot": "热门",
         "sort_like": "最赞",
         "all_topic": "全部",
-        "my_moment": "我的动态"
+        "my_moment": "我的动态",
+        "my_home": "我的主页"
     },
     "moment": {
         "like": "赞",
         "liked": "已赞",
         "comment": "评论",
         "views": "浏览",
+        "edit": "编辑",
         "delete": "删除",
         "delete_confirm": "删除后不可恢复，确认删除吗？",
         "comment_placeholder": "说点儿什么吧",
@@ -72,6 +75,7 @@ var zh = {
         "content_empty_video": "请填写内容或上传视频",
         "content_empty_images_video": "请填写内容或上传图片/视频",
         "submit": "发布",
+        "save": "保存",
         "images_max": "最多上传{max}张图片",
         "video_replace": "仅可上传1个视频，再次选择将覆盖已选视频",
         "at": "@好友",
@@ -86,6 +90,7 @@ var en = {
         "plugins-userhome-home": "Profile",
         "plugins-userhome-follow-list": "Follow / Fans",
         "plugins-userhome-moment-form": "New Moment",
+        "plugins-userhome-moment-form-edit": "Edit Moment",
         "plugins-userhome-list": "My Moments",
         "plugins-userhome-detail": "Moment Detail",
         "plugins-userhome-profile-edit": "Edit Profile"
@@ -127,13 +132,15 @@ var en = {
         "sort_hot": "Hot",
         "sort_like": "Liked",
         "all_topic": "All",
-        "my_moment": "My Moments"
+        "my_moment": "My Moments",
+        "my_home": "My Profile"
     },
     "moment": {
         "like": "Like",
         "liked": "Liked",
         "comment": "Comment",
         "views": "Views",
+        "edit": "Edit",
         "delete": "Delete",
         "delete_confirm": "Delete permanently?",
         "comment_placeholder": "Write a comment...",
@@ -153,6 +160,7 @@ var en = {
         "content_empty_video": "Please enter content or upload a video",
         "content_empty_images_video": "Please enter content or upload images/video",
         "submit": "Publish",
+        "save": "Save",
         "images_max": "Up to {max} images",
         "video_replace": "Only 1 video allowed. Choosing again will replace the current one.",
         "at": "@Friend",

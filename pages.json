@@ -3003,7 +3003,7 @@
                 {
                     "path": "detail/detail",
                     "style": {
-                        "enablePullDownRefresh": false,
+                        "enablePullDownRefresh": true,
                         "navigationBarTitleText": ""
                     }
                 },

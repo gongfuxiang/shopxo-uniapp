@@ -22,7 +22,7 @@
     import componentCommon from '@/components/common/common';
     import componentNoData from '@/components/no-data/no-data';
     import componentBottomLine from '@/components/bottom-line/bottom-line';
-    import pluginLocale from '../locale/index.js';
+    import pluginLocale from '@/pages/plugins/userhome/locale/index.js';
     export default {
         mixins: [pluginLocale],
         data() {
@@ -38,28 +38,41 @@
                 data_is_loading: 0,
             };
         },
-        components: { componentCommon, componentNoData, componentBottomLine },
+        components: {
+            componentCommon,
+            componentNoData,
+            componentBottomLine,
+        },
         onLoad(params) {
+            // 参数处理
             params = app.globalData.launch_params_handle(params);
+            // 设置参数
             this.setData({
                 params: params || {},
                 list_type: params.type == 'fans' ? 'fans' : 'follow',
             });
+            // 调用公共事件方法
             app.globalData.page_event_onload_handle(params);
         },
         onShow() {
+            // 调用公共事件方法
             app.globalData.page_event_onshow_handle();
+            // 数据加载
             this.reload();
+            // 公共onshow事件（$refs 未就绪时自动延后重试）
             app.globalData.page_common_on_show(this);
         },
+        // 滚动加载
         onReachBottom() {
             this.get_list();
         },
         methods: {
+            // 重新加载
             reload() {
                 this.setData({ data_page: 1, data_list: [], data_bottom_line_status: false });
                 this.get_list(1);
             },
+            // 切换类型
             type_event(e) {
                 var type = e.currentTarget.dataset.type || 'follow';
                 if (type == this.list_type) {
@@ -68,6 +81,7 @@
                 this.setData({ list_type: type });
                 this.reload();
             },
+            // 获取列表
             get_list(is_mandatory) {
                 if ((is_mandatory || 0) == 0 && this.data_bottom_line_status) {
                     return;
@@ -103,6 +117,7 @@
                     },
                 });
             },
+            // 链接事件
             url_event(e) {
                 app.globalData.url_event(e);
             },
@@ -110,8 +125,5 @@
     };
 </script>
 <style>
-    .avatar {
-        width: 80rpx;
-        height: 80rpx;
-    }
+    @import './follow-list.css';
 </style>

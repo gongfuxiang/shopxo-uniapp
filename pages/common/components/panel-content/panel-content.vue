@@ -19,6 +19,9 @@
                                 </view>
                             </view>
                         </block>
+                        <block v-else-if="item.type == 'video'">
+                            <video v-if="(data[item.field] || null) != null && data[item.field] !== ''" class="br-f5 radius panel-item-video va-m" :src="data[item.field]" controls object-fit="cover" @tap.stop=""></video>
+                        </block>
                         <text v-else class="cr-base">{{ data[item.field] }}</text>
                         <view v-if="(item.is_copy || 0) == 1 && data[item.field] !== ''" class="dis-inline-block margin-left" data-event="copy" :data-value="data[item.field]" @tap.stop="text_event_handle">
                             <iconfont name="icon-copy" size="28rpx" class="cr-grey"></iconfont>
@@ -54,6 +57,9 @@
                                                     </block>
                                                 </view>
                                             </view>
+                                        </block>
+                                        <block v-else-if="item.type == 'video'">
+                                            <video v-if="(data[item.field] || null) != null && data[item.field] !== ''" class="br-f5 radius panel-item-video" :src="data[item.field]" controls object-fit="cover" @tap.stop=""></video>
                                         </block>
                                         <block v-else>
                                             <text>{{ data[item.field] }}</text>
@@ -207,5 +213,10 @@
     .panel-item-images {
         width: 40rpx;
         height: 40rpx;
+    }
+    .panel-item-video {
+        width: 240rpx;
+        height: 180rpx;
+        vertical-align: middle;
     }
 </style>

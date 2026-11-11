@@ -48,15 +48,20 @@
 <script>
     const app = getApp();
     import componentPopup from '@/components/popup/popup';
-    import componentMomentCompose from '../moment-compose/moment-compose';
-    import pluginLocale from '../../locale/index.js';
+    import componentMomentCompose from '@/pages/plugins/userhome/components/moment-compose/moment-compose';
+    import pluginLocale from '@/pages/plugins/userhome/locale/index.js';
+    import { getUserhomeConfig, getMomentSaveinfo } from '@/pages/plugins/userhome/utils/compose-cache.js';
     export default {
         mixins: [pluginLocale],
-        components: { componentPopup, componentMomentCompose },
+        components: {
+            componentPopup,
+            componentMomentCompose,
+        },
         props: {
             // 个人主页内联展示；广场等仍用弹窗
             propInline: { type: Boolean, default: false },
         },
+        // 组件数据
         data() {
             return {
                 popup_status: false,
@@ -75,12 +80,14 @@
                 },
             };
         },
+        // 内联模式直接拉配置
         mounted() {
             if (this.propInline) {
                 this.load_init();
             }
         },
         methods: {
+            // 打开发布弹窗
             open() {
                 var user = app.globalData.get_user_info(this, 'open');
                 if (user == false) {
@@ -93,24 +100,32 @@
                 this.load_init();
                 return true;
             },
+            // 关闭弹窗
             popup_close_event() {
                 this.popup_status = false;
             },
+            // 初始化配置（path_type 优先用 config 统一下发）
             load_init() {
-                uni.request({
-                    url: app.globalData.get_request_url('saveinfo', 'moment', 'userhome'),
-                    method: 'POST',
-                    data: {},
-                    dataType: 'json',
-                    success: (res) => {
-                        if (res.data.code != 0) {
+                var self = this;
+                getUserhomeConfig()
+                    .then((cfg) => {
+                        cfg = cfg || {};
+                        if (cfg.editor_path_type) {
+                            self.editor_path_type = cfg.editor_path_type;
+                        }
+                        if (cfg.publish_images_max_number) {
+                            self.images_max = parseInt(cfg.publish_images_max_number || 9) || 9;
+                        }
+                        return getMomentSaveinfo();
+                    })
+                    .then((data) => {
+                        if (!data) {
                             return;
                         }
-                        var data = res.data.data || {};
-                        this.editor_path_type = data.editor_path_type || '';
-                        this.images_max = parseInt(data.images_max_number || 9) || 9;
-                        this.emoji_list = data.emoji_list || [];
-                        this.compose_tools = {
+                        self.editor_path_type = data.editor_path_type || self.editor_path_type || '';
+                        self.images_max = parseInt(data.images_max_number || self.images_max || 9) || 9;
+                        self.emoji_list = data.emoji_list || [];
+                        self.compose_tools = {
                             emoji: data.is_publish_emoji == 1 ? 1 : 0,
                             images: data.is_publish_images == 1 ? 1 : 0,
                             video: data.is_publish_video == 1 ? 1 : 0,
@@ -119,9 +134,9 @@
                             at_follow: data.is_moment_at_follow == 1 ? 1 : 0,
                             at_fans: data.is_moment_at_fans == 1 ? 1 : 0,
                         };
-                    },
-                });
+                    });
             },
+            // 提交保存
             form_submit(data) {
                 if (this.form_submit_loading) {
                     return;

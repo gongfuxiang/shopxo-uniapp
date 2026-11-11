@@ -24,8 +24,8 @@
             <button v-else class="round text-size-sm" type="default" size="mini" hover-class="none" @tap="login_event">{{ $t('moment.comment_login') }}</button>
         </view>
 
-        <block v-if="comment_list.length > 0">
-            <view v-for="(row, index) in comment_list" :key="row.id || index" class="comment-row padding-vertical-main br-b-f5 flex-row">
+        <view v-if="comment_list.length > 0" :class="!propPopupMode ? 'margin-top-xxxl' : ''">
+            <view v-for="(row, index) in comment_list" :key="row.id || index" class="comment-row padding-vertical-main flex-row">
                 <image class="avatar circle" :src="row.avatar" mode="aspectFill" :data-value="row.user_home_url" @tap="url_event"></image>
                 <view class="flex-1 flex-width padding-left-main">
                     <view class="flex-row align-c flex-wrap">
@@ -36,13 +36,17 @@
                     <view v-if="row.reply_user_name || row.reply_content" class="quote margin-top-xs text-size-sm cr-grey">
                         <view v-if="row.reply_user_name" class="quote-name" :data-value="row.reply_user_home_url" @tap="url_event">@{{ row.reply_user_name }}</view>
                         <view v-if="row.reply_content">{{ row.reply_content }}</view>
-                        <view v-if="(row.reply_images || []).length > 0" class="flex-row flex-wrap margin-top-xs">
-                            <image v-for="(img, ii) in row.reply_images" :key="'rq' + ii" class="comment-img radius margin-right-xs" :src="img" mode="aspectFill" :data-urls="row.reply_images" :data-index="ii" @tap="preview_event"></image>
+                        <view v-if="(row.reply_images || []).length > 0" class="comment-images margin-top-xs">
+                            <view v-for="(img, ii) in row.reply_images" :key="'rq' + ii" class="comment-img-item radius" :data-urls="row.reply_images" :data-index="ii" @tap="preview_event">
+                                <image class="comment-img" :src="img" mode="aspectFill"></image>
+                            </view>
                         </view>
                     </view>
                     <view class="margin-top-xs content-text">{{ row.content }}</view>
-                    <view v-if="(row.images || []).length > 0" class="flex-row flex-wrap margin-top-xs">
-                        <image v-for="(img, ii) in row.images" :key="ii" class="comment-img radius margin-right-xs" :src="img" mode="aspectFill" :data-urls="row.images" :data-index="ii" @tap="preview_event"></image>
+                    <view v-if="(row.images || []).length > 0" class="comment-images margin-top-xs">
+                        <view v-for="(img, ii) in row.images" :key="ii" class="comment-img-item radius" :data-urls="row.images" :data-index="ii" @tap="preview_event">
+                            <image class="comment-img" :src="img" mode="aspectFill"></image>
+                        </view>
                     </view>
                     <view v-if="row.video_url" class="margin-top-xs">
                         <video class="comment-video radius" :src="row.video_url" controls object-fit="cover"></video>
@@ -63,9 +67,13 @@
                 </view>
             </view>
             <view v-if="comment_has_more == 1" class="tc padding-vertical-main text-size-sm cr-grey" @tap="load_more_comment">
-                {{ more_loading ? $t('common.loading_tips') : $t('moment.comment_more') }}
+                <block v-if="more_loading">{{ $t('common.loading_in_text') }}</block>
+                <block v-else>
+                    {{ $t('moment.comment_more') }}
+                    <iconfont name="icon-angle-double-down" size="24rpx" color="#999" propClass="va-m margin-left-xs"></iconfont>
+                </block>
             </view>
-        </block>
+        </view>
         <view v-else-if="propShowEmpty" class="tc padding-main text-size-sm cr-grey-9">{{ $t('moment.comment_empty') }}</view>
 
         <!-- 列表评论/回复、详情回复：底部弹窗（勿抬高 propIndex） -->
@@ -104,11 +112,15 @@
 <script>
     const app = getApp();
     import componentPopup from '@/components/popup/popup';
-    import componentMomentCompose from '../moment-compose/moment-compose';
-    import pluginLocale from '../../locale/index.js';
+    import componentMomentCompose from '@/pages/plugins/userhome/components/moment-compose/moment-compose';
+    import pluginLocale from '@/pages/plugins/userhome/locale/index.js';
+    import { getUserhomeConfig, getMomentSaveinfo } from '@/pages/plugins/userhome/utils/compose-cache.js';
     export default {
         mixins: [pluginLocale],
-        components: { componentPopup, componentMomentCompose },
+        components: {
+            componentPopup,
+            componentMomentCompose,
+        },
         props: {
             propMomentId: { type: [Number, String], default: 0 },
             propList: { type: Array, default: () => [] },
@@ -121,6 +133,7 @@
             propAutoLoad: { type: Boolean, default: false },
             propPopupMode: { type: Boolean, default: false },
         },
+        // 组件数据
         data() {
             return {
                 theme_color: app.globalData.get_theme_color(),
@@ -137,6 +150,8 @@
                 popup_status: false,
                 is_login: false,
                 synced_id: 0,
+                compose_ready: false,
+                compose_loading: false,
                 editor_path_type: '',
                 images_max: 9,
                 emoji_list: [],
@@ -152,21 +167,25 @@
             };
         },
         computed: {
+            // 是否回复模式
             is_reply_mode() {
                 return this.popup_kind === 'reply' && !!this.reply_id;
             },
-            // 回复时标题直接换成「回复 xxx」，与详情一致
+            // 弹窗标题（回复时为「回复 xxx」）
             popup_title() {
                 return this.is_reply_mode ? this.$t('moment.reply') + ' ' + this.reply_name : this.$t('moment.comment');
             },
+            // 输入框占位文案
             popup_placeholder() {
                 return this.is_reply_mode ? this.$t('moment.reply_holder') + this.reply_name : this.$t('moment.comment_placeholder');
             },
+            // 提交按钮文案
             popup_submit_text() {
                 return this.is_reply_mode ? this.$t('moment.reply_publish') : this.$t('moment.comment_publish');
             },
         },
         watch: {
+            // 切换动态时同步评论列表
             propMomentId: {
                 immediate: true,
                 handler(val) {
@@ -187,9 +206,27 @@
                     }
                 },
             },
+            // 同步评论总数
             propCommentCount(val) {
                 this.comment_count = parseInt(val || 0) || 0;
             },
+            // 详情下拉刷新后列表随 props 同步，避免再打 commentlist
+            propList(val) {
+                if (!this.propAutoLoad) {
+                    this.comment_list = (val || []).slice();
+                }
+            },
+            // 同步是否还有更多
+            propHasMore(val) {
+                if (!this.propAutoLoad) {
+                    this.comment_has_more = val ? 1 : 0;
+                }
+            },
+            // 向外抛出更多状态（详情底线用）
+            comment_has_more(val) {
+                this.$emit('more-change', val ? 1 : 0);
+            },
+            // 打开/关闭评论输入
             propComposeOpen: {
                 immediate: true,
                 handler(val) {
@@ -207,30 +244,36 @@
                         return;
                     }
                     this.compose_open = !!val;
+                    // 详情页内嵌输入框：仅在真正打开时拉工具配置
+                    if (val) {
+                        this.ensure_compose_ready();
+                    }
                 },
             },
         },
+        // 初始化登录态
         created() {
             this.is_login = !!app.globalData.get_user_cache_info();
-            this.load_tools();
         },
         methods: {
+            // 刷新登录状态
             refresh_login() {
                 this.is_login = !!app.globalData.get_user_cache_info();
             },
-            load_tools() {
-                uni.request({
-                    url: app.globalData.get_request_url('config', 'index', 'userhome'),
-                    method: 'POST',
-                    data: {},
-                    dataType: 'json',
-                    success: (res) => {
-                        if (!res.data || res.data.code != 0) {
-                            return;
-                        }
-                        var data = res.data.data || {};
-                        this.images_max = parseInt(data.comment_images_max_number || 9) || 9;
-                        this.compose_tools = {
+            // 准备评论工具配置（多实例共用缓存）
+            ensure_compose_ready() {
+                if (this.compose_ready || this.compose_loading) {
+                    return Promise.resolve(this.compose_ready);
+                }
+                this.compose_loading = true;
+                var self = this;
+                return getUserhomeConfig()
+                    .then((data) => {
+                        data = data || {};
+                        // path_type 由 config/feedinit 统一下发，与 PC BaseService 一致
+                        self.editor_path_type = data.editor_path_type || '';
+                        self.images_max = parseInt(data.comment_images_max_number || 9) || 9;
+                        self.compose_tools = {
                             emoji: data.is_comment_emoji == 1 ? 1 : 0,
                             images: data.is_comment_images == 1 ? 1 : 0,
                             video: data.is_comment_video == 1 ? 1 : 0,
@@ -239,52 +282,31 @@
                             at_follow: 0,
                             at_fans: 0,
                         };
-                        if (data.is_comment_emoji == 1) {
-                            this.load_emoji();
+                        // 表情列表仍走 saveinfo；上传 path 已由 config 下发
+                        if (data.is_comment_emoji != 1) {
+                            return null;
                         }
-                        // 评论附件 path 与发布共用用户目录
-                        if (app.globalData.get_user_cache_info()) {
-                            this.load_editor_path();
-                        }
-                    },
-                });
-            },
-            load_emoji() {
-                uni.request({
-                    url: app.globalData.get_request_url('saveinfo', 'moment', 'userhome'),
-                    method: 'POST',
-                    data: {},
-                    dataType: 'json',
-                    success: (res) => {
-                        if (res.data && res.data.code == 0) {
-                            var data = res.data.data || {};
-                            this.emoji_list = data.emoji_list || [];
-                            if (!this.editor_path_type) {
-                                this.editor_path_type = data.editor_path_type || '';
+                        return getMomentSaveinfo();
+                    })
+                    .then((save) => {
+                        if (save) {
+                            if (!self.editor_path_type && save.editor_path_type) {
+                                self.editor_path_type = save.editor_path_type;
+                            }
+                            if (self.compose_tools.emoji == 1) {
+                                self.emoji_list = save.emoji_list || [];
                             }
                         }
-                    },
-                });
+                        self.compose_ready = true;
+                        self.compose_loading = false;
+                        return true;
+                    })
+                    .catch(() => {
+                        self.compose_loading = false;
+                        return false;
+                    });
             },
-            load_editor_path() {
-                if (this.editor_path_type) {
-                    return;
-                }
-                uni.request({
-                    url: app.globalData.get_request_url('saveinfo', 'moment', 'userhome'),
-                    method: 'POST',
-                    data: {},
-                    dataType: 'json',
-                    success: (res) => {
-                        if (res.data && res.data.code == 0) {
-                            this.editor_path_type = (res.data.data && res.data.data.editor_path_type) || '';
-                            if (!(this.emoji_list || []).length) {
-                                this.emoji_list = (res.data.data && res.data.data.emoji_list) || [];
-                            }
-                        }
-                    },
-                });
-            },
+            // 重置输入框
             reset_compose(which) {
                 var refs = [];
                 if (which === 'popup') {
@@ -300,12 +322,14 @@
                     }
                 });
             },
+            // 重置表单
             reset_form() {
                 this.reply_id = 0;
                 this.reply_name = '';
                 this.popup_kind = 'comment';
                 this.reset_compose('popup');
             },
+            // 打开评论弹窗
             open_compose_popup() {
                 this.refresh_login();
                 var user = app.globalData.get_user_info(this, 'open_compose_popup');
@@ -318,18 +342,22 @@
                 this.reply_name = '';
                 this.popup_kind = 'comment';
                 this.reset_compose('popup');
+                this.ensure_compose_ready();
                 this.popup_status = true;
                 this.$emit('compose-change', true);
                 return true;
             },
+            // 关闭弹窗
             popup_close_event() {
                 this.popup_status = false;
                 this.reset_form();
                 this.$emit('compose-change', false);
             },
+            // 链接事件
             url_event(e) {
                 app.globalData.url_event(e);
             },
+            // 预览图片
             preview_event(e) {
                 var urls = e.currentTarget.dataset.urls || [];
                 var index = parseInt(e.currentTarget.dataset.index || 0);
@@ -338,9 +366,11 @@
                 }
                 uni.previewImage({ current: urls[index] || urls[0], urls: urls });
             },
+            // 登录
             login_event() {
                 app.globalData.get_user_info(this, 'refresh_login');
             },
+            // 回复
             reply_event(row) {
                 var user = app.globalData.get_user_info(this, 'reply_event');
                 if (user == false || !row) {
@@ -356,14 +386,17 @@
                 this.reply_name = row.user_name_view || '';
                 this.popup_kind = 'reply';
                 this.reset_compose('popup');
+                this.ensure_compose_ready();
                 this.popup_status = true;
                 this.$emit('compose-change', true);
             },
+            // 取消回复
             cancel_reply() {
                 this.reply_id = 0;
                 this.reply_name = '';
                 this.popup_kind = 'comment';
             },
+            // 加载更多评论
             load_more_comment() {
                 if (this.more_loading || !this.propMomentId) {
                     return;
@@ -390,9 +423,11 @@
                         var data = res.data.data || {};
                         this.comment_list = (this.comment_list || []).concat(data.list || []);
                         this.comment_has_more = data.has_more ? 1 : 0;
+                        this.$emit('more-change', this.comment_has_more);
                     },
                 });
             },
+            // 刷新评论
             reload_comments() {
                 if (!this.propMomentId) {
                     return;
@@ -412,17 +447,21 @@
                         var data = res.data.data || {};
                         this.comment_list = data.list || [];
                         this.comment_has_more = data.has_more ? 1 : 0;
+                        this.$emit('more-change', this.comment_has_more);
                     },
                 });
             },
+            // 内嵌提交
             comment_submit_inline(data) {
                 // 详情顶部输入框只发新评论，不受回复弹窗 reply_id 影响
                 this.comment_submit(data, 0);
             },
+            // 弹窗提交
             comment_submit_popup(data) {
                 var reply_id = this.is_reply_mode ? this.reply_id || 0 : 0;
                 this.comment_submit(data, reply_id);
             },
+            // 提交评论
             comment_submit(data, reply_comment_id) {
                 var user = app.globalData.get_user_info(this, 'comment_submit');
                 if (user == false || this.comment_loading || !this.propMomentId) {
@@ -463,6 +502,7 @@
                     },
                 });
             },
+            // 评论点赞
             comment_like_event(row, index) {
                 var user = app.globalData.get_user_info(this, 'comment_like_event');
                 if (user == false || !row) {
@@ -492,6 +532,7 @@
                     },
                 });
             },
+            // 删除评论
             comment_delete_event(row) {
                 if (!row || !row.id) {
                     return;
@@ -547,9 +588,23 @@
         white-space: pre-wrap;
         word-break: break-word;
     }
+    .comment-images {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 10rpx;
+    }
+    .comment-img-item {
+        position: relative;
+        width: 100%;
+        padding-bottom: 100%;
+        overflow: hidden;
+    }
     .comment-img {
-        width: 140rpx;
-        height: 140rpx;
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
     }
     .comment-video {
         width: 100%;

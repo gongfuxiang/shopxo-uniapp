@@ -5,7 +5,7 @@
                 <component-moment-compose
                     ref="compose"
                     :propPlaceholder="$t('moment-form.content_placeholder')"
-                    :propSubmitText="$t('moment-form.submit')"
+                    :propSubmitText="moment_id > 0 ? $t('moment-form.save') : $t('moment-form.submit')"
                     :propMaxlength="1000"
                     :propLoading="form_submit_loading"
                     :propEditorPathType="editor_path_type"
@@ -22,13 +22,15 @@
 <script>
     const app = getApp();
     import componentCommon from '@/components/common/common';
-    import componentMomentCompose from '../components/moment-compose/moment-compose';
-    import pluginLocale from '../locale/index.js';
+    import componentMomentCompose from '@/pages/plugins/userhome/components/moment-compose/moment-compose';
+    import pluginLocale from '@/pages/plugins/userhome/locale/index.js';
     export default {
         mixins: [pluginLocale],
         data() {
             return {
                 theme_view: app.globalData.get_theme_value_view(),
+                params: {},
+                moment_id: 0,
                 form_submit_loading: false,
                 editor_path_type: '',
                 images_max: 9,
@@ -44,17 +46,34 @@
                 },
             };
         },
-        components: { componentCommon, componentMomentCompose },
+        components: {
+            componentCommon,
+            componentMomentCompose,
+        },
         onLoad(params) {
+            // 参数处理
             params = app.globalData.launch_params_handle(params);
+            var moment_id = parseInt((params && params.id) || 0) || 0;
+            this.setData({
+                params: params || {},
+                moment_id: moment_id,
+            });
+            uni.setNavigationBarTitle({
+                title: this.$t(moment_id > 0 ? 'pages.plugins-userhome-moment-form-edit' : 'pages.plugins-userhome-moment-form'),
+            });
+            // 调用公共事件方法
             app.globalData.page_event_onload_handle(params);
+            // 初始化
             this.init();
         },
         onShow() {
+            // 调用公共事件方法
             app.globalData.page_event_onshow_handle();
+            // 公共onshow事件（$refs 未就绪时自动延后重试）
             app.globalData.page_common_on_show(this);
         },
         methods: {
+            // 初始化
             init() {
                 var user = app.globalData.get_user_info(this, 'init');
                 if (user == false) {
@@ -63,10 +82,11 @@
                 uni.request({
                     url: app.globalData.get_request_url('saveinfo', 'moment', 'userhome'),
                     method: 'POST',
-                    data: {},
+                    data: { id: this.moment_id || 0 },
                     dataType: 'json',
                     success: (res) => {
                         if (res.data.code != 0) {
+                            app.globalData.showToast(res.data.msg);
                             return;
                         }
                         var data = res.data.data || {};
@@ -84,28 +104,48 @@
                                 at_fans: data.is_moment_at_fans == 1 ? 1 : 0,
                             },
                         });
+                        // 编辑回填
+                        if (this.moment_id > 0 && data.data) {
+                            this.$nextTick(() => {
+                                if (this.$refs.compose && this.$refs.compose.set_form_data) {
+                                    this.$refs.compose.set_form_data(data.data);
+                                }
+                            });
+                        }
                     },
                 });
             },
+            // 提交保存
             form_submit(data) {
                 if (this.form_submit_loading) {
                     return;
                 }
                 this.setData({ form_submit_loading: true });
                 uni.showLoading({ title: this.$t('common.submit_in_text') });
+                var post = {
+                    content: data.content || '',
+                    images: JSON.stringify(data.images || []),
+                    video_url: data.video_url || '',
+                    at_user_ids: JSON.stringify(data.at_user_ids || []),
+                };
+                if (this.moment_id > 0) {
+                    post.id = this.moment_id;
+                }
                 uni.request({
                     url: app.globalData.get_request_url('save', 'moment', 'userhome'),
                     method: 'POST',
-                    data: {
-                        content: data.content || '',
-                        images: JSON.stringify(data.images || []),
-                        video_url: data.video_url || '',
-                        at_user_ids: JSON.stringify(data.at_user_ids || []),
-                    },
+                    data: post,
                     dataType: 'json',
                     success: (res) => {
                         uni.hideLoading();
                         if (res.data.code == 0) {
+                            // 通知主页刷新；列表：编辑只替换当前条，新增整表重拉
+                            var edit_id = parseInt(this.moment_id || 0);
+                            uni.setStorageSync('cache_plugins_userhome_home_refresh', 1);
+                            uni.setStorageSync('cache_plugins_userhome_list_refresh', {
+                                type: edit_id > 0 ? 'edit' : 'add',
+                                id: edit_id,
+                            });
                             app.globalData.showToast(res.data.msg, 'success');
                             setTimeout(function () {
                                 app.globalData.page_back_prev_event();
@@ -126,4 +166,5 @@
     };
 </script>
 <style scoped>
+    @import './moment-form.css';
 </style>

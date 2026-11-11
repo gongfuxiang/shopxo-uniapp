@@ -1,0 +1,23 @@
+.avatar-box {
+    width: 120rpx;
+    height: 120rpx;
+    flex-shrink: 0;
+}
+.avatar-img {
+    width: 120rpx;
+    height: 120rpx;
+}
+.avatar-del {
+    top: -10rpx;
+    right: -10rpx;
+    z-index: 2;
+}
+textarea {
+    min-height: 160rpx;
+    width: 100%;
+    box-sizing: border-box;
+}
+.bg-yellow-light {
+    background: #fff7e6;
+    color: #d48806;
+}

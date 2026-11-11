@@ -1,42 +1,49 @@
 <template>
     <view :class="theme_view">
-        <view v-if="(slider_list || []).length > 0" class="spacing-mb">
-            <swiper class="banner-swiper" indicator-dots circular autoplay>
-                <swiper-item v-for="(item, index) in slider_list" :key="index">
-                    <image class="banner-img" :src="item.images_url" mode="aspectFill" :data-value="item.event_value || ''" @tap="url_event"></image>
-                </swiper-item>
-            </swiper>
-        </view>
+        <!-- 首屏：feedinit 完成前整页加载，不提前露空壳 -->
+        <block v-if="!page_ready">
+            <component-no-data :propStatus="page_loding_status" :propMsg="page_loding_msg"></component-no-data>
+        </block>
 
-        <view class="nav-tabs bg-white" :class="{ 'no-topic': (topic_list || []).length == 0 }" :style="'--tab-line-color:' + theme_color">
-            <view class="tabs-scroll-content">
-                <view class="tab-item" :class="{ active: sort == 'new' }" data-sort="new" @tap="sort_event">{{$t('feed.sort_new')}}</view>
-                <view class="tab-item" :class="{ active: sort == 'hot' }" data-sort="hot" @tap="sort_event">{{$t('feed.sort_hot')}}</view>
-                <view v-if="config.is_enable_like == 1" class="tab-item" :class="{ active: sort == 'like' }" data-sort="like" @tap="sort_event">{{$t('feed.sort_like')}}</view>
+        <block v-else>
+            <view v-if="(slider_list || []).length > 0" class="spacing-mb">
+                <swiper class="banner-swiper" indicator-dots circular autoplay>
+                    <swiper-item v-for="(item, index) in slider_list" :key="index">
+                        <image class="banner-img" :src="item.images_url" mode="aspectFill" :data-value="item.event_value || ''" @tap="url_event"></image>
+                    </swiper-item>
+                </swiper>
             </view>
-        </view>
 
-        <scroll-view v-if="(topic_list || []).length > 0" scroll-x :show-scrollbar="false" class="topic-scroll bg-white">
-            <view class="topic-scroll-content">
-                <view v-for="(topic, ti) in topic_list" :key="ti" class="topic-item" :class="topic_id == topic.id ? 'cr-main br-main' : 'cr-grey br-grey'" :data-id="topic.id" @tap="topic_event">#{{ topic.name }}</view>
+            <view v-if="(sort_list || []).length > 0" class="nav-tabs bg-white" :class="{ 'no-topic': (topic_list || []).length == 0 }" :style="'--tab-line-color:' + theme_color">
+                <view class="tabs-scroll-content">
+                    <view v-for="(tab, ti) in sort_list" :key="tab.value || ti" class="tab-item" :class="{ active: sort == tab.value }" :data-sort="tab.value" @tap="sort_event">{{ tab.name }}</view>
+                </view>
             </view>
-        </scroll-view>
 
-        <view class="page-bottom-fixed padding-main">
-            <block v-if="data_list.length > 0">
-                <component-moment-item v-for="(item, index) in data_list" :key="item.id || index" :propItem="item" :propEnableDetail="config.is_enable_moment_detail == 1" :propShowLike="config.is_enable_like == 1" :propShowComment="config.is_enable_comment == 1" @like="like_event" @comment-count="comment_count_event"></component-moment-item>
-                <component-bottom-line :propStatus="data_bottom_line_status"></component-bottom-line>
-            </block>
-            <component-no-data v-else :propStatus="data_list_loding_status" :propMsg="data_list_loding_msg"></component-no-data>
-        </view>
+            <scroll-view v-if="(topic_list || []).length > 0" scroll-x :show-scrollbar="false" class="topic-scroll bg-white">
+                <view class="topic-scroll-content">
+                    <view v-for="(topic, ti) in topic_list" :key="ti" class="topic-item" :class="topic_id == topic.id ? 'cr-main br-main' : 'cr-grey br-grey'" :data-id="topic.id" @tap="topic_event">#{{ topic.name }}</view>
+                </view>
+            </scroll-view>
 
-        <view v-if="config.is_enable_moment == 1" class="bottom-fixed">
-            <view class="bottom-line-exclude padding-main flex-row gap-10">
-                <button class="item flex-1 cr-white bg-main round text-size" type="default" hover-class="none" @tap="publish_event">{{$t('home.publish_moment')}}</button>
-                <button class="item flex-1 cr-main bg-white br-main round text-size" type="default" hover-class="none" data-value="/pages/plugins/userhome/list/list" @tap="url_event">{{$t('feed.my_moment')}}</button>
+            <view class="page-bottom-fixed padding-main">
+                <block v-if="data_list.length > 0">
+                    <component-moment-item v-for="(item, index) in data_list" :key="item.id || index" :propItem="item" :propEnableDetail="config.is_enable_moment_detail == 1" :propShowLike="config.is_enable_like == 1" :propShowComment="config.is_enable_comment == 1" @like="like_event" @comment-count="comment_count_event"></component-moment-item>
+                    <component-bottom-line :propStatus="data_bottom_line_status"></component-bottom-line>
+                </block>
+                <component-no-data v-else :propStatus="data_list_loding_status" :propMsg="data_list_loding_msg" :propLoadingLogoTop="(slider_list || []).length > 0 ? '40vh' : ''"></component-no-data>
             </view>
-        </view>
-        <component-moment-publish ref="publish" @success="reload"></component-moment-publish>
+
+            <view v-if="config.is_enable_moment == 1 || config.is_enable_userhome == 1" class="bottom-fixed bottom-actions">
+                <view class="bottom-line-exclude flex-row gap-10">
+                    <button v-if="config.is_enable_moment == 1" class="item flex-1 cr-white bg-main round text-size" type="default" hover-class="none" @tap="publish_event">{{$t('home.publish_moment')}}</button>
+                    <button v-if="config.is_enable_moment == 1" class="item flex-1 cr-main bg-white br-main round text-size" type="default" hover-class="none" data-value="/pages/plugins/userhome/list/list" @tap="url_event">{{$t('feed.my_moment')}}</button>
+                    <button v-if="config.is_enable_userhome == 1" class="item flex-1 cr-main bg-white br-main round text-size" type="default" hover-class="none" @tap="my_home_event">{{$t('feed.my_home')}}</button>
+                </view>
+            </view>
+            <component-moment-publish ref="publish" @success="reload"></component-moment-publish>
+        </block>
+
         <component-common ref="common"></component-common>
     </view>
 </template>
@@ -45,9 +52,9 @@
     import componentCommon from '@/components/common/common';
     import componentNoData from '@/components/no-data/no-data';
     import componentBottomLine from '@/components/bottom-line/bottom-line';
-    import componentMomentItem from '../components/moment-item/moment-item';
-    import componentMomentPublish from '../components/moment-publish/moment-publish';
-    import pluginLocale from '../locale/index.js';
+    import componentMomentItem from '@/pages/plugins/userhome/components/moment-item/moment-item';
+    import componentMomentPublish from '@/pages/plugins/userhome/components/moment-publish/moment-publish';
+    import pluginLocale from '@/pages/plugins/userhome/locale/index.js';
     export default {
         mixins: [pluginLocale],
         data() {
@@ -55,8 +62,12 @@
                 theme_view: app.globalData.get_theme_value_view(),
                 theme_color: app.globalData.get_theme_color(),
                 params: {},
+                page_ready: false,
+                page_loding_status: 1,
+                page_loding_msg: '',
                 slider_list: [],
                 topic_list: [],
+                sort_list: [],
                 config: {},
                 sort: 'new',
                 topic_id: 0,
@@ -69,36 +80,71 @@
                 data_is_loading: 0,
             };
         },
-        components: { componentCommon, componentNoData, componentBottomLine, componentMomentItem, componentMomentPublish },
+        components: {
+            componentCommon,
+            componentNoData,
+            componentBottomLine,
+            componentMomentItem,
+            componentMomentPublish,
+        },
         onLoad(params) {
+            // 参数处理
             params = app.globalData.launch_params_handle(params);
+            // 设置参数
             this.setData({
                 params: params || {},
                 sort: params.sort == 'hot' || params.sort == 'like' ? params.sort : 'new',
                 topic_id: parseInt(params.topic || 0) || 0,
             });
+            // 调用公共事件方法
             app.globalData.page_event_onload_handle(params);
+            // 初始化
+            this.init();
         },
         onShow() {
+            // 调用公共事件方法
             app.globalData.page_event_onshow_handle();
-            this.init();
+            // 公共onshow事件（$refs 未就绪时自动延后重试）
             app.globalData.page_common_on_show(this);
         },
+        // 滚动加载
         onReachBottom() {
             this.get_list();
         },
+        // 下拉刷新
         onPullDownRefresh() {
             this.reload();
         },
         methods: {
+            // 初始化
             init() {
                 this.get_init();
             },
+            // 重新加载
             reload() {
-                this.setData({ data_page: 1, data_list: [], data_bottom_line_status: false });
-                this.get_init();
+                this.setData({
+                    data_page: 1,
+                    data_list: [],
+                    data_bottom_line_status: false,
+                    data_list_loding_status: 1,
+                });
+                // 下拉：刷新头区 + 列表；未就绪时仍走完整初始化
+                if (!this.page_ready) {
+                    this.get_init();
+                    return;
+                }
+                this.get_init(true);
             },
-            get_init() {
+            // 获取初始化数据
+            // keep_page：已展示头区时只刷新数据，避免整页闪白
+            get_init(keep_page) {
+                if (!keep_page) {
+                    this.setData({
+                        page_ready: false,
+                        page_loding_status: 1,
+                        page_loding_msg: '',
+                    });
+                }
                 uni.request({
                     url: app.globalData.get_request_url('feedinit', 'index', 'userhome'),
                     method: 'POST',
@@ -107,30 +153,69 @@
                     success: (res) => {
                         if (res.data.code == 0) {
                             var data = res.data.data || {};
+                            var sort_list = data.sort_list || [];
+                            var sort = this.normalize_sort(this.sort, sort_list);
                             this.setData({
+                                page_ready: true,
+                                page_loding_status: 3,
                                 slider_list: data.slider_list || [],
                                 topic_list: data.topic_list || [],
+                                sort_list: sort_list,
                                 config: data.config || {},
+                                sort: sort,
+                                data_page: 1,
+                                data_list: [],
+                                data_bottom_line_status: false,
+                                data_list_loding_status: 1,
+                                data_list_loding_msg: '',
                             });
                             if (data.application_name) {
                                 uni.setNavigationBarTitle({ title: data.application_name });
                             }
+                            this.get_list(1);
+                        } else {
+                            uni.stopPullDownRefresh();
+                            this.setData({
+                                page_ready: false,
+                                page_loding_status: 0,
+                                page_loding_msg: res.data.msg || '',
+                            });
                         }
-                        this.get_list(1);
                     },
                     fail: () => {
-                        this.get_list(1);
+                        uni.stopPullDownRefresh();
+                        this.setData({
+                            page_ready: false,
+                            page_loding_status: 2,
+                        });
                     },
                 });
             },
+            // 校正排序
+            normalize_sort(sort, sort_list) {
+                var list = sort_list || [];
+                if (!list.length) {
+                    return sort == 'hot' || sort == 'like' ? sort : 'new';
+                }
+                for (var i = 0; i < list.length; i++) {
+                    if (list[i] && list[i].value == sort) {
+                        return sort;
+                    }
+                }
+                return (list[0] && list[0].value) || 'new';
+            },
+            // 获取列表
             get_list(is_mandatory) {
+                if (!this.page_ready) {
+                    return;
+                }
                 if ((is_mandatory || 0) == 0 && this.data_bottom_line_status) {
                     return;
                 }
                 if (this.data_is_loading == 1) {
                     return;
                 }
-                this.setData({ data_is_loading: 1, data_list_loding_status: 1 });
+                this.setData({ data_is_loading: 1, data_list_loding_status: this.data_list.length > 0 ? 3 : 1 });
                 uni.request({
                     url: app.globalData.get_request_url('feed', 'index', 'userhome'),
                     method: 'POST',
@@ -170,23 +255,34 @@
                     },
                 });
             },
+            // 切换排序
             sort_event(e) {
                 var sort = e.currentTarget.dataset.sort || 'new';
-                if (sort == this.sort) {
-                    return;
-                }
-                this.setData({ sort: sort, data_page: 1, data_list: [], data_bottom_line_status: false });
+                this.setData({
+                    sort: sort,
+                    data_page: 1,
+                    data_list: [],
+                    data_bottom_line_status: false,
+                    data_list_loding_status: 1,
+                });
                 this.get_list(1);
             },
+            // 切换话题
             topic_event(e) {
                 var id = parseInt(e.currentTarget.dataset.id || 0) || 0;
-                // 再点一次取消选中，topic 传空
                 if (id == this.topic_id) {
                     id = 0;
                 }
-                this.setData({ topic_id: id, data_page: 1, data_list: [], data_bottom_line_status: false });
+                this.setData({
+                    topic_id: id,
+                    data_page: 1,
+                    data_list: [],
+                    data_bottom_line_status: false,
+                    data_list_loding_status: 1,
+                });
                 this.get_list(1);
             },
+            // 点赞
             like_event(item) {
                 var user = app.globalData.get_user_info(this, 'like_event');
                 if (user == false || !item || !item.id) {
@@ -216,6 +312,7 @@
                     },
                 });
             },
+            // 评论数变更
             comment_count_event(e) {
                 if (!e || !e.item || !e.item.id) {
                     return;
@@ -231,11 +328,21 @@
                 });
                 this.setData({ data_list: list });
             },
+            // 发布动态
             publish_event() {
                 if (this.$refs.publish && this.$refs.publish.open) {
                     this.$refs.publish.open();
                 }
             },
+            // 我的主页
+            my_home_event() {
+                var user = app.globalData.get_user_info(this, 'my_home_event');
+                if (user == false || !user.id) {
+                    return;
+                }
+                app.globalData.url_event({ currentTarget: { dataset: { value: '/pages/plugins/userhome/home/home?id=' + user.id } } });
+            },
+            // 链接事件
             url_event(e) {
                 app.globalData.url_event(e);
             },
@@ -243,74 +350,5 @@
     };
 </script>
 <style scoped>
-    .banner-swiper,
-    .banner-img {
-        width: 100%;
-        height: 280rpx;
-    }
-    .nav-tabs {
-        padding: 10rpx 24rpx 0;
-    }
-    .nav-tabs.no-topic {
-        padding-bottom: 24rpx;
-    }
-    .tabs-scroll-content {
-        display: flex;
-        align-items: center;
-        gap: 48rpx;
-    }
-    .tab-item {
-        position: relative;
-        white-space: nowrap;
-        padding-bottom: 16rpx;
-        font-weight: 500;
-        font-size: 28rpx;
-        color: #666;
-        line-height: 52rpx;
-    }
-    .tab-item.active {
-        color: var(--tab-line-color, var(--color-main, #2f8f62));
-        font-weight: 600;
-    }
-    .tab-item::after {
-        content: '';
-        position: absolute;
-        bottom: 0;
-        left: 50%;
-        transform: translateX(-50%);
-        width: 0;
-        height: 4px;
-        background-color: var(--tab-line-color, var(--color-main, #2f8f62));
-        transition: width 0.6s linear;
-        border-radius: 8rpx;
-    }
-    .tab-item.active::after {
-        width: 52rpx;
-    }
-    .topic-scroll {
-        width: 100%;
-        white-space: nowrap;
-        padding: 16rpx 24rpx;
-        box-sizing: border-box;
-    }
-    .topic-scroll-content {
-        display: inline-flex;
-        align-items: center;
-        gap: 16rpx;
-    }
-    .topic-item {
-        flex-shrink: 0;
-        padding: 8rpx 20rpx;
-        border-radius: 999rpx;
-        border-width: 1px;
-        border-style: solid;
-        font-size: 24rpx;
-    }
-    /* #ifdef MP-WEIXIN || APP-PLUS */
-    .topic-scroll ::v-deep ::-webkit-scrollbar {
-        width: 0 !important;
-        height: 0 !important;
-        background-color: transparent;
-    }
-    /* #endif */
+    @import './index.css';
 </style>

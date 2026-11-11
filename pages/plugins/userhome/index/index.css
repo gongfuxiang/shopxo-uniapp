@@ -1,0 +1,75 @@
+/* 与列表 padding-main 左右对齐，避免再叠一层内边距 */
+.bottom-actions {
+    padding-left: 24rpx;
+    padding-right: 24rpx;
+}
+.banner-swiper,
+.banner-img {
+    width: 100%;
+    height: 280rpx;
+}
+.nav-tabs {
+    padding: 10rpx 24rpx 0;
+}
+.nav-tabs.no-topic {
+    padding-bottom: 24rpx;
+}
+.tabs-scroll-content {
+    display: flex;
+    align-items: center;
+    gap: 48rpx;
+}
+.tab-item {
+    position: relative;
+    white-space: nowrap;
+    padding-bottom: 16rpx;
+    font-weight: 500;
+    font-size: 28rpx;
+    color: #666;
+    line-height: 52rpx;
+}
+.tab-item.active {
+    color: var(--tab-line-color, var(--color-main, #2f8f62));
+    font-weight: 600;
+}
+.tab-item::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 0;
+    height: 4px;
+    background-color: var(--tab-line-color, var(--color-main, #2f8f62));
+    transition: width 0.6s linear;
+    border-radius: 8rpx;
+}
+.tab-item.active::after {
+    width: 52rpx;
+}
+.topic-scroll {
+    width: 100%;
+    white-space: nowrap;
+    padding: 16rpx 24rpx;
+    box-sizing: border-box;
+}
+.topic-scroll-content {
+    display: inline-flex;
+    align-items: center;
+    gap: 16rpx;
+}
+.topic-item {
+    flex-shrink: 0;
+    padding: 8rpx 20rpx;
+    border-radius: 999rpx;
+    border-width: 1px;
+    border-style: solid;
+    font-size: 24rpx;
+}
+/* #ifdef MP-WEIXIN || APP-PLUS */
+.topic-scroll ::v-deep ::-webkit-scrollbar {
+    width: 0 !important;
+    height: 0 !important;
+    background-color: transparent;
+}
+/* #endif */

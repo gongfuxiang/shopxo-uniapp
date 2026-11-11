@@ -1,7 +1,7 @@
 <template>
     <view :class="theme_view">
         <form @submit="form_submit">
-            <view class="padding-main">
+            <view class="page-bottom-fixed padding-main">
                 <view v-if="profile_pending_tip" class="bg-yellow-light border-radius-main padding-main text-size-sm margin-bottom-main">{{ profile_pending_tip }}</view>
 
                 <view class="bg-white border-radius-main padding-main spacing-mb">
@@ -38,15 +38,15 @@
                     <view class="text-size-xs cr-grey-9 margin-bottom-sm">{{ $t('profile.follow_list_view_tips') }}</view>
                     <radio-group @change="follow_view_event">
                         <label class="flex-row align-c margin-bottom-sm">
-                            <radio value="0" :checked="form.follow_list_view == 0" :color="theme_color" />
+                            <radio value="0" :checked="form.follow_list_view == 0" :color="theme_color" style="transform: scale(0.7)" />
                             <text class="margin-left-sm text-size-sm">{{ $t('profile.list_follow_system') }}（{{ follow_list_system_tips }}）</text>
                         </label>
                         <label class="flex-row align-c margin-bottom-sm">
-                            <radio value="1" :checked="form.follow_list_view == 1" :color="theme_color" />
+                            <radio value="1" :checked="form.follow_list_view == 1" :color="theme_color" style="transform: scale(0.7)" />
                             <text class="margin-left-sm text-size-sm">{{ $t('profile.list_allow') }}</text>
                         </label>
                         <label class="flex-row align-c">
-                            <radio value="2" :checked="form.follow_list_view == 2" :color="theme_color" />
+                            <radio value="2" :checked="form.follow_list_view == 2" :color="theme_color" style="transform: scale(0.7)" />
                             <text class="margin-left-sm text-size-sm">{{ $t('profile.list_deny') }}</text>
                         </label>
                     </radio-group>
@@ -57,15 +57,15 @@
                     <view class="text-size-xs cr-grey-9 margin-bottom-sm">{{ $t('profile.fans_list_view_tips') }}</view>
                     <radio-group @change="fans_view_event">
                         <label class="flex-row align-c margin-bottom-sm">
-                            <radio value="0" :checked="form.fans_list_view == 0" :color="theme_color" />
+                            <radio value="0" :checked="form.fans_list_view == 0" :color="theme_color" style="transform: scale(0.7)" />
                             <text class="margin-left-sm text-size-sm">{{ $t('profile.list_follow_system') }}（{{ fans_list_system_tips }}）</text>
                         </label>
                         <label class="flex-row align-c margin-bottom-sm">
-                            <radio value="1" :checked="form.fans_list_view == 1" :color="theme_color" />
+                            <radio value="1" :checked="form.fans_list_view == 1" :color="theme_color" style="transform: scale(0.7)" />
                             <text class="margin-left-sm text-size-sm">{{ $t('profile.list_allow') }}</text>
                         </label>
                         <label class="flex-row align-c">
-                            <radio value="2" :checked="form.fans_list_view == 2" :color="theme_color" />
+                            <radio value="2" :checked="form.fans_list_view == 2" :color="theme_color" style="transform: scale(0.7)" />
                             <text class="margin-left-sm text-size-sm">{{ $t('profile.list_deny') }}</text>
                         </label>
                     </radio-group>
@@ -73,7 +73,9 @@
             </view>
 
             <view class="bottom-fixed">
-                <button class="bg-main cr-white round wh-auto" type="default" form-type="submit" hover-class="none" :loading="form_loading" :disabled="form_loading">{{ $t('common.save') }}</button>
+                <view class="bottom-line-exclude">
+                    <button class="bg-main cr-white round text-size wh-auto" type="default" form-type="submit" hover-class="none" :loading="form_loading" :disabled="form_loading">{{ $t('common.save') }}</button>
+                </view>
             </view>
         </form>
         <component-common ref="common"></component-common>
@@ -82,10 +84,12 @@
 <script>
     const app = getApp();
     import componentCommon from '@/components/common/common';
-    import pluginLocale from '../locale/index.js';
+    import pluginLocale from '@/pages/plugins/userhome/locale/index.js';
     export default {
         mixins: [pluginLocale],
-        components: { componentCommon },
+        components: {
+            componentCommon,
+        },
         data() {
             return {
                 theme_view: app.globalData.get_theme_value_view(),
@@ -109,15 +113,21 @@
             };
         },
         onLoad(params) {
+            // 参数处理
             params = app.globalData.launch_params_handle(params);
+            // 调用公共事件方法
             app.globalData.page_event_onload_handle(params);
+            // 初始化
             this.init();
         },
         onShow() {
+            // 调用公共事件方法
             app.globalData.page_event_onshow_handle();
+            // 公共onshow事件（$refs 未就绪时自动延后重试）
             app.globalData.page_common_on_show(this);
         },
         methods: {
+            // 初始化
             init() {
                 var user = app.globalData.get_user_info(this, 'init');
                 if (user == false) {
@@ -155,18 +165,23 @@
                     },
                 });
             },
+            // 昵称输入
             nickname_event(e) {
                 this.form.nickname = e.detail.value;
             },
+            // 签名输入
             signature_event(e) {
                 this.form.signature = e.detail.value;
             },
+            // 关注列表可见
             follow_view_event(e) {
                 this.form.follow_list_view = parseInt(e.detail.value || 0) || 0;
             },
+            // 粉丝列表可见
             fans_view_event(e) {
                 this.form.fans_list_view = parseInt(e.detail.value || 0) || 0;
             },
+            // 选择头像
             avatar_choose_event() {
                 var self = this;
                 uni.chooseImage({
@@ -203,9 +218,11 @@
                     },
                 });
             },
+            // 清除头像
             avatar_clear_event() {
                 this.form.avatar = '';
             },
+            // 提交保存
             form_submit() {
                 if (this.form_loading) {
                     return;
@@ -227,6 +244,8 @@
                         uni.hideLoading();
                         app.globalData.showToast(res.data.msg, res.data.code == 0 ? 'success' : 'error');
                         if (res.data.code == 0) {
+                            // 通知主页返回后刷新资料（主页不在 onShow 常刷）
+                            uni.setStorageSync('cache_plugins_userhome_home_refresh', 1);
                             setTimeout(() => {
                                 app.globalData.page_back_prev_event();
                             }, 1200);
@@ -245,30 +264,5 @@
     };
 </script>
 <style scoped>
-    .avatar-box {
-        width: 120rpx;
-        height: 120rpx;
-        flex-shrink: 0;
-    }
-    .avatar-img {
-        width: 120rpx;
-        height: 120rpx;
-    }
-    .avatar-del {
-        top: -10rpx;
-        right: -10rpx;
-        z-index: 2;
-    }
-    textarea {
-        min-height: 160rpx;
-        width: 100%;
-        box-sizing: border-box;
-    }
-    .bottom-fixed {
-        padding: 24rpx 32rpx calc(24rpx + env(safe-area-inset-bottom));
-    }
-    .bg-yellow-light {
-        background: #fff7e6;
-        color: #d48806;
-    }
+    @import './profile-edit.css';
 </style>
