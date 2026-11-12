@@ -117,22 +117,23 @@
                     }
                 }
 
-                // 左边距位置处理
-                var left = 0;
+                // 左边距：仅左右抽屉在 PC 宽屏对齐页面内容区；底/顶弹层由 page.css（max-width + margin 居中）处理，再写 left 会左右留空
+                var left_style = '';
                 // #ifdef H5
-                // 处理内容左边距、避免父级设置内边距影响
-                var width = parseInt(app.globalData.get_system_info('windowWidth', 0));
-                if (width > 960) {
-                    left = (width - 800) / 2;
+                if (this.propPosition == 'left' || this.propPosition == 'right') {
+                    var width = parseInt(app.globalData.get_system_info('windowWidth', 0));
+                    if (width > 960) {
+                        left_style = 'left:' + ((width - 800) / 2) + 'px;';
+                    }
                 }
                 // #endif
                 // #ifndef APP-NVUE
                 this.setData({
-                    popup_content_style: 'left:' + left + 'px;' + (this.propTop ? 'top:' + this.propTop : '') + ';' + (this.propBottom ? 'bottom:' + this.propBottom : '') + ';padding-bottom:' + tabbar_height + 'rpx;',
+                    popup_content_style: left_style + (this.propTop ? 'top:' + this.propTop : '') + ';' + (this.propBottom ? 'bottom:' + this.propBottom : '') + ';padding-bottom:' + tabbar_height + 'rpx;',
                 });
                 // #endif
                 //#ifdef APP-NVUE
-                    this.popup_content_style = 'left:' + left + 'px;' + (this.propTop ? 'top:' + this.propTop : '') + ';' + (this.propBottom ? 'bottom:' + this.propBottom : '') + ';padding-bottom:' + tabbar_height + 'rpx;';
+                    this.popup_content_style = left_style + (this.propTop ? 'top:' + this.propTop : '') + ';' + (this.propBottom ? 'bottom:' + this.propBottom : '') + ';padding-bottom:' + tabbar_height + 'rpx;';
                 //#endif
             },
         },
@@ -175,7 +176,9 @@
     }
     .popup-top {
         top: 0;
-        width: 100vw;
+        left: 0;
+        right: 0;
+        width: 100%;
         transform: translateY(-100%);
     }
     .popup-bottom {
@@ -185,7 +188,9 @@
         /* #ifdef APP-NVUE */
         bottom: 0;
         /* #endif */
-        width: 100vw;
+        left: 0;
+        right: 0;
+        width: 100%;
         transform: translateY(100%);
     }
     .popup-show {

@@ -54,6 +54,12 @@ iframe,
 .plugins-realstore-detail-base-mode-nav {
     left: auto !important;
 }
+/* 底/顶弹层：与 page 同宽居中，避免组件内联 left 在 PC 宽屏左右留空 */
+.popup-bottom,
+.popup-top {
+    left: 0 !important;
+    right: 0 !important;
+}
 iframe,
 .bottom-fixed,
 .staff-bottom-bar {
