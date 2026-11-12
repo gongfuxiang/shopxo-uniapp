@@ -16,7 +16,7 @@
 
             <view v-if="(sort_list || []).length > 0" class="nav-tabs bg-white" :class="{ 'no-topic': (topic_list || []).length == 0 }" :style="'--tab-line-color:' + theme_color">
                 <view class="tabs-scroll-content">
-                    <view v-for="(tab, ti) in sort_list" :key="tab.value || ti" class="tab-item" :class="{ active: sort == tab.value }" :data-sort="tab.value" @tap="sort_event">{{ tab.name }}</view>
+                    <view v-for="(tab, ti) in sort_list" :key="ti" class="tab-item" :class="{ active: sort == tab.value }" :data-sort="tab.value" @tap="sort_event">{{ tab.name }}</view>
                 </view>
             </view>
 
@@ -28,7 +28,7 @@
 
             <view class="page-bottom-fixed padding-main">
                 <block v-if="data_list.length > 0">
-                    <component-moment-item v-for="(item, index) in data_list" :key="item.id || index" :propItem="item" :propEnableDetail="config.is_enable_moment_detail == 1" :propShowLike="config.is_enable_like == 1" :propShowComment="config.is_enable_comment == 1" @like="like_event" @comment-count="comment_count_event"></component-moment-item>
+                    <component-moment-item v-for="(item, index) in data_list" :key="index" :propItem="item" :propEnableDetail="config.is_enable_moment_detail == 1" :propShowLike="config.is_enable_like == 1" :propShowComment="config.is_enable_comment == 1" @like="like_event" @comment-count="comment_count_event"></component-moment-item>
                     <component-bottom-line :propStatus="data_bottom_line_status"></component-bottom-line>
                 </block>
                 <component-no-data v-else :propStatus="data_list_loding_status" :propMsg="data_list_loding_msg" :propLoadingLogoTop="(slider_list || []).length > 0 ? '40vh' : ''"></component-no-data>
@@ -78,6 +78,7 @@
                 data_list_loding_status: 1,
                 data_list_loding_msg: '',
                 data_is_loading: 0,
+                share_info: {},
             };
         },
         components: {
@@ -106,6 +107,8 @@
             app.globalData.page_event_onshow_handle();
             // 公共onshow事件（$refs 未就绪时自动延后重试）
             app.globalData.page_common_on_show(this);
+            // 分享信息处理
+            app.globalData.page_share_handle(this.share_info);
         },
         // 滚动加载
         onReachBottom() {
@@ -114,6 +117,10 @@
         // 下拉刷新
         onPullDownRefresh() {
             this.reload();
+        },
+        // 自定义分享
+        onShareAppMessage() {
+            return app.globalData.share_content_handle(this.share_info || {});
         },
         methods: {
             // 初始化
@@ -169,8 +176,23 @@
                                 data_list_loding_status: 1,
                                 data_list_loding_msg: '',
                             });
-                            if (data.application_name) {
-                                uni.setNavigationBarTitle({ title: data.application_name });
+                            // 与 PC 一致：seo_title > application_name（空则接口已回退默认「动态广场」）
+                            var title = data.seo_title || data.application_name || '';
+                            // 仅当前仍在广场页时改标题，避免异步返回后覆盖个人主页等其它页
+                            var cur = app.globalData.current_page(false) || '';
+                            if (title && cur.indexOf('pages/plugins/userhome/index/index') >= 0) {
+                                uni.setNavigationBarTitle({ title: title });
+                            }
+                            // 分享标题与导航栏一致，避免落到站点默认名
+                            var share_info = {
+                                title: title,
+                                desc: data.seo_desc || '',
+                                path: '/pages/plugins/userhome/index/index',
+                                img: (data.slider_list || []).length > 0 ? data.slider_list[0].images_url || '' : '',
+                            };
+                            this.setData({ share_info: share_info });
+                            if (cur.indexOf('pages/plugins/userhome/index/index') >= 0) {
+                                app.globalData.page_share_handle(share_info);
                             }
                             this.get_list(1);
                         } else {
@@ -328,11 +350,15 @@
                 });
                 this.setData({ data_list: list });
             },
-            // 发布动态
+            // 发布动态（事件总线，避免小程序 $refs 被异步组件拖垮）
             publish_event() {
-                if (this.$refs.publish && this.$refs.publish.open) {
-                    this.$refs.publish.open();
-                }
+                try {
+                    if (this.$refs.publish && this.$refs.publish.open) {
+                        this.$refs.publish.open();
+                        return;
+                    }
+                } catch (e) {}
+                uni.$emit('plugins_userhome_publish_open');
             },
             // 我的主页
             my_home_event() {

@@ -14,13 +14,35 @@
                             <view v-if="(data[item.field] || null) != null && data[item.field].length > 0" class="dis-inline-block va-m">
                                 <view class="flex-row gap-5">
                                     <block v-for="(items, indexs) in data[item.field]" :key="indexs">
-                                        <image :src="items" :data-value="items" @tap.stop="images_show_event" mode="aspectFit" class="br-f5 radius panel-item-images"></image>
+                                        <image :src="items" :data-value="items" :data-field="item.field" :data-index="indexs" @tap.stop="many_images_show_event" mode="aspectFit" class="br-f5 radius panel-item-images"></image>
                                     </block>
                                 </view>
                             </view>
                         </block>
                         <block v-else-if="item.type == 'video'">
-                            <video v-if="(data[item.field] || null) != null && data[item.field] !== ''" class="br-f5 radius panel-item-video va-m" :src="data[item.field]" controls object-fit="cover" @tap.stop=""></video>
+                            <view
+                                v-if="(data[item.field] || null) != null && data[item.field] !== ''"
+                                class="panel-video-thumb br-f5 radius dis-inline-block va-m"
+                                :data-value="data[item.field]"
+                                @tap.stop="video_preview_event"
+                            >
+                                <!-- 仅作首帧预览，不播、不展示控件 -->
+                                <video
+                                    class="panel-video-thumb-player"
+                                    :src="data[item.field]"
+                                    :controls="false"
+                                    :show-center-play-btn="false"
+                                    :show-play-btn="false"
+                                    :show-fullscreen-btn="false"
+                                    :enable-progress-gesture="false"
+                                    object-fit="cover"
+                                    muted
+                                    preload="metadata"
+                                ></video>
+                                <view class="panel-video-play-icon flex-row align-c jc-c">
+                                    <iconfont name="icon-bofang" size="24rpx" color="#fff"></iconfont>
+                                </view>
+                            </view>
                         </block>
                         <text v-else class="cr-base">{{ data[item.field] }}</text>
                         <view v-if="(item.is_copy || 0) == 1 && data[item.field] !== ''" class="dis-inline-block margin-left" data-event="copy" :data-value="data[item.field]" @tap.stop="text_event_handle">
@@ -53,13 +75,34 @@
                                             <view v-if="(data[item.field] || null) != null && data[item.field].length > 0" class="dis-inline-block va-m">
                                                 <view class="flex-row gap-5">
                                                     <block v-for="(items, indexs) in data[item.field]" :key="indexs">
-                                                        <image :src="items" :data-value="items" @tap.stop="images_show_event" mode="aspectFit" class="br-f5 radius panel-item-images"></image>
+                                                        <image :src="items" :data-value="items" :data-field="item.field" :data-index="indexs" @tap.stop="many_images_show_event" mode="aspectFit" class="br-f5 radius panel-item-images"></image>
                                                     </block>
                                                 </view>
                                             </view>
                                         </block>
                                         <block v-else-if="item.type == 'video'">
-                                            <video v-if="(data[item.field] || null) != null && data[item.field] !== ''" class="br-f5 radius panel-item-video" :src="data[item.field]" controls object-fit="cover" @tap.stop=""></video>
+                                            <view
+                                                v-if="(data[item.field] || null) != null && data[item.field] !== ''"
+                                                class="panel-video-thumb br-f5 radius dis-inline-block va-m"
+                                                :data-value="data[item.field]"
+                                                @tap.stop="video_preview_event"
+                                            >
+                                                <video
+                                                    class="panel-video-thumb-player"
+                                                    :src="data[item.field]"
+                                                    :controls="false"
+                                                    :show-center-play-btn="false"
+                                                    :show-play-btn="false"
+                                                    :show-fullscreen-btn="false"
+                                                    :enable-progress-gesture="false"
+                                                    object-fit="cover"
+                                                    muted
+                                                    preload="metadata"
+                                                ></video>
+                                                <view class="panel-video-play-icon flex-row align-c jc-c">
+                                                    <iconfont name="icon-bofang" size="24rpx" color="#fff"></iconfont>
+                                                </view>
+                                            </view>
                                         </block>
                                         <block v-else>
                                             <text>{{ data[item.field] }}</text>
@@ -80,6 +123,24 @@
                 </view>
             </view>
         </view>
+
+        <!-- 视频全屏播放 -->
+        <view v-if="video_popup_status" class="panel-video-fs-mask" @tap.stop="video_popup_close_event">
+            <view class="panel-video-fs-close flex-row align-c jc-c" @tap.stop="video_popup_close_event">
+                <iconfont name="icon-close-line" size="32rpx" color="#fff"></iconfont>
+            </view>
+            <video
+                v-if="video_popup_url"
+                class="panel-video-fs-player"
+                :src="video_popup_url"
+                controls
+                autoplay
+                object-fit="contain"
+                :show-center-play-btn="true"
+                :show-fullscreen-btn="true"
+                @tap.stop=""
+            ></video>
+        </view>
     </view>
 </template>
 <script>
@@ -93,6 +154,8 @@
                 data_field: [],
                 more_status: false,
                 show_max: 0,
+                video_popup_status: false,
+                video_popup_url: '',
             };
         },
         components: {
@@ -196,6 +259,40 @@
                 app.globalData.image_show_event(e);
             },
 
+            // 多图预览（支持左右切换）
+            many_images_show_event(e) {
+                var field = e.currentTarget.dataset.field || '';
+                var index = parseInt(e.currentTarget.dataset.index || 0);
+                var urls = (this.data && field && (this.data[field] || null) != null) ? this.data[field] : [];
+                if (!urls || urls.length <= 0) {
+                    return;
+                }
+                uni.previewImage({
+                    current: urls[index] || urls[0],
+                    urls: urls,
+                });
+            },
+
+            // 视频预览弹窗
+            video_preview_event(e) {
+                var url = (e.currentTarget.dataset.value || '').toString();
+                if (!url) {
+                    return;
+                }
+                this.setData({
+                    video_popup_url: url,
+                    video_popup_status: true,
+                });
+            },
+
+            // 关闭视频弹窗
+            video_popup_close_event() {
+                this.setData({
+                    video_popup_status: false,
+                    video_popup_url: '',
+                });
+            },
+
             // 数据项更多事件
             item_more_event(e) {
                 this.setData({
@@ -214,9 +311,53 @@
         width: 40rpx;
         height: 40rpx;
     }
-    .panel-item-video {
-        width: 240rpx;
-        height: 180rpx;
+    .panel-video-thumb {
+        position: relative;
+        width: 60rpx;
+        height: 60rpx;
+        overflow: hidden;
+        background: #111;
         vertical-align: middle;
+    }
+    .panel-video-thumb-player {
+        width: 100%;
+        height: 100%;
+        display: block;
+        pointer-events: none;
+    }
+    .panel-video-play-icon {
+        position: absolute;
+        left: 0;
+        right: 0;
+        top: 0;
+        bottom: 0;
+        background: rgba(0, 0, 0, 0.25);
+    }
+    .panel-video-fs-mask {
+        position: fixed;
+        left: 0;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        z-index: 9999;
+        background: #000;
+    }
+    .panel-video-fs-close {
+        position: absolute;
+        top: calc(env(safe-area-inset-top) + 24rpx);
+        right: 24rpx;
+        width: 64rpx;
+        height: 64rpx;
+        border-radius: 50%;
+        background: rgba(255, 255, 255, 0.2);
+        z-index: 2;
+    }
+    .panel-video-fs-player {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        background: #000;
     }
 </style>

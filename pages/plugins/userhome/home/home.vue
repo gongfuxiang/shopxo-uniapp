@@ -1,5 +1,8 @@
 <template>
     <view :class="theme_view">
+        <!-- 公共返回：固定顶栏，不随内容滚动（同秒杀/优惠券） -->
+        <component-nav-back :propColor="nav_back_color" :propIsRightSlot="false" :propName="nav_back_title" :propNameOpacity="true"></component-nav-back>
+
         <!-- 首屏：home 完成前整页加载 -->
         <block v-if="!page_ready">
             <component-no-data :propStatus="page_loding_status" :propMsg="page_loding_msg"></component-no-data>
@@ -10,7 +13,7 @@
                 <!-- 自定义背景图层：有图始终渲染；开「风格主题色」时半透明叠在主题色上 -->
                 <view v-if="home.cover" class="home-header-bg" :style="'background-image:url(' + home.cover + ');'"></view>
                 <view class="home-header-mask"></view>
-                <view class="home-header-inner padding-main">
+                <view class="home-header-inner padding-horizontal-main padding-bottom-main" :style="header_inner_style">
                     <view class="flex-row align-c">
                         <image class="avatar circle" :src="home.avatar" mode="aspectFill"></image>
                         <view class="flex-1 flex-width padding-left-main">
@@ -71,9 +74,9 @@
                 <component-moment-publish :propInline="true" @success="publish_success_event"></component-moment-publish>
             </view>
 
-            <view v-if="(home.tabs || []).length > 0" class="nav-tabs bg-white" :style="'--tab-line-color:' + theme_color">
+            <view v-if="home.tabs && home.tabs.length > 0" class="nav-tabs bg-white" :style="'--tab-line-color:' + theme_color">
                 <view class="tabs-scroll-content">
-                    <view v-for="(tab, ti) in home.tabs" :key="tab.type || ti" class="tab-item" :class="{ active: content_type == tab.type }" :data-type="tab.type" @tap="tab_event">{{ tab.name }}</view>
+                    <view v-for="(tab, ti) in home.tabs" :key="ti" class="tab-item" :class="{ active: content_type == tab.type }" :data-type="tab.type" @tap="tab_event">{{ tab.name }}</view>
                 </view>
             </view>
 
@@ -82,14 +85,14 @@
                     <block v-if="content_type == 'moment'">
                         <component-moment-item
                             v-for="(item, index) in data_list"
-                            :key="item.id || index"
+                            :key="index"
                             :propItem="item"
                             :propShowUser="false"
                             :propShowOwner="home.is_self == 1"
-                            :propEnableDetail="(home.config || {}).is_enable_moment_detail == 1"
-                            :propShowLike="(home.config || {}).is_enable_like == 1"
-                            :propShowComment="(home.config || {}).is_enable_comment == 1"
-                            :propShowAccess="(home.config || {}).is_show_access_count == 1"
+                            :propEnableDetail="home.config.is_enable_moment_detail == 1"
+                            :propShowLike="home.config.is_enable_like == 1"
+                            :propShowComment="home.config.is_enable_comment == 1"
+                            :propShowAccess="home.config.is_show_access_count == 1"
                             @like="like_event"
                             @edit="edit_event"
                             @delete="delete_event"
@@ -105,7 +108,7 @@
                                         <view class="text-line-2">{{ item.title }}</view>
                                         <view class="flex-row align-c text-size-xs cr-grey-9 margin-top-xs">
                                             <text>{{ item.add_time }}</text>
-                                            <view v-if="(home.config || {}).is_show_access_count == 1" class="flex-row align-c margin-left-main">
+                                            <view v-if="home.config.is_show_access_count == 1" class="flex-row align-c margin-left-main">
                                                 <iconfont name="icon-eye" size="24rpx" color="#999" propClass="va-m"></iconfont>
                                                 <text class="margin-left-xs">{{ item.access_count || 0 }}</text>
                                             </view>
@@ -118,7 +121,7 @@
                                     <view>{{ item.title }}</view>
                                     <view class="flex-row align-c text-size-xs cr-grey-9 margin-top-xs">
                                         <text>{{ item.add_time_time || item.add_time }}</text>
-                                        <view v-if="(home.config || {}).is_show_access_count == 1" class="flex-row align-c margin-left-main">
+                                        <view v-if="home.config.is_show_access_count == 1" class="flex-row align-c margin-left-main">
                                             <iconfont name="icon-eye" size="24rpx" color="#999" propClass="va-m"></iconfont>
                                             <text class="margin-left-xs">{{ item.access_count || 0 }}</text>
                                         </view>
@@ -138,7 +141,7 @@
                                         <view class="text-line-2">{{ item.title }}</view>
                                         <view class="flex-row align-c text-size-xs cr-grey-9 margin-top-xs">
                                             <text>{{ item.add_time_date || item.add_time }}</text>
-                                            <view v-if="(home.config || {}).is_show_access_count == 1" class="flex-row align-c margin-left-main">
+                                            <view v-if="home.config.is_show_access_count == 1" class="flex-row align-c margin-left-main">
                                                 <iconfont name="icon-eye" size="24rpx" color="#999" propClass="va-m"></iconfont>
                                                 <text class="margin-left-xs">{{ item.access_count || 0 }}</text>
                                             </view>
@@ -167,7 +170,7 @@
                     <view class="theme-list">
                         <view
                             v-for="(th, ti) in theme_list"
-                            :key="th.value || ti"
+                            :key="ti"
                             class="theme-item"
                             :class="current_theme == th.value ? 'active' : ''"
                             :data-theme="th.value"
@@ -213,6 +216,7 @@
 <script>
     const app = getApp();
     import componentCommon from '@/components/common/common';
+    import componentNavBack from '@/components/nav-back/nav-back';
     import componentNoData from '@/components/no-data/no-data';
     import componentBottomLine from '@/components/bottom-line/bottom-line';
     import componentPopup from '@/components/popup/popup';
@@ -221,12 +225,20 @@
     import componentMomentItem from '@/pages/plugins/userhome/components/moment-item/moment-item';
     import { getUserhomeConfig } from '@/pages/plugins/userhome/utils/compose-cache.js';
     import pluginLocale from '@/pages/plugins/userhome/locale/index.js';
+
+    // 状态栏高度（固定顶栏下内容偏移）
+    var bar_height = parseInt(app.globalData.get_system_info('statusBarHeight', 0, true));
+    // #ifdef MP-TOUTIAO || H5
+    bar_height = 0;
+    // #endif
     export default {
         mixins: [pluginLocale],
         data() {
             return {
                 theme_view: app.globalData.get_theme_value_view(),
                 theme_color: app.globalData.get_theme_color(),
+                status_bar_height: bar_height,
+                nav_opacity: 0,
                 params: {},
                 page_ready: false,
                 page_loding_status: 1,
@@ -253,6 +265,7 @@
         },
         components: {
             componentCommon,
+            componentNavBack,
             componentNoData,
             componentBottomLine,
             componentPopup,
@@ -286,6 +299,25 @@
                 }
                 return '#333';
             },
+            // 滚动后顶栏变白，箭头改深色
+            nav_back_color() {
+                if (this.nav_opacity > 0.3) {
+                    return '#333';
+                }
+                return this.header_icon_color;
+            },
+            // 默认不显示；滚动顶栏变白后再出标题，避免与头区昵称重复
+            nav_back_title() {
+                if (!this.page_ready || !this.home || this.nav_opacity <= 0.3) {
+                    return '';
+                }
+                return this.home.user_name_view || '';
+            },
+            // 固定顶栏下给头区内容留空
+            header_inner_style() {
+                var top = (this.status_bar_height || 0) + 44;
+                return 'padding-top:' + top + 'px;';
+            },
             // 相对视口高度下移；有发布框时略大
             list_loading_logo_top() {
                 var home = this.home || {};
@@ -300,7 +332,9 @@
             // 参数处理
             params = app.globalData.launch_params_handle(params);
             // 设置参数
-            this.setData({ params: params || {} });
+            this.setData({
+                params: params || {},
+            });
             // 调用公共事件方法
             app.globalData.page_event_onload_handle(params);
             // 初始化
@@ -323,6 +357,12 @@
         // 下拉刷新
         onPullDownRefresh() {
             this.reload();
+        },
+        // 同步公共返回组件透明度
+        onPageScroll(e) {
+            var top = e.scrollTop > 47 ? 1 : e.scrollTop / 47;
+            this.setData({ nav_opacity: top });
+            uni.$emit('onPageScroll', e);
         },
         // #ifdef MP-WEIXIN || MP-BAIDU || MP-QQ || MP-TOUTIAO || MP-KUAISHOU
         // 分享
@@ -464,8 +504,9 @@
                 if (!home) {
                     return;
                 }
+                var name = home.user_name_view || '';
                 var info = {
-                    title: home.user_name_view || '',
+                    title: name ? name + this.$t('home.home_suffix') : this.$t('pages.plugins-userhome-home'),
                     desc: home.signature || this.$t('home.no_signature'),
                     path: '/pages/plugins/userhome/home/home',
                     query: 'id=' + home.user_id,
@@ -670,6 +711,7 @@
                             success: (up) => {
                                 var result = typeof up.data == 'object' ? up.data : JSON.parse(up.data || '{}');
                                 if (up.statusCode == 200 && result.code == 0 && result.data && result.data.url) {
+                                    // 保存成功后由服务端删旧封面，前端不提前 deletefile
                                     self.cover_save(result.data.url);
                                 } else {
                                     app.globalData.showToast((result && result.msg) || self.$t('common.sub_error_retry_tips'));
@@ -692,7 +734,7 @@
                     urls: [this.cover_url],
                 });
             },
-            // 清除封面
+            // 清除封面（走 coversave，服务端删旧文件）
             cover_clear_event() {
                 this.cover_save('');
             },

@@ -1,4 +1,21 @@
+/**
+ * 两项铺满宽 + 下划线（nav-active-line）
+ */
+.nav-base .item {
+    width: 50%;
+}
+
 .avatar {
     width: 80rpx;
     height: 80rpx;
+    flex-shrink: 0;
+}
+
+.follow-btn {
+    flex-shrink: 0;
+    margin-left: 16rpx;
+    min-width: 140rpx;
+    height: 56rpx;
+    line-height: 56rpx;
+    font-size: 24rpx;
 }

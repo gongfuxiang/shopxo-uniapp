@@ -3,7 +3,7 @@
         <block v-if="(moment || null) != null">
             <!-- 动态/评论同层左右间距；块间距用 main -->
             <view class="padding-main">
-                <component-moment-item :propItem="moment" :propSpacingMb="false" :propShowOwner="true" :propEnableDetail="false" :propShowLike="config.is_enable_like == 1" :propShowComment="false" :propShowCommentPreview="false" :propShowAccess="config.is_show_access_count == 1" @like="like_event" @edit="edit_event" @delete="delete_event"></component-moment-item>
+                <component-moment-item :propItem="moment" :propSpacingMb="false" :propShowOwner="true" :propEnableDetail="false" :propShowLike="config.is_enable_like == 1" :propShowComment="false" :propShowCommentPreview="false" :propShowAccess="config.is_show_access_count == 1" @like="like_event" @edit="edit_event" @delete="delete_event" @share="share_event"></component-moment-item>
                 <view v-if="moment.show_comment == 1" class="bg-white border-radius-main padding-main margin-top-main">
                     <component-moment-comment
                         ref="comment"
@@ -24,6 +24,7 @@
             <component-bottom-line :propStatus="data_bottom_line_status"></component-bottom-line>
         </block>
         <component-no-data v-else :propStatus="data_list_loding_status" :propMsg="data_list_loding_msg"></component-no-data>
+        <component-share-popup ref="share"></component-share-popup>
         <component-common ref="common"></component-common>
     </view>
 </template>
@@ -34,6 +35,7 @@
     import componentBottomLine from '@/components/bottom-line/bottom-line';
     import componentMomentItem from '@/pages/plugins/userhome/components/moment-item/moment-item';
     import componentMomentComment from '@/pages/plugins/userhome/components/moment-comment/moment-comment';
+    import componentSharePopup from '@/pages/common/components/share-popup/share-popup';
     import { getUserhomeConfig } from '@/pages/plugins/userhome/utils/compose-cache.js';
     import pluginLocale from '@/pages/plugins/userhome/locale/index.js';
     export default {
@@ -56,6 +58,7 @@
             componentBottomLine,
             componentMomentItem,
             componentMomentComment,
+            componentSharePopup,
         },
         onLoad(params) {
             // 参数处理
@@ -70,6 +73,15 @@
         onShow() {
             // 调用公共事件方法
             app.globalData.page_event_onshow_handle();
+            // 编辑保存返回：与「我的动态」同一标记，仅匹配当前条时重拉详情（不消费标记，留给列表页）
+            var refresh = uni.getStorageSync('cache_plugins_userhome_list_refresh') || null;
+            if (refresh && refresh.type == 'edit') {
+                var rid = parseInt(refresh.id || 0);
+                var mid = parseInt((this.moment && this.moment.id) || (this.params && this.params.id) || 0);
+                if (rid > 0 && mid > 0 && rid == mid) {
+                    this.get_detail();
+                }
+            }
             // 公共onshow事件（$refs 未就绪时自动延后重试）
             app.globalData.page_common_on_show(this);
             // 分享菜单处理
@@ -164,6 +176,14 @@
                 this.setData({ share_info: info });
                 // 分享菜单处理
                 app.globalData.page_share_handle(info);
+            },
+            // 分享
+            share_event() {
+                if (this.$refs.share && this.$refs.share.init) {
+                    this.$refs.share.init({
+                        share_info: this.share_info,
+                    });
+                }
             },
             // 编辑
             edit_event(item) {

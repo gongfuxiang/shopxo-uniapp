@@ -10,12 +10,13 @@
                     :propLoading="form_submit_loading"
                     :propEditorPathType="editor_path_type"
                     :propImagesMax="images_max"
-                    :propEmojiList="emoji_list"
                     :propTools="compose_tools"
                     @compose-submit="form_submit"
+                    @emoji-open="emoji_open_event"
                 ></component-moment-compose>
             </view>
         </view>
+        <component-emoji-popup ref="emoji" v-on:choiceConfirmEvent="emoji_choice_confirm_event"></component-emoji-popup>
         <component-common ref="common"></component-common>
     </view>
 </template>
@@ -23,6 +24,7 @@
     const app = getApp();
     import componentCommon from '@/components/common/common';
     import componentMomentCompose from '@/pages/plugins/userhome/components/moment-compose/moment-compose';
+    import componentEmojiPopup from '@/pages/plugins/userhome/components/emoji-popup/emoji-popup';
     import pluginLocale from '@/pages/plugins/userhome/locale/index.js';
     export default {
         mixins: [pluginLocale],
@@ -49,6 +51,7 @@
         components: {
             componentCommon,
             componentMomentCompose,
+            componentEmojiPopup,
         },
         onLoad(params) {
             // 参数处理
@@ -73,6 +76,17 @@
             app.globalData.page_common_on_show(this);
         },
         methods: {
+            emoji_open_event() {
+                if ((this.$refs.emoji || null) != null) {
+                    this.$refs.emoji.init({ emoji_list: this.emoji_list });
+                }
+            },
+            emoji_choice_confirm_event(emoji) {
+                emoji = uni.getStorageSync(app.globalData.data.cache_emoji_popup_key) || emoji || '';
+                if (emoji && (this.$refs.compose || null) != null) {
+                    this.$refs.compose.insert_text(emoji);
+                }
+            },
             // 初始化
             init() {
                 var user = app.globalData.get_user_info(this, 'init');

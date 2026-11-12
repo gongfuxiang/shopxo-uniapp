@@ -408,11 +408,15 @@
             publish_success_event() {
                 this.reload_list();
             },
-            // 发布动态
+            // 发布动态（事件总线，避免小程序 $refs 被异步组件拖垮）
             publish_event() {
-                if (this.$refs.publish && this.$refs.publish.open) {
-                    this.$refs.publish.open();
-                }
+                try {
+                    if (this.$refs.publish && this.$refs.publish.open) {
+                        this.$refs.publish.open();
+                        return;
+                    }
+                } catch (e) {}
+                uni.$emit('plugins_userhome_publish_open');
             },
             // 链接事件
             url_event(e) {

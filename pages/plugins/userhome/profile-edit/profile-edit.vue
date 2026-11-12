@@ -181,7 +181,7 @@
             fans_view_event(e) {
                 this.form.fans_list_view = parseInt(e.detail.value || 0) || 0;
             },
-            // 选择头像
+            // 选择头像（仅改表单；保存成功后由服务端删旧文件）
             avatar_choose_event() {
                 var self = this;
                 uni.chooseImage({
@@ -218,7 +218,7 @@
                     },
                 });
             },
-            // 清除头像
+            // 清除头像（仅清表单，未保存不删远程）
             avatar_clear_event() {
                 this.form.avatar = '';
             },

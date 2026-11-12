@@ -10,9 +10,9 @@
                 :propLoading="form_submit_loading"
                 :propEditorPathType="editor_path_type"
                 :propImagesMax="images_max"
-                :propEmojiList="emoji_list"
                 :propTools="compose_tools"
                 @compose-submit="form_submit"
+                @emoji-open="emoji_open_event"
             ></component-moment-compose>
         </view>
 
@@ -25,7 +25,7 @@
                         <iconfont name="icon-close-line" color="#333" size="28rpx"></iconfont>
                     </view>
                 </view>
-                <view class="padding-main">
+                <view class="moment-publish-body padding-main">
                     <component-moment-compose
                         v-if="popup_status"
                         ref="compose"
@@ -36,19 +36,23 @@
                         :propAutoFocus="true"
                         :propEditorPathType="editor_path_type"
                         :propImagesMax="images_max"
-                        :propEmojiList="emoji_list"
                         :propTools="compose_tools"
                         @compose-submit="form_submit"
+                        @emoji-open="emoji_open_event"
                     ></component-moment-compose>
                 </view>
             </view>
         </component-popup>
+
+        <!-- 表情挂在发布弹层外，避免嵌套 fixed 失效 -->
+        <component-emoji-popup ref="emoji" v-on:choiceConfirmEvent="emoji_choice_confirm_event"></component-emoji-popup>
     </view>
 </template>
 <script>
     const app = getApp();
     import componentPopup from '@/components/popup/popup';
     import componentMomentCompose from '@/pages/plugins/userhome/components/moment-compose/moment-compose';
+    import componentEmojiPopup from '@/pages/plugins/userhome/components/emoji-popup/emoji-popup';
     import pluginLocale from '@/pages/plugins/userhome/locale/index.js';
     import { getUserhomeConfig, getMomentSaveinfo } from '@/pages/plugins/userhome/utils/compose-cache.js';
     export default {
@@ -56,12 +60,12 @@
         components: {
             componentPopup,
             componentMomentCompose,
+            componentEmojiPopup,
         },
         props: {
             // 个人主页内联展示；广场等仍用弹窗
             propInline: { type: Boolean, default: false },
         },
-        // 组件数据
         data() {
             return {
                 popup_status: false,
@@ -80,13 +84,20 @@
                 },
             };
         },
-        // 内联模式直接拉配置
         mounted() {
             if (this.propInline) {
                 this.load_init();
+            } else {
+                uni.$on('plugins_userhome_publish_open', this.on_publish_open_event);
             }
         },
+        beforeDestroy() {
+            uni.$off('plugins_userhome_publish_open', this.on_publish_open_event);
+        },
         methods: {
+            on_publish_open_event() {
+                this.open();
+            },
             // 打开发布弹窗
             open() {
                 var user = app.globalData.get_user_info(this, 'open');
@@ -100,9 +111,19 @@
                 this.load_init();
                 return true;
             },
-            // 关闭弹窗
             popup_close_event() {
                 this.popup_status = false;
+            },
+            emoji_open_event() {
+                if ((this.$refs.emoji || null) != null) {
+                    this.$refs.emoji.init({ emoji_list: this.emoji_list });
+                }
+            },
+            emoji_choice_confirm_event(emoji) {
+                emoji = uni.getStorageSync(app.globalData.data.cache_emoji_popup_key) || emoji || '';
+                if (emoji && (this.$refs.compose || null) != null) {
+                    this.$refs.compose.insert_text(emoji);
+                }
             },
             // 初始化配置（path_type 优先用 config 统一下发）
             load_init() {
@@ -188,5 +209,8 @@
     .moment-publish {
         border-radius: 24rpx 24rpx 0 0;
         overflow: hidden;
+    }
+    .moment-publish-body {
+        padding-bottom: 40rpx;
     }
 </style>

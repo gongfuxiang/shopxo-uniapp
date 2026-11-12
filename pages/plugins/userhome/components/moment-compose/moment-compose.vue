@@ -14,27 +14,26 @@
         />
 
         <view v-if="(image_list || []).length > 0 || video_url" class="media-wrap margin-top-main">
-            <view v-if="(image_list || []).length > 0" class="flex-row flex-wrap">
-                <view v-for="(img, index) in image_list" :key="index" class="media-item pr margin-right-sm margin-bottom-sm">
-                    <image class="media-img radius" :src="img" mode="aspectFill" :data-index="index" @tap="preview_image_event"></image>
-                    <view class="media-del pa" :data-index="index" @tap.stop="image_delete_event">
-                        <iconfont name="icon-close-fillup" size="32rpx" color="rgba(87,91,102,0.7)"></iconfont>
+            <view v-if="(image_list || []).length > 0" class="media-images">
+                <view v-for="(img, index) in image_list" :key="index" class="media-item radius">
+                    <image class="media-img" :src="img" mode="aspectFill" :data-index="index" @tap="preview_image_event"></image>
+                    <!-- iconfont 是自定义组件，小程序点击不冒泡，需同时绑 click -->
+                    <view class="media-del" @tap.stop="image_delete_event(index)">
+                        <iconfont name="icon-close-fillup" size="32rpx" color="rgba(87,91,102,0.7)" @click.stop="image_delete_event(index)"></iconfont>
                     </view>
                 </view>
             </view>
-            <view v-if="video_url" class="video-item pr margin-top-sm">
+            <view v-if="video_url" class="video-item margin-top-sm">
                 <video class="media-video radius" :src="video_url" controls object-fit="cover"></video>
-                <view class="media-del pa" @tap.stop="video_delete_event">
-                    <iconfont name="icon-close-fillup" size="32rpx" color="rgba(87,91,102,0.7)"></iconfont>
+                <view class="media-del media-del-video" @tap.stop="video_delete_event">
+                    <iconfont name="icon-close-fillup" size="32rpx" color="rgba(87,91,102,0.7)" @click.stop="video_delete_event"></iconfont>
                 </view>
             </view>
         </view>
 
         <view class="toolbar flex-row align-c">
             <view class="toolbar-left flex-1 flex-row align-c flex-wrap">
-                <view v-if="tools.emoji == 1" class="tool-btn" @tap="emoji_event">
-                    <iconfont name="icon-emoji" size="40rpx" color="#666"></iconfont>
-                </view>
+                <image v-if="tools.emoji == 1" :src="common_static_url + 'emoji-icon.png'" mode="aspectFill" class="emoji-icon tool-btn" @tap="emoji_event"></image>
                 <view v-if="tools.images == 1" class="tool-btn flex-row align-c" @tap="images_event">
                     <iconfont name="icon-images" size="40rpx" color="#666"></iconfont>
                     <text class="images-count text-size-xs cr-grey margin-left-xs">{{ (image_list || []).length }}/{{ images_max }}</text>
@@ -42,8 +41,8 @@
                 <view v-if="tools.video == 1" class="tool-btn" @tap="video_event">
                     <iconfont name="icon-video" size="40rpx" color="#666"></iconfont>
                 </view>
-                <view v-if="show_at" class="tool-btn tool-text" @tap="at_event"><text class="tool-char">@</text></view>
-                <view v-if="tools.topic == 1" class="tool-btn tool-text" @tap="topic_event"><text class="tool-char">#</text></view>
+                <view v-if="show_at" class="tool-btn tool-text" @tap="at_event"><text class="tool-char tool-char-at">@</text></view>
+                <view v-if="tools.topic == 1" class="tool-btn tool-text" @tap="topic_event"><text class="tool-char tool-char-topic">#</text></view>
             </view>
             <view class="toolbar-right">
                 <button class="round cr-white bg-main text-size-sm" type="default" size="mini" hover-class="none" :loading="propLoading" :disabled="propLoading" @tap.stop="submit_event">{{ propSubmitText }}</button>
@@ -53,19 +52,29 @@
         <!-- 未打开时不渲染；勿抬高 propIndex（遮罩会盖住内容层） -->
         <component-popup v-if="at_popup_status" :propShow="true" propPosition="bottom" @onclose="at_popup_close_event">
             <view class="at-popup bg-white">
-                <view class="flex-row jc-sb align-c padding-main br-b-e">
-                    <view class="text-size fw-b">{{ $t('moment-form.at') }}</view>
-                    <view @tap="at_popup_close_event">
-                        <iconfont name="icon-close-line" color="#333" size="28rpx"></iconfont>
+                <view class="at-popup-close pa top-0 right-0 z-i-deep">
+                    <view class="padding-top padding-right padding-left-sm padding-bottom-sm" @tap.stop="at_popup_close_event">
+                        <iconfont name="icon-close-line" color="#999" size="28rpx"></iconfont>
                     </view>
                 </view>
-                <view v-if="show_at_tabs" class="flex-row padding-horizontal-main padding-top-main">
-                    <view v-if="tools.at_follow == 1" class="at-tab margin-right-main" :class="at_type == 'follow' ? 'cr-main fw-b' : 'cr-grey'" data-type="follow" @tap="at_type_event">{{ $t('moment-form.at_follow') }}</view>
-                    <view v-if="tools.at_fans == 1" class="at-tab" :class="at_type == 'fans' ? 'cr-main fw-b' : 'cr-grey'" data-type="fans" @tap="at_type_event">{{ $t('moment-form.at_fans') }}</view>
+                <!-- tabs 对齐「我的动态」顶部导航 -->
+                <view v-if="show_at_tabs" class="nav-base bg-white">
+                    <view
+                        v-if="tools.at_follow == 1"
+                        :class="'item dis-inline-block padding-left-xl padding-right-xl tc ' + (at_type == 'follow' ? 'cr-main nav-active-line' : '')"
+                        data-type="follow"
+                        @tap.stop="at_type_event"
+                    >{{ $t('moment-form.at_follow') }}</view>
+                    <view
+                        v-if="tools.at_fans == 1"
+                        :class="'item dis-inline-block padding-left-xl padding-right-xl tc ' + (at_type == 'fans' ? 'cr-main nav-active-line' : '')"
+                        data-type="fans"
+                        @tap.stop="at_type_event"
+                    >{{ $t('moment-form.at_fans') }}</view>
                 </view>
                 <scroll-view scroll-y class="at-list">
                     <block v-if="(at_user_list || []).length > 0">
-                        <view v-for="(user, index) in at_user_list" :key="user.id || index" class="at-user-item flex-row align-c padding-main br-b-f5" :data-id="user.id" :data-name="user.user_name_view" @tap="at_user_choice_event">
+                        <view v-for="(user, index) in at_user_list" :key="index" class="at-user-item flex-row align-c padding-main br-b-f5" :data-id="user.id" :data-name="user.user_name_view" @tap="at_user_choice_event">
                             <image class="at-avatar circle margin-right-main" :src="user.avatar" mode="aspectFill"></image>
                             <text class="flex-1">{{ user.user_name_view }}</text>
                             <iconfont v-if="(at_user_ids || []).indexOf(user.id) >= 0" name="icon-checked" size="28rpx" color="#999"></iconfont>
@@ -76,19 +85,17 @@
             </view>
         </component-popup>
 
-        <component-emoji-popup v-if="emoji_ready" ref="emoji" @choiceConfirmEvent="emoji_choice_event"></component-emoji-popup>
     </view>
 </template>
 <script>
     const app = getApp();
+    var common_static_url = app.globalData.get_static_url('common');
     import componentPopup from '@/components/popup/popup';
-    import componentEmojiPopup from '@/pages/common/components/emoji-popup/emoji-popup';
     import pluginLocale from '@/pages/plugins/userhome/locale/index.js';
     export default {
         mixins: [pluginLocale],
         components: {
             componentPopup,
-            componentEmojiPopup,
         },
         props: {
             propPlaceholder: { type: String, default: '' },
@@ -98,7 +105,6 @@
             propAutoFocus: { type: Boolean, default: false },
             propEditorPathType: { type: String, default: '' },
             propImagesMax: { type: [Number, String], default: 9 },
-            propEmojiList: { type: Array, default: () => [] },
             // 输入框高度（原生 textarea 无 height 属性，需走 style）
             propHeight: { type: String, default: '140rpx' },
             propTools: {
@@ -117,10 +123,11 @@
         // 组件数据
         data() {
             return {
+                common_static_url: common_static_url,
                 form: { content: '' },
                 image_list: [],
-                // url -> 附件 id，叉掉时调 deletefile
-                image_ids: {},
+                // 与 image_list 下标对齐的附件 id（勿用 url 做对象 key，小程序 setData 会把 / . 当路径）
+                image_id_list: [],
                 video_url: '',
                 video_id: 0,
                 at_user_ids: [],
@@ -128,9 +135,10 @@
                 at_type: 'follow',
                 at_popup_status: false,
                 at_loading: false,
-                emoji_ready: false,
                 input_focus: false,
                 input_cursor: -1,
+                // 已点提交：附件归业务侧，禁止再调 deletefile（防误触叉号）
+                media_locked: false,
             };
         },
         computed: {
@@ -180,6 +188,12 @@
                     this.input_focus = false;
                 }
             },
+            // 提交结束且未 reset（失败）时解锁，允许继续删图
+            propLoading(val) {
+                if (!val && this.media_locked) {
+                    this.media_locked = false;
+                }
+            },
             // 默认艾特类型（关注优先）
             'tools.at_follow': {
                 immediate: true,
@@ -193,32 +207,58 @@
             reset() {
                 this.form = { content: '' };
                 this.image_list = [];
-                this.image_ids = {};
+                this.image_id_list = [];
                 this.video_url = '';
                 this.video_id = 0;
                 this.at_user_ids = [];
                 this.at_user_list = [];
                 this.at_popup_status = false;
-                this.emoji_ready = false;
                 this.input_focus = false;
                 this.input_cursor = -1;
+                this.media_locked = false;
             },
             // 回填编辑数据
             set_form_data(data) {
                 data = data || {};
+                var images = Array.isArray(data.images) ? data.images.slice() : [];
                 this.form = { content: data.content || '' };
-                this.image_list = Array.isArray(data.images) ? data.images.slice() : [];
-                this.image_ids = {};
-                this.video_url = data.video_url || '';
+                this.image_list = images.map((u) => this.media_url_view(u));
+                this.image_id_list = images.map(function () {
+                    return 0;
+                });
+                this.video_url = this.media_url_view(data.video_url || '');
                 this.video_id = 0;
                 this.at_user_ids = Array.isArray(data.at_user_ids) ? data.at_user_ids.slice() : [];
                 this.at_popup_status = false;
-                this.emoji_ready = false;
                 this.input_focus = false;
                 this.input_cursor = -1;
             },
-            // 删除远程附件（发布未提交时叉掉）
+            // 附件地址：相对路径补域名；保持服务端协议（勿强改 https，本地 http 站会裂图）
+            media_url_view(url) {
+                url = url || '';
+                if (!url) {
+                    return '';
+                }
+                if (url.indexOf('//') === 0) {
+                    return 'http:' + url;
+                }
+                if (url.indexOf('http://') === 0 || url.indexOf('https://') === 0) {
+                    return url;
+                }
+                var base = (app.globalData.data && app.globalData.data.request_url) || '';
+                if (!base) {
+                    return url;
+                }
+                if (url.charAt(0) === '/') {
+                    return base.replace(/\/$/, '') + url;
+                }
+                return base.replace(/\/$/, '') + '/' + url;
+            },
+            // 删除远程附件（仅未提交时可叉掉；提交后禁止，否则会把已发布附件删掉）
             delete_remote_file(opts) {
+                if (this.media_locked || this.propLoading) {
+                    return;
+                }
                 opts = opts || {};
                 var id = parseInt(opts.id || 0) || 0;
                 var url = opts.url || '';
@@ -237,13 +277,13 @@
                     dataType: 'json',
                 });
             },
-            // 组装提交数据
+            // 组装提交数据（拷贝，避免外部改到内部列表）
             get_data() {
                 return {
                     content: this.form.content || '',
-                    images: this.image_list || [],
+                    images: (this.image_list || []).slice(),
                     video_url: this.video_url || '',
-                    at_user_ids: this.at_user_ids || [],
+                    at_user_ids: (this.at_user_ids || []).slice(),
                 };
             },
             // 输入失焦
@@ -275,40 +315,10 @@
                 this.form = { content: next };
                 this.focus_input(next.length);
             },
-            // 打开表情
+            // 打开表情（外层 $refs.emoji.init）
             emoji_event() {
                 this.input_focus = false;
-                this.emoji_ready = true;
-                this.$nextTick(() => {
-                    var emoji_ref = this.$refs.emoji;
-                    if (!emoji_ref || !emoji_ref.init) {
-                        return;
-                    }
-                    // 关闭表情层时卸载，避免隐藏弹层挡住发布弹窗
-                    if (!emoji_ref._moment_compose_close_bind) {
-                        var self = this;
-                        var origin_close = emoji_ref.popup_close_event;
-                        emoji_ref.popup_close_event = function (e) {
-                            if (typeof origin_close === 'function') {
-                                origin_close.call(emoji_ref, e);
-                            }
-                            self.emoji_ready = false;
-                            self.focus_input();
-                        };
-                        emoji_ref._moment_compose_close_bind = true;
-                    }
-                    emoji_ref.init({ emoji_list: this.propEmojiList || [] });
-                });
-            },
-            // 选择表情
-            emoji_choice_event(emoji) {
-                emoji = uni.getStorageSync(app.globalData.data.cache_emoji_popup_key) || emoji || '';
-                this.emoji_ready = false;
-                if (emoji) {
-                    this.insert_text(emoji);
-                } else {
-                    this.focus_input();
-                }
+                this.$emit('emoji-open');
             },
             // 插入话题#
             topic_event() {
@@ -428,13 +438,9 @@
                     success: (up) => {
                         var result = typeof up.data == 'object' ? up.data : JSON.parse(up.data || '{}');
                         if (up.statusCode == 200 && result.code == 0 && result.data && result.data.url) {
-                            var url = result.data.url;
+                            var url = this.media_url_view(result.data.url || '');
                             this.image_list = (this.image_list || []).concat([url]);
-                            if (result.data.id) {
-                                var ids = Object.assign({}, this.image_ids || {});
-                                ids[url] = result.data.id;
-                                this.image_ids = ids;
-                            }
+                            this.image_id_list = (this.image_id_list || []).concat([parseInt(result.data.id || 0) || 0]);
                         } else {
                             app.globalData.showToast((result && result.msg) || this.$t('common.sub_error_retry_tips'));
                         }
@@ -445,23 +451,37 @@
                     },
                 });
             },
-            // 删除图片
-            image_delete_event(e) {
-                var index = parseInt(e.currentTarget.dataset.index || 0);
+            // 删除图片（支持直接传 index，或旧的 event.dataset）
+            image_delete_event(index) {
+                if (this.media_locked || this.propLoading) {
+                    return;
+                }
+                if (typeof index === 'object' && index != null) {
+                    var ds = (index.currentTarget && index.currentTarget.dataset) || {};
+                    index = ds.index;
+                }
+                index = parseInt(index, 10);
+                if (isNaN(index) || index < 0) {
+                    return;
+                }
                 var list = (this.image_list || []).slice();
+                var id_list = (this.image_id_list || []).slice();
+                if (index >= list.length) {
+                    return;
+                }
                 var url = list[index] || '';
+                var file_id = id_list[index] || 0;
                 if (url) {
-                    var ids = Object.assign({}, this.image_ids || {});
-                    this.delete_remote_file({ id: ids[url] || 0, url: url });
-                    delete ids[url];
-                    this.image_ids = ids;
+                    this.delete_remote_file({ id: file_id, url: url });
                 }
                 list.splice(index, 1);
+                id_list.splice(index, 1);
                 this.image_list = list;
+                this.image_id_list = id_list;
             },
             // 预览图片
             preview_image_event(e) {
-                var index = parseInt(e.currentTarget.dataset.index || 0);
+                var index = parseInt((e.currentTarget && e.currentTarget.dataset && e.currentTarget.dataset.index) || 0, 10);
                 var urls = this.image_list || [];
                 if (!urls.length) {
                     return;
@@ -510,7 +530,7 @@
                                 uni.hideLoading();
                                 var result = typeof up.data == 'object' ? up.data : JSON.parse(up.data || '{}');
                                 if (up.statusCode == 200 && result.code == 0 && result.data && result.data.url) {
-                                    self.video_url = result.data.url;
+                                    self.video_url = self.media_url_view(result.data.url || '');
                                     self.video_id = result.data.id || 0;
                                     // 替换成功后删旧视频
                                     if (old_url && old_url != self.video_url) {
@@ -530,6 +550,9 @@
             },
             // 删除视频
             video_delete_event() {
+                if (this.media_locked || this.propLoading) {
+                    return;
+                }
                 if (this.video_url) {
                     this.delete_remote_file({ id: this.video_id || 0, url: this.video_url });
                 }
@@ -538,12 +561,17 @@
             },
             // 校验并提交
             submit_event() {
+                if (this.propLoading || this.media_locked) {
+                    return;
+                }
                 var data = this.get_data();
                 var content = (data.content || '').trim();
                 if (!content && !(data.images || []).length && !data.video_url) {
                     app.globalData.showToast(this.content_empty_tips);
                     return;
                 }
+                // 一点击发布，附件已随表单提交，禁止再 deletefile
+                this.media_locked = true;
                 this.$emit('compose-submit', data);
             },
         },
@@ -555,21 +583,52 @@
         width: 100%;
         box-sizing: border-box;
     }
-    .media-item,
+    .media-wrap {
+        width: 100%;
+    }
+    /* 与动态展示一致：一行三张铺满 */
+    .media-images {
+        width: 100%;
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 10rpx;
+    }
+    .media-item {
+        position: relative;
+        width: 100%;
+        padding-bottom: 100%;
+        overflow: hidden;
+        background: #f5f5f5;
+    }
     .media-img {
-        width: 160rpx;
-        height: 160rpx;
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        display: block;
+    }
+    .video-item {
+        position: relative;
+        width: 100%;
     }
     .media-video {
         width: 100%;
         height: 320rpx;
+        display: block;
     }
     .media-del {
-        top: -10rpx;
-        right: -10rpx;
+        position: absolute;
+        top: 0;
+        right: 0;
         z-index: 2;
+        width: 48rpx;
+        height: 48rpx;
+        display: flex;
+        align-items: center;
+        justify-content: center;
     }
-    .video-item .media-del {
+    .media-del-video {
         top: 10rpx;
         right: 10rpx;
     }
@@ -597,6 +656,10 @@
         flex-shrink: 0;
         line-height: 1;
     }
+    .emoji-icon {
+        width: 40rpx;
+        height: 40rpx !important;
+    }
     /* 图+数量：宽度自适应，高度与其它按钮一致 */
     .tool-btn.flex-row {
         width: auto;
@@ -612,8 +675,12 @@
         line-height: 48rpx;
         height: 48rpx;
         color: #666;
-        /* 文字字形视觉中心偏上，略下移与 iconfont 对齐 */
-        transform: translateY(2rpx);
+    }
+    .tool-char-at {
+        transform: translateY(-6rpx);
+    }
+    .tool-char-topic {
+        transform: translateY(-2rpx);
     }
     .images-count {
         line-height: 1;
@@ -624,6 +691,9 @@
         border-radius: 24rpx 24rpx 0 0;
         overflow: hidden;
     }
+    .at-popup {
+        position: relative;
+    }
     .at-list {
         max-height: 60vh;
     }
@@ -631,8 +701,5 @@
         width: 64rpx;
         height: 64rpx;
         flex-shrink: 0;
-    }
-    .at-tab {
-        font-size: 28rpx;
     }
 </style>

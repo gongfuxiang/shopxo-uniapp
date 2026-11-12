@@ -2996,27 +2996,59 @@
                 {
                     "path": "home/home",
                     "style": {
+                        // #ifdef MP-WEIXIN || MP-BAIDU || MP-QQ || MP-KUAISHOU || H5 || APP
+                        "navigationStyle": "custom",
+                        // #endif
+                        // #ifdef MP-ALIPAY
+                        "transparentTitle": "always",
+                        "titlePenetrate": "YES",
+                        // #endif
                         "enablePullDownRefresh": true,
-                        "navigationBarTitleText": ""
+                        "navigationBarTitleText": "",
+                        "usingComponents": {
+                            "component-share-popup": "/pages/common/components/share-popup/share-popup"
+                        },
+                        "componentPlaceholder": {
+                            "component-share-popup": "view"
+                        }
                     }
                 },
                 {
                     "path": "detail/detail",
                     "style": {
                         "enablePullDownRefresh": true,
-                        "navigationBarTitleText": ""
+                        "navigationBarTitleText": "",
+                        "usingComponents": {
+                            "component-share-popup": "/pages/common/components/share-popup/share-popup"
+                        },
+                        "componentPlaceholder": {
+                            "component-share-popup": "view"
+                        }
                     }
                 },
                 {
                     "path": "list/list",
                     "style": {
                         "enablePullDownRefresh": true,
-                        "navigationBarTitleText": ""
+                        "navigationBarTitleText": "",
+                        "usingComponents": {
+                            "component-panel-content": "/pages/common/components/panel-content/panel-content"
+                        },
+                        "componentPlaceholder": {
+                            "component-panel-content": "view"
+                        }
                     }
                 },
                 {
                     "path": "follow-list/follow-list",
                     "style": {
+                        // #ifdef MP-WEIXIN || MP-BAIDU || MP-QQ || MP-KUAISHOU || APP
+                        "navigationStyle": "custom",
+                        // #endif
+                        // #ifdef MP-ALIPAY
+                        "transparentTitle": "auto",
+                        "titlePenetrate": "YES",
+                        // #endif
                         "enablePullDownRefresh": true,
                         "navigationBarTitleText": ""
                     }

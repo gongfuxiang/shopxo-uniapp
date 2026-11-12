@@ -41,13 +41,17 @@
             <view v-if="propShowOwner && item.operate_data && item.operate_data.is_delete == 1" class="action-item margin-right-xl" @tap.stop="delete_event">
                 <iconfont name="icon-delete" size="28rpx" color="#E22C08" propClass="va-m"></iconfont>
             </view>
-            <view v-if="item.audit_status != 2 && item.audit_status_name" class="action-item margin-right-xl cr-yellow">
-                <text>{{ item.audit_status_name }}</text>
-                <text v-if="item.audit_status == 3 && item.audit_reject_reason" class="margin-left-xs">：{{ item.audit_reject_reason }}</text>
-            </view>
             <view v-if="propShowAccess && item.show_access == 1" class="action-item margin-right-xl">
                 <iconfont name="icon-eye" size="28rpx" color="#999" propClass="va-m"></iconfont>
                 <text v-if="item.access_count > 0" class="margin-left-xs va-m">{{ item.access_count }}</text>
+            </view>
+            <view v-if="item.show_share == 1 && item.audit_status == 2" class="action-item margin-right-xl" @tap.stop="share_event">
+                <iconfont name="icon-share" size="28rpx" color="#999" propClass="va-m"></iconfont>
+            </view>
+            <!-- 审核文案放图标后；已拒绝整块可点看原因 -->
+            <view v-if="item.audit_status != 2 && item.audit_status_name" class="action-item reject-status margin-right-xl cr-yellow" @tap.stop="audit_reject_tip_event">
+                <text class="reject-status-text">{{ item.audit_status_name }}</text>
+                <text v-if="item.audit_status == 3" class="reject-tip-icon">!</text>
             </view>
             <text class="margin-left-auto">{{ item.add_time_text || item.add_time }}</text>
         </view>
@@ -157,6 +161,25 @@
             delete_event() {
                 this.$emit('delete', this.item);
             },
+            // 分享
+            share_event() {
+                this.$emit('share', this.item);
+            },
+            // 已拒绝：点状态文案或叹号查看原因
+            audit_reject_tip_event() {
+                if (!this.item || this.item.audit_status != 3) {
+                    return;
+                }
+                var reason = this.item.audit_reject_reason || '';
+                if (!reason) {
+                    return;
+                }
+                uni.showModal({
+                    title: this.item.audit_status_name || '',
+                    content: reason,
+                    showCancel: false,
+                });
+            },
             // 切换评论
             comment_toggle_event() {
                 if (this.compose_open) {
@@ -217,6 +240,26 @@
     .action-item {
         display: inline-flex;
         align-items: center;
+    }
+    .reject-status {
+        align-items: center;
+    }
+    .reject-status-text,
+    .reject-tip-icon {
+        line-height: 28rpx;
+        vertical-align: middle;
+    }
+    .reject-tip-icon {
+        width: 28rpx;
+        height: 28rpx;
+        margin-left: 8rpx;
+        border-radius: 50%;
+        border: 2rpx solid #f0ad4e;
+        color: #f0ad4e;
+        font-size: 20rpx;
+        font-weight: 700;
+        text-align: center;
+        box-sizing: border-box;
     }
     .comment-box {
         padding-top: 12rpx;

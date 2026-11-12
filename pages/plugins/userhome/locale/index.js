@@ -3,7 +3,7 @@ var zh = {
     "pages": {
         "plugins-userhome-index": "动态广场",
         "plugins-userhome-home": "个人主页",
-        "plugins-userhome-follow-list": "关注粉丝",
+        "plugins-userhome-follow-list": "关注/粉丝",
         "plugins-userhome-moment-form": "发布动态",
         "plugins-userhome-moment-form-edit": "编辑动态",
         "plugins-userhome-list": "我的动态",
@@ -13,6 +13,9 @@ var zh = {
     "home": {
         "follow": "关注",
         "unfollow": "取消关注",
+        "followed": "已关注",
+        "mutual_follow": "互相关注",
+        "relation_search": "搜索用户",
         "fans": "粉丝",
         "moment": "动态",
         "blog": "博文",
@@ -20,6 +23,7 @@ var zh = {
         "video": "短视频",
         "publish_moment": "发布动态",
         "no_signature": "这个人很懒，什么都没写",
+        "home_suffix": "的主页",
         "theme_switch": "主题风格",
         "cover_upload": "自定义背景",
         "cover_overlay": "风格主题色",
@@ -88,7 +92,7 @@ var en = {
     "pages": {
         "plugins-userhome-index": "Moments",
         "plugins-userhome-home": "Profile",
-        "plugins-userhome-follow-list": "Follow / Fans",
+        "plugins-userhome-follow-list": "Follow/Fans",
         "plugins-userhome-moment-form": "New Moment",
         "plugins-userhome-moment-form-edit": "Edit Moment",
         "plugins-userhome-list": "My Moments",
@@ -98,6 +102,10 @@ var en = {
     "home": {
         "follow": "Follow",
         "unfollow": "Unfollow",
+        "followed": "Following",
+        "mutual_follow": "Mutual",
+        "relation_search": "Search users",
+        "home_suffix": "'s Home",
         "fans": "Fans",
         "moment": "Moments",
         "blog": "Blog",

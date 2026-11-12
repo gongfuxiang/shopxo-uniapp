@@ -16,28 +16,31 @@
                     :propLoading="comment_loading"
                     :propEditorPathType="editor_path_type"
                     :propImagesMax="images_max"
-                    :propEmojiList="emoji_list"
                     :propTools="compose_tools"
                     @compose-submit="comment_submit_inline"
+                    @emoji-open="emoji_open_event('composeInline')"
                 ></component-moment-compose>
             </block>
             <button v-else class="round text-size-sm" type="default" size="mini" hover-class="none" @tap="login_event">{{ $t('moment.comment_login') }}</button>
         </view>
 
         <view v-if="comment_list.length > 0" :class="!propPopupMode ? 'margin-top-xxxl' : ''">
-            <view v-for="(row, index) in comment_list" :key="row.id || index" class="comment-row padding-vertical-main flex-row">
+            <view v-for="(row, index) in comment_list" :key="index" class="comment-row padding-vertical-main flex-row">
                 <image class="avatar circle" :src="row.avatar" mode="aspectFill" :data-value="row.user_home_url" @tap="url_event"></image>
                 <view class="flex-1 flex-width padding-left-main">
                     <view class="flex-row align-c flex-wrap">
                         <text class="fw-b" :data-value="row.user_home_url" @tap="url_event">{{ row.user_name_view }}</text>
                         <text class="text-size-xs cr-grey-9 margin-left-sm">{{ row.add_time_text || row.add_time }}</text>
-                        <text v-if="row.audit_status_name" class="text-size-xs cr-yellow margin-left-sm">{{ row.audit_status_name }}</text>
+                        <view v-if="row.audit_status_name" class="reject-status text-size-xs cr-yellow margin-left-sm" @tap.stop="comment_audit_tip_event(row)">
+                            <text class="reject-status-text">{{ row.audit_status_name }}</text>
+                            <text v-if="row.audit_status == 3" class="reject-tip-icon">!</text>
+                        </view>
                     </view>
                     <view v-if="row.reply_user_name || row.reply_content" class="quote margin-top-xs text-size-sm cr-grey">
                         <view v-if="row.reply_user_name" class="quote-name" :data-value="row.reply_user_home_url" @tap="url_event">@{{ row.reply_user_name }}</view>
                         <view v-if="row.reply_content">{{ row.reply_content }}</view>
                         <view v-if="(row.reply_images || []).length > 0" class="comment-images margin-top-xs">
-                            <view v-for="(img, ii) in row.reply_images" :key="'rq' + ii" class="comment-img-item radius" :data-urls="row.reply_images" :data-index="ii" @tap="preview_event">
+                            <view v-for="(img, ii) in row.reply_images" :key="ii" class="comment-img-item radius" :data-urls="row.reply_images" :data-index="ii" @tap="preview_event">
                                 <image class="comment-img" :src="img" mode="aspectFill"></image>
                             </view>
                         </view>
@@ -52,11 +55,11 @@
                         <video class="comment-video radius" :src="row.video_url" controls object-fit="cover"></video>
                     </view>
                     <view class="flex-row align-c margin-top-sm text-size-sm cr-grey-9">
-                        <view v-if="propEnableLike" class="action-item margin-right-xl" :class="row.is_like == 1 ? 'cr-main' : ''" @tap="comment_like_event(row, index)">
+                        <view v-if="propEnableLike && row.audit_status == 2" class="action-item margin-right-xl" :class="row.is_like == 1 ? 'cr-main' : ''" @tap="comment_like_event(row, index)">
                             <iconfont :name="row.is_like == 1 ? 'icon-givealike' : 'icon-givealike-o'" size="28rpx" :color="row.is_like == 1 ? theme_color : '#999'" propClass="va-m"></iconfont>
                             <text v-if="row.like_count > 0" class="margin-left-xs va-m">{{ row.like_count }}</text>
                         </view>
-                        <view class="action-item margin-right-xl" :class="popup_status && reply_id == row.id ? 'cr-main' : ''" @tap="reply_event(row)">
+                        <view v-if="row.audit_status == 2" class="action-item margin-right-xl" :class="popup_status && reply_id == row.id ? 'cr-main' : ''" @tap="reply_event(row)">
                             <iconfont name="icon-message-o" size="28rpx" :color="popup_status && reply_id == row.id ? theme_color : '#999'" propClass="va-m"></iconfont>
                             <text v-if="row.reply_count > 0" class="margin-left-xs va-m">{{ row.reply_count }}</text>
                         </view>
@@ -85,11 +88,10 @@
                         <iconfont name="icon-close-line" color="#333" size="28rpx"></iconfont>
                     </view>
                 </view>
-                <view class="padding-main">
+                <view class="comment-popup-body padding-main">
                     <block v-if="is_login">
                         <component-moment-compose
                             v-if="popup_status"
-                            :key="'compose-' + popup_kind + '-' + (reply_id || 0)"
                             ref="composePopup"
                             :propPlaceholder="popup_placeholder"
                             :propSubmitText="popup_submit_text"
@@ -98,21 +100,23 @@
                             :propAutoFocus="true"
                             :propEditorPathType="editor_path_type"
                             :propImagesMax="images_max"
-                            :propEmojiList="emoji_list"
                             :propTools="compose_tools"
                             @compose-submit="comment_submit_popup"
+                            @emoji-open="emoji_open_event('composePopup')"
                         ></component-moment-compose>
                     </block>
                     <button v-else class="round text-size-sm" type="default" size="mini" hover-class="none" @tap="login_event">{{ $t('moment.comment_login') }}</button>
                 </view>
             </view>
         </component-popup>
+        <component-emoji-popup ref="emoji" v-on:choiceConfirmEvent="emoji_choice_confirm_event"></component-emoji-popup>
     </view>
 </template>
 <script>
     const app = getApp();
     import componentPopup from '@/components/popup/popup';
     import componentMomentCompose from '@/pages/plugins/userhome/components/moment-compose/moment-compose';
+    import componentEmojiPopup from '@/pages/plugins/userhome/components/emoji-popup/emoji-popup';
     import pluginLocale from '@/pages/plugins/userhome/locale/index.js';
     import { getUserhomeConfig, getMomentSaveinfo } from '@/pages/plugins/userhome/utils/compose-cache.js';
     export default {
@@ -120,6 +124,7 @@
         components: {
             componentPopup,
             componentMomentCompose,
+            componentEmojiPopup,
         },
         props: {
             propMomentId: { type: [Number, String], default: 0 },
@@ -256,6 +261,19 @@
             this.is_login = !!app.globalData.get_user_cache_info();
         },
         methods: {
+            emoji_open_event(compose_ref) {
+                this._emoji_compose_ref = compose_ref || 'composePopup';
+                if ((this.$refs.emoji || null) != null) {
+                    this.$refs.emoji.init({ emoji_list: this.emoji_list });
+                }
+            },
+            emoji_choice_confirm_event(emoji) {
+                emoji = uni.getStorageSync(app.globalData.data.cache_emoji_popup_key) || emoji || '';
+                var compose = this.$refs[this._emoji_compose_ref] || this.$refs.composePopup || this.$refs.composeInline;
+                if (emoji && (compose || null) != null) {
+                    compose.insert_text(emoji);
+                }
+            },
             // 刷新登录状态
             refresh_login() {
                 this.is_login = !!app.globalData.get_user_cache_info();
@@ -356,6 +374,22 @@
             // 链接事件
             url_event(e) {
                 app.globalData.url_event(e);
+            },
+            // 已拒绝：点状态/叹号查看原因
+            comment_audit_tip_event(row) {
+                row = row || {};
+                if (row.audit_status != 3) {
+                    return;
+                }
+                var reason = row.audit_reject_reason || '';
+                if (!reason) {
+                    return;
+                }
+                uni.showModal({
+                    title: row.audit_status_name || '',
+                    content: reason,
+                    showCancel: false,
+                });
             },
             // 预览图片
             preview_event(e) {
@@ -576,6 +610,27 @@
         height: 64rpx;
         flex-shrink: 0;
     }
+    .reject-status {
+        display: inline-flex;
+        align-items: center;
+    }
+    .reject-status-text,
+    .reject-tip-icon {
+        line-height: 28rpx;
+        vertical-align: middle;
+    }
+    .reject-tip-icon {
+        width: 28rpx;
+        height: 28rpx;
+        margin-left: 8rpx;
+        border-radius: 50%;
+        border: 2rpx solid #f0ad4e;
+        color: #f0ad4e;
+        font-size: 20rpx;
+        font-weight: 700;
+        text-align: center;
+        box-sizing: border-box;
+    }
     .quote {
         padding: 12rpx 16rpx;
         background: #f5f6f8;
@@ -617,5 +672,8 @@
     .comment-popup {
         border-radius: 24rpx 24rpx 0 0;
         overflow: hidden;
+    }
+    .comment-popup-body {
+        padding-bottom: 40rpx;
     }
 </style>
