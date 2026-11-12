@@ -78,7 +78,7 @@
                             </block>
                         </view>
                         <button v-if="home.is_self == 1" class="round text-size-sm header-action-btn" type="default" size="mini" hover-class="none" data-value="/pages/plugins/userhome/list/list" @tap="url_event">{{ $t('feed.my_moment') }}</button>
-                        <button v-else-if="home.config.is_enable_follow == 1" class="round text-size-sm header-action-btn" type="default" size="mini" hover-class="none" @tap="follow_event">{{ home.is_follow == 1 ? $t('home.unfollow') : $t('home.follow') }}</button>
+                        <button v-else-if="home.config.is_enable_follow == 1" class="round text-size-sm header-action-btn" type="default" size="mini" hover-class="none" :loading="follow_loading == 1" :disabled="follow_loading == 1" @tap="follow_event">{{ home.is_follow == 1 ? $t('home.unfollow') : $t('home.follow') }}</button>
                     </view>
                 </view>
             </view>
@@ -274,6 +274,7 @@
                 is_cover_theme_color: 1,
                 cover_audit_tip: '',
                 share_info: {},
+                follow_loading: 0,
             };
         },
         components: {
@@ -624,12 +625,16 @@
                     },
                 });
             },
-            // 关注
+            // 关注（只改按钮与粉丝数，不整页重拉；按钮 :loading 反馈）
             follow_event() {
                 var user = app.globalData.get_user_info(this, 'follow_event');
                 if (user == false) {
                     return false;
                 }
+                if (!this.home || this.follow_loading == 1) {
+                    return false;
+                }
+                this.follow_loading = 1;
                 var action = this.home.is_follow == 1 ? 'unfollow' : 'follow';
                 uni.request({
                     url: app.globalData.get_request_url(action, 'index', 'userhome'),
@@ -637,10 +642,24 @@
                     data: { uid: this.home.user_id },
                     dataType: 'json',
                     success: (res) => {
-                        app.globalData.showToast(res.data.msg);
+                        this.follow_loading = 0;
                         if (res.data.code == 0) {
-                            this.get_home();
+                            var data = res.data.data || {};
+                            var is_follow = parseInt(data.is_follow || 0) || 0;
+                            var fans_count = data.fans_count !== undefined && data.fans_count !== null
+                                ? (parseInt(data.fans_count, 10) || 0)
+                                : Math.max(0, (parseInt(this.home.fans_count, 10) || 0) + (is_follow == 1 ? 1 : -1));
+                            this.home = Object.assign({}, this.home, {
+                                is_follow: is_follow,
+                                fans_count: fans_count,
+                            });
+                        } else {
+                            app.globalData.showToast(res.data.msg);
                         }
+                    },
+                    fail: () => {
+                        this.follow_loading = 0;
+                        app.globalData.showToast(this.$t('common.internet_error_tips'));
                     },
                 });
             },
