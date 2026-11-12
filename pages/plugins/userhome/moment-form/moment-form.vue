@@ -93,10 +93,20 @@
                 if (user == false) {
                     return;
                 }
+                var post = { id: this.moment_id || 0 };
+                // 参与话题：传 topic_id，由服务端取名称预填（避免中文 URL 乱码）
+                if (this.moment_id <= 0 && this.params) {
+                    var topic_id = parseInt(this.params.topic_id || 0) || 0;
+                    if (topic_id > 0) {
+                        post.topic_id = topic_id;
+                    } else if (this.params.topic) {
+                        post.topic = this.params.topic;
+                    }
+                }
                 uni.request({
                     url: app.globalData.get_request_url('saveinfo', 'moment', 'userhome'),
                     method: 'POST',
-                    data: { id: this.moment_id || 0 },
+                    data: post,
                     dataType: 'json',
                     success: (res) => {
                         if (res.data.code != 0) {
@@ -118,8 +128,8 @@
                                 at_fans: data.is_moment_at_fans == 1 ? 1 : 0,
                             },
                         });
-                        // 编辑回填
-                        if (this.moment_id > 0 && data.data) {
+                        // 编辑回填 / 参与话题预填
+                        if (data.data) {
                             this.$nextTick(() => {
                                 if (this.$refs.compose && this.$refs.compose.set_form_data) {
                                     this.$refs.compose.set_form_data(data.data);
@@ -156,6 +166,7 @@
                             // 通知主页刷新；列表：编辑只替换当前条，新增整表重拉
                             var edit_id = parseInt(this.moment_id || 0);
                             uni.setStorageSync('cache_plugins_userhome_home_refresh', 1);
+                            uni.setStorageSync('cache_plugins_userhome_topic_refresh', 1);
                             uni.setStorageSync('cache_plugins_userhome_list_refresh', {
                                 type: edit_id > 0 ? 'edit' : 'add',
                                 id: edit_id,

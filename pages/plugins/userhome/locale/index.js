@@ -8,7 +8,8 @@ var zh = {
         "plugins-userhome-moment-form-edit": "编辑动态",
         "plugins-userhome-list": "我的动态",
         "plugins-userhome-detail": "动态详情",
-        "plugins-userhome-profile-edit": "编辑资料"
+        "plugins-userhome-profile-edit": "编辑资料",
+        "plugins-userhome-topic": "话题"
     },
     "home": {
         "follow": "关注",
@@ -24,6 +25,10 @@ var zh = {
         "publish_moment": "发布动态",
         "no_signature": "这个人很懒，什么都没写",
         "home_suffix": "的主页",
+        "share": "分享",
+        "topic_join": "参与话题",
+        "topic_current_tips": "已经是当前话题页面",
+        "topic_moment_count": "个相关动态",
         "theme_switch": "主题风格",
         "cover_upload": "自定义背景",
         "cover_overlay": "风格主题色",
@@ -97,7 +102,8 @@ var en = {
         "plugins-userhome-moment-form-edit": "Edit Moment",
         "plugins-userhome-list": "My Moments",
         "plugins-userhome-detail": "Moment Detail",
-        "plugins-userhome-profile-edit": "Edit Profile"
+        "plugins-userhome-profile-edit": "Edit Profile",
+        "plugins-userhome-topic": "Topic"
     },
     "home": {
         "follow": "Follow",
@@ -106,6 +112,10 @@ var en = {
         "mutual_follow": "Mutual",
         "relation_search": "Search users",
         "home_suffix": "'s Home",
+        "share": "Share",
+        "topic_join": "Join topic",
+        "topic_current_tips": "Already on this topic page",
+        "topic_moment_count": " related moments",
         "fans": "Fans",
         "moment": "Moments",
         "blog": "Blog",

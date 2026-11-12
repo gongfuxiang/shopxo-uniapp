@@ -22,7 +22,7 @@
 
             <scroll-view v-if="(topic_list || []).length > 0" scroll-x :show-scrollbar="false" class="topic-scroll bg-white">
                 <view class="topic-scroll-content">
-                    <view v-for="(topic, ti) in topic_list" :key="ti" class="topic-item" :class="topic_id == topic.id ? 'cr-main br-main' : 'cr-grey br-grey'" :data-id="topic.id" @tap="topic_event">#{{ topic.name }}</view>
+                    <view v-for="(topic, ti) in topic_list" :key="ti" class="topic-item cr-grey br-grey" :data-id="topic.id" @tap="topic_event">#{{ topic.name }}</view>
                 </view>
             </scroll-view>
 
@@ -70,7 +70,6 @@
                 sort_list: [],
                 config: {},
                 sort: 'new',
-                topic_id: 0,
                 data_list: [],
                 data_page: 1,
                 data_page_total: 0,
@@ -95,10 +94,17 @@
             this.setData({
                 params: params || {},
                 sort: params.sort == 'hot' || params.sort == 'like' ? params.sort : 'new',
-                topic_id: parseInt(params.topic || 0) || 0,
             });
             // 调用公共事件方法
             app.globalData.page_event_onload_handle(params);
+            // 旧链接 ?topic=id → 话题独立页
+            var jump_topic = parseInt((params && params.topic) || 0) || 0;
+            if (jump_topic > 0) {
+                uni.redirectTo({
+                    url: '/pages/plugins/userhome/topic/topic?id=' + jump_topic,
+                });
+                return;
+            }
             // 初始化
             this.init();
         },
@@ -244,7 +250,6 @@
                     data: {
                         page: this.data_page,
                         sort: this.sort,
-                        topic: this.topic_id > 0 ? this.topic_id : '',
                     },
                     dataType: 'json',
                     success: (res) => {
@@ -289,20 +294,15 @@
                 });
                 this.get_list(1);
             },
-            // 切换话题
+            // 热门话题：仅跳转话题页，不参与广场筛选
             topic_event(e) {
                 var id = parseInt(e.currentTarget.dataset.id || 0) || 0;
-                if (id == this.topic_id) {
-                    id = 0;
+                if (id <= 0) {
+                    return;
                 }
-                this.setData({
-                    topic_id: id,
-                    data_page: 1,
-                    data_list: [],
-                    data_bottom_line_status: false,
-                    data_list_loding_status: 1,
+                app.globalData.url_event({
+                    currentTarget: { dataset: { value: '/pages/plugins/userhome/topic/topic?id=' + id } },
                 });
-                this.get_list(1);
             },
             // 点赞
             like_event(item) {

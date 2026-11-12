@@ -217,11 +217,24 @@
                 this.input_cursor = -1;
                 this.media_locked = false;
             },
-            // 回填编辑数据
+            // 回填编辑数据（topic_list 并入正文，与 PC moment_publish 一致）
             set_form_data(data) {
                 data = data || {};
+                var content = data.content || '';
+                var topics = Array.isArray(data.topic_list) ? data.topic_list : [];
+                for (var i = 0; i < topics.length; i++) {
+                    var name = ((topics[i] && topics[i].name) || '').replace(/#/g, '').trim();
+                    if (!name) {
+                        continue;
+                    }
+                    if (content.indexOf('#' + name) >= 0) {
+                        continue;
+                    }
+                    // 话题后加空格，避免接着输入时粘在一起
+                    content += (content === '' || /\s$/.test(content) ? '' : ' ') + '#' + name + ' ';
+                }
                 var images = Array.isArray(data.images) ? data.images.slice() : [];
-                this.form = { content: data.content || '' };
+                this.form = { content: content };
                 this.image_list = images.map((u) => this.media_url_view(u));
                 this.image_id_list = images.map(function () {
                     return 0;
@@ -232,6 +245,9 @@
                 this.at_popup_status = false;
                 this.input_focus = false;
                 this.input_cursor = -1;
+                if (content) {
+                    this.focus_input(content.length);
+                }
             },
             // 附件地址：相对路径补域名；保持服务端协议（勿强改 https，本地 http 站会裂图）
             media_url_view(url) {

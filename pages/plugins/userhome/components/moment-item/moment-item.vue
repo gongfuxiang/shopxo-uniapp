@@ -9,8 +9,14 @@
         <view class="margin-top-sm">
             <view :data-value="item.url || ''" @tap="detail_event">
                 <view class="content-text">{{ item.content }}</view>
-                <view v-if="(item.topic_list || []).length > 0" class="margin-top-xs">
-                    <text v-for="(topic, ti) in item.topic_list" :key="ti" class="cr-main margin-right-sm text-size-sm">#{{ topic.name }}</text>
+                <view v-if="(item.topic_list || []).length > 0" class="margin-top-xs" @tap.stop="">
+                    <text
+                        v-for="(topic, ti) in item.topic_list"
+                        :key="ti"
+                        class="cr-main margin-right-sm text-size-sm"
+                        :data-id="topic.id"
+                        @tap.stop="topic_event"
+                    >#{{ topic.name }}</text>
                 </view>
             </view>
             <view v-if="(item.images || []).length > 0" class="moment-images margin-top-sm">
@@ -131,6 +137,35 @@
             // 链接事件
             url_event(e) {
                 app.globalData.url_event(e);
+            },
+            // 话题跳转：已在同话题页则滚回顶部（已在顶部则提示）
+            topic_event(e) {
+                var id = parseInt((e.currentTarget && e.currentTarget.dataset && e.currentTarget.dataset.id) || 0) || 0;
+                if (id <= 0) {
+                    return;
+                }
+                try {
+                    var pages = getCurrentPages() || [];
+                    var page = pages.length ? pages[pages.length - 1] : null;
+                    var vm = page && (page.$vm || page);
+                    var route = (page && (page.route || page.__route__)) || '';
+                    var cur_id = parseInt((vm && vm.topic_id) || 0) || 0;
+                    if (cur_id == id && route.indexOf('plugins/userhome/topic/topic') >= 0) {
+                        var top = parseInt((vm && vm.page_scroll_top) || 0) || 0;
+                        if (top <= 20) {
+                            var tips = (vm && typeof vm.$t === 'function') ? vm.$t('home.topic_current_tips') : '';
+                            if (tips) {
+                                app.globalData.showToast(tips);
+                            }
+                        } else {
+                            uni.pageScrollTo({ scrollTop: 0, duration: 280 });
+                        }
+                        return;
+                    }
+                } catch (err) {}
+                app.globalData.url_event({
+                    currentTarget: { dataset: { value: '/pages/plugins/userhome/topic/topic?id=' + id } },
+                });
             },
             // 查看详情
             detail_event() {

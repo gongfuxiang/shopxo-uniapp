@@ -3067,6 +3067,19 @@
                     }
                 },
                 {
+                    "path": "topic/topic",
+                    "style": {
+                        "enablePullDownRefresh": true,
+                        "navigationBarTitleText": "",
+                        "usingComponents": {
+                            "component-share-popup": "/pages/common/components/share-popup/share-popup"
+                        },
+                        "componentPlaceholder": {
+                            "component-share-popup": "view"
+                        }
+                    }
+                },
+                {
                     "path": "profile-edit/profile-edit",
                     "style": {
                         "enablePullDownRefresh": false,
