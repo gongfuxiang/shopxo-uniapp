@@ -78,7 +78,7 @@
                             </block>
                         </view>
                         <button v-if="home.is_self == 1" class="round text-size-sm header-action-btn" type="default" size="mini" hover-class="none" data-value="/pages/plugins/userhome/list/list" @tap="url_event">{{ $t('feed.my_moment') }}</button>
-                        <button v-else-if="home.config.is_enable_follow == 1" class="round text-size-sm header-action-btn" type="default" size="mini" hover-class="none" :loading="follow_loading == 1" :disabled="follow_loading == 1" @tap="follow_event">{{ home.is_follow == 1 ? $t('home.unfollow') : $t('home.follow') }}</button>
+                        <button v-else-if="home.config.is_enable_follow == 1" class="round text-size-sm header-action-btn" type="default" size="mini" hover-class="none" :loading="follow_loading == 1" :disabled="follow_loading == 1" @tap="follow_event">{{ follow_btn_text }}</button>
                     </view>
                 </view>
             </view>
@@ -326,6 +326,17 @@
                     return '';
                 }
                 return this.home.user_name_view || '';
+            },
+            // 与 PC / 关注列表一致：互相关注 > 已关注 > 关注
+            follow_btn_text() {
+                var home = this.home || {};
+                if (home.is_mutual == 1) {
+                    return this.$t('home.mutual_follow');
+                }
+                if (home.is_follow == 1) {
+                    return this.$t('home.followed');
+                }
+                return this.$t('home.follow');
             },
             // 固定顶栏下给头区内容留空
             header_inner_style() {
@@ -651,6 +662,7 @@
                                 : Math.max(0, (parseInt(this.home.fans_count, 10) || 0) + (is_follow == 1 ? 1 : -1));
                             this.home = Object.assign({}, this.home, {
                                 is_follow: is_follow,
+                                is_mutual: parseInt(data.is_mutual || 0) || 0,
                                 fans_count: fans_count,
                             });
                         } else {
