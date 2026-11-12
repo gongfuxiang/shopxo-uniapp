@@ -89,6 +89,13 @@
             </view>
         </view>
 		<template v-else>
+            <!-- 无导航页：异常/无数据时补顶部返回 -->
+            <view class="video-empty-nav flex-row align-c" :style="top_content_style">
+                <view class="cp" @tap="handle_back">
+                    <component-u-icon propName="arrow-left" propSize="40rpx" propColor="#333"></component-u-icon>
+                </view>
+                <text class="video-empty-nav-title flex-1 tc">{{$t('pages.plugins-video-detail')}}</text>
+            </view>
 			<component-no-data :propStatus="data_list_loding_status" :propMsg="data_list_loding_msg"></component-no-data>
 		</template>
         

@@ -90,6 +90,8 @@
             </swiper>
         </view>
 		<template v-else>
+            <!-- 无导航页：异常/无数据时补公共顶部返回，避免无法返回 -->
+            <component-nav-back :propName="$t('pages.plugins-video-detail')" :propIsOpacity="false" propColor="#333"></component-nav-back>
 			<component-no-data :propStatus="data_list_loding_status" :propMsg="data_list_loding_msg"></component-no-data>
 		</template>
         
@@ -279,6 +281,7 @@
     import componentSearch from '@/pages/plugins/video/components/search.vue';
     import componentUSharePopup from '@/pages/plugins/live/components/u-share-popup/u-share-popup';
     import componentNoData from '@/components/no-data/no-data';
+    import componentNavBack from '@/components/nav-back/nav-back';
     import componentBottomLine from '@/components/bottom-line/bottom-line';
     import componentPopup from '@/components/popup/popup';
     import componentUpload from '@/pages/common/components/upload/upload';
@@ -368,6 +371,7 @@
             componentSearch,
             componentUSharePopup,
             componentNoData,
+            componentNavBack,
             componentBottomLine,
             componentPopup,
             componentLoading,

@@ -428,6 +428,17 @@
     align-items: center;
     justify-content: center;
 }
+.video-empty-nav {
+    padding-left: 24rpx;
+    padding-right: 24rpx;
+    padding-bottom: 20rpx;
+    background-color: #ffffff;
+}
+.video-empty-nav-title {
+    font-size: 32rpx;
+    color: #333333;
+    lines: 1;
+}
 
 .cover-view-center{
     position: fixed;
