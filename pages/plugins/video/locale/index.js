@@ -45,6 +45,10 @@ var zh = {
     "video-search": {
         "release_time": "发布时间",
         "video_duration": "视频时长"
+    },
+    "index": {
+        "i_want_publish": "我要发布",
+        "my_video": "我的短视频"
     }
 };
 var en = {
@@ -93,6 +97,10 @@ var en = {
     "video-search": {
         "release_time": "Publish time",
         "video_duration": "Video duration"
+    },
+    "index": {
+        "i_want_publish": "Publish",
+        "my_video": "My videos"
     }
 };
 export default createPageLocaleMixin({ zh, en });

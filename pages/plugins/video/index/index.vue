@@ -1,6 +1,6 @@
 <template>
 	<view :class="theme_view">
-        <view v-if="tabs.length > 0" class=" pr">
+        <view v-if="tabs.length > 0" :class="(data_base || null) != null && (data_base.is_user_video || 0) == 1 ? 'page-bottom-fixed pr' : 'pr'">
             <!-- 搜索框 -->
             <view class="top-search bg-white spacing-mb">
                 <view class="flex-row align-c" :style="top_content_style + menu_button_info">
@@ -59,6 +59,20 @@
             <template v-else>
                 <component-no-data :propStatus="data_list_loding_status" :propMsg="data_list_loding_msg" propLoadingLogoTop="50vh"></component-no-data>
             </template>
+
+            <!-- 发布短视频、我的短视频入口（开启用户发布时） -->
+            <view v-if="(data_base || null) != null && (data_base.is_user_video || 0) == 1" class="bottom-fixed" :style="bottom_fixed_style">
+                <view class="bottom-line-exclude">
+                    <view class="item flex-row jc-sa align-c text-size fw-b br bg-white round padding-vertical">
+                        <view data-value="/pages/plugins/video/form/form" @tap="url_event" class="flex-1 tc flex-col jc-c align-c cp">
+                            <view class="divider-r-d wh-auto"><iconfont name="icon-edit-below-line" size="30rpx" color="#333" propClass="margin-right-sm"></iconfont>{{$t('index.i_want_publish')}}</view>
+                        </view>
+                        <view data-value="/pages/plugins/video/user-list/user-list" @tap="url_event" class="flex-1 tc flex-col jc-c align-c cp">
+                            <view class="wh-auto"><iconfont name="icon-list-dot" size="32rpx" color="#333" propClass="margin-right-sm pr top-xs"></iconfont>{{$t('index.my_video')}}</view>
+                        </view>
+                    </view>
+                </view>
+            </view>
         </view>
 		<template v-else>
 			<component-no-data :propStatus="data_tabs_loding_status" :propMsg="data_tabs_loding_msg"></component-no-data>
@@ -119,6 +133,7 @@ export default {
 			menu_button_info: '',
 			header_padding_left: '',
             data_base: null,
+            bottom_fixed_style: '',
 			slider_list: [],
 			is_nav_sticky: false, // 控制nav-tabs是否处于粘性状态
 			nav_sticky_threshold: 0, // 粘性阈值，与CSS中的top值对应

@@ -10,8 +10,12 @@
                         <iconfont name="icon-arrow-left " size="36rpx" color="#333"></iconfont>
                     </view>
                     <!-- #endif -->
-                    <view class="wh-auto ht-auto" :style="header_padding_left">
+                    <view class="flex-1 ht-auto" :style="header_padding_left">
                         <component-search propIsDisabled @disabledSearch="handle_search" />
+                    </view>
+                    <!-- 开启用户发布时：添加入口（与 PC 详情一致） -->
+                    <view v-if="base_config_data && base_config_data.is_user_video == 1" class="video-publish-entry margin-left-sm cp" data-value="/pages/plugins/video/form/form" @tap.stop="url_event">
+                        <iconfont name="icon-add" size="28rpx" color="#333"></iconfont>
                     </view>
                 </view>
             </view>

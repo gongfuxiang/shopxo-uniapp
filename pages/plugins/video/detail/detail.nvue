@@ -82,6 +82,9 @@
                     <view class="flex-1" :style="header_padding_left">
                         <component-search propIsDisabled @disabledSearch="handle_search" :propsWidth="windowWidth" />
                     </view>
+                    <view v-if="base_config_data && base_config_data.is_user_video == 1" class="video-publish-entry ml-10" @tap.stop="publish_event">
+                        <component-u-icon propName="add" propSize="28rpx" propColor="#333"></component-u-icon>
+                    </view>
                 </view>
             </view>
         </view>
@@ -1512,6 +1515,9 @@
                 } catch (error) {
                     console.error('handle_search error:', error);
                 }
+            },
+            publish_event() {
+                app.globalData.url_open('/pages/plugins/video/form/form', false);
             },
             // 关闭推荐商品
             product_close_event(e) {
