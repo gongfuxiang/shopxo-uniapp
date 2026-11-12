@@ -190,17 +190,8 @@
                         var data = res.data.data || {};
                         var topic = data.topic || null;
                         var config = data.config || {};
-                        var sort_list = [
-                            { value: 'new', name: this.$t('feed.sort_new') },
-                            { value: 'hot', name: this.$t('feed.sort_hot') },
-                        ];
-                        if (config.is_enable_like == 1) {
-                            sort_list.push({ value: 'like', name: this.$t('feed.sort_like') });
-                        }
-                        var sort = this.sort;
-                        if (sort == 'like' && config.is_enable_like != 1) {
-                            sort = 'new';
-                        }
+                        var sort_list = data.sort_list || [];
+                        var sort = this.normalize_sort(this.sort, sort_list);
                         this.setData({
                             page_ready: true,
                             page_loding_status: 3,
@@ -252,6 +243,18 @@
                         share_info: this.share_info,
                     });
                 }
+            },
+            normalize_sort(sort, sort_list) {
+                var list = sort_list || [];
+                if (!list.length) {
+                    return sort == 'hot' || sort == 'like' ? sort : 'new';
+                }
+                for (var i = 0; i < list.length; i++) {
+                    if (list[i] && list[i].value == sort) {
+                        return sort;
+                    }
+                }
+                return (list[0] && list[0].value) || 'new';
             },
             get_list(is_mandatory) {
                 if (!this.page_ready || this.topic_id <= 0) {
