@@ -141,7 +141,7 @@
                         :propIsRequired="false"
                         :propIsBtn="true"
                         propSize="sm"
-                        :propPlaceholder="$t('doc.menu_keyword')"
+                        :propPlaceholder="$t('doc.menu_keyword') || ''"
                         propIconColor="#ccc"
                         propPlaceholderClass="cr-grey-c"
                         propBgColor="#f6f6f6"
@@ -1058,12 +1058,20 @@
                 // #endif
             },
             // 打开分享弹窗
-            popup_share_event() {
-                this.share_handle(this.content_data);
-                if ((this.$refs.share || null) != null) {
+            popup_share_event(retry = 0) {
+                if (retry === 0) {
+                    this.share_handle(this.content_data);
+                }
+                if (this.$refs.share && this.$refs.share.init) {
                     this.$refs.share.init({
                         share_info: this.share_info
                     });
+                    return;
+                }
+                if (typeof retry === 'number' && retry < 20) {
+                    setTimeout(() => {
+                        this.popup_share_event(retry + 1);
+                    }, 50);
                 }
             },
         },

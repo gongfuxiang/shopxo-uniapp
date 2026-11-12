@@ -24,7 +24,7 @@
                 <image :src="avatar" mode="aspectFill" class="user-avatar fl circle"></image>
                 <view class="right-base flex-1 flex-width">
                     <view class="comments border-radius-main padding-main">
-                        <textarea :placeholder="$t('common.looking_forward_speech')" placeholder-class="cr-grey" class="wh-auto bg-grey-f8" :value="input_comments_value" :maxlength="input_comments_length_max" @input="comments_input_event" @blur="comments_input_event"></textarea>
+                        <textarea :placeholder="$t('common.looking_forward_speech')" placeholder-class="cr-grey" class="wh-auto bg-grey-f8 comments-textarea" :value="input_comments_value" :maxlength="input_comments_length_max" @input="comments_input_event" @blur="comments_input_event"></textarea>
                         <view class="oh flex-row jc-sb align-e">
                             <image :src="common_static_url + 'emoji-icon.png'" mode="aspectFill" class="emoji-icon va-m" @tap="emoji_event"></image>
                             <view class="flex-row align-e">
@@ -131,7 +131,7 @@
                             </view>
                         </view>
                     </view>
-                    <textarea :placeholder="$t('common.looking_forward_speech')" placeholder-class="cr-grey" class="wh-auto br padding-main" :value="input_comments_value" :maxlength="input_comments_length_max" @input="comments_input_event" @blur="comments_input_event"></textarea>
+                    <textarea :placeholder="$t('common.looking_forward_speech')" placeholder-class="cr-grey" class="wh-auto br padding-main comments-textarea-modal" :value="input_comments_value" :maxlength="input_comments_length_max" @input="comments_input_event" @blur="comments_input_event"></textarea>
                     <view class="margin-top-lg oh">
                         <image :src="common_static_url + 'emoji-icon.png'" mode="aspectFill" class="emoji-icon va-m" @tap="emoji_event"></image>
                         <view class="fr">
@@ -142,20 +142,17 @@
                 </view>
             </view>
 
-            <!-- 表情弹窗 -->
-            <component-emoji-popup ref="emoji" v-on:choiceConfirmEvent="emoji_choice_confirm_event"></component-emoji-popup>
-
-            <!-- 分享弹窗 -->
-            <component-share-popup ref="share"></component-share-popup>
         </view>
+
+        <!-- 表情弹窗：放在 v-if 外，避免异步组件 $refs 未就绪 -->
+        <component-emoji-popup ref="emoji" v-on:choiceConfirmEvent="emoji_choice_confirm_event"></component-emoji-popup>
     </view>
 </template>
 <script>
     const app = getApp();
     var common_static_url = app.globalData.get_static_url('common');
     import componentPopup from '@/components/popup/popup';
-    import componentSharePopup from '@/pages/common/components/share-popup/share-popup';
-    import componentEmojiPopup from '@/pages/common/components/emoji-popup/emoji-popup';
+    import componentEmojiPopup from '@/pages/plugins/blog/components/emoji-popup/emoji-popup';
     export default {
         data() {
             return {
@@ -201,7 +198,6 @@
         },
         components: {
             componentPopup,
-            componentSharePopup,
             componentEmojiPopup,
         },
 
@@ -218,13 +214,35 @@
             });
         },
 
+        watch: {
+            propData(val) {
+                this.setData({ data: val });
+            },
+            propDataBase(val) {
+                this.setData({ data_base: val });
+            },
+            propEmojiList(val) {
+                this.setData({ emoji_list: val || [] });
+            },
+        },
+
         methods: {
-            // 分享开启弹层
-            popup_share_event(e) {
-                if ((this.$refs.share || null) != null) {
-                    this.$refs.share.init({
-                        share_info: this.propShareInfo
-                    });
+            // 分享交给页面级公共分享组件（与用户主页一致）
+            popup_share_event() {
+                this.$emit('share');
+            },
+
+            // 异步组件未就绪时短暂重试
+            open_ref_popup(ref_name, config, retry = 0) {
+                var ref = this.$refs[ref_name] || null;
+                if (ref != null && typeof ref.init === 'function') {
+                    ref.init(config);
+                    return;
+                }
+                if (retry < 20) {
+                    setTimeout(() => {
+                        this.open_ref_popup(ref_name, config, retry + 1);
+                    }, 50);
                 }
             },
 
@@ -268,9 +286,7 @@
                     app.globalData.showToast(this.$t('common.maximum_input_character_limit_been_exceeded'));
                     return false;
                 }
-                if ((this.$refs.emoji || null) != null) {
-                    this.$refs.emoji.init({ emoji_list: this.emoji_list });
-                }
+                this.open_ref_popup('emoji', { emoji_list: this.emoji_list || this.propEmojiList || [] });
             },
 
             // 评论输入和失去焦点事件
@@ -511,7 +527,7 @@
     /**
      * 聚合点赞、评论、分享
      */
-    .blog-comments-bottom-container .item:not(:last-child) {
+    .blog-comments-bottom-container .item {
         margin-right: 64rpx;
     }
     .blog-comments-reply-container .emoji-icon,
@@ -530,7 +546,7 @@
     .blog-comments-reply-container .right-base .comments {
         background-color: #f8f8f8;
     }
-    .blog-comments-reply-container .right-base textarea {
+    .blog-comments-reply-container .comments-textarea {
         height: 120rpx;
     }
     .blog-comments-modal {
@@ -549,7 +565,7 @@
         margin-top: 30%;
         max-width: calc(800px - 180rpx);
     }
-    .blog-comments-modal-content textarea {
+    .comments-textarea-modal {
         height: 200rpx;
     }
     .blog-comments-modal-content .close {

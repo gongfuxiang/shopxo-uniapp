@@ -11,7 +11,7 @@
                         :propIsOnEvent="true"
                         :propIsRequired="false"
                         :propDefaultValue="search_keywords_value"
-                        :propPlaceholder="$t('doc.search_placeholder_all')"
+                        :propPlaceholder="$t('doc.search_placeholder_all') || ''"
                         propIconColor="#ccc"
                         propPlaceholderClass="cr-grey-c"
                         propBgColor="#f6f6f6"

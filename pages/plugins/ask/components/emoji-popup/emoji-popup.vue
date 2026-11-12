@@ -1,6 +1,7 @@
 <template>
     <view :class="theme_view">
-        <component-popup :propShow="popup_status" propPosition="bottom" @onclose="popup_close_event">
+        <!-- z-index 高于发布/评论弹层，避免被盖住 -->
+        <component-popup :propShow="popup_status" propPosition="bottom" :propIndex="1000" propStyle="z-index:1001;" @onclose="popup_close_event">
             <view class="emoji-popup bg-white">
                 <view class="close oh pa top-0 right-0 z-i-deep">
                     <view class="fr padding-top padding-right padding-left-sm padding-bottom-sm" @tap.stop="popup_close_event">
@@ -10,7 +11,7 @@
                 <view class="emoji-popup-content oh tc">
                     <block v-if="emoji_list.length > 0">
                         <block v-for="(item, index) in emoji_list" :key="index">
-                            <view class="emoji-item fl bs-bb text-size-xxxl" @tap="choice_confirm_event" :data-value="item.emoji">{{item.emoji}}</view>
+                            <view class="emoji-item fl bs-bb text-size-xxxl" @tap="choice_confirm_event" :data-value="item.emoji">{{ item.emoji }}</view>
                         </block>
                     </block>
                 </view>
@@ -20,28 +21,21 @@
 </template>
 <script>
     const app = getApp();
-    var common_static_url = app.globalData.get_static_url('common');
-    import componentPopup from "@/components/popup/popup";
+    import componentPopup from '@/components/popup/popup';
     export default {
         data() {
             return {
                 theme_view: app.globalData.get_theme_value_view(),
-                common_static_url: common_static_url,
                 popup_status: false,
-                emoji_list: []
+                emoji_list: [],
             };
         },
-
         components: {
-            componentPopup
+            componentPopup,
         },
-
-        created: function() {},
-
         methods: {
-            // 初始配置
             init(config = {}) {
-                if(!app.globalData.is_single_page_check()) {
+                if (!app.globalData.is_single_page_check()) {
                     return false;
                 }
                 this.setData({
@@ -49,27 +43,20 @@
                     emoji_list: config.emoji_list || [],
                 });
             },
-
-            // 弹层关闭
-            popup_close_event(e) {
+            popup_close_event() {
                 this.setData({
-                    popup_status: false
+                    popup_status: false,
                 });
             },
-
-            // 选择确认事件
-            choice_confirm_event(e) {            
-                // 关闭弹窗
+            choice_confirm_event(e) {
                 this.setData({
-                    popup_status: false
+                    popup_status: false,
                 });
-            
-                // 调用父级（跨分包异步组件：先写缓存再 $emit）
-                var back_data = e.currentTarget.dataset.value;
+                var back_data = (e.currentTarget && e.currentTarget.dataset && e.currentTarget.dataset.value) || '';
                 uni.setStorageSync(app.globalData.data.cache_emoji_popup_key, back_data);
                 this.$emit('choiceConfirmEvent', back_data);
-            }
-        }
+            },
+        },
     };
 </script>
 <style scoped>

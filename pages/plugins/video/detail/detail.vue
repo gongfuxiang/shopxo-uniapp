@@ -1424,7 +1424,6 @@
                                                     const comment = this.active_comments[j];
                                                     if (comment.id == comments_id) {
                                                         updateThumbsStatus(comment, new_data);
-                                                        console.log(comment);
                                                         break; // 处理完当前item后跳出循环
                                                     } else {
                                                         // 安全检查sub_comments数组是否存在

@@ -6,7 +6,7 @@
                     <view class="margin-left-main" :class="is_mp_env ? '' : 'flex-1 flex-width'">
                         <component-search
                             propUrl="/pages/plugins/doc/search/search"
-                            :propPlaceholder="$t('doc.search_placeholder')"
+                            :propPlaceholder="$t('doc.search_placeholder') || ''"
                             propIconColor="#ccc"
                             propPlaceholderClass="cr-grey-c"
                             propBgColor="#f6f6f6"

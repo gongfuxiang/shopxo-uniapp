@@ -29,7 +29,7 @@
                     <mp-html :content="info.content" />
                 </view>
                 <!-- 评论内容 -->
-                <component-blog-comments :propData="info" :propDataBase="data_base" :propEmojiList="emoji_list" :propShareInfo="share_info"></component-blog-comments>
+                <component-blog-comments :propData="info" :propDataBase="data_base" :propEmojiList="emoji_list" :propShareInfo="share_info" @share="popup_share_event"></component-blog-comments>
             </view>
 
             <view class="padding-horizontal-main">
@@ -93,6 +93,9 @@
             </view>
         </view>
 
+        <!-- 分享弹窗（页面级，与用户主页一致） -->
+        <component-share-popup ref="share"></component-share-popup>
+
         <!-- 公共 -->
         <component-common ref="common"></component-common>
     </view>
@@ -104,6 +107,7 @@
     import componentBottomLine from '@/components/bottom-line/bottom-line';
     import componentBlogComments from '../components/blog-comments/blog-comments';
     import componentGoodsList from '@/components/goods-list/goods-list';
+    import componentSharePopup from '@/pages/common/components/share-popup/share-popup';
     import pluginLocale from '../locale/index.js';
 
     var common_static_url = app.globalData.get_static_url('common');
@@ -137,6 +141,7 @@
             componentBottomLine,
             componentBlogComments,
             componentGoodsList,
+            componentSharePopup,
         },
 
         onLoad(params) {
@@ -244,7 +249,22 @@
             // url事件
             url_event(e) {
                 app.globalData.url_event(e);
-            }
+            },
+
+            // 分享弹层（异步组件未就绪时短暂重试）
+            popup_share_event(retry = 0) {
+                if (this.$refs.share && this.$refs.share.init) {
+                    this.$refs.share.init({
+                        share_info: this.share_info,
+                    });
+                    return;
+                }
+                if (retry < 20) {
+                    setTimeout(() => {
+                        this.popup_share_event(retry + 1);
+                    }, 50);
+                }
+            },
         },
     };
 </script>

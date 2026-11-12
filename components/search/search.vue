@@ -5,15 +5,15 @@
             <view v-if="propIsIcon" class="search-icon dis-inline-block pa" :style="'padding:' + propPadding" @tap="search_icon_event">
                 <iconfont :name="propIcon" :color="propIconColor" size="24rpx"></iconfont>
             </view>
-            <view v-if="propIsEnterSearchStart" @tap="seat_input_event" :class="'input oh '+propClass+' '+propPlaceholderClass+' '+(propIsIcon ? ' input-left-icon' : '')+' '+(propIsBtn ? ' input-search-btn' : '')+(propRightIcon ? ' input-right-icon' : '')">{{propPlaceholder || propPlaceholderValue || this.$t('search.actually_searching_very_simple_2')}}</view>
+            <view v-if="propIsEnterSearchStart" @tap="seat_input_event" :class="'input oh '+propClass+' '+propPlaceholderClass+' '+(propIsIcon ? ' input-left-icon' : '')+' '+(propIsBtn ? ' input-search-btn' : '')+(propRightIcon ? ' input-right-icon' : '')">{{ placeholder_view }}</view>
             <input
                 v-else
                 type="text"
                 confirm-type="search"
                 :class="'input round dis-block '+propClass+' '+(propIsIcon ? ' input-left-icon' : '')+' '+(propIsBtn ? ' input-search-btn' : '')+(propRightIcon ? ' input-right-icon' : '')"
-                :placeholder="(propPlaceholder || propPlaceholderValue || this.$t('search.actually_searching_very_simple_2'))"
+                :placeholder="placeholder_view"
                 :placeholder-class="propPlaceholderClass"
-                :value="propDefaultValue"
+                :value="default_value_view"
                 :focus="propFocus"
                 @input="search_input_value_event"
                 @confirm="search_submit_confirm_event"
@@ -48,16 +48,17 @@
                 type: String,
                 default: 'keywords',
             },
+            // 允许 null：微信小程序 String 属性收到 null 会告警；占位文案由 $t 传入时可能暂时为 null
             propDefaultValue: {
-                type: String,
+                type: null,
                 default: '',
             },
             propPlaceholder: {
-                type: String,
+                type: null,
                 default: '',
             },
             propPlaceholderValue: {
-                type: String,
+                type: null,
                 default: '',
             },
             propPlaceholderClass: {
@@ -158,19 +159,35 @@
                 default: false,
             },
         },
+        computed: {
+            placeholder_view() {
+                var p = this.propPlaceholder;
+                var v = this.propPlaceholderValue;
+                if (p != null && String(p) !== '') {
+                    return String(p);
+                }
+                if (v != null && String(v) !== '') {
+                    return String(v);
+                }
+                return this.$t('search.actually_searching_very_simple_2') || '';
+            },
+            default_value_view() {
+                return this.propDefaultValue == null ? '' : String(this.propDefaultValue);
+            },
+        },
         // 属性值改变监听
         watch: {
             // 默认值
             propDefaultValue(value, old_value) {
                 this.setData({
-                    input_value: value,
+                    input_value: value == null ? '' : value,
                 });
             }
         },
         // 页面被展示
         created: function () {
             this.setData({
-                input_value: this.propDefaultValue
+                input_value: this.propDefaultValue == null ? '' : this.propDefaultValue
             });
         },
         methods: {

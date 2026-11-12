@@ -1875,7 +1875,7 @@
                         "navigationBarTitleText": "",
                         "usingComponents": {
                             "component-share-popup": "/pages/common/components/share-popup/share-popup",
-                            "component-emoji-popup": "/pages/common/components/emoji-popup/emoji-popup"
+                            "component-emoji-popup": "/pages/plugins/blog/components/emoji-popup/emoji-popup"
                         },
                         "componentPlaceholder": {
                             "component-share-popup": "view",
@@ -1889,11 +1889,9 @@
                         "enablePullDownRefresh": true,
                         "navigationBarTitleText": "",
                         "usingComponents": {
-                            "component-share-popup": "/pages/common/components/share-popup/share-popup",
-                            "component-emoji-popup": "/pages/common/components/emoji-popup/emoji-popup"
+                            "component-emoji-popup": "/pages/plugins/blog/components/emoji-popup/emoji-popup"
                         },
                         "componentPlaceholder": {
-                            "component-share-popup": "view",
                             "component-emoji-popup": "view"
                         }
                     }
@@ -2302,7 +2300,7 @@
                         "navigationBarTitleText": "",
                         "usingComponents": {
                             "component-share-popup": "/pages/common/components/share-popup/share-popup",
-                            "component-emoji-popup": "/pages/common/components/emoji-popup/emoji-popup"
+                            "component-emoji-popup": "/pages/plugins/ask/components/emoji-popup/emoji-popup"
                         },
                         "componentPlaceholder": {
                             "component-share-popup": "view",
@@ -2362,11 +2360,9 @@
                         "enablePullDownRefresh": true,
                         "navigationBarTitleText": "",
                         "usingComponents": {
-                            "component-share-popup": "/pages/common/components/share-popup/share-popup",
-                            "component-emoji-popup": "/pages/common/components/emoji-popup/emoji-popup"
+                            "component-emoji-popup": "/pages/plugins/ask/components/emoji-popup/emoji-popup"
                         },
                         "componentPlaceholder": {
-                            "component-share-popup": "view",
                             "component-emoji-popup": "view"
                         }
                     }

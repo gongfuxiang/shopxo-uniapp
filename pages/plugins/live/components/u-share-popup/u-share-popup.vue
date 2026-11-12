@@ -389,7 +389,7 @@
         /* #endif */
     }
     /* #ifndef APP-NVUE */
-    .share-items text {
+    .share-items .single-text {
         color: #999;
         /* #ifndef APP */
         font-size: 24rpx;

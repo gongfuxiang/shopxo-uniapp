@@ -22,7 +22,7 @@
                                 <view v-if="item.audit_status == 3 && item.audit_reject_reason" class="text-size-xs cr-red margin-top-sm">{{ item.audit_reject_reason }}</view>
                             </view>
                         </view>
-                        <view v-if="(item.goods || null) != null" class="goods-link margin-horizontal-main margin-bottom-main bg-grey-f9 padding-sm border-radius-sm" :data-value="item.goods.goods_url || '/pages/goods-detail/goods-detail?id=' + item.goods.id" @tap.stop="url_event">
+                        <view v-if="item.goods" class="goods-link margin-horizontal-main margin-bottom-main bg-grey-f9 padding-sm border-radius-sm" :data-value="item.goods.goods_url || '/pages/goods-detail/goods-detail?id=' + item.goods.id" @tap.stop="url_event">
                             <view class="flex-row align-c">
                                 <image v-if="item.goods.images" class="goods-img radius" :src="item.goods.images" mode="aspectFill"></image>
                                 <view class="flex-1 flex-width padding-left-sm">
@@ -37,12 +37,12 @@
                                     <iconfont name="icon-edit-below-line" size="32rpx"></iconfont>
                                 </view>{{$t('common.edit')}}
                             </view>
-                            <view v-if="(item.operate_data || {}).is_submit_audit == 1" class="cr-green flex-1 divider-r-f5 padding-vertical-main" :data-id="item.id" data-type="submit" @tap="audit_event">
+                            <view v-if="item.operate_data && item.operate_data.is_submit_audit == 1" class="cr-green flex-1 divider-r-f5 padding-vertical-main" :data-id="item.id" data-type="submit" @tap="audit_event">
                                 <view class="margin-right-xs dis-inline-block">
                                     <iconfont name="icon-checked" size="32rpx"></iconfont>
                                 </view>{{$t('user-list.submit_audit')}}
                             </view>
-                            <view v-if="(item.operate_data || {}).is_revoke_audit == 1" class="cr-yellow flex-1 divider-r-f5 padding-vertical-main" :data-id="item.id" data-type="revoke" @tap="audit_event">
+                            <view v-if="item.operate_data && item.operate_data.is_revoke_audit == 1" class="cr-yellow flex-1 divider-r-f5 padding-vertical-main" :data-id="item.id" data-type="revoke" @tap="audit_event">
                                 <view class="margin-right-xs dis-inline-block">
                                     <iconfont name="icon-refresh" size="32rpx"></iconfont>
                                 </view>{{$t('user-list.revoke_audit')}}
