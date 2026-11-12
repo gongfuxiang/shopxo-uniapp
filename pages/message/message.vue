@@ -7,8 +7,9 @@
                         <text class="fw-b">{{item.title}}</text>
                         <text class="fr cr-base">{{item.add_time_time}}</text>
                     </view>
-                    <view class="web-html-content cr-grey margin-top-lg">
-                        <mp-html :content="item.detail" />
+                    <view class="cr-grey margin-top-lg">{{item.detail}}</view>
+                    <view v-if="item.link_data && (item.link_data.app || item.link_data.web)" class="margin-top-sm">
+                        <text class="cr-main cp" @tap="link_data_event" :data-index="index">{{ item.link_data.title || '查看详情 >>' }}</text>
                     </view>
                 </view>
             </view>
@@ -197,6 +198,38 @@
             // 滚动加载
             scroll_lower(e) {
                 this.get_data_list();
+            },
+
+            // 详情链接：优先 app，其次 web
+            link_data_event(e) {
+                var index = e && e.currentTarget && e.currentTarget.dataset ? parseInt(e.currentTarget.dataset.index, 10) : -1;
+                var item = index >= 0 ? (this.data_list[index] || null) : null;
+                var link = item && item.link_data ? item.link_data : null;
+                if (!link || typeof link !== 'object') {
+                    return;
+                }
+                var url = String(link.app || '').trim();
+                if (!url) {
+                    url = String(link.web || '').trim();
+                }
+                if (!url) {
+                    return;
+                }
+                if (url.indexOf('/pages/') === 0) {
+                    app.globalData.url_event({ currentTarget: { dataset: { value: url } } });
+                    return;
+                }
+                // #ifdef H5
+                if (/^https?:\/\//i.test(url)) {
+                    window.open(url);
+                    return;
+                }
+                // #endif
+                if (/^https?:\/\//i.test(url)) {
+                    app.globalData.url_event({
+                        currentTarget: { dataset: { value: '/pages/web-view/web-view?url=' + encodeURIComponent(url) } },
+                    });
+                }
             }
         }
     };

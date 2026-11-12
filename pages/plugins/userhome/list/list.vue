@@ -21,11 +21,22 @@
                             :data-value="item.url || ''"
                             @tap="url_event"
                         >
+                            <!-- 内容字段在 PC 为 module 展示话题，手机端 field_list 不含 module，这里单独展示正文+话题 -->
+                            <view v-if="item.content" class="cr-base">{{ item.content }}</view>
+                            <view v-if="(item.topic_list || []).length > 0" class="margin-top-xs" @tap.stop="">
+                                <text
+                                    v-for="(topic, ti) in item.topic_list"
+                                    :key="ti"
+                                    class="cr-main margin-right-sm text-size-sm"
+                                    :data-value="'/pages/plugins/userhome/topic/topic?id=' + (topic.id || 0)"
+                                    @tap.stop="url_event"
+                                >#{{ topic.name }}</text>
+                            </view>
                             <component-panel-content
                                 :propData="item"
                                 :propDataField="field_list"
                                 propIsItemShowMax="6"
-                                propExcludeField="add_time,audit_status_name"
+                                propExcludeField="add_time,audit_status_name,content"
                                 :propIsTerse="true"
                             ></component-panel-content>
                         </view>

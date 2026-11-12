@@ -8,8 +8,15 @@
         <block v-else>
             <view v-if="(slider_list || []).length > 0" class="spacing-mb">
                 <swiper class="banner-swiper" indicator-dots circular autoplay>
-                    <swiper-item v-for="(item, index) in slider_list" :key="index">
-                        <image class="banner-img" :src="item.images_url" mode="aspectFill" :data-value="item.event_value || ''" @tap="url_event"></image>
+                    <swiper-item v-for="(item, index) in slider_list" :key="index" :style="item.bg_color ? ('background:' + item.bg_color) : ''">
+                        <image
+                            class="banner-img"
+                            :src="item.images_url"
+                            mode="aspectFill"
+                            :data-value="item.event_value || ''"
+                            :data-type="item.event_type == undefined ? 1 : item.event_type"
+                            @tap="banner_event"
+                        ></image>
                     </swiper-item>
                 </swiper>
             </view>
@@ -29,7 +36,7 @@
             <view class="page-bottom-fixed padding-main">
                 <block v-if="data_list.length > 0">
                     <component-moment-item v-for="(item, index) in data_list" :key="index" :propItem="item" :propEnableDetail="config.is_enable_moment_detail == 1" :propShowLike="config.is_enable_like == 1" :propShowComment="config.is_enable_comment == 1" @like="like_event" @comment-count="comment_count_event"></component-moment-item>
-                    <component-bottom-line :propStatus="data_bottom_line_status"></component-bottom-line>
+                    <component-bottom-line :propStatus="data_bottom_line_status" :propMsg="data_bottom_line_msg"></component-bottom-line>
                 </block>
                 <component-no-data v-else :propStatus="data_list_loding_status" :propMsg="data_list_loding_msg" :propLoadingLogoTop="(slider_list || []).length > 0 ? '40vh' : ''"></component-no-data>
             </view>
@@ -74,9 +81,11 @@
                 data_page: 1,
                 data_page_total: 0,
                 data_bottom_line_status: false,
+                data_bottom_line_msg: '',
                 data_list_loding_status: 1,
                 data_list_loding_msg: '',
                 data_is_loading: 0,
+                list_req_seq: 0,
                 share_info: {},
             };
         },
@@ -139,7 +148,9 @@
                     data_page: 1,
                     data_list: [],
                     data_bottom_line_status: false,
+                    data_bottom_line_msg: '',
                     data_list_loding_status: 1,
+                    data_is_loading: 0,
                 });
                 // 下拉：刷新头区 + 列表；未就绪时仍走完整初始化
                 if (!this.page_ready) {
@@ -179,8 +190,10 @@
                                 data_page: 1,
                                 data_list: [],
                                 data_bottom_line_status: false,
+                                data_bottom_line_msg: '',
                                 data_list_loding_status: 1,
                                 data_list_loding_msg: '',
+                                data_is_loading: 0,
                             });
                             // 与 PC 一致：seo_title > application_name（空则接口已回退默认「动态广场」）
                             var title = data.seo_title || data.application_name || '';
@@ -223,7 +236,7 @@
             normalize_sort(sort, sort_list) {
                 var list = sort_list || [];
                 if (!list.length) {
-                    return sort == 'hot' || sort == 'like' ? sort : 'new';
+                    return sort == 'hot' || sort == 'like' || sort == 'follow' ? sort : 'new';
                 }
                 for (var i = 0; i < list.length; i++) {
                     if (list[i] && list[i].value == sort) {
@@ -243,41 +256,60 @@
                 if (this.data_is_loading == 1) {
                     return;
                 }
+                this.list_req_seq = (this.list_req_seq || 0) + 1;
+                var req_seq = this.list_req_seq;
+                var req_sort = this.sort;
                 this.setData({ data_is_loading: 1, data_list_loding_status: this.data_list.length > 0 ? 3 : 1 });
                 uni.request({
                     url: app.globalData.get_request_url('feed', 'index', 'userhome'),
                     method: 'POST',
                     data: {
                         page: this.data_page,
-                        sort: this.sort,
+                        sort: req_sort,
                     },
                     dataType: 'json',
                     success: (res) => {
                         uni.stopPullDownRefresh();
+                        // 排序/刷新切换后丢弃过期响应
+                        if (req_seq !== this.list_req_seq || req_sort !== this.sort) {
+                            return;
+                        }
                         if (res.data.code == 0) {
                             var data = res.data.data || {};
                             var list = data.data || [];
                             var temp = this.data_page <= 1 ? list : (this.data_list || []).concat(list);
                             var page_total = data.page_total || 0;
                             var next_page = this.data_page + 1;
+                            var no_more = next_page > page_total || data.has_more == 0;
                             this.setData({
                                 data_list: temp,
                                 data_page_total: page_total,
                                 data_page: next_page,
                                 data_list_loding_status: temp.length > 0 ? 3 : 0,
-                                data_bottom_line_status: next_page > page_total || data.has_more == 0,
+                                data_list_loding_msg: temp.length > 0 ? '' : (data.empty_msg || ''),
+                                data_bottom_line_status: temp.length > 0 && no_more,
+                                data_bottom_line_msg: data.reach_max == 1 ? this.$t('feed.reach_max') : '',
                                 data_is_loading: 0,
                             });
                         } else {
+                            // 失败时清空旧列表，用无数据组件展示接口文案
                             this.setData({
+                                data_list: [],
+                                data_page: 1,
+                                data_page_total: 0,
                                 data_is_loading: 0,
+                                data_bottom_line_status: false,
+                                data_bottom_line_msg: '',
                                 data_list_loding_status: 0,
-                                data_list_loding_msg: res.data.msg,
+                                data_list_loding_msg: res.data.msg || '',
                             });
                         }
                     },
                     fail: () => {
                         uni.stopPullDownRefresh();
+                        if (req_seq !== this.list_req_seq) {
+                            return;
+                        }
                         this.setData({ data_is_loading: 0, data_list_loding_status: 2 });
                     },
                 });
@@ -290,9 +322,15 @@
                     data_page: 1,
                     data_list: [],
                     data_bottom_line_status: false,
+                    data_bottom_line_msg: '',
                     data_list_loding_status: 1,
+                    data_is_loading: 0,
                 });
                 this.get_list(1);
+            },
+            // 轮播：按 event_type 处理（网页/内部页/地图/电话等）
+            banner_event(e) {
+                app.globalData.operation_event(e);
             },
             // 热门话题：仅跳转话题页，不参与广场筛选
             topic_event(e) {

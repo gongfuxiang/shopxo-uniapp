@@ -1,7 +1,8 @@
 <template>
     <view :class="theme_view">
         <!-- 公共返回：固定顶栏，不随内容滚动（同秒杀/优惠券） -->
-        <component-nav-back :propColor="nav_back_color" :propIsRightSlot="false" :propName="nav_back_title" :propNameOpacity="true"></component-nav-back>
+        <!-- z-i-deep-middle：高于头区内层，避免返回键被封面/头区挡住 -->
+        <component-nav-back propClass="z-i-deep-middle" :propColor="nav_back_color" :propIsRightSlot="false" :propName="nav_back_title" :propNameOpacity="true"></component-nav-back>
 
         <!-- 首屏：home 完成前整页加载 -->
         <block v-if="!page_ready">
@@ -24,11 +25,23 @@
 
                     <!-- 统计独立一行：关注/粉丝可点进列表，内容类型切 tab -->
                     <view class="flex-row text-size-sm margin-top-main flex-wrap header-stats">
-                        <view v-if="home.config.is_show_follow_count == 1" class="stat-item margin-right-main" data-type="follow" @tap="stat_follow_event">
+                        <view
+                            v-if="home.config.is_show_follow_count == 1"
+                            class="stat-item margin-right-main"
+                            :class="home.can_view_follow_list == 1 ? '' : 'stat-item-disabled'"
+                            data-type="follow"
+                            @tap="stat_follow_event"
+                        >
                             <text>{{ $t('home.follow') }}</text>
                             <text class="fw-b margin-left-xs">{{ home.follow_count }}</text>
                         </view>
-                        <view v-if="home.config.is_show_fans_count == 1" class="stat-item margin-right-main" data-type="fans" @tap="stat_follow_event">
+                        <view
+                            v-if="home.config.is_show_fans_count == 1"
+                            class="stat-item margin-right-main"
+                            :class="home.can_view_fans_list == 1 ? '' : 'stat-item-disabled'"
+                            data-type="fans"
+                            @tap="stat_follow_event"
+                        >
                             <text>{{ $t('home.fans') }}</text>
                             <text class="fw-b margin-left-xs">{{ home.fans_count }}</text>
                         </view>
@@ -593,7 +606,7 @@
             stat_tab_event(e) {
                 this.tab_event(e);
             },
-            // 关注粉丝列表
+            // 关注粉丝列表（不可看时不响应，样式已灰显）
             stat_follow_event(e) {
                 if (!this.home) {
                     return;
@@ -601,7 +614,6 @@
                 var type = (e.currentTarget.dataset.type || 'follow') == 'fans' ? 'fans' : 'follow';
                 var can = type == 'fans' ? this.home.can_view_fans_list == 1 : this.home.can_view_follow_list == 1;
                 if (!can) {
-                    app.globalData.showToast(this.$t('home.follow_list_deny_tips'));
                     return;
                 }
                 app.globalData.url_event({

@@ -55,9 +55,11 @@ var zh = {
         "sort_new": "最新",
         "sort_hot": "热门",
         "sort_like": "最赞",
+        "sort_follow": "仅关注",
         "all_topic": "全部",
         "my_moment": "我的动态",
-        "my_home": "我的主页"
+        "my_home": "我的主页",
+        "reach_max": "已到最大加载页数"
     },
     "moment": {
         "like": "赞",
@@ -149,9 +151,11 @@ var en = {
         "sort_new": "Latest",
         "sort_hot": "Hot",
         "sort_like": "Liked",
+        "sort_follow": "Following only",
         "all_topic": "All",
         "my_moment": "My Moments",
-        "my_home": "My Profile"
+        "my_home": "My Profile",
+        "reach_max": "Reached max load pages"
     },
     "moment": {
         "like": "Like",

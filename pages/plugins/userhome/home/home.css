@@ -138,6 +138,10 @@
     .stat-item {
         padding: 8rpx 0;
     }
+    .stat-item-disabled {
+        opacity: 0.45;
+        pointer-events: none;
+    }
     .header-actions {
         width: 100%;
     }

@@ -303,6 +303,10 @@
             },
             // 链接事件
             url_event(e) {
+                var value = (e.currentTarget && e.currentTarget.dataset && e.currentTarget.dataset.value) || '';
+                if (!value) {
+                    return;
+                }
                 app.globalData.url_event(e);
             },
         },

@@ -1,6 +1,6 @@
 <template>
     <view :class="'bg-white border-radius-main padding-main' + (propSpacingMb ? ' spacing-mb' : '')">
-        <view v-if="propShowUser" class="flex-row align-c" :data-value="item.user_home_url || ('/pages/plugins/userhome/home/home?id=' + item.user_id)" @tap="url_event">
+        <view v-if="propShowUser" class="flex-row align-c" :data-value="item.user_home_url || ''" @tap="user_event">
             <image class="avatar circle" :src="(item.user && item.user.avatar) || ''" mode="aspectFill"></image>
             <view class="flex-1 flex-width padding-left-main">
                 <view class="fw-b">{{ (item.user && item.user.user_name_view) || '' }}</view>
@@ -8,7 +8,12 @@
         </view>
         <view class="margin-top-sm">
             <view :data-value="item.url || ''" @tap="detail_event">
-                <view class="content-text">{{ item.content }}</view>
+                <view class="content-text">
+                    <block v-for="(seg, si) in content_segments" :key="si">
+                        <text v-if="seg.type == 'at'" class="cr-main" :data-value="seg.url" @tap.stop="url_event">@{{ seg.name }}</text>
+                        <text v-else>{{ seg.text }}</text>
+                    </block>
+                </view>
                 <view v-if="(item.topic_list || []).length > 0" class="margin-top-xs" @tap.stop="">
                     <text
                         v-for="(topic, ti) in item.topic_list"
@@ -123,6 +128,10 @@
             item() {
                 return this.propItem || {};
             },
+            // 正文分段：@用户可点进主页（仅有 user_home_url 时）
+            content_segments() {
+                return this.build_content_segments(this.item.content || '', this.item.at_user_list || []);
+            },
             // 是否展示评论区
             show_comment_panel() {
                 return this.propShowCommentPreview && this.propShowComment && this.item.show_comment == 1;
@@ -136,7 +145,66 @@
         methods: {
             // 链接事件
             url_event(e) {
+                var value = (e.currentTarget && e.currentTarget.dataset && e.currentTarget.dataset.value) || '';
+                if (!value) {
+                    return;
+                }
                 app.globalData.url_event(e);
+            },
+            // 用户头像/名：仅主页开启时跳转
+            user_event(e) {
+                this.url_event(e);
+            },
+            // 把正文拆成文本/@ 段，规则与 PC ContentAtLinkView 一致
+            build_content_segments(content, at_list) {
+                content = content || '';
+                if (!content) {
+                    return [];
+                }
+                var names = [];
+                (at_list || []).forEach((au) => {
+                    var name = ((au && au.user_name_view) || '').trim();
+                    var url = (au && au.user_home_url) || '';
+                    if (name && url) {
+                        names.push({ name: name, url: url, len: name.length });
+                    }
+                });
+                names.sort((a, b) => b.len - a.len);
+                if (!names.length) {
+                    return [{ type: 'text', text: content }];
+                }
+                var segs = [];
+                var remaining = content;
+                while (remaining.length > 0) {
+                    var at_pos = remaining.indexOf('@');
+                    if (at_pos < 0) {
+                        segs.push({ type: 'text', text: remaining });
+                        break;
+                    }
+                    if (at_pos > 0) {
+                        segs.push({ type: 'text', text: remaining.substring(0, at_pos) });
+                    }
+                    var rest = remaining.substring(at_pos + 1);
+                    var matched = null;
+                    for (var i = 0; i < names.length; i++) {
+                        var n = names[i];
+                        if (rest.indexOf(n.name) === 0) {
+                            var after = rest.charAt(n.name.length);
+                            if (!after || /\s/.test(after)) {
+                                matched = n;
+                                break;
+                            }
+                        }
+                    }
+                    if (matched) {
+                        segs.push({ type: 'at', name: matched.name, url: matched.url });
+                        remaining = rest.substring(matched.name.length);
+                    } else {
+                        segs.push({ type: 'text', text: '@' });
+                        remaining = rest;
+                    }
+                }
+                return segs;
             },
             // 话题跳转：已在同话题页则滚回顶部（已在顶部则提示）
             topic_event(e) {

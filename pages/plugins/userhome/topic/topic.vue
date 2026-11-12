@@ -50,7 +50,7 @@
                         @like="like_event"
                         @comment-count="comment_count_event"
                     ></component-moment-item>
-                    <component-bottom-line :propStatus="data_bottom_line_status"></component-bottom-line>
+                    <component-bottom-line :propStatus="data_bottom_line_status" :propMsg="data_bottom_line_msg"></component-bottom-line>
                 </block>
                 <component-no-data v-else :propStatus="data_list_loding_status" :propMsg="data_list_loding_msg"></component-no-data>
             </view>
@@ -87,9 +87,11 @@
                 data_list: [],
                 data_page: 1,
                 data_bottom_line_status: false,
+                data_bottom_line_msg: '',
                 data_list_loding_status: 1,
                 data_list_loding_msg: '',
                 data_is_loading: 0,
+                list_req_seq: 0,
                 share_info: {},
                 page_scroll_top: 0,
             };
@@ -153,6 +155,7 @@
                     data_page: 1,
                     data_list: [],
                     data_bottom_line_status: false,
+                    data_bottom_line_msg: '',
                     data_list_loding_status: 1,
                     data_list_loding_msg: '',
                     data_is_loading: 0,
@@ -209,8 +212,10 @@
                             data_page: 1,
                             data_list: [],
                             data_bottom_line_status: false,
+                            data_bottom_line_msg: '',
                             data_list_loding_status: 1,
                             data_list_loding_msg: '',
+                            data_is_loading: 0,
                         });
                         uni.setNavigationBarTitle({ title: this.$t('pages.plugins-userhome-topic') });
                         this.update_share_info(topic);
@@ -258,6 +263,9 @@
                 if (this.data_is_loading == 1) {
                     return;
                 }
+                this.list_req_seq = (this.list_req_seq || 0) + 1;
+                var req_seq = this.list_req_seq;
+                var req_sort = this.sort;
                 this.setData({
                     data_is_loading: 1,
                     data_list_loding_status: this.data_list.length > 0 ? 3 : 1,
@@ -267,24 +275,29 @@
                     method: 'POST',
                     data: {
                         page: this.data_page,
-                        sort: this.sort,
+                        sort: req_sort,
                         topic: this.topic_id,
                     },
                     dataType: 'json',
                     success: (res) => {
                         uni.stopPullDownRefresh();
+                        if (req_seq !== this.list_req_seq || req_sort !== this.sort) {
+                            return;
+                        }
                         if (res.data.code == 0) {
                             var data = res.data.data || {};
                             var list = data.data || [];
                             var temp = this.data_page <= 1 ? list : (this.data_list || []).concat(list);
                             var page_total = data.page_total || 0;
                             var next_page = this.data_page + 1;
+                            var no_more = next_page > page_total || data.has_more == 0;
                             this.setData({
                                 data_list: temp,
                                 data_page: next_page,
                                 data_list_loding_status: temp.length > 0 ? 3 : 0,
                                 data_list_loding_msg: temp.length > 0 ? '' : this.$t('common.no_relevant_data_tips'),
-                                data_bottom_line_status: temp.length > 0 && next_page > page_total,
+                                data_bottom_line_status: temp.length > 0 && no_more,
+                                data_bottom_line_msg: data.reach_max == 1 ? this.$t('feed.reach_max') : '',
                                 data_is_loading: 0,
                             });
                         } else {
@@ -297,6 +310,9 @@
                     },
                     fail: () => {
                         uni.stopPullDownRefresh();
+                        if (req_seq !== this.list_req_seq) {
+                            return;
+                        }
                         this.setData({
                             data_is_loading: 0,
                             data_list_loding_status: this.data_list.length > 0 ? 3 : 2,
@@ -316,6 +332,7 @@
                     data_page: 1,
                     data_list: [],
                     data_bottom_line_status: false,
+                    data_bottom_line_msg: '',
                     data_list_loding_status: 1,
                     data_is_loading: 0,
                 });

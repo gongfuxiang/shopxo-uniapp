@@ -3042,7 +3042,7 @@
                 {
                     "path": "follow-list/follow-list",
                     "style": {
-                        // #ifdef MP-WEIXIN || MP-BAIDU || MP-QQ || MP-KUAISHOU || APP
+                        // #ifdef MP-WEIXIN || MP-BAIDU || MP-QQ || MP-KUAISHOU || H5 || APP
                         "navigationStyle": "custom",
                         // #endif
                         // #ifdef MP-ALIPAY
