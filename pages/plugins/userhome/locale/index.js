@@ -69,7 +69,7 @@ var zh = {
         "edit": "编辑",
         "delete": "删除",
         "delete_confirm": "删除后不可恢复，确认删除吗？",
-        "comment_placeholder": "说点儿什么吧",
+        "comment_placeholder": "期待您的发言...",
         "comment_publish": "评论",
         "comment_login": "登录后评论",
         "comment_more": "更多评论",
@@ -80,7 +80,7 @@ var zh = {
         "reply_holder": "回复 "
     },
     "moment-form": {
-        "content_placeholder": "分享此刻心情...",
+        "content_placeholder": "期待您的发言...",
         "content_empty": "请填写内容",
         "content_empty_images": "请填写内容或上传图片",
         "content_empty_video": "请填写内容或上传视频",
@@ -168,7 +168,7 @@ var en = {
         "edit": "Edit",
         "delete": "Delete",
         "delete_confirm": "Delete permanently?",
-        "comment_placeholder": "Write a comment...",
+        "comment_placeholder": "Write something...",
         "comment_publish": "Comment",
         "comment_login": "Login to comment",
         "comment_more": "More comments",
@@ -179,7 +179,7 @@ var en = {
         "reply_holder": "Reply to "
     },
     "moment-form": {
-        "content_placeholder": "Share your moment...",
+        "content_placeholder": "Write something...",
         "content_empty": "Please enter content",
         "content_empty_images": "Please enter content or upload images",
         "content_empty_video": "Please enter content or upload a video",

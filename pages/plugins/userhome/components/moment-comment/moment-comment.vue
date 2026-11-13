@@ -5,23 +5,21 @@
             <text v-if="comment_count > 0" class="cr-grey margin-left-xs">({{ comment_count }})</text>
         </view>
 
-        <!-- 详情页：顶部仅发新评论；回复走底部弹窗 -->
-        <view v-if="!propPopupMode && compose_open" class="compose-form margin-bottom-main">
-            <block v-if="is_login">
-                <component-moment-compose
-                    ref="composeInline"
-                    :propPlaceholder="$t('moment.comment_placeholder')"
-                    :propSubmitText="$t('moment.comment_publish')"
-                    :propMaxlength="500"
-                    :propLoading="comment_loading"
-                    :propEditorPathType="editor_path_type"
-                    :propImagesMax="images_max"
-                    :propTools="compose_tools"
-                    @compose-submit="comment_submit_inline"
-                    @emoji-open="emoji_open_event('composeInline')"
-                ></component-moment-compose>
-            </block>
-            <button v-else class="round text-size-sm" type="default" size="mini" hover-class="none" @tap="login_event">{{ $t('moment.comment_login') }}</button>
+        <!-- 详情页：顶部仅发新评论；回复走底部弹窗；未登录也展示输入区，覆盖层点进去登录 -->
+        <view v-if="!propPopupMode && compose_open" class="compose-form margin-bottom-main compose-form-wrap">
+            <component-moment-compose
+                ref="composeInline"
+                :propPlaceholder="comment_placeholder"
+                :propSubmitText="$t('moment.comment_publish')"
+                :propMaxlength="500"
+                :propLoading="comment_loading"
+                :propEditorPathType="editor_path_type"
+                :propImagesMax="images_max"
+                :propTools="compose_tools"
+                @compose-submit="comment_submit_inline"
+                @emoji-open="emoji_open_event('composeInline')"
+            ></component-moment-compose>
+            <view v-if="!is_login" class="compose-login-mask" @tap.stop="login_event"></view>
         </view>
 
         <view v-if="comment_list.length > 0" :class="!propPopupMode ? 'margin-top-xxxl' : ''">
@@ -88,24 +86,22 @@
                         <iconfont name="icon-close-line" color="#333" size="28rpx"></iconfont>
                     </view>
                 </view>
-                <view class="comment-popup-body padding-main">
-                    <block v-if="is_login">
-                        <component-moment-compose
-                            v-if="popup_status"
-                            ref="composePopup"
-                            :propPlaceholder="popup_placeholder"
-                            :propSubmitText="popup_submit_text"
-                            :propMaxlength="500"
-                            :propLoading="comment_loading"
-                            :propAutoFocus="true"
-                            :propEditorPathType="editor_path_type"
-                            :propImagesMax="images_max"
-                            :propTools="compose_tools"
-                            @compose-submit="comment_submit_popup"
-                            @emoji-open="emoji_open_event('composePopup')"
-                        ></component-moment-compose>
-                    </block>
-                    <button v-else class="round text-size-sm" type="default" size="mini" hover-class="none" @tap="login_event">{{ $t('moment.comment_login') }}</button>
+                <view class="comment-popup-body padding-main compose-form-wrap">
+                    <component-moment-compose
+                        v-if="popup_status"
+                        ref="composePopup"
+                        :propPlaceholder="popup_placeholder"
+                        :propSubmitText="popup_submit_text"
+                        :propMaxlength="500"
+                        :propLoading="comment_loading"
+                        :propAutoFocus="is_login"
+                        :propEditorPathType="editor_path_type"
+                        :propImagesMax="images_max"
+                        :propTools="compose_tools"
+                        @compose-submit="comment_submit_popup"
+                        @emoji-open="emoji_open_event('composePopup')"
+                    ></component-moment-compose>
+                    <view v-if="!is_login" class="compose-login-mask" @tap.stop="login_event"></view>
                 </view>
             </view>
         </component-popup>
@@ -171,6 +167,8 @@
                     at_follow: 0,
                     at_fans: 0,
                 },
+                // 后台配置的评论占位文案（空则用本地语言包）
+                comment_input_placeholder: '',
             };
         },
         computed: {
@@ -182,9 +180,13 @@
             popup_title() {
                 return this.is_reply_mode ? this.$t('moment.reply') + ' ' + this.reply_name : this.$t('moment.comment');
             },
+            // 评论占位（与 PC 共用后台配置）
+            comment_placeholder() {
+                return this.comment_input_placeholder || this.$t('moment.comment_placeholder');
+            },
             // 输入框占位文案
             popup_placeholder() {
-                return this.is_reply_mode ? this.$t('moment.reply_holder') + this.reply_name : this.$t('moment.comment_placeholder');
+                return this.is_reply_mode ? this.$t('moment.reply_holder') + this.reply_name : this.comment_placeholder;
             },
             // 提交按钮文案
             popup_submit_text() {
@@ -293,6 +295,7 @@
                         // path_type 由 config/feedinit 统一下发，与 PC BaseService 一致
                         self.editor_path_type = data.editor_path_type || '';
                         self.images_max = parseInt(data.comment_images_max_number || 9) || 9;
+                        self.comment_input_placeholder = (data.comment_input_placeholder || '').toString();
                         self.compose_tools = {
                             emoji: data.is_comment_emoji == 1 ? 1 : 0,
                             images: data.is_comment_images == 1 ? 1 : 0,
@@ -685,5 +688,17 @@
     }
     .comment-popup-body {
         padding-bottom: 40rpx;
+    }
+    .compose-form-wrap {
+        position: relative;
+    }
+    .compose-login-mask {
+        position: absolute;
+        left: 0;
+        right: 0;
+        top: 0;
+        bottom: 0;
+        z-index: 5;
+        background: transparent;
     }
 </style>

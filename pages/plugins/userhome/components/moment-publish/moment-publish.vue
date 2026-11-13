@@ -4,7 +4,7 @@
         <view v-if="propInline" class="moment-publish-inline bg-white border-radius-main padding-main">
             <component-moment-compose
                 ref="compose"
-                :propPlaceholder="$t('moment-form.content_placeholder')"
+                :propPlaceholder="content_placeholder"
                 :propSubmitText="$t('moment-form.submit')"
                 :propMaxlength="1000"
                 :propLoading="form_submit_loading"
@@ -29,7 +29,7 @@
                     <component-moment-compose
                         v-if="popup_status"
                         ref="compose"
-                        :propPlaceholder="$t('moment-form.content_placeholder')"
+                        :propPlaceholder="content_placeholder"
                         :propSubmitText="$t('moment-form.submit')"
                         :propMaxlength="1000"
                         :propLoading="form_submit_loading"
@@ -83,7 +83,13 @@
                     at_fans: 0,
                     at_mutual: 0,
                 },
+                comment_input_placeholder: '',
             };
+        },
+        computed: {
+            content_placeholder() {
+                return this.comment_input_placeholder || this.$t('moment-form.content_placeholder');
+            },
         },
         mounted() {
             if (this.propInline) {
@@ -138,6 +144,9 @@
                         if (cfg.publish_images_max_number) {
                             self.images_max = parseInt(cfg.publish_images_max_number || 9) || 9;
                         }
+                        if (cfg.comment_input_placeholder) {
+                            self.comment_input_placeholder = (cfg.comment_input_placeholder || '').toString();
+                        }
                         return getMomentSaveinfo();
                     })
                     .then((data) => {
@@ -146,6 +155,9 @@
                         }
                         self.editor_path_type = data.editor_path_type || self.editor_path_type || '';
                         self.images_max = parseInt(data.images_max_number || self.images_max || 9) || 9;
+                        if (data.comment_input_placeholder) {
+                            self.comment_input_placeholder = (data.comment_input_placeholder || '').toString();
+                        }
                         self.emoji_list = data.emoji_list || [];
                         self.compose_tools = {
                             emoji: data.is_publish_emoji == 1 ? 1 : 0,
