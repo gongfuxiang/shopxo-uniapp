@@ -38,6 +38,7 @@
                                 propIsItemShowMax="6"
                                 propExcludeField="add_time,audit_status_name,content"
                                 :propIsTerse="true"
+                                @status="status_event"
                             ></component-panel-content>
                         </view>
                         <view
@@ -364,6 +365,59 @@
             // 编辑
             edit_event(e) {
                 app.globalData.url_event(e);
+            },
+            // 启用状态（与 PC form status 列一致）
+            status_event(e) {
+                var id = parseInt((e && e.id) || 0) || 0;
+                var field = (e && e.field) || 'is_enable';
+                var state = parseInt((e && e.state) || 0) == 1 ? 1 : 0;
+                var old_state = parseInt((e && e.old_state) || 0) == 1 ? 1 : 0;
+                var row = (e && e.data) || null;
+                if (id <= 0) {
+                    return;
+                }
+                uni.request({
+                    url: app.globalData.get_request_url('statusupdate', 'moment', 'userhome'),
+                    method: 'POST',
+                    data: {
+                        id: id,
+                        field: field,
+                        state: state,
+                    },
+                    dataType: 'json',
+                    success: (res) => {
+                        if (res.data.code == 0) {
+                            uni.setStorageSync('cache_plugins_userhome_home_refresh', 1);
+                            app.globalData.showToast(res.data.msg, 'success');
+                        } else {
+                            if (row) {
+                                row[field] = old_state;
+                                if (Object.prototype.hasOwnProperty.call(row, field + '_name')) {
+                                    row[field + '_name'] = old_state == 1 ? (this.$t('common.yes_title') || '是') : (this.$t('common.no_title') || '否');
+                                }
+                                this.setData({
+                                    data_list: this.data_list,
+                                });
+                            }
+                            // is_login_check 为 true 表示非登录失效，需提示业务错误
+                            if (app.globalData.is_login_check(res.data, this, 'status_event', e)) {
+                                app.globalData.showToast(res.data.msg);
+                            }
+                        }
+                    },
+                    fail: () => {
+                        if (row) {
+                            row[field] = old_state;
+                            if (Object.prototype.hasOwnProperty.call(row, field + '_name')) {
+                                row[field + '_name'] = old_state == 1 ? (this.$t('common.yes_title') || '是') : (this.$t('common.no_title') || '否');
+                            }
+                            this.setData({
+                                data_list: this.data_list,
+                            });
+                        }
+                        app.globalData.showToast(this.$t('common.internet_error_tips'));
+                    },
+                });
             },
             // 删除
             delete_event(e) {

@@ -1,28 +1,40 @@
 <template>
     <view :class="theme_view">
-        <view class="page-bottom-fixed padding-main">
-            <view class="bg-white border-radius-main padding-main spacing-mb">
-                <component-moment-compose
-                    ref="compose"
-                    :propPlaceholder="$t('moment-form.content_placeholder')"
-                    :propSubmitText="moment_id > 0 ? $t('moment-form.save') : $t('moment-form.submit')"
-                    :propMaxlength="1000"
-                    :propLoading="form_submit_loading"
-                    :propEditorPathType="editor_path_type"
-                    :propImagesMax="images_max"
-                    :propTools="compose_tools"
-                    @compose-submit="form_submit"
-                    @emoji-open="emoji_open_event"
-                ></component-moment-compose>
+        <block v-if="data_list_loding_status == 3">
+            <view class="page-bottom-fixed padding-main">
+                <view v-if="moment_id > 0" class="bg-white border-radius-main padding-main spacing-mb">
+                    <view class="flex-row jc-sb align-c">
+                        <view class="text-size">{{ $t('common.enabled') }}</view>
+                        <switch :color="theme_color" style="transform: scale(0.7)" :checked="is_enable == 1" @change="is_enable_event"></switch>
+                    </view>
+                </view>
+                <view class="bg-white border-radius-main padding-main spacing-mb">
+                    <component-moment-compose
+                        ref="compose"
+                        :propPlaceholder="$t('moment-form.content_placeholder')"
+                        :propSubmitText="moment_id > 0 ? $t('moment-form.save') : $t('moment-form.submit')"
+                        :propMaxlength="1000"
+                        :propLoading="form_submit_loading"
+                        :propEditorPathType="editor_path_type"
+                        :propImagesMax="images_max"
+                        :propTools="compose_tools"
+                        @compose-submit="form_submit"
+                        @emoji-open="emoji_open_event"
+                    ></component-moment-compose>
+                </view>
             </view>
-        </view>
-        <component-emoji-popup ref="emoji" v-on:choiceConfirmEvent="emoji_choice_confirm_event"></component-emoji-popup>
+            <component-emoji-popup ref="emoji" v-on:choiceConfirmEvent="emoji_choice_confirm_event"></component-emoji-popup>
+        </block>
+        <block v-else>
+            <component-no-data :propStatus="data_list_loding_status" :propMsg="data_list_loding_msg"></component-no-data>
+        </block>
         <component-common ref="common"></component-common>
     </view>
 </template>
 <script>
     const app = getApp();
     import componentCommon from '@/components/common/common';
+    import componentNoData from '@/components/no-data/no-data';
     import componentMomentCompose from '@/pages/plugins/userhome/components/moment-compose/moment-compose';
     import componentEmojiPopup from '@/pages/plugins/userhome/components/emoji-popup/emoji-popup';
     import pluginLocale from '@/pages/plugins/userhome/locale/index.js';
@@ -31,9 +43,13 @@
         data() {
             return {
                 theme_view: app.globalData.get_theme_value_view(),
+                theme_color: app.globalData.get_theme_color(),
                 params: {},
                 moment_id: 0,
+                is_enable: 1,
                 form_submit_loading: false,
+                data_list_loding_status: 1,
+                data_list_loding_msg: '',
                 editor_path_type: '',
                 images_max: 9,
                 emoji_list: [],
@@ -51,6 +67,7 @@
         },
         components: {
             componentCommon,
+            componentNoData,
             componentMomentCompose,
             componentEmojiPopup,
         },
@@ -92,8 +109,16 @@
             init() {
                 var user = app.globalData.get_user_info(this, 'init');
                 if (user == false) {
+                    this.setData({
+                        data_list_loding_status: 2,
+                        data_list_loding_msg: this.$t('common.user_not_logged') || this.$t('common.no_relevant_data_tips'),
+                    });
                     return;
                 }
+                this.setData({
+                    data_list_loding_status: 1,
+                    data_list_loding_msg: '',
+                });
                 var post = { id: this.moment_id || 0 };
                 // 参与话题：传 topic_id，由服务端取名称预填（避免中文 URL 乱码）
                 if (this.moment_id <= 0 && this.params) {
@@ -111,11 +136,19 @@
                     dataType: 'json',
                     success: (res) => {
                         if (res.data.code != 0) {
-                            app.globalData.showToast(res.data.msg);
+                            this.setData({
+                                data_list_loding_status: 2,
+                                data_list_loding_msg: res.data.msg || this.$t('common.no_relevant_data_tips'),
+                            });
+                            if (app.globalData.is_login_check(res.data, this, 'init')) {
+                                // 非登录失效：错误已用无数据组件展示
+                            }
                             return;
                         }
                         var data = res.data.data || {};
                         this.setData({
+                            data_list_loding_status: 3,
+                            data_list_loding_msg: '',
                             editor_path_type: data.editor_path_type || '',
                             images_max: parseInt(data.images_max_number || 9) || 9,
                             emoji_list: data.emoji_list || [],
@@ -132,6 +165,9 @@
                         });
                         // 编辑回填 / 参与话题预填
                         if (data.data) {
+                            this.setData({
+                                is_enable: parseInt(data.data.is_enable) == 0 ? 0 : 1,
+                            });
                             this.$nextTick(() => {
                                 if (this.$refs.compose && this.$refs.compose.set_form_data) {
                                     this.$refs.compose.set_form_data(data.data);
@@ -139,6 +175,17 @@
                             });
                         }
                     },
+                    fail: () => {
+                        this.setData({
+                            data_list_loding_status: 2,
+                            data_list_loding_msg: this.$t('common.internet_error_tips'),
+                        });
+                    },
+                });
+            },
+            is_enable_event(e) {
+                this.setData({
+                    is_enable: e.detail.value ? 1 : 0,
                 });
             },
             // 提交保存
@@ -156,6 +203,7 @@
                 };
                 if (this.moment_id > 0) {
                     post.id = this.moment_id;
+                    post.is_enable = this.is_enable == 1 ? 1 : 0;
                 }
                 uni.request({
                     url: app.globalData.get_request_url('save', 'moment', 'userhome'),

@@ -291,10 +291,10 @@
                 this.input_cursor = -1;
                 this.media_locked = false;
             },
-            // 回填编辑数据（topic_list 并入正文，与 PC moment_publish 一致）
+            // 回填编辑数据（优先 content_edit 保留换行；缺话题时另起一行补入）
             set_form_data(data) {
                 data = data || {};
-                var content = data.content || '';
+                var content = (data.content_edit != null) ? String(data.content_edit) : (data.content || '');
                 var topics = Array.isArray(data.topic_list) ? data.topic_list : [];
                 for (var i = 0; i < topics.length; i++) {
                     var name = ((topics[i] && topics[i].name) || '').replace(/#/g, '').trim();
@@ -304,8 +304,7 @@
                     if (content.indexOf('#' + name) >= 0) {
                         continue;
                     }
-                    // 话题后加空格，避免接着输入时粘在一起
-                    content += (content === '' || /\s$/.test(content) ? '' : ' ') + '#' + name + ' ';
+                    content += (content === '' || /\n$/.test(content) ? '' : '\n') + '#' + name;
                 }
                 var images = Array.isArray(data.images) ? data.images.slice() : [];
                 this.form = { content: content };

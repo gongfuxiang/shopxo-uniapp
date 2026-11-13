@@ -44,6 +44,15 @@
                                 </view>
                             </view>
                         </block>
+                        <switch
+                            v-else-if="item.type == 'status'"
+                            style="transform: scale(0.7)"
+                            :color="theme_color"
+                            :checked="parseInt(data[item.field] || 0) == 1"
+                            :disabled="status_switch_disabled(item)"
+                            @tap.stop=""
+                            @change.stop="status_change_event($event, item)"
+                        ></switch>
                         <text v-else class="cr-base">{{ data[item.field] }}</text>
                         <view v-if="(item.is_copy || 0) == 1 && data[item.field] !== ''" class="dis-inline-block margin-left" data-event="copy" :data-value="data[item.field]" @tap.stop="text_event_handle">
                             <iconfont name="icon-copy" size="28rpx" class="cr-grey"></iconfont>
@@ -104,6 +113,16 @@
                                                 </view>
                                             </view>
                                         </block>
+                                        <block v-else-if="item.type == 'status'">
+                                            <switch
+                                                style="transform: scale(0.7)"
+                                                :color="theme_color"
+                                                :checked="parseInt(data[item.field] || 0) == 1"
+                                                :disabled="status_switch_disabled(item)"
+                                                @tap.stop=""
+                                                @change.stop="status_change_event($event, item)"
+                                            ></switch>
+                                        </block>
                                         <block v-else>
                                             <text>{{ data[item.field] }}</text>
                                             <view v-if="(item.is_copy || 0) == 1 && data[item.field] !== ''" class="dis-inline-block margin-left" data-event="copy" :data-value="data[item.field]" @tap.stop="text_event_handle">
@@ -150,6 +169,7 @@
         data() {
             return {
                 theme_view: app.globalData.get_theme_value_view(),
+                theme_color: app.globalData.get_theme_color(),
                 data: null,
                 data_field: [],
                 more_status: false,
@@ -247,6 +267,44 @@
                         data_field: temp_data,
                     });
                 }
+            },
+
+            // 锁定或无状态操作权限时禁用开关
+            status_switch_disabled(item) {
+                if ((this.data || null) == null) {
+                    return true;
+                }
+                if (parseInt(this.data.is_lock || 0) == 1) {
+                    return true;
+                }
+                var op = this.data.operate_data || null;
+                if (op != null && typeof op.is_status !== 'undefined' && parseInt(op.is_status) != 1) {
+                    return true;
+                }
+                return false;
+            },
+            // 状态开关（与 PC form status 列一致，由父级请求 statusupdate）
+            status_change_event(e, item) {
+                if (this.status_switch_disabled(item)) {
+                    return;
+                }
+                var state = e.detail.value ? 1 : 0;
+                var field = (item && item.field) || '';
+                if (!field || (this.data || null) == null) {
+                    return;
+                }
+                var old = parseInt(this.data[field] || 0) == 1 ? 1 : 0;
+                this.$set(this.data, field, state);
+                if (Object.prototype.hasOwnProperty.call(this.data, field + '_name')) {
+                    this.$set(this.data, field + '_name', state == 1 ? (this.$t('common.yes_title') || '是') : (this.$t('common.no_title') || '否'));
+                }
+                this.$emit('status', {
+                    id: this.data.id,
+                    field: field,
+                    state: state,
+                    old_state: old,
+                    data: this.data,
+                });
             },
 
             // 文本事件
