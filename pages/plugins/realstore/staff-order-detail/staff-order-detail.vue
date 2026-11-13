@@ -45,16 +45,16 @@
                                 v-for="(step, index) in status_progress_steps"
                                 :key="index"
                                 class="make-progress-step"
-                                :class="make_step_class(index)"
+                                :class="step.step_class"
                             >
                                 <view class="make-progress-node">
-                                    <view class="make-progress-dot" :class="make_step_done(index) || make_step_active(index) ? 'bg-main' : ''">
-                                        <text v-if="make_step_done(index)" class="make-progress-dot-check cr-white">✓</text>
-                                        <text v-else class="make-progress-dot-num" :class="make_step_active(index) ? 'cr-white' : 'cr-grey'">{{ index + 1 }}</text>
+                                    <view class="make-progress-dot" :class="step.dot_class">
+                                        <text v-if="step.is_done" class="make-progress-dot-check cr-white">✓</text>
+                                        <text v-else class="make-progress-dot-num" :class="step.num_class">{{ index + 1 }}</text>
                                     </view>
-                                    <view v-if="index < status_progress_steps.length - 1" class="make-progress-line" :class="make_step_done(index) ? 'bg-main' : ''"></view>
+                                    <view v-if="index < status_progress_steps.length - 1" class="make-progress-line" :class="step.line_class"></view>
                                 </view>
-                                <text class="make-progress-name" :class="make_step_active(index) ? 'cr-main' : (make_step_done(index) ? 'cr-base' : 'cr-grey')">{{ step.name }}</text>
+                                <text class="make-progress-name" :class="step.name_class">{{ step.name }}</text>
                             </view>
                         </view>
                     </view>
@@ -365,7 +365,23 @@
             },
             status_progress_steps() {
                 const steps = ((this.status_progress || {}).steps) || null;
-                return (steps != null && steps.length > 0) ? steps : [];
+                if (steps == null || steps.length <= 0) {
+                    return [];
+                }
+                const cur = Number(((this.status_progress || {}).current) || 0);
+                return steps.map((step, index) => {
+                    const is_done = index < cur;
+                    const is_active = index === cur;
+                    return Object.assign({}, step, {
+                        is_done: is_done,
+                        is_active: is_active,
+                        step_class: is_done ? 'is-done' : (is_active ? 'is-active' : 'is-wait'),
+                        dot_class: (is_done || is_active) ? 'bg-main' : '',
+                        num_class: is_active ? 'cr-white' : 'cr-grey',
+                        line_class: is_done ? 'bg-main' : '',
+                        name_class: is_active ? 'cr-main' : (is_done ? 'cr-base' : 'cr-grey'),
+                    });
+                });
             },
             detail_call_no() {
                 return String(((this.detail || {}).call_no_text) || '').trim();
@@ -397,23 +413,6 @@
             this.get_data();
         },
         methods: {
-            make_step_class(index) {
-                if (this.make_step_done(index)) {
-                    return 'is-done';
-                }
-                if (this.make_step_active(index)) {
-                    return 'is-active';
-                }
-                return 'is-wait';
-            },
-            make_step_done(index) {
-                const cur = Number(((this.status_progress || {}).current) || 0);
-                return index < cur;
-            },
-            make_step_active(index) {
-                const cur = Number(((this.status_progress || {}).current) || 0);
-                return index === cur;
-            },
             init() {
                 var user = app.globalData.get_user_info(this, 'init');
                 if (user != false) {

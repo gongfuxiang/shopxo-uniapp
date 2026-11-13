@@ -5,16 +5,16 @@
                 v-for="(step, index) in steps"
                 :key="index"
                 class="make-progress-step"
-                :class="make_step_class(index)"
+                :class="step.step_class"
             >
                 <view class="make-progress-node">
-                    <view class="make-progress-dot" :class="make_step_done(index) || make_step_active(index) ? 'bg-main' : ''">
-                        <text v-if="make_step_done(index)" class="make-progress-dot-check cr-white">✓</text>
-                        <text v-else class="make-progress-dot-num" :class="make_step_active(index) ? 'cr-white' : 'cr-grey'">{{ index + 1 }}</text>
+                    <view class="make-progress-dot" :class="step.dot_class">
+                        <text v-if="step.is_done" class="make-progress-dot-check cr-white">✓</text>
+                        <text v-else class="make-progress-dot-num" :class="step.num_class">{{ index + 1 }}</text>
                     </view>
-                    <view v-if="index < steps.length - 1" class="make-progress-line" :class="make_step_done(index) ? 'bg-main' : ''"></view>
+                    <view v-if="index < steps.length - 1" class="make-progress-line" :class="step.line_class"></view>
                 </view>
-                <text class="make-progress-name" :class="make_step_active(index) ? 'cr-main' : (make_step_done(index) ? 'cr-base' : 'cr-grey')">{{ step.name }}</text>
+                <text class="make-progress-name" :class="step.name_class">{{ step.name }}</text>
             </view>
         </view>
         <view v-else class="flex-1"></view>
@@ -43,31 +43,27 @@
                 return String(this.propCallNo || '').trim();
             },
             steps() {
-                const steps = ((this.propProgress || {}).steps) || null;
-                return (steps != null && steps.length > 0) ? steps : [];
-            },
-            current() {
-                return Number(((this.propProgress || {}).current) || 0);
+                const list = ((this.propProgress || {}).steps) || null;
+                if (list == null || list.length <= 0) {
+                    return [];
+                }
+                const cur = Number(((this.propProgress || {}).current) || 0);
+                return list.map((step, index) => {
+                    const is_done = index < cur;
+                    const is_active = index === cur;
+                    return Object.assign({}, step, {
+                        is_done: is_done,
+                        is_active: is_active,
+                        step_class: is_done ? 'is-done' : (is_active ? 'is-active' : 'is-wait'),
+                        dot_class: (is_done || is_active) ? 'bg-main' : '',
+                        num_class: is_active ? 'cr-white' : 'cr-grey',
+                        line_class: is_done ? 'bg-main' : '',
+                        name_class: is_active ? 'cr-main' : (is_done ? 'cr-base' : 'cr-grey'),
+                    });
+                });
             },
             visible() {
                 return this.steps.length > 0 || this.call_no !== '';
-            },
-        },
-        methods: {
-            make_step_class(index) {
-                if (this.make_step_done(index)) {
-                    return 'is-done';
-                }
-                if (this.make_step_active(index)) {
-                    return 'is-active';
-                }
-                return 'is-wait';
-            },
-            make_step_done(index) {
-                return index < this.current;
-            },
-            make_step_active(index) {
-                return index === this.current;
             },
         },
     };

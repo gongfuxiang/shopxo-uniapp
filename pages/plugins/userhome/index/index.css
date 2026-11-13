@@ -3,11 +3,6 @@
     padding-left: 24rpx;
     padding-right: 24rpx;
 }
-.banner-swiper,
-.banner-img {
-    width: 100%;
-    height: 280rpx;
-}
 .nav-tabs {
     padding: 10rpx 24rpx 0;
 }

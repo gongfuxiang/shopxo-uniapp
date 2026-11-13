@@ -7,18 +7,7 @@
 
         <block v-else>
             <view v-if="(slider_list || []).length > 0" class="spacing-mb">
-                <swiper class="banner-swiper" indicator-dots circular autoplay>
-                    <swiper-item v-for="(item, index) in slider_list" :key="index" :style="item.bg_color ? ('background:' + item.bg_color) : ''">
-                        <image
-                            class="banner-img"
-                            :src="item.images_url"
-                            mode="aspectFill"
-                            :data-value="item.event_value || ''"
-                            :data-type="item.event_type == undefined ? 1 : item.event_type"
-                            @tap="banner_event"
-                        ></image>
-                    </swiper-item>
-                </swiper>
+                <component-banner :propData="slider_list" propRadius="" :propImageMode="'aspectFill'"></component-banner>
             </view>
 
             <view v-if="(sort_list || []).length > 0" class="nav-tabs bg-white" :class="{ 'no-topic': (topic_list || []).length == 0 }" :style="'--tab-line-color:' + theme_color">
@@ -35,7 +24,7 @@
 
             <view class="page-bottom-fixed padding-main">
                 <block v-if="data_list.length > 0">
-                    <component-moment-item v-for="(item, index) in data_list" :key="item.id || index" :propItem="item" :propEnableDetail="config.is_enable_moment_detail == 1" :propShowLike="config.is_enable_like == 1" :propShowComment="config.is_enable_comment == 1" @like="like_event" @comment-count="comment_count_event"></component-moment-item>
+                    <component-moment-item v-for="(item, index) in data_list" :key="item.id || index" :propItem="item" :propEnableDetail="config.is_enable_moment_detail == 1" :propShowLike="config.is_enable_like == 1" :propShowComment="config.is_enable_comment == 1" :propShowOwner="true" @like="like_event" @comment-count="comment_count_event" @edit="edit_event" @delete="delete_event"></component-moment-item>
                     <component-bottom-line :propStatus="data_bottom_line_status" :propMsg="data_bottom_line_msg"></component-bottom-line>
                 </block>
                 <component-no-data v-else :propStatus="data_list_loding_status" :propMsg="data_list_loding_msg" :propLoadingLogoTop="(slider_list || []).length > 0 ? '40vh' : ''"></component-no-data>
@@ -59,6 +48,7 @@
     import componentCommon from '@/components/common/common';
     import componentNoData from '@/components/no-data/no-data';
     import componentBottomLine from '@/components/bottom-line/bottom-line';
+    import componentBanner from '@/components/slider/slider';
     import componentMomentItem from '@/pages/plugins/userhome/components/moment-item/moment-item';
     import componentMomentPublish from '@/pages/plugins/userhome/components/moment-publish/moment-publish';
     import pluginLocale from '@/pages/plugins/userhome/locale/index.js';
@@ -93,6 +83,7 @@
             componentCommon,
             componentNoData,
             componentBottomLine,
+            componentBanner,
             componentMomentItem,
             componentMomentPublish,
         },
@@ -124,6 +115,8 @@
             app.globalData.page_common_on_show(this);
             // 分享信息处理
             app.globalData.page_share_handle(this.share_info);
+            // 编辑/发布保存返回时按需刷新（避免 onShow 每次重拉）
+            this.check_feed_refresh();
         },
         // 滚动加载
         onReachBottom() {
@@ -141,6 +134,19 @@
             // 初始化
             init() {
                 this.get_init();
+            },
+            // 编辑/发布保存后返回刷新广场
+            check_feed_refresh() {
+                var key = 'cache_plugins_userhome_feed_refresh';
+                var refresh = uni.getStorageSync(key) || null;
+                if (!refresh) {
+                    return;
+                }
+                uni.removeStorageSync(key);
+                if (!this.page_ready) {
+                    return;
+                }
+                this.reload();
             },
             // 重新加载
             reload() {
@@ -335,10 +341,6 @@
                 });
                 this.get_list(1);
             },
-            // 轮播：按 event_type 处理（网页/内部页/地图/电话等）
-            banner_event(e) {
-                app.globalData.operation_event(e);
-            },
             // 热门话题：仅跳转话题页，不参与广场筛选
             topic_event(e) {
                 var id = parseInt(e.currentTarget.dataset.id || 0) || 0;
@@ -347,6 +349,41 @@
                 }
                 app.globalData.url_event({
                     currentTarget: { dataset: { value: '/pages/plugins/userhome/topic/topic?id=' + id } },
+                });
+            },
+            // 编辑动态
+            edit_event(item) {
+                if (!item || !item.id) {
+                    return;
+                }
+                app.globalData.url_open('/pages/plugins/userhome/moment-form/moment-form?id=' + item.id);
+            },
+            // 删除动态
+            delete_event(item) {
+                var self = this;
+                if (!item || !item.id) {
+                    return;
+                }
+                uni.showModal({
+                    title: this.$t('common.warm_tips'),
+                    content: this.$t('moment.delete_confirm'),
+                    success(ret) {
+                        if (!ret.confirm) {
+                            return;
+                        }
+                        uni.request({
+                            url: app.globalData.get_request_url('delete', 'moment', 'userhome'),
+                            method: 'POST',
+                            data: { ids: item.id },
+                            dataType: 'json',
+                            success: (res) => {
+                                app.globalData.showToast(res.data.msg);
+                                if (res.data.code == 0) {
+                                    self.reload();
+                                }
+                            },
+                        });
+                    },
                 });
             },
             // 点赞

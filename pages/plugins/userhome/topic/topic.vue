@@ -47,8 +47,11 @@
                         :propEnableDetail="config.is_enable_moment_detail == 1"
                         :propShowLike="config.is_enable_like == 1"
                         :propShowComment="config.is_enable_comment == 1"
+                        :propShowOwner="true"
                         @like="like_event"
                         @comment-count="comment_count_event"
+                        @edit="edit_event"
+                        @delete="delete_event"
                     ></component-moment-item>
                     <component-bottom-line :propStatus="data_bottom_line_status" :propMsg="data_bottom_line_msg"></component-bottom-line>
                 </block>
@@ -353,6 +356,41 @@
                 }
                 app.globalData.url_event({
                     currentTarget: { dataset: { value: url } },
+                });
+            },
+            // 编辑动态
+            edit_event(item) {
+                if (!item || !item.id) {
+                    return;
+                }
+                app.globalData.url_open('/pages/plugins/userhome/moment-form/moment-form?id=' + item.id);
+            },
+            // 删除动态
+            delete_event(item) {
+                var self = this;
+                if (!item || !item.id) {
+                    return;
+                }
+                uni.showModal({
+                    title: this.$t('common.warm_tips'),
+                    content: this.$t('moment.delete_confirm'),
+                    success(ret) {
+                        if (!ret.confirm) {
+                            return;
+                        }
+                        uni.request({
+                            url: app.globalData.get_request_url('delete', 'moment', 'userhome'),
+                            method: 'POST',
+                            data: { ids: item.id },
+                            dataType: 'json',
+                            success: (res) => {
+                                app.globalData.showToast(res.data.msg);
+                                if (res.data.code == 0) {
+                                    self.reload();
+                                }
+                            },
+                        });
+                    },
                 });
             },
             like_event(item) {

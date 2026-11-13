@@ -169,6 +169,7 @@
                             var edit_id = parseInt(this.moment_id || 0);
                             uni.setStorageSync('cache_plugins_userhome_home_refresh', 1);
                             uni.setStorageSync('cache_plugins_userhome_topic_refresh', 1);
+                            uni.setStorageSync('cache_plugins_userhome_feed_refresh', 1);
                             uni.setStorageSync('cache_plugins_userhome_list_refresh', {
                                 type: edit_id > 0 ? 'edit' : 'add',
                                 id: edit_id,
@@ -192,6 +193,3 @@
         },
     };
 </script>
-<style scoped>
-    @import './moment-form.css';
-</style>
