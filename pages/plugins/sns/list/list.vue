@@ -28,7 +28,7 @@
                                     v-for="(topic, ti) in item.topic_list"
                                     :key="topic.id || ti"
                                     class="cr-main margin-right-sm text-size-sm"
-                                    :data-value="'/pages/plugins/userhome/topic/topic?id=' + (topic.id || 0)"
+                                    :data-value="'/pages/plugins/sns/topic/topic?id=' + (topic.id || 0)"
                                     @tap.stop="url_event"
                                 >#{{ topic.name }}</text>
                             </view>
@@ -58,7 +58,7 @@
                                 class="btn round cr-main br-main bg-white text-size-md"
                                 type="default"
                                 size="mini"
-                                :data-value="'/pages/plugins/userhome/moment-form/moment-form?id=' + item.id"
+                                :data-value="'/pages/plugins/sns/moment-form/moment-form?id=' + item.id"
                                 @tap="edit_event"
                                 hover-class="none"
                             >{{$t('common.edit')}}</button>
@@ -80,10 +80,10 @@
                     <component-no-data :propStatus="data_list_loding_status" :propMsg="data_list_loding_msg"></component-no-data>
                 </view>
 
-                <view v-if="(data_base || null) != null && (data_base.is_enable_moment == 1 || data_base.is_enable_userhome == 1)" class="bottom-fixed" :style="bottom_fixed_style">
+                <view v-if="(data_base || null) != null && (data_base.is_enable_moment == 1 || data_base.is_enable_sns == 1)" class="bottom-fixed" :style="bottom_fixed_style">
                     <view class="bottom-line-exclude flex-row gap-10">
                         <button v-if="data_base.is_enable_moment == 1" class="item flex-1 round cr-white bg-main text-size" type="default" hover-class="none" @tap="publish_event">{{$t('home.publish_moment')}}</button>
-                        <button v-if="data_base.is_enable_userhome == 1" class="item flex-1 round cr-main bg-white br-main text-size" type="default" hover-class="none" @tap="my_home_event">{{$t('feed.my_home')}}</button>
+                        <button v-if="data_base.is_enable_sns == 1" class="item flex-1 round cr-main bg-white br-main text-size" type="default" hover-class="none" @tap="my_home_event">{{$t('feed.my_home')}}</button>
                     </view>
                 </view>
             </view>
@@ -99,9 +99,9 @@
     import componentNoData from '@/components/no-data/no-data';
     import componentBottomLine from '@/components/bottom-line/bottom-line';
     import componentPanelContent from '@/pages/common/components/panel-content/panel-content';
-    import componentMomentPublish from '@/pages/plugins/userhome/components/moment-publish/moment-publish';
-    import pluginLocale from '@/pages/plugins/userhome/locale/index.js';
-    const CACHE_LIST_REFRESH = 'cache_plugins_userhome_list_refresh';
+    import componentMomentPublish from '@/pages/plugins/sns/components/moment-publish/moment-publish';
+    import pluginLocale from '@/pages/plugins/sns/locale/index.js';
+    const CACHE_LIST_REFRESH = 'cache_plugins_sns_list_refresh';
     export default {
         mixins: [pluginLocale],
         data() {
@@ -187,7 +187,7 @@
             // 编辑成功：拉详情替换当前条
             refresh_item(id) {
                 uni.request({
-                    url: app.globalData.get_request_url('detail', 'moment', 'userhome'),
+                    url: app.globalData.get_request_url('detail', 'moment', 'sns'),
                     method: 'POST',
                     data: { id: id },
                     dataType: 'json',
@@ -211,7 +211,7 @@
             // 获取公共数据（导航）
             get_data_base() {
                 uni.request({
-                    url: app.globalData.get_request_url('center', 'moment', 'userhome'),
+                    url: app.globalData.get_request_url('center', 'moment', 'sns'),
                     method: 'POST',
                     data: {},
                     dataType: 'json',
@@ -305,7 +305,7 @@
                     data['audit_status'] = status;
                 }
                 uni.request({
-                    url: app.globalData.get_request_url('index', 'moment', 'userhome'),
+                    url: app.globalData.get_request_url('index', 'moment', 'sns'),
                     method: 'POST',
                     data: data,
                     dataType: 'json',
@@ -383,7 +383,7 @@
                             title: this.$t('common.processing_in_text'),
                         });
                         uni.request({
-                            url: app.globalData.get_request_url('delete', 'moment', 'userhome'),
+                            url: app.globalData.get_request_url('delete', 'moment', 'sns'),
                             method: 'POST',
                             data: { ids: value },
                             dataType: 'json',
@@ -402,7 +402,7 @@
                                             data_list_loding_msg: this.$t('common.no_relevant_data_tips'),
                                         });
                                     }
-                                    uni.setStorageSync('cache_plugins_userhome_home_refresh', 1);
+                                    uni.setStorageSync('cache_plugins_sns_home_refresh', 1);
                                     app.globalData.showToast(res.data.msg, 'success');
                                 } else {
                                     app.globalData.showToast(res.data.msg);
@@ -428,7 +428,7 @@
                         return;
                     }
                 } catch (e) {}
-                uni.$emit('plugins_userhome_publish_open');
+                uni.$emit('plugins_sns_publish_open');
             },
             // 我的主页
             my_home_event() {
@@ -436,7 +436,7 @@
                 if (user == false || !user.id) {
                     return;
                 }
-                app.globalData.url_event({ currentTarget: { dataset: { value: '/pages/plugins/userhome/home/home?id=' + user.id } } });
+                app.globalData.url_event({ currentTarget: { dataset: { value: '/pages/plugins/sns/home/home?id=' + user.id } } });
             },
             // 链接事件
             url_event(e) {

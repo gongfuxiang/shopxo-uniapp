@@ -68,9 +68,9 @@
     import componentCommon from '@/components/common/common';
     import componentNoData from '@/components/no-data/no-data';
     import componentBottomLine from '@/components/bottom-line/bottom-line';
-    import componentMomentItem from '@/pages/plugins/userhome/components/moment-item/moment-item';
+    import componentMomentItem from '@/pages/plugins/sns/components/moment-item/moment-item';
     import componentSharePopup from '@/pages/common/components/share-popup/share-popup';
-    import pluginLocale from '@/pages/plugins/userhome/locale/index.js';
+    import pluginLocale from '@/pages/plugins/sns/locale/index.js';
     export default {
         mixins: [pluginLocale],
         data() {
@@ -114,7 +114,7 @@
                 topic_id: topic_id,
                 sort: params.sort == 'hot' || params.sort == 'like' ? params.sort : 'new',
             });
-            uni.setNavigationBarTitle({ title: this.$t('pages.plugins-userhome-topic') });
+            uni.setNavigationBarTitle({ title: this.$t('pages.plugins-sns-topic') });
             app.globalData.page_event_onload_handle(params);
             this.init();
         },
@@ -122,8 +122,8 @@
             app.globalData.page_event_onshow_handle();
             app.globalData.page_common_on_show(this);
             app.globalData.page_share_handle(this.share_info);
-            if (this.page_ready && uni.getStorageSync('cache_plugins_userhome_topic_refresh')) {
-                uni.removeStorageSync('cache_plugins_userhome_topic_refresh');
+            if (this.page_ready && uni.getStorageSync('cache_plugins_sns_topic_refresh')) {
+                uni.removeStorageSync('cache_plugins_sns_topic_refresh');
                 this.reload();
             }
         },
@@ -176,7 +176,7 @@
                     page_loding_msg: '',
                 });
                 uni.request({
-                    url: app.globalData.get_request_url('topicinit', 'index', 'userhome'),
+                    url: app.globalData.get_request_url('topicinit', 'index', 'sns'),
                     method: 'POST',
                     data: { id: this.topic_id },
                     dataType: 'json',
@@ -211,7 +211,7 @@
                             data_list_loding_msg: '',
                             data_is_loading: 0,
                         });
-                        uni.setNavigationBarTitle({ title: this.$t('pages.plugins-userhome-topic') });
+                        uni.setNavigationBarTitle({ title: this.$t('pages.plugins-sns-topic') });
                         this.update_share_info(topic);
                         this.get_list(1);
                     },
@@ -231,9 +231,9 @@
                 }
                 var name = topic.name || '';
                 var info = {
-                    title: name ? '#' + name : this.$t('pages.plugins-userhome-topic'),
+                    title: name ? '#' + name : this.$t('pages.plugins-sns-topic'),
                     desc: (topic.moment_count || 0) + this.$t('home.topic_moment_count'),
-                    path: '/pages/plugins/userhome/topic/topic',
+                    path: '/pages/plugins/sns/topic/topic',
                     query: 'id=' + topic.id,
                     img: '',
                 };
@@ -277,7 +277,7 @@
                     data_list_loding_status: this.data_list.length > 0 ? 3 : 1,
                 });
                 uni.request({
-                    url: app.globalData.get_request_url('feed', 'index', 'userhome'),
+                    url: app.globalData.get_request_url('feed', 'index', 'sns'),
                     method: 'POST',
                     data: {
                         page: this.data_page,
@@ -350,7 +350,7 @@
                 if (user == false) {
                     return;
                 }
-                var url = '/pages/plugins/userhome/moment-form/moment-form';
+                var url = '/pages/plugins/sns/moment-form/moment-form';
                 if (this.topic_id > 0) {
                     url += '?topic_id=' + this.topic_id;
                 }
@@ -363,7 +363,7 @@
                 if (!item || !item.id) {
                     return;
                 }
-                app.globalData.url_open('/pages/plugins/userhome/moment-form/moment-form?id=' + item.id);
+                app.globalData.url_open('/pages/plugins/sns/moment-form/moment-form?id=' + item.id);
             },
             // 删除动态
             delete_event(item) {
@@ -379,7 +379,7 @@
                             return;
                         }
                         uni.request({
-                            url: app.globalData.get_request_url('delete', 'moment', 'userhome'),
+                            url: app.globalData.get_request_url('delete', 'moment', 'sns'),
                             method: 'POST',
                             data: { ids: item.id },
                             dataType: 'json',
@@ -399,7 +399,7 @@
                     return;
                 }
                 uni.request({
-                    url: app.globalData.get_request_url('like', 'index', 'userhome'),
+                    url: app.globalData.get_request_url('like', 'index', 'sns'),
                     method: 'POST',
                     data: { moment_id: item.id },
                     dataType: 'json',

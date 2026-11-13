@@ -86,7 +86,7 @@
 </template>
 <script>
     const app = getApp();
-    import componentMomentComment from '@/pages/plugins/userhome/components/moment-comment/moment-comment';
+    import componentMomentComment from '@/pages/plugins/sns/components/moment-comment/moment-comment';
     export default {
         components: {
             componentMomentComment,
@@ -222,7 +222,7 @@
                     var vm = page && (page.$vm || page);
                     var route = (page && (page.route || page.__route__)) || '';
                     var cur_id = parseInt((vm && vm.topic_id) || 0) || 0;
-                    if (cur_id == id && route.indexOf('plugins/userhome/topic/topic') >= 0) {
+                    if (cur_id == id && route.indexOf('plugins/sns/topic/topic') >= 0) {
                         var top = parseInt((vm && vm.page_scroll_top) || 0) || 0;
                         if (top <= 20) {
                             var tips = (vm && typeof vm.$t === 'function') ? vm.$t('home.topic_current_tips') : '';
@@ -236,7 +236,7 @@
                     }
                 } catch (err) {}
                 app.globalData.url_event({
-                    currentTarget: { dataset: { value: '/pages/plugins/userhome/topic/topic?id=' + id } },
+                    currentTarget: { dataset: { value: '/pages/plugins/sns/topic/topic?id=' + id } },
                 });
             },
             // 查看详情

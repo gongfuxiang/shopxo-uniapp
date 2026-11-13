@@ -84,7 +84,7 @@
 <script>
     const app = getApp();
     import componentCommon from '@/components/common/common';
-    import pluginLocale from '@/pages/plugins/userhome/locale/index.js';
+    import pluginLocale from '@/pages/plugins/sns/locale/index.js';
     export default {
         mixins: [pluginLocale],
         components: {
@@ -134,7 +134,7 @@
                     return;
                 }
                 uni.request({
-                    url: app.globalData.get_request_url('profilesaveinfo', 'index', 'userhome'),
+                    url: app.globalData.get_request_url('profilesaveinfo', 'index', 'sns'),
                     method: 'POST',
                     data: {},
                     dataType: 'json',
@@ -230,7 +230,7 @@
                 this.form_loading = true;
                 uni.showLoading({ title: this.$t('common.submit_in_text') });
                 uni.request({
-                    url: app.globalData.get_request_url('profilesave', 'index', 'userhome'),
+                    url: app.globalData.get_request_url('profilesave', 'index', 'sns'),
                     method: 'POST',
                     data: {
                         nickname: this.form.nickname || '',
@@ -245,7 +245,7 @@
                         app.globalData.showToast(res.data.msg, res.data.code == 0 ? 'success' : 'error');
                         if (res.data.code == 0) {
                             // 通知主页返回后刷新资料（主页不在 onShow 常刷）
-                            uni.setStorageSync('cache_plugins_userhome_home_refresh', 1);
+                            uni.setStorageSync('cache_plugins_sns_home_refresh', 1);
                             setTimeout(() => {
                                 app.globalData.page_back_prev_event();
                             }, 1200);

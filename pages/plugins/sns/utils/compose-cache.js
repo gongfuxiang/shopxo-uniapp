@@ -26,15 +26,15 @@ function request_post(url) {
     });
 }
 
-// 获取个人主页配置（带缓存；force 强制刷新）
-export function getUserhomeConfig(force) {
+// 获取微社区配置（带缓存；force 强制刷新）
+export function getSnsConfig(force) {
     if (!force && config_cache) {
         return Promise.resolve(config_cache);
     }
     if (!force && config_pending) {
         return config_pending;
     }
-    config_pending = request_post(app.globalData.get_request_url('config', 'index', 'userhome')).then((data) => {
+    config_pending = request_post(app.globalData.get_request_url('config', 'index', 'sns')).then((data) => {
         if (data) {
             config_cache = data;
         }
@@ -56,7 +56,7 @@ export function getMomentSaveinfo(force) {
     if (!app.globalData.get_user_cache_info()) {
         return Promise.resolve({});
     }
-    saveinfo_pending = request_post(app.globalData.get_request_url('saveinfo', 'moment', 'userhome')).then((data) => {
+    saveinfo_pending = request_post(app.globalData.get_request_url('saveinfo', 'moment', 'sns')).then((data) => {
         if (data) {
             saveinfo_cache = data;
         }
@@ -67,7 +67,7 @@ export function getMomentSaveinfo(force) {
 }
 
 // 清空配置缓存
-export function clearUserhomeComposeCache() {
+export function clearSnsComposeCache() {
     config_cache = null;
     config_pending = null;
     saveinfo_cache = null;

@@ -64,7 +64,7 @@
     import componentSearch from '@/components/search/search';
     import componentNoData from '@/components/no-data/no-data';
     import componentBottomLine from '@/components/bottom-line/bottom-line';
-    import pluginLocale from '@/pages/plugins/userhome/locale/index.js';
+    import pluginLocale from '@/pages/plugins/sns/locale/index.js';
 
     // 状态栏高度
     var bar_height = parseInt(app.globalData.get_system_info('statusBarHeight', 0, true));
@@ -184,7 +184,7 @@
                 }
                 var action = this.list_type == 'fans' ? 'fanslist' : 'followlist';
                 uni.request({
-                    url: app.globalData.get_request_url(action, 'index', 'userhome'),
+                    url: app.globalData.get_request_url(action, 'index', 'sns'),
                     method: 'POST',
                     data: {
                         uid: this.params.uid || 0,
@@ -270,7 +270,7 @@
                 this.setData({ data_list: list });
                 var action = item.is_follow == 1 ? 'unfollow' : 'follow';
                 uni.request({
-                    url: app.globalData.get_request_url(action, 'index', 'userhome'),
+                    url: app.globalData.get_request_url(action, 'index', 'sns'),
                     method: 'POST',
                     data: { uid: item.user_id },
                     dataType: 'json',

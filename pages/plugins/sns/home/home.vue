@@ -123,7 +123,7 @@
                                 </view>
                             </block>
                         </view>
-                        <button v-if="home.is_self == 1" class="round text-size-sm header-action-btn" type="default" size="mini" hover-class="none" data-value="/pages/plugins/userhome/list/list" @tap="url_event">{{ $t('feed.my_moment') }}</button>
+                        <button v-if="home.is_self == 1" class="round text-size-sm header-action-btn" type="default" size="mini" hover-class="none" data-value="/pages/plugins/sns/list/list" @tap="url_event">{{ $t('feed.my_moment') }}</button>
                         <button v-else-if="home.config.is_enable_follow == 1" class="round text-size-sm header-action-btn" type="default" size="mini" hover-class="none" :loading="follow_loading == 1" :disabled="follow_loading == 1" @tap="follow_event">{{ follow_btn_text }}</button>
                     </view>
                 </view>
@@ -280,10 +280,10 @@
     import componentBottomLine from '@/components/bottom-line/bottom-line';
     import componentPopup from '@/components/popup/popup';
     import componentSharePopup from '@/pages/common/components/share-popup/share-popup';
-    import componentMomentPublish from '@/pages/plugins/userhome/components/moment-publish/moment-publish';
-    import componentMomentItem from '@/pages/plugins/userhome/components/moment-item/moment-item';
-    import { getUserhomeConfig } from '@/pages/plugins/userhome/utils/compose-cache.js';
-    import pluginLocale from '@/pages/plugins/userhome/locale/index.js';
+    import componentMomentPublish from '@/pages/plugins/sns/components/moment-publish/moment-publish';
+    import componentMomentItem from '@/pages/plugins/sns/components/moment-item/moment-item';
+    import { getSnsConfig } from '@/pages/plugins/sns/utils/compose-cache.js';
+    import pluginLocale from '@/pages/plugins/sns/locale/index.js';
 
     // 状态栏高度（固定顶栏下内容偏移）
     var bar_height = parseInt(app.globalData.get_system_info('statusBarHeight', 0, true));
@@ -469,7 +469,7 @@
             },
             // 资料修改后返回刷新主页
             check_home_refresh() {
-                var key = 'cache_plugins_userhome_home_refresh';
+                var key = 'cache_plugins_sns_home_refresh';
                 var refresh = uni.getStorageSync(key) || null;
                 if (!refresh) {
                     return;
@@ -503,7 +503,7 @@
                     });
                 }
                 uni.request({
-                    url: app.globalData.get_request_url('home', 'index', 'userhome'),
+                    url: app.globalData.get_request_url('home', 'index', 'sns'),
                     method: 'POST',
                     data: this.params,
                     dataType: 'json',
@@ -599,7 +599,7 @@
             },
             // 封面上传 path（config 统一下发，与 PC BaseService 一致）
             load_cover_path() {
-                getUserhomeConfig().then((data) => {
+                getSnsConfig().then((data) => {
                     data = data || {};
                     if (data.cover_path_type) {
                         this.cover_path_type = data.cover_path_type;
@@ -607,7 +607,7 @@
                     }
                     // 兜底：资料初始化接口
                     uni.request({
-                        url: app.globalData.get_request_url('profilesaveinfo', 'index', 'userhome'),
+                        url: app.globalData.get_request_url('profilesaveinfo', 'index', 'sns'),
                         method: 'POST',
                         data: {},
                         dataType: 'json',
@@ -626,9 +626,9 @@
                 }
                 var name = home.user_name_view || '';
                 var info = {
-                    title: name ? name + this.$t('home.home_suffix') : this.$t('pages.plugins-userhome-home'),
+                    title: name ? name + this.$t('home.home_suffix') : this.$t('pages.plugins-sns-home'),
                     desc: home.signature || this.$t('home.no_signature'),
-                    path: '/pages/plugins/userhome/home/home',
+                    path: '/pages/plugins/sns/home/home',
                     query: 'id=' + home.user_id,
                     img: home.avatar || '',
                 };
@@ -652,7 +652,7 @@
                     data_list_loding_status: this.data_list.length > 0 ? 3 : 1,
                 });
                 uni.request({
-                    url: app.globalData.get_request_url('content', 'index', 'userhome'),
+                    url: app.globalData.get_request_url('content', 'index', 'sns'),
                     method: 'POST',
                     data: {
                         uid: this.home.user_id,
@@ -726,7 +726,7 @@
                 app.globalData.url_event({
                     currentTarget: {
                         dataset: {
-                            value: '/pages/plugins/userhome/follow-list/follow-list?uid=' + this.home.user_id + '&type=' + type,
+                            value: '/pages/plugins/sns/follow-list/follow-list?uid=' + this.home.user_id + '&type=' + type,
                         },
                     },
                 });
@@ -743,7 +743,7 @@
                 this.follow_loading = 1;
                 var action = this.home.is_follow == 1 ? 'unfollow' : 'follow';
                 uni.request({
-                    url: app.globalData.get_request_url(action, 'index', 'userhome'),
+                    url: app.globalData.get_request_url(action, 'index', 'sns'),
                     method: 'POST',
                     data: { uid: this.home.user_id },
                     dataType: 'json',
@@ -786,7 +786,7 @@
                 }
                 app.globalData.url_event({
                     currentTarget: {
-                        dataset: { value: '/pages/plugins/userhome/profile-edit/profile-edit' },
+                        dataset: { value: '/pages/plugins/sns/profile-edit/profile-edit' },
                     },
                 });
             },
@@ -809,7 +809,7 @@
                     return;
                 }
                 uni.request({
-                    url: app.globalData.get_request_url('themesave', 'index', 'userhome'),
+                    url: app.globalData.get_request_url('themesave', 'index', 'sns'),
                     method: 'POST',
                     data: { theme_style: theme },
                     dataType: 'json',
@@ -880,7 +880,7 @@
             cover_theme_color_event() {
                 var flag = this.is_cover_theme_color == 1 ? 0 : 1;
                 uni.request({
-                    url: app.globalData.get_request_url('coversave', 'index', 'userhome'),
+                    url: app.globalData.get_request_url('coversave', 'index', 'sns'),
                     method: 'POST',
                     data: {
                         only_theme_color: 1,
@@ -902,7 +902,7 @@
             // 保存封面
             cover_save(url) {
                 uni.request({
-                    url: app.globalData.get_request_url('coversave', 'index', 'userhome'),
+                    url: app.globalData.get_request_url('coversave', 'index', 'sns'),
                     method: 'POST',
                     data: {
                         cover: url || '',
@@ -936,7 +936,7 @@
                 if (!item || !item.id) {
                     return;
                 }
-                app.globalData.url_open('/pages/plugins/userhome/moment-form/moment-form?id=' + item.id);
+                app.globalData.url_open('/pages/plugins/sns/moment-form/moment-form?id=' + item.id);
             },
             // 删除动态
             delete_event(item) {
@@ -952,7 +952,7 @@
                             return;
                         }
                         uni.request({
-                            url: app.globalData.get_request_url('delete', 'moment', 'userhome'),
+                            url: app.globalData.get_request_url('delete', 'moment', 'sns'),
                             method: 'POST',
                             data: { ids: item.id },
                             dataType: 'json',
@@ -973,7 +973,7 @@
                     return;
                 }
                 uni.request({
-                    url: app.globalData.get_request_url('like', 'index', 'userhome'),
+                    url: app.globalData.get_request_url('like', 'index', 'sns'),
                     method: 'POST',
                     data: { moment_id: item.id },
                     dataType: 'json',

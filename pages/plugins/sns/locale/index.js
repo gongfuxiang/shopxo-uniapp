@@ -1,15 +1,15 @@
 import { createPageLocaleMixin } from '@/locale/merge-page-locale.js';
 var zh = {
     "pages": {
-        "plugins-userhome-index": "动态广场",
-        "plugins-userhome-home": "个人主页",
-        "plugins-userhome-follow-list": "关注/粉丝",
-        "plugins-userhome-moment-form": "发布动态",
-        "plugins-userhome-moment-form-edit": "编辑动态",
-        "plugins-userhome-list": "我的动态",
-        "plugins-userhome-detail": "动态详情",
-        "plugins-userhome-profile-edit": "编辑资料",
-        "plugins-userhome-topic": "话题"
+        "plugins-sns-index": "动态广场",
+        "plugins-sns-home": "个人主页",
+        "plugins-sns-follow-list": "关注/粉丝",
+        "plugins-sns-moment-form": "发布动态",
+        "plugins-sns-moment-form-edit": "编辑动态",
+        "plugins-sns-list": "我的动态",
+        "plugins-sns-detail": "动态详情",
+        "plugins-sns-profile-edit": "编辑资料",
+        "plugins-sns-topic": "话题"
     },
     "home": {
         "follow": "关注",
@@ -100,15 +100,15 @@ var zh = {
 };
 var en = {
     "pages": {
-        "plugins-userhome-index": "Moments",
-        "plugins-userhome-home": "Profile",
-        "plugins-userhome-follow-list": "Follow/Fans",
-        "plugins-userhome-moment-form": "New Moment",
-        "plugins-userhome-moment-form-edit": "Edit Moment",
-        "plugins-userhome-list": "My Moments",
-        "plugins-userhome-detail": "Moment Detail",
-        "plugins-userhome-profile-edit": "Edit Profile",
-        "plugins-userhome-topic": "Topic"
+        "plugins-sns-index": "Moments",
+        "plugins-sns-home": "Profile",
+        "plugins-sns-follow-list": "Follow/Fans",
+        "plugins-sns-moment-form": "New Moment",
+        "plugins-sns-moment-form-edit": "Edit Moment",
+        "plugins-sns-list": "My Moments",
+        "plugins-sns-detail": "Moment Detail",
+        "plugins-sns-profile-edit": "Edit Profile",
+        "plugins-sns-topic": "Topic"
     },
     "home": {
         "follow": "Follow",

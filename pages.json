@@ -2980,7 +2980,7 @@
             ]
         },
         {
-            "root": "pages/plugins/userhome",
+            "root": "pages/plugins/sns",
             "pages": [
                 {
                     "path": "index/index",

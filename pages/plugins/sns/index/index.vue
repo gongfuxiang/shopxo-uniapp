@@ -30,11 +30,11 @@
                 <component-no-data v-else :propStatus="data_list_loding_status" :propMsg="data_list_loding_msg" :propLoadingLogoTop="(slider_list || []).length > 0 ? '40vh' : ''"></component-no-data>
             </view>
 
-            <view v-if="config.is_enable_moment == 1 || config.is_enable_userhome == 1" class="bottom-fixed bottom-actions">
+            <view v-if="config.is_enable_moment == 1 || config.is_enable_sns == 1" class="bottom-fixed bottom-actions">
                 <view class="bottom-line-exclude flex-row gap-10">
                     <button v-if="config.is_enable_moment == 1" class="item flex-1 cr-white bg-main round text-size" type="default" hover-class="none" @tap="publish_event">{{$t('home.publish_moment')}}</button>
-                    <button v-if="config.is_enable_moment == 1" class="item flex-1 cr-main bg-white br-main round text-size" type="default" hover-class="none" data-value="/pages/plugins/userhome/list/list" @tap="url_event">{{$t('feed.my_moment')}}</button>
-                    <button v-if="config.is_enable_userhome == 1" class="item flex-1 cr-main bg-white br-main round text-size" type="default" hover-class="none" @tap="my_home_event">{{$t('feed.my_home')}}</button>
+                    <button v-if="config.is_enable_moment == 1" class="item flex-1 cr-main bg-white br-main round text-size" type="default" hover-class="none" data-value="/pages/plugins/sns/list/list" @tap="url_event">{{$t('feed.my_moment')}}</button>
+                    <button v-if="config.is_enable_sns == 1" class="item flex-1 cr-main bg-white br-main round text-size" type="default" hover-class="none" @tap="my_home_event">{{$t('feed.my_home')}}</button>
                 </view>
             </view>
             <component-moment-publish ref="publish" @success="reload"></component-moment-publish>
@@ -49,9 +49,9 @@
     import componentNoData from '@/components/no-data/no-data';
     import componentBottomLine from '@/components/bottom-line/bottom-line';
     import componentBanner from '@/components/slider/slider';
-    import componentMomentItem from '@/pages/plugins/userhome/components/moment-item/moment-item';
-    import componentMomentPublish from '@/pages/plugins/userhome/components/moment-publish/moment-publish';
-    import pluginLocale from '@/pages/plugins/userhome/locale/index.js';
+    import componentMomentItem from '@/pages/plugins/sns/components/moment-item/moment-item';
+    import componentMomentPublish from '@/pages/plugins/sns/components/moment-publish/moment-publish';
+    import pluginLocale from '@/pages/plugins/sns/locale/index.js';
     export default {
         mixins: [pluginLocale],
         data() {
@@ -101,7 +101,7 @@
             var jump_topic = parseInt((params && params.topic) || 0) || 0;
             if (jump_topic > 0) {
                 uni.redirectTo({
-                    url: '/pages/plugins/userhome/topic/topic?id=' + jump_topic,
+                    url: '/pages/plugins/sns/topic/topic?id=' + jump_topic,
                 });
                 return;
             }
@@ -137,7 +137,7 @@
             },
             // 编辑/发布保存后返回刷新广场
             check_feed_refresh() {
-                var key = 'cache_plugins_userhome_feed_refresh';
+                var key = 'cache_plugins_sns_feed_refresh';
                 var refresh = uni.getStorageSync(key) || null;
                 if (!refresh) {
                     return;
@@ -176,7 +176,7 @@
                     });
                 }
                 uni.request({
-                    url: app.globalData.get_request_url('feedinit', 'index', 'userhome'),
+                    url: app.globalData.get_request_url('feedinit', 'index', 'sns'),
                     method: 'POST',
                     data: {},
                     dataType: 'json',
@@ -205,18 +205,18 @@
                             var title = data.seo_title || data.application_name || '';
                             // 仅当前仍在广场页时改标题，避免异步返回后覆盖个人主页等其它页
                             var cur = app.globalData.current_page(false) || '';
-                            if (title && cur.indexOf('pages/plugins/userhome/index/index') >= 0) {
+                            if (title && cur.indexOf('pages/plugins/sns/index/index') >= 0) {
                                 uni.setNavigationBarTitle({ title: title });
                             }
                             // 分享标题与导航栏一致，避免落到站点默认名
                             var share_info = {
                                 title: title,
                                 desc: data.seo_desc || '',
-                                path: '/pages/plugins/userhome/index/index',
+                                path: '/pages/plugins/sns/index/index',
                                 img: (data.slider_list || []).length > 0 ? data.slider_list[0].images_url || '' : '',
                             };
                             this.setData({ share_info: share_info });
-                            if (cur.indexOf('pages/plugins/userhome/index/index') >= 0) {
+                            if (cur.indexOf('pages/plugins/sns/index/index') >= 0) {
                                 app.globalData.page_share_handle(share_info);
                             }
                             this.get_list(1);
@@ -267,7 +267,7 @@
                 var req_sort = this.sort;
                 this.setData({ data_is_loading: 1, data_list_loding_status: this.data_list.length > 0 ? 3 : 1 });
                 uni.request({
-                    url: app.globalData.get_request_url('feed', 'index', 'userhome'),
+                    url: app.globalData.get_request_url('feed', 'index', 'sns'),
                     method: 'POST',
                     data: {
                         page: this.data_page,
@@ -348,7 +348,7 @@
                     return;
                 }
                 app.globalData.url_event({
-                    currentTarget: { dataset: { value: '/pages/plugins/userhome/topic/topic?id=' + id } },
+                    currentTarget: { dataset: { value: '/pages/plugins/sns/topic/topic?id=' + id } },
                 });
             },
             // 编辑动态
@@ -356,7 +356,7 @@
                 if (!item || !item.id) {
                     return;
                 }
-                app.globalData.url_open('/pages/plugins/userhome/moment-form/moment-form?id=' + item.id);
+                app.globalData.url_open('/pages/plugins/sns/moment-form/moment-form?id=' + item.id);
             },
             // 删除动态
             delete_event(item) {
@@ -372,7 +372,7 @@
                             return;
                         }
                         uni.request({
-                            url: app.globalData.get_request_url('delete', 'moment', 'userhome'),
+                            url: app.globalData.get_request_url('delete', 'moment', 'sns'),
                             method: 'POST',
                             data: { ids: item.id },
                             dataType: 'json',
@@ -393,7 +393,7 @@
                     return;
                 }
                 uni.request({
-                    url: app.globalData.get_request_url('like', 'index', 'userhome'),
+                    url: app.globalData.get_request_url('like', 'index', 'sns'),
                     method: 'POST',
                     data: { moment_id: item.id },
                     dataType: 'json',
@@ -440,7 +440,7 @@
                         return;
                     }
                 } catch (e) {}
-                uni.$emit('plugins_userhome_publish_open');
+                uni.$emit('plugins_sns_publish_open');
             },
             // 我的主页
             my_home_event() {
@@ -448,7 +448,7 @@
                 if (user == false || !user.id) {
                     return;
                 }
-                app.globalData.url_event({ currentTarget: { dataset: { value: '/pages/plugins/userhome/home/home?id=' + user.id } } });
+                app.globalData.url_event({ currentTarget: { dataset: { value: '/pages/plugins/sns/home/home?id=' + user.id } } });
             },
             // 链接事件
             url_event(e) {

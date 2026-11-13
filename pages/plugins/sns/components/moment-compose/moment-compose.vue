@@ -109,7 +109,7 @@
     const app = getApp();
     var common_static_url = app.globalData.get_static_url('common');
     import componentPopup from '@/components/popup/popup';
-    import pluginLocale from '@/pages/plugins/userhome/locale/index.js';
+    import pluginLocale from '@/pages/plugins/sns/locale/index.js';
     export default {
         mixins: [pluginLocale],
         components: {
@@ -487,7 +487,7 @@
                 var req_type = this.at_type || 'follow';
                 var req_keywords = this.at_keywords || '';
                 uni.request({
-                    url: app.globalData.get_request_url('atuser', 'moment', 'userhome'),
+                    url: app.globalData.get_request_url('atuser', 'moment', 'sns'),
                     method: 'POST',
                     data: {
                         type: req_type,

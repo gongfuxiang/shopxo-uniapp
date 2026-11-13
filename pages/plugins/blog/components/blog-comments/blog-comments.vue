@@ -227,7 +227,7 @@
         },
 
         methods: {
-            // 分享交给页面级公共分享组件（与用户主页一致）
+            // 分享交给页面级公共分享组件
             popup_share_event() {
                 this.$emit('share');
             },

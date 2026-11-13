@@ -33,11 +33,11 @@
     import componentCommon from '@/components/common/common';
     import componentNoData from '@/components/no-data/no-data';
     import componentBottomLine from '@/components/bottom-line/bottom-line';
-    import componentMomentItem from '@/pages/plugins/userhome/components/moment-item/moment-item';
-    import componentMomentComment from '@/pages/plugins/userhome/components/moment-comment/moment-comment';
+    import componentMomentItem from '@/pages/plugins/sns/components/moment-item/moment-item';
+    import componentMomentComment from '@/pages/plugins/sns/components/moment-comment/moment-comment';
     import componentSharePopup from '@/pages/common/components/share-popup/share-popup';
-    import { getUserhomeConfig } from '@/pages/plugins/userhome/utils/compose-cache.js';
-    import pluginLocale from '@/pages/plugins/userhome/locale/index.js';
+    import { getSnsConfig } from '@/pages/plugins/sns/utils/compose-cache.js';
+    import pluginLocale from '@/pages/plugins/sns/locale/index.js';
     export default {
         mixins: [pluginLocale],
         data() {
@@ -74,7 +74,7 @@
             // 调用公共事件方法
             app.globalData.page_event_onshow_handle();
             // 编辑保存返回：与「我的动态」同一标记，仅匹配当前条时重拉详情（不消费标记，留给列表页）
-            var refresh = uni.getStorageSync('cache_plugins_userhome_list_refresh') || null;
+            var refresh = uni.getStorageSync('cache_plugins_sns_list_refresh') || null;
             if (refresh && refresh.type == 'edit') {
                 var rid = parseInt(refresh.id || 0);
                 var mid = parseInt((this.moment && this.moment.id) || (this.params && this.params.id) || 0);
@@ -110,14 +110,14 @@
             },
             // 获取配置（与评论组件共用缓存，避免详情页再打一遍 config）
             get_config(force) {
-                getUserhomeConfig(!!force).then((data) => {
+                getSnsConfig(!!force).then((data) => {
                     this.setData({ config: data || {} });
                 });
             },
             // 获取详情
             get_detail() {
                 uni.request({
-                    url: app.globalData.get_request_url('detail', 'index', 'userhome'),
+                    url: app.globalData.get_request_url('detail', 'index', 'sns'),
                     method: 'POST',
                     data: { id: this.params.id || 0 },
                     dataType: 'json',
@@ -169,7 +169,7 @@
                 var info = {
                     title: title || '',
                     desc: moment.content || '',
-                    path: '/pages/plugins/userhome/detail/detail',
+                    path: '/pages/plugins/sns/detail/detail',
                     query: 'id=' + moment.id,
                     img: img,
                 };
@@ -191,7 +191,7 @@
                 if (!row || !row.id) {
                     return;
                 }
-                app.globalData.url_open('/pages/plugins/userhome/moment-form/moment-form?id=' + row.id);
+                app.globalData.url_open('/pages/plugins/sns/moment-form/moment-form?id=' + row.id);
             },
             // 删除
             delete_event(item) {
@@ -208,14 +208,14 @@
                             return;
                         }
                         uni.request({
-                            url: app.globalData.get_request_url('delete', 'moment', 'userhome'),
+                            url: app.globalData.get_request_url('delete', 'moment', 'sns'),
                             method: 'POST',
                             data: { ids: row.id },
                             dataType: 'json',
                             success: (res) => {
                                 app.globalData.showToast(res.data.msg);
                                 if (res.data.code == 0) {
-                                    uni.setStorageSync('cache_plugins_userhome_home_refresh', 1);
+                                    uni.setStorageSync('cache_plugins_sns_home_refresh', 1);
                                     setTimeout(function () {
                                         app.globalData.page_back_prev_event();
                                     }, 1500);
@@ -232,7 +232,7 @@
                     return;
                 }
                 uni.request({
-                    url: app.globalData.get_request_url('like', 'index', 'userhome'),
+                    url: app.globalData.get_request_url('like', 'index', 'sns'),
                     method: 'POST',
                     data: { moment_id: this.moment.id },
                     dataType: 'json',

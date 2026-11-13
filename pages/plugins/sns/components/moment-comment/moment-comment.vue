@@ -111,10 +111,10 @@
 <script>
     const app = getApp();
     import componentPopup from '@/components/popup/popup';
-    import componentMomentCompose from '@/pages/plugins/userhome/components/moment-compose/moment-compose';
-    import componentEmojiPopup from '@/pages/plugins/userhome/components/emoji-popup/emoji-popup';
-    import pluginLocale from '@/pages/plugins/userhome/locale/index.js';
-    import { getUserhomeConfig, getMomentSaveinfo } from '@/pages/plugins/userhome/utils/compose-cache.js';
+    import componentMomentCompose from '@/pages/plugins/sns/components/moment-compose/moment-compose';
+    import componentEmojiPopup from '@/pages/plugins/sns/components/emoji-popup/emoji-popup';
+    import pluginLocale from '@/pages/plugins/sns/locale/index.js';
+    import { getSnsConfig, getMomentSaveinfo } from '@/pages/plugins/sns/utils/compose-cache.js';
     export default {
         mixins: [pluginLocale],
         components: {
@@ -289,7 +289,7 @@
                 }
                 this.compose_loading = true;
                 var self = this;
-                return getUserhomeConfig()
+                return getSnsConfig()
                     .then((data) => {
                         data = data || {};
                         // path_type 由 config/feedinit 统一下发，与 PC BaseService 一致
@@ -442,7 +442,7 @@
                 }
                 this.more_loading = true;
                 uni.request({
-                    url: app.globalData.get_request_url('commentlist', 'index', 'userhome'),
+                    url: app.globalData.get_request_url('commentlist', 'index', 'sns'),
                     method: 'POST',
                     data: {
                         moment_id: this.propMomentId,
@@ -472,7 +472,7 @@
                     return;
                 }
                 uni.request({
-                    url: app.globalData.get_request_url('commentlist', 'index', 'userhome'),
+                    url: app.globalData.get_request_url('commentlist', 'index', 'sns'),
                     method: 'POST',
                     data: {
                         moment_id: this.propMomentId,
@@ -509,7 +509,7 @@
                 var is_popup = !!this.popup_status;
                 this.comment_loading = true;
                 uni.request({
-                    url: app.globalData.get_request_url('comment', 'index', 'userhome'),
+                    url: app.globalData.get_request_url('comment', 'index', 'sns'),
                     method: 'POST',
                     data: {
                         moment_id: this.propMomentId,
@@ -551,7 +551,7 @@
                     return;
                 }
                 uni.request({
-                    url: app.globalData.get_request_url('commentlike', 'index', 'userhome'),
+                    url: app.globalData.get_request_url('commentlike', 'index', 'sns'),
                     method: 'POST',
                     data: { comment_id: row.id },
                     dataType: 'json',
@@ -588,7 +588,7 @@
                             return;
                         }
                         uni.request({
-                            url: app.globalData.get_request_url('commentdelete', 'index', 'userhome'),
+                            url: app.globalData.get_request_url('commentdelete', 'index', 'sns'),
                             method: 'POST',
                             data: { id: row.id },
                             dataType: 'json',

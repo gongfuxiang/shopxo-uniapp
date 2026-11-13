@@ -93,7 +93,7 @@
             </view>
         </view>
 
-        <!-- 分享弹窗（页面级，与用户主页一致） -->
+        <!-- 分享弹窗（页面级） -->
         <component-share-popup ref="share"></component-share-popup>
 
         <!-- 公共 -->

@@ -51,10 +51,10 @@
 <script>
     const app = getApp();
     import componentPopup from '@/components/popup/popup';
-    import componentMomentCompose from '@/pages/plugins/userhome/components/moment-compose/moment-compose';
-    import componentEmojiPopup from '@/pages/plugins/userhome/components/emoji-popup/emoji-popup';
-    import pluginLocale from '@/pages/plugins/userhome/locale/index.js';
-    import { getUserhomeConfig, getMomentSaveinfo } from '@/pages/plugins/userhome/utils/compose-cache.js';
+    import componentMomentCompose from '@/pages/plugins/sns/components/moment-compose/moment-compose';
+    import componentEmojiPopup from '@/pages/plugins/sns/components/emoji-popup/emoji-popup';
+    import pluginLocale from '@/pages/plugins/sns/locale/index.js';
+    import { getSnsConfig, getMomentSaveinfo } from '@/pages/plugins/sns/utils/compose-cache.js';
     export default {
         mixins: [pluginLocale],
         components: {
@@ -95,11 +95,11 @@
             if (this.propInline) {
                 this.load_init();
             } else {
-                uni.$on('plugins_userhome_publish_open', this.on_publish_open_event);
+                uni.$on('plugins_sns_publish_open', this.on_publish_open_event);
             }
         },
         beforeDestroy() {
-            uni.$off('plugins_userhome_publish_open', this.on_publish_open_event);
+            uni.$off('plugins_sns_publish_open', this.on_publish_open_event);
         },
         methods: {
             on_publish_open_event() {
@@ -135,7 +135,7 @@
             // 初始化配置（path_type 优先用 config 统一下发）
             load_init() {
                 var self = this;
-                getUserhomeConfig()
+                getSnsConfig()
                     .then((cfg) => {
                         cfg = cfg || {};
                         if (cfg.editor_path_type) {
@@ -183,7 +183,7 @@
                 this.form_submit_loading = true;
                 uni.showLoading({ title: this.$t('common.submit_in_text') });
                 uni.request({
-                    url: app.globalData.get_request_url('save', 'moment', 'userhome'),
+                    url: app.globalData.get_request_url('save', 'moment', 'sns'),
                     method: 'POST',
                     data: {
                         content: data.content || '',

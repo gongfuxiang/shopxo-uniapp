@@ -35,9 +35,9 @@
     const app = getApp();
     import componentCommon from '@/components/common/common';
     import componentNoData from '@/components/no-data/no-data';
-    import componentMomentCompose from '@/pages/plugins/userhome/components/moment-compose/moment-compose';
-    import componentEmojiPopup from '@/pages/plugins/userhome/components/emoji-popup/emoji-popup';
-    import pluginLocale from '@/pages/plugins/userhome/locale/index.js';
+    import componentMomentCompose from '@/pages/plugins/sns/components/moment-compose/moment-compose';
+    import componentEmojiPopup from '@/pages/plugins/sns/components/emoji-popup/emoji-popup';
+    import pluginLocale from '@/pages/plugins/sns/locale/index.js';
     export default {
         mixins: [pluginLocale],
         data() {
@@ -86,7 +86,7 @@
                 moment_id: moment_id,
             });
             uni.setNavigationBarTitle({
-                title: this.$t(moment_id > 0 ? 'pages.plugins-userhome-moment-form-edit' : 'pages.plugins-userhome-moment-form'),
+                title: this.$t(moment_id > 0 ? 'pages.plugins-sns-moment-form-edit' : 'pages.plugins-sns-moment-form'),
             });
             // 调用公共事件方法
             app.globalData.page_event_onload_handle(params);
@@ -136,7 +136,7 @@
                     }
                 }
                 uni.request({
-                    url: app.globalData.get_request_url('saveinfo', 'moment', 'userhome'),
+                    url: app.globalData.get_request_url('saveinfo', 'moment', 'sns'),
                     method: 'POST',
                     data: post,
                     dataType: 'json',
@@ -213,7 +213,7 @@
                     post.is_enable = this.is_enable == 1 ? 1 : 0;
                 }
                 uni.request({
-                    url: app.globalData.get_request_url('save', 'moment', 'userhome'),
+                    url: app.globalData.get_request_url('save', 'moment', 'sns'),
                     method: 'POST',
                     data: post,
                     dataType: 'json',
@@ -222,10 +222,10 @@
                         if (res.data.code == 0) {
                             // 通知主页刷新；列表：编辑只替换当前条，新增整表重拉
                             var edit_id = parseInt(this.moment_id || 0);
-                            uni.setStorageSync('cache_plugins_userhome_home_refresh', 1);
-                            uni.setStorageSync('cache_plugins_userhome_topic_refresh', 1);
-                            uni.setStorageSync('cache_plugins_userhome_feed_refresh', 1);
-                            uni.setStorageSync('cache_plugins_userhome_list_refresh', {
+                            uni.setStorageSync('cache_plugins_sns_home_refresh', 1);
+                            uni.setStorageSync('cache_plugins_sns_topic_refresh', 1);
+                            uni.setStorageSync('cache_plugins_sns_feed_refresh', 1);
+                            uni.setStorageSync('cache_plugins_sns_list_refresh', {
                                 type: edit_id > 0 ? 'edit' : 'add',
                                 id: edit_id,
                             });
