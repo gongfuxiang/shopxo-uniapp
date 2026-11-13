@@ -46,6 +46,8 @@
                         </block>
                         <switch
                             v-else-if="item.type == 'status'"
+                            class="panel-status-switch"
+                            :class="status_switch_disabled(item) ? 'panel-status-switch-disabled' : ''"
                             style="transform: scale(0.7)"
                             :color="theme_color"
                             :checked="parseInt(data[item.field] || 0) == 1"
@@ -115,6 +117,8 @@
                                         </block>
                                         <block v-else-if="item.type == 'status'">
                                             <switch
+                                                class="panel-status-switch"
+                                                :class="status_switch_disabled(item) ? 'panel-status-switch-disabled' : ''"
                                                 style="transform: scale(0.7)"
                                                 :color="theme_color"
                                                 :checked="parseInt(data[item.field] || 0) == 1"
@@ -283,7 +287,7 @@
                 }
                 return false;
             },
-            // 状态开关（与 PC form status 列一致，由父级请求 statusupdate）
+            // 状态开关：用 field_list status 列下发的 post_url / request 自行请求
             status_change_event(e, item) {
                 if (this.status_switch_disabled(item)) {
                     return;
@@ -298,12 +302,71 @@
                 if (Object.prototype.hasOwnProperty.call(this.data, field + '_name')) {
                     this.$set(this.data, field + '_name', state == 1 ? (this.$t('common.yes_title') || '是') : (this.$t('common.no_title') || '否'));
                 }
-                this.$emit('status', {
-                    id: this.data.id,
+                this.status_request({
+                    item: item,
                     field: field,
                     state: state,
                     old_state: old,
-                    data: this.data,
+                });
+            },
+            // 状态更新请求（仅依赖后台返回配置）
+            status_request(payload) {
+                var item = (payload && payload.item) || null;
+                var field = (payload && payload.field) || '';
+                var state = parseInt((payload && payload.state) || 0) == 1 ? 1 : 0;
+                var old_state = parseInt((payload && payload.old_state) || 0) == 1 ? 1 : 0;
+                var revert = () => {
+                    if ((this.data || null) == null || !field) {
+                        return;
+                    }
+                    this.$set(this.data, field, old_state);
+                    if (Object.prototype.hasOwnProperty.call(this.data, field + '_name')) {
+                        this.$set(this.data, field + '_name', old_state == 1 ? (this.$t('common.yes_title') || '是') : (this.$t('common.no_title') || '否'));
+                    }
+                };
+                var url = item && item.post_url ? item.post_url : '';
+                var req = item && item.request ? item.request : null;
+                var key_field = item && item.key_field ? item.key_field : '';
+                var id = key_field && this.data ? this.data[key_field] : null;
+                if (!url || !req || !req.id || !req.field || !req.state || !key_field || id === null || id === undefined || id === '') {
+                    revert();
+                    app.globalData.showToast(this.$t('common.data_error'));
+                    return;
+                }
+                // 后台下发的绝对地址需补齐小程序公共参数（token/ajax 等），否则登录校验会回 HTML
+                url = app.globalData.request_params_handle(url);
+                if (url.indexOf('ajax=ajax') === -1) {
+                    url += '&ajax=ajax';
+                }
+                var post = {};
+                post[req.id] = id;
+                post[req.field] = field;
+                post[req.state] = state;
+                uni.request({
+                    url: url,
+                    method: 'POST',
+                    data: post,
+                    dataType: 'json',
+                    success: (res) => {
+                        var data = res.data || null;
+                        if (typeof data !== 'object' || data === null) {
+                            revert();
+                            app.globalData.showToast(this.$t('common.data_error'));
+                            return;
+                        }
+                        if (data.code == 0) {
+                            app.globalData.showToast(data.msg, 'success');
+                        } else {
+                            revert();
+                            if (app.globalData.is_login_check(data, this, 'status_request', payload)) {
+                                app.globalData.showToast(data.msg);
+                            }
+                        }
+                    },
+                    fail: () => {
+                        revert();
+                        app.globalData.showToast(this.$t('common.internet_error_tips'));
+                    },
                 });
             },
 
@@ -364,6 +427,9 @@
 <style scoped>
     .terse-content .item {
         min-height: 40rpx;
+    }
+    .panel-status-switch-disabled {
+        opacity: 0.45;
     }
     .panel-item-images {
         width: 40rpx;
