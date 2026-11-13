@@ -80,9 +80,10 @@
                     <component-no-data :propStatus="data_list_loding_status" :propMsg="data_list_loding_msg"></component-no-data>
                 </view>
 
-                <view v-if="(data_base || null) != null && data_base.is_enable_moment == 1" class="bottom-fixed" :style="bottom_fixed_style">
+                <view v-if="(data_base || null) != null && (data_base.is_enable_moment == 1 || data_base.is_enable_userhome == 1)" class="bottom-fixed" :style="bottom_fixed_style">
                     <view class="bottom-line-exclude flex-row gap-10">
-                        <button class="item round cr-white bg-main text-size wh-auto" type="default" hover-class="none" @tap="publish_event">{{$t('home.publish_moment')}}</button>
+                        <button v-if="data_base.is_enable_moment == 1" class="item flex-1 round cr-white bg-main text-size" type="default" hover-class="none" @tap="publish_event">{{$t('home.publish_moment')}}</button>
+                        <button v-if="data_base.is_enable_userhome == 1" class="item flex-1 round cr-main bg-white br-main text-size" type="default" hover-class="none" @tap="my_home_event">{{$t('feed.my_home')}}</button>
                     </view>
                 </view>
             </view>
@@ -428,6 +429,14 @@
                     }
                 } catch (e) {}
                 uni.$emit('plugins_userhome_publish_open');
+            },
+            // 我的主页
+            my_home_event() {
+                var user = app.globalData.get_user_info(this, 'my_home_event');
+                if (user == false || !user.id) {
+                    return;
+                }
+                app.globalData.url_event({ currentTarget: { dataset: { value: '/pages/plugins/userhome/home/home?id=' + user.id } } });
             },
             // 链接事件
             url_event(e) {
