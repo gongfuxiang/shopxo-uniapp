@@ -17,7 +17,7 @@
                 <view v-if="(item.topic_list || []).length > 0" class="margin-top-xs" @tap.stop="">
                     <text
                         v-for="(topic, ti) in item.topic_list"
-                        :key="ti"
+                        :key="topic.id || ti"
                         class="cr-main margin-right-sm text-size-sm"
                         :data-id="topic.id"
                         @tap.stop="topic_event"
@@ -75,6 +75,7 @@
                 :propHasMore="item.comment_more || 0"
                 :propCommentCount="comment_count"
                 :propEnableLike="propShowLike"
+                :propEnableFeedList="item.comment_list_in_feed != 0"
                 :propPopupMode="true"
                 :propComposeOpen="compose_open"
                 @compose-change="compose_change_event"
@@ -136,8 +137,11 @@
             show_comment_panel() {
                 return this.propShowCommentPreview && this.propShowComment && this.item.show_comment == 1;
             },
-            // 是否有评论列表/更多
+            // 是否有评论列表/更多（配置 0 时列表不展示评论区内容）
             has_comment_list() {
+                if (this.item.comment_list_in_feed == 0) {
+                    return false;
+                }
                 var preview = this.item.comment_preview || [];
                 return preview.length > 0 || !!this.item.comment_more || this.comment_count > 0;
             },

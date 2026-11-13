@@ -25,7 +25,7 @@
         </view>
 
         <view v-if="comment_list.length > 0" :class="!propPopupMode ? 'margin-top-xxxl' : ''">
-            <view v-for="(row, index) in comment_list" :key="index" class="comment-row padding-vertical-main flex-row">
+            <view v-for="(row, index) in comment_list" :key="row.id || index" class="comment-row padding-vertical-main flex-row">
                 <image class="avatar circle" :src="row.avatar" mode="aspectFill" :data-value="row.user_home_url" @tap="url_event"></image>
                 <view class="flex-1 flex-width padding-left-main">
                     <view class="flex-row align-c flex-wrap">
@@ -63,7 +63,7 @@
                             <iconfont name="icon-message-o" size="28rpx" :color="popup_status && reply_id == row.id ? theme_color : '#999'" propClass="va-m"></iconfont>
                             <text v-if="row.reply_count > 0" class="margin-left-xs va-m">{{ row.reply_count }}</text>
                         </view>
-                        <view v-if="row.is_self == 1" class="action-item" @tap="comment_delete_event(row)">
+                        <view v-if="row.can_delete == 1" class="action-item" @tap="comment_delete_event(row)">
                             <iconfont name="icon-delete" size="28rpx" color="#E22C08" propClass="va-m"></iconfont>
                         </view>
                     </view>
@@ -130,6 +130,8 @@
             propMomentId: { type: [Number, String], default: 0 },
             propList: { type: Array, default: () => [] },
             propHasMore: { type: [Number, Boolean], default: 0 },
+            // 列表是否展示评论（配置条数为 0 时为 false，仅详情可看）
+            propEnableFeedList: { type: Boolean, default: true },
             propCommentCount: { type: [Number, String], default: 0 },
             propEnableLike: { type: Boolean, default: true },
             propShowTitle: { type: Boolean, default: false },
@@ -532,7 +534,10 @@
                             this.reset_compose('inline');
                         }
                         this.$emit('count-change', count);
-                        this.reload_comments();
+                        // 列表关闭评论展示时不刷新列表，避免把评论刷出来
+                        if (this.propEnableFeedList || !this.propPopupMode) {
+                            this.reload_comments();
+                        }
                     },
                 });
             },
@@ -595,7 +600,12 @@
                                 }
                                 self.comment_count = count;
                                 self.$emit('count-change', count);
-                                self.reload_comments();
+                                if (self.propEnableFeedList || !self.propPopupMode) {
+                                    self.reload_comments();
+                                } else {
+                                    self.comment_list = [];
+                                    self.comment_has_more = 0;
+                                }
                             },
                         });
                     },

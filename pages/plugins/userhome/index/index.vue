@@ -29,13 +29,13 @@
 
             <scroll-view v-if="(topic_list || []).length > 0" scroll-x :show-scrollbar="false" class="topic-scroll bg-white">
                 <view class="topic-scroll-content">
-                    <view v-for="(topic, ti) in topic_list" :key="ti" class="topic-item cr-grey br-grey" :data-id="topic.id" @tap="topic_event">#{{ topic.name }}</view>
+                    <view v-for="(topic, ti) in topic_list" :key="topic.id || ti" class="topic-item cr-grey br-grey" :data-id="topic.id" @tap="topic_event">#{{ topic.name }}</view>
                 </view>
             </scroll-view>
 
             <view class="page-bottom-fixed padding-main">
                 <block v-if="data_list.length > 0">
-                    <component-moment-item v-for="(item, index) in data_list" :key="index" :propItem="item" :propEnableDetail="config.is_enable_moment_detail == 1" :propShowLike="config.is_enable_like == 1" :propShowComment="config.is_enable_comment == 1" @like="like_event" @comment-count="comment_count_event"></component-moment-item>
+                    <component-moment-item v-for="(item, index) in data_list" :key="item.id || index" :propItem="item" :propEnableDetail="config.is_enable_moment_detail == 1" :propShowLike="config.is_enable_like == 1" :propShowComment="config.is_enable_comment == 1" @like="like_event" @comment-count="comment_count_event"></component-moment-item>
                     <component-bottom-line :propStatus="data_bottom_line_status" :propMsg="data_bottom_line_msg"></component-bottom-line>
                 </block>
                 <component-no-data v-else :propStatus="data_list_loding_status" :propMsg="data_list_loding_msg" :propLoadingLogoTop="(slider_list || []).length > 0 ? '40vh' : ''"></component-no-data>
@@ -102,7 +102,7 @@
             // 设置参数
             this.setData({
                 params: params || {},
-                sort: params.sort == 'hot' || params.sort == 'like' ? params.sort : 'new',
+                sort: params.sort == 'hot' || params.sort == 'like' || params.sort == 'follow' ? params.sort : 'new',
             });
             // 调用公共事件方法
             app.globalData.page_event_onload_handle(params);
@@ -317,6 +317,13 @@
             // 切换排序
             sort_event(e) {
                 var sort = e.currentTarget.dataset.sort || 'new';
+                // 仅关注：先校验登录（同商品详情收藏），未登录会跳转登录
+                if (sort == 'follow') {
+                    var user = app.globalData.get_user_info(this, 'sort_event', e);
+                    if (user == false) {
+                        return;
+                    }
+                }
                 this.setData({
                     sort: sort,
                     data_page: 1,

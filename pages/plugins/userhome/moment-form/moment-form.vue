@@ -45,6 +45,7 @@
                     topic: 0,
                     at_follow: 0,
                     at_fans: 0,
+                    at_mutual: 0,
                 },
             };
         },
@@ -126,6 +127,7 @@
                                 topic: data.is_publish_topic == 1 ? 1 : 0,
                                 at_follow: data.is_moment_at_follow == 1 ? 1 : 0,
                                 at_fans: data.is_moment_at_fans == 1 ? 1 : 0,
+                                at_mutual: data.is_moment_at_mutual == 1 ? 1 : 0,
                             },
                         });
                         // 编辑回填 / 参与话题预填

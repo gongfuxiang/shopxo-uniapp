@@ -11,7 +11,7 @@
         <scroll-view :scroll-y="true" class="scroll-box scroll-box-ece-nav" @scrolltolower="scroll_lower" lower-threshold="60">
             <view class="page-bottom-fixed">
                 <view v-if="data_list.length > 0" class="data-list padding-horizontal-main padding-top-main">
-                    <view v-for="(item, index) in data_list" :key="index" class="item padding-main border-radius-main oh bg-white spacing-mb">
+                    <view v-for="(item, index) in data_list" :key="item.id || index" class="item padding-main border-radius-main oh bg-white spacing-mb">
                         <view class="base oh br-b-dashed padding-bottom-main flex-row jc-sb align-c">
                             <text class="cr-grey-9">{{ item.add_time }}</text>
                             <text :class="item.audit_status == 2 ? 'cr-green' : (item.audit_status == 3 ? 'cr-red' : 'cr-yellow')">{{ item.audit_status_name }}</text>
@@ -26,7 +26,7 @@
                             <view v-if="(item.topic_list || []).length > 0" class="margin-top-xs" @tap.stop="">
                                 <text
                                     v-for="(topic, ti) in item.topic_list"
-                                    :key="ti"
+                                    :key="topic.id || ti"
                                     class="cr-main margin-right-sm text-size-sm"
                                     :data-value="'/pages/plugins/userhome/topic/topic?id=' + (topic.id || 0)"
                                     @tap.stop="url_event"

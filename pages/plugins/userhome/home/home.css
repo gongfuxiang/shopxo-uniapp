@@ -165,6 +165,42 @@
         flex-shrink: 0;
         border: 4rpx solid rgba(255, 255, 255, 0.7);
     }
+    .header-avatar-wrap {
+        flex-shrink: 0;
+        max-width: 160rpx;
+    }
+    .header-name-row {
+        gap: 8rpx;
+    }
+    .header-audit {
+        display: inline-flex;
+        align-items: center;
+        flex-shrink: 0;
+    }
+    .header-cover-audit {
+        position: absolute;
+        right: 24rpx;
+        z-index: 3;
+        display: inline-flex;
+        align-items: center;
+        max-width: 60%;
+        line-height: 1.4;
+        color: #dd514c;
+    }
+    .header-audit .reject-tip-icon,
+    .header-cover-audit .reject-tip-icon {
+        width: 28rpx;
+        height: 28rpx;
+        margin-left: 8rpx;
+        border-radius: 50%;
+        border: 2rpx solid #dd514c;
+        color: #dd514c;
+        font-size: 20rpx;
+        font-weight: 700;
+        line-height: 24rpx;
+        text-align: center;
+        box-sizing: border-box;
+    }
     .moment-images {
         display: grid;
         grid-template-columns: repeat(3, 1fr);

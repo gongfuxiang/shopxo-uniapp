@@ -171,7 +171,7 @@
                 var order_status = (this.nav_status_list[this.nav_status_index] || null) == null ? -1 : this.nav_status_list[this.nav_status_index]["value"];
                 var post_data = {
                     page: this.data_page,
-                    uid: this.params.uid || 0,
+                    user: this.params.user || '',
                     is_more: 1,
                 };
                 if (order_status != -1 && order_status != "-1") {

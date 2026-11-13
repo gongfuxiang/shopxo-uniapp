@@ -32,7 +32,7 @@ var zh = {
         "theme_switch": "主题风格",
         "cover_upload": "自定义背景",
         "cover_overlay": "风格主题色",
-        "cover_audit_pending": "背景审核中",
+        "cover_audit_pending": "背景图待审核",
         "cover_audit_reject": "背景审核未通过",
         "follow_list_deny_tips": "对方未公开该列表"
     },
@@ -92,7 +92,10 @@ var zh = {
         "at": "@好友",
         "at_follow": "我关注的人",
         "at_fans": "关注我的人",
-        "at_empty": "暂无可选用户"
+        "at_mutual": "互相关注",
+        "at_empty": "暂无可选用户",
+        "at_search": "搜索昵称/用户名",
+        "at_no_more": "没有更多了"
     }
 };
 var en = {
@@ -188,7 +191,10 @@ var en = {
         "at": "@Friend",
         "at_follow": "Following",
         "at_fans": "Followers",
-        "at_empty": "No users available"
+        "at_mutual": "Mutual",
+        "at_empty": "No users available",
+        "at_search": "Search nickname/username",
+        "at_no_more": "No more"
     }
 };
 export default createPageLocaleMixin({ zh, en });

@@ -51,34 +51,52 @@
 
         <!-- 未打开时不渲染；勿抬高 propIndex（遮罩会盖住内容层） -->
         <component-popup v-if="at_popup_status" :propShow="true" propPosition="bottom" @onclose="at_popup_close_event">
-            <view class="at-popup bg-white">
-                <view class="at-popup-close pa top-0 right-0 z-i-deep">
-                    <view class="padding-top padding-right padding-left-sm padding-bottom-sm" @tap.stop="at_popup_close_event">
-                        <iconfont name="icon-close-line" color="#999" size="28rpx"></iconfont>
+            <view class="at-popup bg-white flex-col">
+                <!-- 标题栏与关闭叉齐平；关注/粉丝模式直接把 tabs 放标题位，省一行 -->
+                <view class="at-popup-head flex-row jc-sb align-c padding-main br-b-e">
+                    <view v-if="show_at_tabs" class="flex-row align-c flex-1 flex-width">
+                        <view
+                            :class="'at-tab-item text-size fw-b margin-right-xl ' + (at_type == 'follow' ? 'cr-main nav-active-line' : 'cr-grey')"
+                            data-type="follow"
+                            @tap.stop="at_type_event"
+                        >{{ $t('moment-form.at_follow') }}</view>
+                        <view
+                            :class="'at-tab-item text-size fw-b ' + (at_type == 'fans' ? 'cr-main nav-active-line' : 'cr-grey')"
+                            data-type="fans"
+                            @tap.stop="at_type_event"
+                        >{{ $t('moment-form.at_fans') }}</view>
+                    </view>
+                    <view v-else class="text-size fw-b flex-1 flex-width">{{ at_popup_title }}</view>
+                    <view class="flex-shrink" @tap.stop="at_popup_close_event">
+                        <iconfont name="icon-close-line" color="#333" size="28rpx"></iconfont>
                     </view>
                 </view>
-                <!-- tabs 对齐「我的动态」顶部导航 -->
-                <view v-if="show_at_tabs" class="nav-base bg-white">
-                    <view
-                        v-if="tools.at_follow == 1"
-                        :class="'item dis-inline-block padding-left-xl padding-right-xl tc ' + (at_type == 'follow' ? 'cr-main nav-active-line' : '')"
-                        data-type="follow"
-                        @tap.stop="at_type_event"
-                    >{{ $t('moment-form.at_follow') }}</view>
-                    <view
-                        v-if="tools.at_fans == 1"
-                        :class="'item dis-inline-block padding-left-xl padding-right-xl tc ' + (at_type == 'fans' ? 'cr-main nav-active-line' : '')"
-                        data-type="fans"
-                        @tap.stop="at_type_event"
-                    >{{ $t('moment-form.at_fans') }}</view>
+                <view class="at-search padding-horizontal-main padding-top-main padding-bottom-sm">
+                    <view class="at-search-box flex-row align-c bg-grey-f8 border-radius-main padding-horizontal-main">
+                        <iconfont name="icon-search" size="28rpx" color="#999"></iconfont>
+                        <input
+                            class="flex-1 at-search-input margin-left-sm"
+                            type="text"
+                            :value="at_keywords"
+                            :placeholder="$t('moment-form.at_search')"
+                            placeholder-class="cr-grey-9"
+                            confirm-type="search"
+                            @input="at_keywords_input_event"
+                            @confirm="at_search_event"
+                        />
+                        <view v-if="at_keywords" class="padding-left-sm" @tap.stop="at_keywords_clear_event">
+                            <iconfont name="icon-close-line" size="24rpx" color="#999"></iconfont>
+                        </view>
+                    </view>
                 </view>
-                <scroll-view scroll-y class="at-list">
+                <scroll-view scroll-y class="at-list flex-1" @scrolltolower="at_scroll_lower_event">
                     <block v-if="(at_user_list || []).length > 0">
-                        <view v-for="(user, index) in at_user_list" :key="index" class="at-user-item flex-row align-c padding-main br-b-f5" :data-id="user.id" :data-name="user.user_name_view" @tap="at_user_choice_event">
+                        <view v-for="(user, index) in at_user_list" :key="user.id || index" class="at-user-item flex-row align-c padding-main" :data-id="user.id" :data-name="user.user_name_view" @tap="at_user_choice_event">
                             <image class="at-avatar circle margin-right-main" :src="user.avatar" mode="aspectFill"></image>
                             <text class="flex-1">{{ user.user_name_view }}</text>
-                            <iconfont v-if="(at_user_ids || []).indexOf(user.id) >= 0" name="icon-checked" size="28rpx" color="#999"></iconfont>
                         </view>
+                        <view v-if="at_loading_more" class="tc padding-main cr-grey text-size-sm">{{ $t('common.loading_in_text') }}</view>
+                        <view v-else-if="at_bottom_line" class="tc padding-main cr-grey-9 text-size-xs">{{ $t('moment-form.at_no_more') }}</view>
                     </block>
                     <view v-else class="tc padding-main cr-grey text-size-sm">{{ at_loading ? $t('common.loading_in_text') : $t('moment-form.at_empty') }}</view>
                 </scroll-view>
@@ -117,6 +135,7 @@
                     topic: 0,
                     at_follow: 0,
                     at_fans: 0,
+                    at_mutual: 0,
                 }),
             },
         },
@@ -130,11 +149,20 @@
                 image_id_list: [],
                 video_url: '',
                 video_id: 0,
+                // 编辑回填的已保存附件：叉掉/替换时不立刻删，等保存由服务端对比清理
+                saved_image_map: {},
+                saved_video_url: '',
                 at_user_ids: [],
                 at_user_list: [],
                 at_type: 'follow',
                 at_popup_status: false,
                 at_loading: false,
+                at_loading_more: false,
+                at_keywords: '',
+                at_page: 1,
+                at_has_more: 0,
+                at_bottom_line: false,
+                at_req_seq: 0,
                 input_focus: false,
                 input_cursor: -1,
                 // 已点提交：附件归业务侧，禁止再调 deletefile（防误触叉号）
@@ -157,11 +185,27 @@
             },
             // 是否可艾特
             show_at() {
-                return this.tools.at == 1 && (this.tools.at_follow == 1 || this.tools.at_fans == 1);
+                return this.tools.at == 1 && (this.tools.at_follow == 1 || this.tools.at_fans == 1 || this.tools.at_mutual == 1);
             },
-            // 是否显示关注/粉丝切换
+            // 是否显示关注/粉丝切换（仅「关注/粉丝」模式）
             show_at_tabs() {
-                return this.tools.at_follow == 1 && this.tools.at_fans == 1;
+                return this.tools.at_follow == 1 && this.tools.at_fans == 1 && this.tools.at_mutual != 1;
+            },
+            // 弹窗标题（与关闭叉齐平）
+            at_popup_title() {
+                if (this.tools.at_mutual == 1) {
+                    return this.$t('moment-form.at_mutual');
+                }
+                if (this.show_at_tabs) {
+                    return this.$t('moment-form.at');
+                }
+                if (this.tools.at_follow == 1) {
+                    return this.$t('moment-form.at_follow');
+                }
+                if (this.tools.at_fans == 1) {
+                    return this.$t('moment-form.at_fans');
+                }
+                return this.$t('moment-form.at');
             },
             // 空内容提示（与 PC 一致，按开启的附件能力）
             content_empty_tips() {
@@ -194,15 +238,43 @@
                     this.media_locked = false;
                 }
             },
-            // 默认艾特类型（关注优先）
-            'tools.at_follow': {
+            // 默认艾特类型
+            propTools: {
                 immediate: true,
+                deep: true,
                 handler() {
-                    this.at_type = this.tools.at_follow == 1 ? 'follow' : 'fans';
+                    this.at_type = this.default_at_type();
                 },
             },
         },
         methods: {
+            default_at_type() {
+                if (this.tools.at_mutual == 1) {
+                    return 'mutual';
+                }
+                if (this.tools.at_follow == 1) {
+                    return 'follow';
+                }
+                return 'fans';
+            },
+            // 附件是否编辑回填的已保存文件（路径归一后比对）
+            is_saved_media_url(url) {
+                var key = this.media_path_key(url);
+                return !!(key && this.saved_image_map && this.saved_image_map[key]);
+            },
+            media_path_key(url) {
+                url = String(url || '').trim();
+                if (!url) {
+                    return '';
+                }
+                // 去掉协议域名，只留路径部分做对比
+                url = url.replace(/^https?:/i, '');
+                if (url.indexOf('//') === 0) {
+                    var slash = url.indexOf('/', 2);
+                    url = slash >= 0 ? url.substring(slash) : '';
+                }
+                return url.split('?')[0];
+            },
             // 重置表单
             reset() {
                 this.form = { content: '' };
@@ -210,6 +282,8 @@
                 this.image_id_list = [];
                 this.video_url = '';
                 this.video_id = 0;
+                this.saved_image_map = {};
+                this.saved_video_url = '';
                 this.at_user_ids = [];
                 this.at_user_list = [];
                 this.at_popup_status = false;
@@ -239,8 +313,17 @@
                 this.image_id_list = images.map(function () {
                     return 0;
                 });
+                var saved_map = {};
+                (this.image_list || []).forEach((u) => {
+                    var key = this.media_path_key(u);
+                    if (key) {
+                        saved_map[key] = 1;
+                    }
+                });
+                this.saved_image_map = saved_map;
                 this.video_url = this.media_url_view(data.video_url || '');
                 this.video_id = 0;
+                this.saved_video_url = this.media_path_key(this.video_url);
                 this.at_user_ids = Array.isArray(data.at_user_ids) ? data.at_user_ids.slice() : [];
                 this.at_popup_status = false;
                 this.input_focus = false;
@@ -352,36 +435,94 @@
                 }
                 this.input_focus = false;
                 this.at_popup_status = true;
-                this.load_at_users();
+                this.at_keywords = '';
+                this.load_at_users(1, true);
             },
             // 关闭艾特
             at_popup_close_event() {
                 this.at_popup_status = false;
                 this.focus_input();
             },
-            // 切换艾特类型
+            // 切换艾特类型（再点当前选中项则重新加载）
             at_type_event(e) {
                 var type = e.currentTarget.dataset.type || 'follow';
                 if (type == this.at_type) {
+                    this.load_at_users(1, true);
                     return;
                 }
                 this.at_type = type;
-                this.load_at_users();
+                this.at_keywords = '';
+                this.load_at_users(1, true);
             },
-            // 获取艾特用户
-            load_at_users() {
-                this.at_loading = true;
-                this.at_user_list = [];
+            at_keywords_input_event(e) {
+                this.at_keywords = (e.detail && e.detail.value) || '';
+            },
+            at_keywords_clear_event() {
+                this.at_keywords = '';
+                this.load_at_users(1, true);
+            },
+            at_search_event() {
+                this.load_at_users(1, true);
+            },
+            at_scroll_lower_event() {
+                if (this.at_loading || this.at_loading_more || this.at_has_more != 1) {
+                    return;
+                }
+                this.load_at_users((this.at_page || 1) + 1, false);
+            },
+            // 获取艾特用户（支持搜索、分页滚动）
+            load_at_users(page, reset) {
+                page = page || 1;
+                reset = !!reset;
+                if (reset) {
+                    this.at_loading = true;
+                    this.at_user_list = [];
+                    this.at_page = 1;
+                    this.at_has_more = 0;
+                    this.at_bottom_line = false;
+                } else {
+                    this.at_loading_more = true;
+                }
+                this.at_req_seq = (this.at_req_seq || 0) + 1;
+                var req_seq = this.at_req_seq;
+                var req_type = this.at_type || 'follow';
+                var req_keywords = this.at_keywords || '';
                 uni.request({
                     url: app.globalData.get_request_url('atuser', 'moment', 'userhome'),
                     method: 'POST',
-                    data: { type: this.at_type || 'follow' },
+                    data: {
+                        type: req_type,
+                        page: page,
+                        n: 20,
+                        keywords: req_keywords,
+                    },
                     dataType: 'json',
                     complete: () => {
+                        if (req_seq !== this.at_req_seq) {
+                            return;
+                        }
                         this.at_loading = false;
+                        this.at_loading_more = false;
                     },
                     success: (res) => {
-                        this.at_user_list = res.data && res.data.code == 0 ? res.data.data || [] : [];
+                        if (req_seq !== this.at_req_seq) {
+                            return;
+                        }
+                        var payload = res.data && res.data.code == 0 ? res.data.data : null;
+                        var list = [];
+                        var has_more = 0;
+                        if (Array.isArray(payload)) {
+                            list = payload;
+                            has_more = 0;
+                        } else if (payload && typeof payload === 'object') {
+                            list = payload.data || [];
+                            has_more = parseInt(payload.has_more || 0) || 0;
+                        }
+                        var next = reset ? list : (this.at_user_list || []).concat(list);
+                        this.at_user_list = next;
+                        this.at_page = page;
+                        this.at_has_more = has_more;
+                        this.at_bottom_line = next.length > 0 && has_more != 1;
                     },
                 });
             },
@@ -487,7 +628,8 @@
                 }
                 var url = list[index] || '';
                 var file_id = id_list[index] || 0;
-                if (url) {
+                // 已保存附件留给保存接口对比删除；本次新上传的可立刻清理
+                if (url && !this.is_saved_media_url(url)) {
                     this.delete_remote_file({ id: file_id, url: url });
                 }
                 list.splice(index, 1);
@@ -548,9 +690,12 @@
                                 if (up.statusCode == 200 && result.code == 0 && result.data && result.data.url) {
                                     self.video_url = self.media_url_view(result.data.url || '');
                                     self.video_id = result.data.id || 0;
-                                    // 替换成功后删旧视频
+                                    // 仅清理本次新上传被替换掉的视频；编辑回填的旧视频等保存再删
                                     if (old_url && old_url != self.video_url) {
-                                        self.delete_remote_file({ id: old_id, url: old_url });
+                                        var old_key = self.media_path_key(old_url);
+                                        if (!old_key || old_key != self.saved_video_url) {
+                                            self.delete_remote_file({ id: old_id, url: old_url });
+                                        }
                                     }
                                 } else {
                                     app.globalData.showToast((result && result.msg) || self.$t('common.sub_error_retry_tips'));
@@ -570,7 +715,10 @@
                     return;
                 }
                 if (this.video_url) {
-                    this.delete_remote_file({ id: this.video_id || 0, url: this.video_url });
+                    var key = this.media_path_key(this.video_url);
+                    if (!key || key != this.saved_video_url) {
+                        this.delete_remote_file({ id: this.video_id || 0, url: this.video_url });
+                    }
                 }
                 this.video_url = '';
                 this.video_id = 0;
@@ -704,14 +852,29 @@
         align-items: center;
     }
     .at-popup {
+        position: relative;
+        height: 60vh;
         border-radius: 24rpx 24rpx 0 0;
         overflow: hidden;
+        box-sizing: border-box;
     }
-    .at-popup {
-        position: relative;
+    .at-popup-head,
+    .at-search {
+        flex-shrink: 0;
+    }
+    .at-tab-item {
+        padding-bottom: 8rpx;
+    }
+    .at-search-box {
+        height: 64rpx;
+    }
+    .at-search-input {
+        height: 64rpx;
+        font-size: 26rpx;
     }
     .at-list {
-        max-height: 60vh;
+        height: 0;
+        min-height: 0;
     }
     .at-avatar {
         width: 64rpx;

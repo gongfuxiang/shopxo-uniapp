@@ -14,12 +14,58 @@
                 <!-- 自定义背景图层：有图始终渲染；开「风格主题色」时半透明叠在主题色上 -->
                 <view v-if="home.cover" class="home-header-bg" :style="'background-image:url(' + home.cover + ');'"></view>
                 <view class="home-header-mask"></view>
+                <!-- 本人背景审核：右上角（与 PC 窄屏一致） -->
+                <view
+                    v-if="home.is_self == 1 && header_cover_audit_name"
+                    class="header-cover-audit text-size-xs"
+                    :style="'top:' + cover_audit_top + 'px;'"
+                    data-type="cover"
+                    @tap.stop="profile_audit_tip_event"
+                >
+                    <text class="cr-red">{{ header_cover_audit_name }}</text>
+                    <text v-if="home.cover_audit_status == 3 && home.cover_reject_reason" class="reject-tip-icon">!</text>
+                </view>
                 <view class="home-header-inner padding-horizontal-main padding-bottom-main" :style="header_inner_style">
                     <view class="flex-row align-c">
-                        <image class="avatar circle" :src="home.avatar" mode="aspectFill"></image>
+                        <view class="header-avatar-wrap flex-col align-c">
+                            <image class="avatar circle" :src="home.avatar" mode="aspectFill"></image>
+                            <view
+                                v-if="home.avatar_audit_status_name"
+                                class="header-audit text-size-xs margin-top-xs"
+                                data-type="avatar"
+                                @tap.stop="profile_audit_tip_event"
+                            >
+                                <text class="cr-red">{{ home.avatar_audit_status_name }}</text>
+                                <text v-if="home.avatar_reject_reason" class="reject-tip-icon">!</text>
+                            </view>
+                        </view>
                         <view class="flex-1 flex-width padding-left-main">
-                            <view class="text-size fw-b header-name">{{ home.user_name_view }}</view>
-                            <view class="text-size-sm header-sign margin-top-xs">{{ home.signature || $t('home.no_signature') }}</view>
+                            <view class="flex-row align-c flex-wrap header-name-row">
+                                <text class="text-size fw-b header-name">{{ home.user_name_view }}</text>
+                                <view
+                                    v-if="home.nickname_audit_status_name"
+                                    class="header-audit text-size-xs margin-left-sm"
+                                    data-type="nickname"
+                                    @tap.stop="profile_audit_tip_event"
+                                >
+                                    <text class="cr-red">{{ home.nickname_audit_status_name }}</text>
+                                    <text v-if="home.nickname_reject_reason" class="reject-tip-icon">!</text>
+                                </view>
+                            </view>
+                            <view v-if="home.signature || home.signature_audit_status_name" class="text-size-sm header-sign margin-top-xs flex-row align-c flex-wrap">
+                                <text v-if="home.signature">{{ home.signature }}</text>
+                                <text v-else class="header-sign-empty">{{ $t('home.no_signature') }}</text>
+                                <view
+                                    v-if="home.signature_audit_status_name"
+                                    class="header-audit text-size-xs margin-left-sm"
+                                    data-type="signature"
+                                    @tap.stop="profile_audit_tip_event"
+                                >
+                                    <text class="cr-red">{{ home.signature_audit_status_name }}</text>
+                                    <text v-if="home.signature_reject_reason" class="reject-tip-icon">!</text>
+                                </view>
+                            </view>
+                            <view v-else class="text-size-sm header-sign margin-top-xs">{{ $t('home.no_signature') }}</view>
                         </view>
                     </view>
 
@@ -98,7 +144,7 @@
                     <block v-if="content_type == 'moment'">
                         <component-moment-item
                             v-for="(item, index) in data_list"
-                            :key="index"
+                            :key="item.id || index"
                             :propItem="item"
                             :propShowUser="false"
                             :propShowOwner="home.is_self == 1"
@@ -113,7 +159,7 @@
                         ></component-moment-item>
                     </block>
                     <block v-else>
-                        <view v-for="(item, index) in data_list" :key="index" class="bg-white border-radius-main padding-main spacing-mb">
+                        <view v-for="(item, index) in data_list" :key="item.id || index" class="bg-white border-radius-main padding-main spacing-mb">
                             <block v-if="content_type == 'blog'">
                                 <view class="flex-row cp" :data-value="item.url" @tap="url_event">
                                     <image v-if="item.cover" class="blog-cover radius margin-right-sm" :src="item.cover" mode="aspectFill"></image>
@@ -313,6 +359,27 @@
                 }
                 return '#333';
             },
+            // 头区背景审核状态名（本人、非通过）
+            header_cover_audit_name() {
+                var home = this.home || {};
+                if (home.is_self != 1 || home.cover_audit_status == 2) {
+                    return '';
+                }
+                if (home.cover_audit_status == 0) {
+                    return this.$t('home.cover_audit_pending');
+                }
+                if (home.cover_audit_status == 3) {
+                    return this.$t('home.cover_audit_reject');
+                }
+                if (home.cover_audit_status_name) {
+                    return home.cover_audit_status_name;
+                }
+                return '';
+            },
+            // 背景审核角标顶距：避开状态栏，右上角略下移
+            cover_audit_top() {
+                return (this.status_bar_height || 0) + 18;
+            },
             // 滚动后顶栏变白，箭头改深色
             nav_back_color() {
                 if (this.nav_opacity > 0.3) {
@@ -501,6 +568,34 @@
                     return home.cover_reject_reason ? tip + '：' + home.cover_reject_reason : tip;
                 }
                 return '';
+            },
+            // 资料审核角标：点叹号看拒绝原因（本人可见）
+            profile_audit_tip_event(e) {
+                var type = (e.currentTarget && e.currentTarget.dataset && e.currentTarget.dataset.type) || '';
+                var home = this.home || {};
+                var title = '';
+                var reason = '';
+                if (type == 'avatar') {
+                    title = home.avatar_audit_status_name || '';
+                    reason = home.avatar_reject_reason || '';
+                } else if (type == 'nickname') {
+                    title = home.nickname_audit_status_name || '';
+                    reason = home.nickname_reject_reason || '';
+                } else if (type == 'signature') {
+                    title = home.signature_audit_status_name || '';
+                    reason = home.signature_reject_reason || '';
+                } else if (type == 'cover') {
+                    title = this.header_cover_audit_name || '';
+                    reason = home.cover_reject_reason || '';
+                }
+                if (!reason) {
+                    return;
+                }
+                uni.showModal({
+                    title: title || this.$t('common.warm_tips'),
+                    content: reason,
+                    showCancel: false,
+                });
             },
             // 封面上传 path（config 统一下发，与 PC BaseService 一致）
             load_cover_path() {

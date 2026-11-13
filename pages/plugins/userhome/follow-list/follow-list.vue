@@ -28,7 +28,7 @@
 
         <scroll-view :scroll-y="true" class="scroll-box" :style="content_style" @scrolltolower="scroll_lower" lower-threshold="60">
             <view v-if="data_list.length > 0" class="padding-main">
-                <view v-for="(item, index) in data_list" :key="index" class="bg-white border-radius-main padding-main spacing-mb flex-row align-c">
+                <view v-for="(item, index) in data_list" :key="item.user_id || item.id || index" class="bg-white border-radius-main padding-main spacing-mb flex-row align-c">
                     <view class="flex-row align-c flex-1 flex-width cp" :data-value="item.user_home_url" @tap="url_event">
                         <image class="avatar circle" :src="item.avatar" mode="aspectFill"></image>
                         <text class="margin-left-main text-line-1">{{ item.user_name_view }}</text>
