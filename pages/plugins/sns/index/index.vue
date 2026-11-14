@@ -6,28 +6,28 @@
         </block>
 
         <block v-else>
-            <view v-if="(slider_list || []).length > 0" class="spacing-mb">
+            <view v-if="slider_list.length > 0" class="spacing-mb">
                 <component-banner :propData="slider_list" propRadius="" :propImageMode="'aspectFill'"></component-banner>
             </view>
 
-            <view v-if="(sort_list || []).length > 0" class="nav-tabs bg-white" :class="{ 'no-topic': (topic_list || []).length == 0 }" :style="'--tab-line-color:' + theme_color">
+            <view v-if="sort_list.length > 0" class="nav-tabs bg-white" :style="'--tab-line-color:' + theme_color">
                 <view class="tabs-scroll-content">
                     <view v-for="(tab, ti) in sort_list" :key="ti" class="tab-item" :class="{ active: sort == tab.value }" :data-sort="tab.value" @tap="sort_event">{{ tab.name }}</view>
                 </view>
             </view>
 
-            <scroll-view v-if="(topic_list || []).length > 0" scroll-x :show-scrollbar="false" class="topic-scroll bg-white">
-                <view class="topic-scroll-content">
-                    <view v-for="(topic, ti) in topic_list" :key="topic.id || ti" class="topic-item cr-grey br-grey" :data-id="topic.id" @tap="topic_event">#{{ topic.name }}</view>
-                </view>
-            </scroll-view>
-
             <view class="page-bottom-fixed padding-main">
+                <scroll-view v-if="topic_list.length > 0" scroll-x :show-scrollbar="false" class="topic-scroll">
+                    <view class="topic-scroll-content">
+                        <view v-for="(topic, ti) in topic_list" :key="topic.id || ti" class="topic-item cr-grey br-grey" :data-id="topic.id" @tap="topic_event">#{{ topic.name }}</view>
+                    </view>
+                </scroll-view>
+
                 <block v-if="data_list.length > 0">
                     <component-moment-item v-for="(item, index) in data_list" :key="item.id || index" :propItem="item" :propEnableDetail="config.is_enable_moment_detail == 1" :propShowLike="config.is_enable_like == 1" :propShowComment="config.is_enable_comment == 1" :propShowOwner="true" @like="like_event" @comment-count="comment_count_event" @edit="edit_event" @delete="delete_event"></component-moment-item>
                     <component-bottom-line :propStatus="data_bottom_line_status" :propMsg="data_bottom_line_msg"></component-bottom-line>
                 </block>
-                <component-no-data v-else :propStatus="data_list_loding_status" :propMsg="data_list_loding_msg" :propLoadingLogoTop="(slider_list || []).length > 0 ? '40vh' : ''"></component-no-data>
+                <component-no-data v-else :propStatus="data_list_loding_status" :propMsg="data_list_loding_msg" :propLoadingLogoTop="slider_list.length > 0 ? '40vh' : ''"></component-no-data>
             </view>
 
             <view v-if="config.is_enable_moment == 1 || config.is_enable_sns == 1" class="bottom-fixed bottom-actions">

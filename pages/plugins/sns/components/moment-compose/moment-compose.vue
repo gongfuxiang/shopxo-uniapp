@@ -7,6 +7,8 @@
             :maxlength="propMaxlength"
             :focus="input_focus"
             :cursor="input_cursor"
+            :selection-start="input_selection_start"
+            :selection-end="input_selection_end"
             :placeholder="propPlaceholder"
             placeholder-class="cr-grey-9"
             @input="content_event"
@@ -165,6 +167,8 @@
                 at_req_seq: 0,
                 input_focus: false,
                 input_cursor: -1,
+                input_selection_start: -1,
+                input_selection_end: -1,
                 // 已点提交：附件归业务侧，禁止再调 deletefile（防误触叉号）
                 media_locked: false,
             };
@@ -289,12 +293,15 @@
                 this.at_popup_status = false;
                 this.input_focus = false;
                 this.input_cursor = -1;
+                this.input_selection_start = -1;
+                this.input_selection_end = -1;
                 this.media_locked = false;
             },
             // 回填编辑数据（优先 content_edit 保留换行；缺话题时另起一行补入）
             set_form_data(data) {
                 data = data || {};
                 var content = (data.content_edit != null) ? String(data.content_edit) : (data.content || '');
+                var topic_only = content === '';
                 var topics = Array.isArray(data.topic_list) ? data.topic_list : [];
                 for (var i = 0; i < topics.length; i++) {
                     var name = ((topics[i] && topics[i].name) || '').replace(/#/g, '').trim();
@@ -304,7 +311,12 @@
                     if (content.indexOf('#' + name) >= 0) {
                         continue;
                     }
-                    content += (content === '' || /\n$/.test(content) ? '' : '\n') + '#' + name;
+                    // 参与话题：正文为空时首行留空，话题放在下一行
+                    if (content === '') {
+                        content = '\n#' + name;
+                    } else {
+                        content += (/\n$/.test(content) ? '' : '\n') + '#' + name;
+                    }
                 }
                 var images = Array.isArray(data.images) ? data.images.slice() : [];
                 this.form = { content: content };
@@ -327,7 +339,14 @@
                 this.at_popup_status = false;
                 this.input_focus = false;
                 this.input_cursor = -1;
-                if (content) {
+                this.input_selection_start = -1;
+                this.input_selection_end = -1;
+                if (topic_only && content.charAt(0) === '\n') {
+                    var self = this;
+                    setTimeout(function () {
+                        self.focus_input(0);
+                    }, 200);
+                } else if (content) {
                     this.focus_input(content.length);
                 }
             },
@@ -392,11 +411,15 @@
             focus_input(cursor) {
                 var pos = typeof cursor === 'number' ? cursor : -1;
                 this.input_focus = false;
+                this.input_selection_start = -1;
+                this.input_selection_end = -1;
                 this.$nextTick(() => {
                     if (pos < 0) {
                         pos = (this.form.content || '').length;
                     }
                     this.input_cursor = pos;
+                    this.input_selection_start = pos;
+                    this.input_selection_end = pos;
                     this.input_focus = true;
                 });
             },

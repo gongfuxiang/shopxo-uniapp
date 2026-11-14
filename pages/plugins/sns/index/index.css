@@ -4,24 +4,23 @@
     padding-right: 24rpx;
 }
 .nav-tabs {
-    padding: 10rpx 24rpx 0;
-}
-.nav-tabs.no-topic {
-    padding-bottom: 24rpx;
+    height: 80rpx;
+    padding: 0 24rpx;
 }
 .tabs-scroll-content {
     display: flex;
     align-items: center;
+    height: 100%;
     gap: 48rpx;
 }
 .tab-item {
     position: relative;
+    height: 80rpx;
     white-space: nowrap;
-    padding-bottom: 16rpx;
     font-weight: 500;
     font-size: 28rpx;
     color: #666;
-    line-height: 52rpx;
+    line-height: 80rpx;
 }
 .tab-item.active {
     color: var(--tab-line-color, var(--color-main, #2f8f62));
@@ -45,7 +44,7 @@
 .topic-scroll {
     width: 100%;
     white-space: nowrap;
-    padding: 16rpx 24rpx;
+    margin-bottom: 20rpx;
     box-sizing: border-box;
 }
 .topic-scroll-content {
