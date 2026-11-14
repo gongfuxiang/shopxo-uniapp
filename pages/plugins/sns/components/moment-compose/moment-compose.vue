@@ -32,6 +32,13 @@
                 </view>
             </view>
         </view>
+        <view v-if="goods && goods.id" class="goods-row flex-row align-c" :class="(image_list || []).length > 0 || video_url ? 'margin-top-sm' : 'margin-top-main'">
+            <image class="goods-cover radius" :src="goods.images" mode="aspectFill" :data-value="goods.url" @tap.stop="goods_open_event"></image>
+            <view class="flex-1 flex-width padding-left-sm text-size-sm text-line-1" :data-value="goods.url" @tap.stop="goods_open_event">{{ goods.title }}</view>
+            <view class="goods-del" @tap.stop="goods_clear_event">
+                <iconfont name="icon-close-fillup" size="32rpx" color="rgba(87,91,102,0.7)" @click.stop="goods_clear_event"></iconfont>
+            </view>
+        </view>
 
         <view class="toolbar flex-row align-c">
             <view class="toolbar-left flex-1 flex-row align-c flex-wrap">
@@ -42,6 +49,9 @@
                 </view>
                 <view v-if="tools.video == 1" class="tool-btn" @tap="video_event">
                     <iconfont name="icon-video" size="40rpx" color="#666"></iconfont>
+                </view>
+                <view v-if="tools.goods == 1" class="tool-btn" @tap="goods_event">
+                    <iconfont name="icon-shopping" size="40rpx" color="#666"></iconfont>
                 </view>
                 <view v-if="show_at" class="tool-btn tool-text" @tap="at_event"><text class="tool-char tool-char-at">@</text></view>
                 <view v-if="tools.topic == 1" class="tool-btn tool-text" @tap="topic_event"><text class="tool-char tool-char-topic">#</text></view>
@@ -105,17 +115,62 @@
             </view>
         </component-popup>
 
+        <component-popup v-if="goods_popup_status" :propShow="true" propPosition="bottom" @onclose="goods_popup_close_event">
+            <view class="at-popup bg-white flex-col">
+                <view class="at-popup-head flex-row jc-sb align-c padding-main br-b-e">
+                    <view class="text-size fw-b flex-1 flex-width">{{ $t('moment-form.goods') }}</view>
+                    <view class="flex-shrink" @tap.stop="goods_popup_close_event"><iconfont name="icon-close-line" color="#333" size="28rpx"></iconfont></view>
+                </view>
+                <view class="at-search padding-horizontal-main padding-top-main padding-bottom-sm">
+                    <component-search
+                        :propIsBtn="true"
+                        :propIsOnEvent="true"
+                        :propIsOnInputEvent="true"
+                        :propIsRequired="false"
+                        :propDefaultValue="goods_keywords"
+                        :propPlaceholder="$t('moment-form.goods_search')"
+                        propPlaceholderClass="cr-grey-c"
+                        propIconColor="#ccc"
+                        propBgColor="#f6f6f6"
+                        @onsearch="goods_search_event"
+                        @oninput="goods_keywords_event"
+                    ></component-search>
+                </view>
+                <scroll-view scroll-y class="at-list flex-1" @scrolltolower="goods_more_event">
+                    <block v-if="goods_list.length > 0">
+                        <view v-for="(row, gi) in goods_list" :key="row.id || gi" class="flex-row align-c padding-main" :data-index="gi" @tap="goods_choice_event">
+                            <image class="goods-cover radius" :src="row.images" mode="aspectFill"></image>
+                            <view class="flex-1 flex-width padding-left-sm">
+                                <view class="text-size-sm text-line-1">{{ row.title }}</view>
+                                <view v-if="row.price !== '' && row.price != null" class="cr-price text-size-xs margin-top-xs">{{ row.price_symbol }}{{ row.price }}</view>
+                            </view>
+                        </view>
+                        <component-bottom-line :propStatus="goods_bottom_line_status"></component-bottom-line>
+                    </block>
+                    <view v-else>
+                        <component-no-data :propStatus="goods_loding_status" :propMsg="goods_loding_msg" :propBackBtn="false"></component-no-data>
+                    </view>
+                </scroll-view>
+            </view>
+        </component-popup>
+
     </view>
 </template>
 <script>
     const app = getApp();
     var common_static_url = app.globalData.get_static_url('common');
     import componentPopup from '@/components/popup/popup';
+    import componentSearch from '@/components/search/search';
+    import componentNoData from '@/components/no-data/no-data';
+    import componentBottomLine from '@/components/bottom-line/bottom-line';
     import pluginLocale from '@/pages/plugins/sns/locale/index.js';
     export default {
         mixins: [pluginLocale],
         components: {
             componentPopup,
+            componentSearch,
+            componentNoData,
+            componentBottomLine,
         },
         props: {
             propPlaceholder: { type: String, default: '' },
@@ -158,6 +213,16 @@
                 at_user_list: [],
                 at_type: 'follow',
                 at_popup_status: false,
+                goods: null,
+                goods_popup_status: false,
+                goods_keywords: '',
+                goods_list: [],
+                goods_page: 1,
+                goods_page_total: 0,
+                goods_loading: false,
+                goods_loding_status: 1,
+                goods_loding_msg: '',
+                goods_bottom_line_status: false,
                 at_loading: false,
                 at_loading_more: false,
                 at_keywords: '',
@@ -291,6 +356,10 @@
                 this.at_user_ids = [];
                 this.at_user_list = [];
                 this.at_popup_status = false;
+                this.goods = null;
+                this.goods_popup_status = false;
+                this.goods_keywords = '';
+                this.goods_list = [];
                 this.input_focus = false;
                 this.input_cursor = -1;
                 this.input_selection_start = -1;
@@ -336,6 +405,8 @@
                 this.video_id = 0;
                 this.saved_video_url = this.media_path_key(this.video_url);
                 this.at_user_ids = Array.isArray(data.at_user_ids) ? data.at_user_ids.slice() : [];
+                this.goods = data.goods && data.goods.id ? data.goods : null;
+                this.goods_popup_status = false;
                 this.at_popup_status = false;
                 this.input_focus = false;
                 this.input_cursor = -1;
@@ -401,6 +472,7 @@
                     images: (this.image_list || []).slice(),
                     video_url: this.video_url || '',
                     at_user_ids: (this.at_user_ids || []).slice(),
+                    goods_id: this.goods && this.goods.id ? parseInt(this.goods.id) : 0,
                 };
             },
             // 输入失焦
@@ -449,6 +521,102 @@
                     return;
                 }
                 this.insert_text(content !== '' && !/\s$/.test(content) ? ' #' : '#');
+            },
+            // 打开商品选择
+            goods_event() {
+                this.input_focus = false;
+                this.goods_popup_status = true;
+                this.goods_keywords = '';
+                this.load_goods(1, true);
+            },
+            goods_popup_close_event() {
+                this.goods_popup_status = false;
+            },
+            goods_keywords_event(value) {
+                this.goods_keywords = value == null ? '' : String(value);
+            },
+            goods_search_event(value) {
+                this.goods_keywords = value == null ? '' : String(value);
+                this.load_goods(1, true);
+            },
+            goods_more_event() {
+                if (this.goods_loading || this.goods_bottom_line_status) {
+                    return;
+                }
+                this.load_goods(this.goods_page + 1, false);
+            },
+            load_goods(page, reset) {
+                if (this.goods_loading) {
+                    return;
+                }
+                if (reset) {
+                    this.goods_list = [];
+                    this.goods_page = 1;
+                    this.goods_page_total = 0;
+                    this.goods_bottom_line_status = false;
+                    this.goods_loding_status = 1;
+                    this.goods_loding_msg = '';
+                }
+                this.goods_loading = true;
+                uni.request({
+                    url: app.globalData.get_request_url('goodssearch', 'moment', 'sns'),
+                    method: 'POST',
+                    data: {
+                        keywords: this.goods_keywords || '',
+                        page: page || 1,
+                    },
+                    dataType: 'json',
+                    success: (res) => {
+                        var payload = res.data || {};
+                        if (payload.code != 0) {
+                            this.goods_loding_status = (this.goods_list || []).length > 0 ? 3 : 0;
+                            this.goods_loding_msg = payload.msg || this.$t('moment-form.goods_empty');
+                            return;
+                        }
+                        var body = payload.data || {};
+                        var rows = body.data || [];
+                        var list = reset ? rows : (this.goods_list || []).concat(rows);
+                        var loaded_page = parseInt(body.page || page || 1) || 1;
+                        var page_total = parseInt(body.page_total || 0) || 0;
+                        this.goods_page = loaded_page;
+                        this.goods_page_total = page_total;
+                        this.goods_list = list;
+                        this.goods_loding_status = list.length > 0 ? 3 : 0;
+                        this.goods_loding_msg = list.length > 0 ? '' : this.$t('moment-form.goods_empty');
+                        this.goods_bottom_line_status = list.length > 0 && loaded_page >= page_total;
+                    },
+                    fail: () => {
+                        this.goods_loding_status = (this.goods_list || []).length > 0 ? 3 : 2;
+                        this.goods_loding_msg = this.$t('common.internet_error_tips');
+                    },
+                    complete: () => {
+                        this.goods_loading = false;
+                    },
+                });
+            },
+            goods_choice_event(e) {
+                var index = parseInt(e.currentTarget.dataset.index);
+                var row = (this.goods_list || [])[index];
+                if (!row || !row.id) {
+                    return;
+                }
+                this.goods = {
+                    id: row.id,
+                    title: row.title || '',
+                    images: row.images || '',
+                    url: row.url || '',
+                };
+                this.goods_popup_status = false;
+            },
+            goods_clear_event() {
+                this.goods = null;
+            },
+            goods_open_event(e) {
+                var url = (e.currentTarget.dataset && e.currentTarget.dataset.value) || (this.goods && this.goods.url) || '';
+                if (!url) {
+                    return;
+                }
+                app.globalData.url_event({ currentTarget: { dataset: { value: url } } });
             },
             // 打开艾特弹窗
             at_event() {
@@ -752,7 +920,7 @@
                 }
                 var data = this.get_data();
                 var content = (data.content || '').trim();
-                if (!content && !(data.images || []).length && !data.video_url) {
+                if (!content && !(data.images || []).length && !data.video_url && !data.goods_id) {
                     app.globalData.showToast(this.content_empty_tips);
                     return;
                 }
@@ -863,10 +1031,30 @@
         color: #666;
     }
     .tool-char-at {
-        transform: translateY(-6rpx);
+        transform: translateY(-2rpx);
     }
     .tool-char-topic {
         transform: translateY(-2rpx);
+    }
+    .goods-row,
+    .goods-pick {
+        background: #f8f8f8;
+        border-radius: 12rpx;
+        padding: 16rpx;
+    }
+    .goods-pick {
+        background: transparent;
+        border-radius: 0;
+    }
+    .goods-cover {
+        width: 48rpx;
+        height: 48rpx;
+        flex: none;
+        background: #eee;
+    }
+    .goods-del {
+        margin-left: 12rpx;
+        flex: none;
     }
     .images-count {
         line-height: 1;

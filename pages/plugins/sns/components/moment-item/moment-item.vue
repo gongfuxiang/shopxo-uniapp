@@ -32,6 +32,11 @@
             <view v-if="item.video_url" class="margin-top-sm" @tap.stop="">
                 <video class="moment-video radius" :src="item.video_url" controls object-fit="cover"></video>
             </view>
+            <view v-if="item.goods && item.goods.id" class="moment-goods margin-top-xs flex-row align-c" @tap.stop="">
+                <image class="moment-goods-cover radius" :src="item.goods.images" mode="aspectFill" :data-value="item.goods.url" @tap.stop="url_event"></image>
+                <view class="flex-1 flex-width padding-left-sm text-size-sm text-line-1" :data-value="item.goods.url" @tap.stop="url_event">{{ item.goods.title }}</view>
+                <view class="moment-goods-buy round text-size-xs cr-grey br-grey bg-white" :data-value="item.goods.url" @tap.stop="url_event">{{ $t('moment-form.goods_buy') }}</view>
+            </view>
         </view>
         <view class="flex-row align-c margin-top-sm text-size-sm cr-grey-9 flex-wrap action-row">
             <!-- 与 PC 一致：仅审核通过展示点赞/评论/浏览；待审仍可编辑删除 -->
@@ -87,7 +92,9 @@
 <script>
     const app = getApp();
     import componentMomentComment from '@/pages/plugins/sns/components/moment-comment/moment-comment';
+    import pluginLocale from '@/pages/plugins/sns/locale/index.js';
     export default {
+        mixins: [pluginLocale],
         components: {
             componentMomentComment,
         },
@@ -343,6 +350,22 @@
     .moment-video {
         width: 100%;
         height: 360rpx;
+    }
+    .moment-goods {
+        background: #f8f8f8;
+        border-radius: 12rpx;
+        padding: 16rpx;
+    }
+    .moment-goods-cover {
+        width: 48rpx;
+        height: 48rpx;
+        flex: none;
+        background: #eee;
+    }
+    .moment-goods-buy {
+        flex: none;
+        padding: 8rpx 20rpx;
+        line-height: 1.4;
     }
     .action-item {
         display: inline-flex;

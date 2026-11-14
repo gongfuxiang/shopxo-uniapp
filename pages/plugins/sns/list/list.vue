@@ -40,6 +40,10 @@
                                 :propIsTerse="true"
                             ></component-panel-content>
                         </view>
+                        <view v-if="item.goods && item.goods.id" class="list-goods margin-top-main flex-row align-c" @tap.stop="">
+                            <image class="list-goods-cover radius" :src="item.goods.images" mode="aspectFill" :data-value="item.goods.url" @tap.stop="url_event"></image>
+                            <view class="flex-1 flex-width padding-left-sm text-size-sm text-line-1" :data-value="item.goods.url" @tap.stop="url_event">{{ item.goods.title }}</view>
+                        </view>
                         <view
                             v-if="show_operate(item)"
                             class="item-operation tr margin-top-main"
@@ -117,6 +121,7 @@
                 data_list_loding_status: 1,
                 data_list_loding_msg: '',
                 data_is_loading: 0,
+                list_req_seq: 0,
                 bottom_fixed_style: '',
                 nav_status_list: [],
                 nav_status_index: 0,
@@ -286,18 +291,21 @@
                 if (this.data_is_loading == 1) {
                     return false;
                 }
+                this.list_req_seq = (this.list_req_seq || 0) + 1;
+                var req_seq = this.list_req_seq;
+                var req_page = this.data_page;
                 this.setData({
                     data_is_loading: 1,
                     data_list_loding_status: 1,
                 });
-                if (this.data_page > 1) {
+                if (req_page > 1) {
                     uni.showLoading({
                         title: this.$t('common.loading_in_text'),
                     });
                 }
                 // 请求数据
                 var data = {
-                    page: this.data_page,
+                    page: req_page,
                 };
                 // 状态筛选
                 var status = (this.nav_status_list[this.nav_status_index] || null) == null ? -1 : this.nav_status_list[this.nav_status_index]['id'];
@@ -310,14 +318,18 @@
                     data: data,
                     dataType: 'json',
                     success: (res) => {
-                        if (this.data_page > 1) {
+                        if (req_page > 1) {
                             uni.hideLoading();
+                        }
+                        // 刷新或切状态后，丢弃已经过期的这一页
+                        if (req_seq !== this.list_req_seq) {
+                            return;
                         }
                         uni.stopPullDownRefresh();
                         if (res.data.code == 0) {
                             var data = res.data.data || {};
                             var list = data.data_list || [];
-                            var temp_data_list = this.data_page <= 1 ? list : (this.data_list || []).concat(list);
+                            var temp_data_list = req_page <= 1 ? this.unique_list(list) : this.merge_list(this.data_list || [], list);
                             this.setData({
                                 field_list: data.field_list || this.field_list || [],
                                 data_list: temp_data_list,
@@ -325,7 +337,7 @@
                                 data_page_total: data.page_total || 0,
                                 data_list_loding_status: temp_data_list.length > 0 ? 3 : 0,
                                 data_list_loding_msg: temp_data_list.length > 0 ? '' : this.$t('common.no_relevant_data_tips'),
-                                data_page: this.data_page + 1,
+                                data_page: req_page + 1,
                                 data_is_loading: 0,
                             });
                             this.setData({
@@ -345,8 +357,11 @@
                         }
                     },
                     fail: () => {
-                        if (this.data_page > 1) {
+                        if (req_page > 1) {
                             uni.hideLoading();
+                        }
+                        if (req_seq !== this.list_req_seq) {
+                            return;
                         }
                         uni.stopPullDownRefresh();
                         this.setData({
@@ -357,6 +372,28 @@
                         app.globalData.showToast(this.$t('common.internet_error_tips'));
                     },
                 });
+            },
+            // 同一页里按 id 去重
+            unique_list(list) {
+                return this.merge_list([], list || []);
+            },
+            // 翻页追加时跳过已经在列表里的动态
+            merge_list(current, incoming) {
+                var exist = {};
+                var result = [];
+                var source = (current || []).concat(incoming || []);
+                for (var i = 0; i < source.length; i++) {
+                    var row = source[i];
+                    var id = row && row.id != null && row.id !== '' ? String(row.id) : '';
+                    if (id !== '') {
+                        if (exist[id]) {
+                            continue;
+                        }
+                        exist[id] = 1;
+                    }
+                    result.push(row);
+                }
+                return result;
             },
             // 滚动加载
             scroll_lower() {
@@ -445,3 +482,16 @@
         },
     };
 </script>
+<style>
+    .list-goods {
+        background: #f8f8f8;
+        border-radius: 12rpx;
+        padding: 16rpx;
+    }
+    .list-goods-cover {
+        width: 48rpx;
+        height: 48rpx;
+        flex: none;
+        background: #eee;
+    }
+</style>

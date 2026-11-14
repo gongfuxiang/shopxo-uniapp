@@ -57,6 +57,7 @@
                     emoji: 0,
                     images: 0,
                     video: 0,
+                    goods: 0,
                     at: 0,
                     topic: 0,
                     at_follow: 0,
@@ -163,6 +164,7 @@
                                 emoji: data.is_publish_emoji == 1 ? 1 : 0,
                                 images: data.is_publish_images == 1 ? 1 : 0,
                                 video: data.is_publish_video == 1 ? 1 : 0,
+                                goods: data.is_publish_goods == 1 ? 1 : 0,
                                 at: data.is_publish_at == 1 ? 1 : 0,
                                 topic: data.is_publish_topic == 1 ? 1 : 0,
                                 at_follow: data.is_moment_at_follow == 1 ? 1 : 0,
@@ -206,6 +208,7 @@
                     content: data.content || '',
                     images: JSON.stringify(data.images || []),
                     video_url: data.video_url || '',
+                    goods_id: data.goods_id || 0,
                     at_user_ids: JSON.stringify(data.at_user_ids || []),
                 };
                 if (this.moment_id > 0) {

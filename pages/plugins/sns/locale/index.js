@@ -95,7 +95,11 @@ var zh = {
         "at_mutual": "互相关注",
         "at_empty": "暂无可选用户",
         "at_search": "搜索昵称/用户名",
-        "at_no_more": "没有更多了"
+        "at_no_more": "没有更多了",
+        "goods": "商品",
+        "goods_buy": "查看商品",
+        "goods_search": "搜索商品名称",
+        "goods_empty": "没有找到商品"
     }
 };
 var en = {
@@ -194,7 +198,11 @@ var en = {
         "at_mutual": "Mutual",
         "at_empty": "No users available",
         "at_search": "Search nickname/username",
-        "at_no_more": "No more"
+        "at_no_more": "No more",
+        "goods": "Goods",
+        "goods_buy": "View goods",
+        "goods_search": "Search goods",
+        "goods_empty": "No goods found"
     }
 };
 export default createPageLocaleMixin({ zh, en });
