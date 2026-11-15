@@ -33,8 +33,8 @@
                 <video class="moment-video radius" :src="item.video_url" controls object-fit="cover"></video>
             </view>
             <view v-if="item.goods && item.goods.id" class="moment-goods margin-top-xs flex-row align-c" @tap.stop="">
-                <image class="moment-goods-cover radius" :src="item.goods.images" mode="aspectFill" :data-value="item.goods.url" @tap.stop="url_event"></image>
-                <view class="flex-1 flex-width padding-left-sm text-size-sm text-line-1" :data-value="item.goods.url" @tap.stop="url_event">{{ item.goods.title }}</view>
+                <image v-if="item.goods.images" class="moment-goods-cover radius margin-right-sm" :src="item.goods.images" mode="aspectFill" :data-value="item.goods.url" @tap.stop="url_event"></image>
+                <view class="flex-1 flex-width text-size-sm text-line-1" :data-value="item.goods.url" @tap.stop="url_event">{{ item.goods.title }}</view>
                 <view class="moment-goods-buy round text-size-xs cr-grey br-grey bg-white" :data-value="item.goods.url" @tap.stop="url_event">{{ $t('moment-form.goods_buy') }}</view>
             </view>
         </view>
@@ -352,15 +352,14 @@
         height: 360rpx;
     }
     .moment-goods {
-        background: #f8f8f8;
+        background: #fafafa;
         border-radius: 12rpx;
         padding: 16rpx;
     }
     .moment-goods-cover {
-        width: 48rpx;
-        height: 48rpx;
+        width: 40rpx;
+        height: 40rpx;
         flex: none;
-        background: #eee;
     }
     .moment-goods-buy {
         flex: none;

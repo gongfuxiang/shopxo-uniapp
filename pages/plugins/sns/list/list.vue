@@ -40,9 +40,13 @@
                                 :propIsTerse="true"
                             ></component-panel-content>
                         </view>
-                        <view v-if="item.goods && item.goods.id" class="list-goods margin-top-main flex-row align-c" @tap.stop="">
-                            <image class="list-goods-cover radius" :src="item.goods.images" mode="aspectFill" :data-value="item.goods.url" @tap.stop="url_event"></image>
-                            <view class="flex-1 flex-width padding-left-sm text-size-sm text-line-1" :data-value="item.goods.url" @tap.stop="url_event">{{ item.goods.title }}</view>
+                        <view v-if="item.goods && item.goods.id" class="list-goods margin-top-main flex-row align-c" :data-value="item.goods.url" @tap.stop="url_event">
+                            <image v-if="item.goods.images" class="list-goods-cover radius margin-right-sm" :src="item.goods.images" mode="aspectFill"></image>
+                            <view class="flex-1 flex-width">
+                                <view class="text-size-sm text-line-1">{{ item.goods.title }}</view>
+                                <view v-if="item.goods.price !== '' && item.goods.price != null" class="cr-price text-size-xs">{{ item.goods.price_symbol }}{{ item.goods.price }}</view>
+                            </view>
+                            <iconfont name="icon-arrow-right" size="24rpx" color="#ccc" propClass="margin-left-sm"></iconfont>
                         </view>
                         <view
                             v-if="show_operate(item)"
@@ -484,14 +488,13 @@
 </script>
 <style>
     .list-goods {
-        background: #f8f8f8;
+        background: #fafafa;
         border-radius: 12rpx;
         padding: 16rpx;
     }
     .list-goods-cover {
-        width: 48rpx;
-        height: 48rpx;
+        width: 40rpx;
+        height: 40rpx;
         flex: none;
-        background: #eee;
     }
 </style>

@@ -33,8 +33,8 @@
             </view>
         </view>
         <view v-if="goods && goods.id" class="goods-row flex-row align-c" :class="(image_list || []).length > 0 || video_url ? 'margin-top-sm' : 'margin-top-main'">
-            <image class="goods-cover radius" :src="goods.images" mode="aspectFill" :data-value="goods.url" @tap.stop="goods_open_event"></image>
-            <view class="flex-1 flex-width padding-left-sm text-size-sm text-line-1" :data-value="goods.url" @tap.stop="goods_open_event">{{ goods.title }}</view>
+            <image v-if="goods.images" class="goods-cover radius margin-right-sm" :src="goods.images" mode="aspectFill" :data-value="goods.url" @tap.stop="goods_open_event"></image>
+            <view class="flex-1 flex-width text-size-sm text-line-1" :data-value="goods.url" @tap.stop="goods_open_event">{{ goods.title }}</view>
             <view class="goods-del" @tap.stop="goods_clear_event">
                 <iconfont name="icon-close-fillup" size="32rpx" color="rgba(87,91,102,0.7)" @click.stop="goods_clear_event"></iconfont>
             </view>
@@ -139,8 +139,8 @@
                 <scroll-view scroll-y class="at-list flex-1" @scrolltolower="goods_more_event">
                     <block v-if="goods_list.length > 0">
                         <view v-for="(row, gi) in goods_list" :key="row.id || gi" class="flex-row align-c padding-main" :data-index="gi" @tap="goods_choice_event">
-                            <image class="goods-cover radius" :src="row.images" mode="aspectFill"></image>
-                            <view class="flex-1 flex-width padding-left-sm">
+                            <image v-if="row.images" class="goods-cover radius margin-right-sm" :src="row.images" mode="aspectFill"></image>
+                            <view class="flex-1 flex-width">
                                 <view class="text-size-sm text-line-1">{{ row.title }}</view>
                                 <view v-if="row.price !== '' && row.price != null" class="cr-price text-size-xs margin-top-xs">{{ row.price_symbol }}{{ row.price }}</view>
                             </view>
@@ -1038,7 +1038,7 @@
     }
     .goods-row,
     .goods-pick {
-        background: #f8f8f8;
+        background: #fafafa;
         border-radius: 12rpx;
         padding: 16rpx;
     }
@@ -1047,10 +1047,9 @@
         border-radius: 0;
     }
     .goods-cover {
-        width: 48rpx;
-        height: 48rpx;
+        width: 40rpx;
+        height: 40rpx;
         flex: none;
-        background: #eee;
     }
     .goods-del {
         margin-left: 12rpx;
