@@ -61,6 +61,8 @@
                                         <component-diy-binding v-else-if="item.key == 'binding'" :propIndex="get_prop_index(item)" :propKey="item.id + index" :propValue="item.com_data"></component-diy-binding>
                                         <component-diy-ask v-else-if="item.key == 'ask'" :propIndex="get_prop_index(item)" :propKey="item.id + index" :propValue="item.com_data"></component-diy-ask>
                                         <component-diy-ask-tabs v-else-if="item.key == 'ask-tabs'" :propIndex="get_prop_index(item)" :propKey="item.id + index" :propValue="item.com_data" :propTop="get_diy_prop_top(item.com_data)" :propScrollTop="scroll_top" :propCustomNavHeight="get_diy_custom_nav_height(item.com_data)" :propIsTabsUseSafeDistance="getPropIsTabsUseSafeDistance"></component-diy-ask-tabs>
+                                        <component-diy-plugins-sns v-else-if="item.key == 'plugins-sns'" :propIndex="get_prop_index(item)" :propKey="item.id + index" :propValue="item.com_data"></component-diy-plugins-sns>
+                                        <component-diy-plugins-sns-tabs v-else-if="item.key == 'plugins-sns-tabs'" :propIndex="get_prop_index(item)" :propKey="item.id + index" :propValue="item.com_data" :propTop="get_diy_prop_top(item.com_data)" :propScrollTop="scroll_top" :propCustomNavHeight="get_diy_custom_nav_height(item.com_data)" :propIsTabsUseSafeDistance="getPropIsTabsUseSafeDistance"></component-diy-plugins-sns-tabs>
                                         <component-diy-activity v-else-if="item.key == 'activity'" :ref="'diy_goods_buy' + index" :propDiyIndex="index" :propIndex="get_prop_index(item)" :propKey="item.id + index" :propValue="item.com_data" @goods_buy_event="goods_buy_event"></component-diy-activity>
                                         <component-diy-salerecords v-else-if="item.key == 'salerecords'" :propIndex="get_prop_index(item)" :propKey="item.id + index" :propValue="item.com_data"></component-diy-salerecords>
                                         <component-diy-plugins-goods-detail-goodsservice v-else-if="item.key == 'plugins-goods-detail-goodsservice'" :propIndex="get_prop_index(item)" :propKey="item.id + index" :propValue="item.com_data" :propGoodsService="propGoodsService"></component-diy-plugins-goods-detail-goodsservice>
@@ -198,6 +200,8 @@
     import componentDiyBinding from '@/pages/diy/components/diy/binding';
     import componentDiyAsk from '@/pages/diy/components/diy/ask';
     import componentDiyAskTabs from '@/pages/diy/components/diy/ask-tabs';
+    import componentDiyPluginsSns from '@/pages/diy/components/diy/plugins-sns';
+    import componentDiyPluginsSnsTabs from '@/pages/diy/components/diy/plugins-sns-tabs';
     import componentDiyActivity from '@/pages/diy/components/diy/activity';
     import componentDiySalerecords from '@/pages/diy/components/diy/salerecords'
     import componentDiyPluginsGoodsDetailGoodsservice from '@/pages/diy/components/diy/plugins-goods-detail-goodsservice'
@@ -342,6 +346,8 @@
             componentDiyBinding,
             componentDiyAsk,
             componentDiyAskTabs,
+            componentDiyPluginsSns,
+            componentDiyPluginsSnsTabs,
             componentDiyActivity,
             componentDiySalerecords,
             componentDiyPluginsGoodsDetailGoodsservice,
