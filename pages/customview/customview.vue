@@ -5,7 +5,16 @@
             <block v-if="(data.is_header || 0) == 1">
                 <!-- 搜索框 -->
                 <view class="padding-main bg-white">
-                    <component-search propClass="br" :propPlaceholder="$t('common.enter_product_name_search')"></component-search>
+                    <component-search
+                        :propIsEnterSearchStart="true"
+                        :propIsBtn="true"
+                        propSize="sm"
+                        :propPlaceholder="$t('common.enter_product_name_search')"
+                        propPlaceholderClass="cr-grey-c"
+                        propIconColor="#999"
+                        propBgColor="#fff"
+                        propBrColor="#eee"
+                    ></component-search>
                 </view>
             </block>
 

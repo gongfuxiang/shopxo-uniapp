@@ -9,7 +9,7 @@
                     :style="(((v.config || null) != null && (v.config.frontend_config || null) != null && (v.config.frontend_config.style || null) != null) ? v.config.frontend_config.style : '')+(((v.config || null) != null && (v.config.style_background_images || null) != null) ? 'background-image:url('+v.config.style_background_images+');' : '')">
                         <block v-for="(vs, indexchn) in v.children" :key="indexchn">
                             <view :class="'layout-content-container ' + (((vs.config || null) != null && (vs.config.frontend_config || null) != null && (vs.config.frontend_config.ent || null) != null) ? vs.config.frontend_config.ent : '')"
-                            :style="(((vs.config || null) != null && (vs.config.frontend_config || null) != null && (vs.config.frontend_config.style || null) != null) ? vs.config.frontend_config.style : '')+(((vs.config || null) != null && (vs.config.style_background_images || null) != null) ? 'background-image:url('+vs.config.style_background_images+');' : '')">
+                            :style="layout_column_style(v, indexchn) + (((vs.config || null) != null && (vs.config.frontend_config || null) != null && (vs.config.frontend_config.style || null) != null) ? vs.config.frontend_config.style : '')+(((vs.config || null) != null && (vs.config.style_background_images || null) != null) ? 'background-image:url('+vs.config.style_background_images+');' : '')">
                                 <block v-if="(vs.children || null) != null && vs.children.length > 0">
                                     <view v-for="(vss, indexlay) in vs.children" :key="indexlay" class="layout-content">
                                         <view v-if="(vss.config || null) != null && vss.config.length !== 0" class="module-content">
@@ -19,26 +19,35 @@
                                                     <view
                                                     :class="'module-images-content ' + vss.config.frontend_config.media_fixed.media_container_ent"
                                                     :style="vss.config.frontend_config.media_fixed.media_container_style">
-                                                        <image @tap="layout_url_event" :data-value="vss.config.url || ''" :src="vss.config.images" mode="widthFix" :class="vss.config.frontend_config.media_fixed.media_ent" :style="vss.config.frontend_config.media_fixed.media_container_style" class="image"></image>
+                                                        <image @tap="layout_url_event" :data-value="vss.config.url || ''" :src="vss.config.images" :mode="layout_media_image_mode(vss.config.frontend_config.media_fixed)" :class="layout_media_image_class(vss.config.frontend_config.media_fixed, 'image')" :style="layout_media_image_style(vss.config.frontend_config.media_fixed)" class="image"></image>
                                                     </view>
                                                 </block>
                                                 <!-- 多图 -->
                                                 <block v-else-if="vss.value == 'many-images'">
                                                     <block v-if="vss.config.view_list_show_style == 'rolling'">
-                                                        <!-- 滚动 -->
-                                                        <view class="module-list-rolling">
-                                                            <scroll-view scroll-x>
-                                                                <view v-for="(item, index2dtg) in vss.config.data_list" :key="index2dtg" class="item">
-                                                                    <view class="module-item" :style="'width:' + (((vss.config.view_list_show_style_value_arr || null) == null || (vss.config.view_list_show_style_value_arr.item_width || null) == null) ? 200 : vss.config.view_list_show_style_value_arr.item_width) + 'px;margin-left:' + (((vss.config.view_list_show_style_value_arr || null) == null || (vss.config.view_list_show_style_value_arr.item_margin || null) == null || index2dtg == 0) ? 0 : vss.config.view_list_show_style_value_arr.item_margin) + 'px;' + vss.config.frontend_config.item_style+vss.config.frontend_config.item_style" @tap="layout_url_event" :data-value="item.url || ''">
-                                                                        <view
-                                                                        :class="vss.config.frontend_config.media_fixed.media_container_ent"
-                                                                        :style="vss.config.frontend_config.media_fixed.media_container_style">
-                                                                            <image :src="item.images" mode="widthFix" :class="vss.config.frontend_config.media_fixed.media_ent" :style="vss.config.frontend_config.media_fixed.media_container_style" class="image"></image>
-                                                                        </view>
-                                                                    </view>
+                                                        <!-- 滚动：scroll-view 固定 item 宽（对齐 PC），自动播放/导航点由 layout-rolling 处理 -->
+                                                        <layout-rolling
+                                                            :item-width="layout_rolling_item_width(vss.config)"
+                                                            :item-margin="layout_rolling_item_margin(vss.config)"
+                                                            :autoplay="layout_rolling_is_auto_play(vss.config)"
+                                                            :interval="layout_rolling_interval(vss.config)"
+                                                            :show-dots="layout_rolling_is_nav_dot(vss.config)"
+                                                            :nav-dot-ent="layout_frontend_cfg(vss.config, 'nav_dot_ent', '')"
+                                                            :count="(vss.config.data_list || []).length">
+                                                            <view
+                                                                v-for="(item, index2dtg) in vss.config.data_list"
+                                                                :key="index2dtg"
+                                                                class="module-item layout-rolling-item"
+                                                                :style="layout_rolling_item_style(vss.config)"
+                                                                @tap="layout_url_event"
+                                                                :data-value="item.url || ''">
+                                                                <view
+                                                                :class="vss.config.frontend_config.media_fixed.media_container_ent"
+                                                                :style="vss.config.frontend_config.media_fixed.media_container_style">
+                                                                    <image :src="item.images" :mode="layout_media_image_mode(vss.config.frontend_config.media_fixed)" :class="layout_media_image_class(vss.config.frontend_config.media_fixed, 'image')" :style="layout_media_image_style(vss.config.frontend_config.media_fixed)" class="image"></image>
                                                                 </view>
-                                                            </scroll-view>
-                                                        </view>
+                                                            </view>
+                                                        </layout-rolling>
                                                     </block>
                                                     <block v-else-if="vss.config.view_list_show_style == 'list'">
                                                         <!-- 列表 -->
@@ -48,7 +57,7 @@
                                                                     <view
                                                                     :class="vss.config.frontend_config.media_fixed.media_container_ent"
                                                                     :style="vss.config.frontend_config.media_fixed.media_container_style" @tap="layout_url_event" :data-value="item.url || ''">
-                                                                        <image :src="item.images" mode="widthFix" :class="vss.config.frontend_config.media_fixed.media_ent" :style="vss.config.frontend_config.media_fixed.media_container_style" class="image"></image>
+                                                                        <image :src="item.images" :mode="layout_media_image_mode(vss.config.frontend_config.media_fixed)" :class="layout_media_image_class(vss.config.frontend_config.media_fixed, 'image')" :style="layout_media_image_style(vss.config.frontend_config.media_fixed)" class="image"></image>
                                                                     </view>
                                                                 </view>
                                                             </view>
@@ -64,8 +73,8 @@
                                                         :circular="circular" :style="vss.config.frontend_config.media_fixed.media_container_style">
                                                             <block v-for="(item, index2dtm) in vss.config.data_list" :key="index2dtm">
                                                                 <swiper-item :class="vss.config.frontend_config.media_fixed.media_container_ent">
-                                                                    <image :src="item.images" mode="aspectFill" :class="vss.config.frontend_config.media_fixed.media_ent" :style="vss.config.frontend_config.media_fixed.media_container_style"
-                                                                    @tap="layout_url_event" :data-value="item.url || ''" class="image"></image>
+                                                                    <image :src="item.images" mode="aspectFill" :class="layout_media_image_class(vss.config.frontend_config.media_fixed, 'image')" :style="layout_media_image_style(vss.config.frontend_config.media_fixed)"
+                                                                    @tap="layout_url_event" :data-value="item.url || ''"></image>
                                                                 </swiper-item>
                                                             </block>
                                                         </swiper>
@@ -74,22 +83,30 @@
                                                 <!-- 图文 -->
                                                 <block v-else-if="vss.value == 'images-text'">
                                                     <block v-if="vss.config.view_list_show_style == 'rolling'">
-                                                        <!-- 滚动 -->
-                                                        <view class="module-list-rolling">
-                                                            <scroll-view scroll-x>
-                                                                <view v-for="(item, index2twg) in vss.config.data_list" :key="index2twg" class="item">
-                                                                    <view class="module-item" :style="'width:' + (((vss.config.view_list_show_style_value_arr || null) == null || (vss.config.view_list_show_style_value_arr.item_width || null) == null) ? 200 : vss.config.view_list_show_style_value_arr.item_width) + 'px;margin-left:' + (((vss.config.view_list_show_style_value_arr || null) == null || (vss.config.view_list_show_style_value_arr.item_margin || null) == null || index2twg == 0) ? 0 : vss.config.view_list_show_style_value_arr.item_margin) + 'px;' + vss.config.frontend_config.item_style+vss.config.frontend_config.item_style" @tap="layout_url_event" :data-value="item.url || ''">
-                                                                        <view v-if="(item.images || null) != null"
-                                                                        :class="vss.config.frontend_config.media_fixed.media_container_ent"
-                                                                        :style="vss.config.frontend_config.media_fixed.media_container_style">
-                                                                            <image :src="item.images" mode="widthFix" :class="vss.config.frontend_config.media_fixed.media_ent" :style="vss.config.frontend_config.media_fixed.media_container_style" class="image"></image>
-                                                                        </view>
-                                                                        <view v-if="(item.title || null) != null" :style="((vss.config.frontend_config.item_field_style || null) != null && (vss.config.frontend_config.item_field_style[index2twg] || null) != null && (vss.config.frontend_config.item_field_style[index2twg]['title'] || null) != null) ? vss.config.frontend_config.item_field_style[index2twg]['title'] : ''">{{item.title}}</view>
-                                                                        <view v-if="(item.desc || null) != null" :style="((vss.config.frontend_config.item_field_style || null) != null && (vss.config.frontend_config.item_field_style[index2twg] || null) != null && (vss.config.frontend_config.item_field_style[index2twg]['desc'] || null) != null) ? vss.config.frontend_config.item_field_style[index2twg]['desc'] : ''">{{item.desc}}</view>
-                                                                    </view>
+                                                        <layout-rolling
+                                                            :item-width="layout_rolling_item_width(vss.config)"
+                                                            :item-margin="layout_rolling_item_margin(vss.config)"
+                                                            :autoplay="layout_rolling_is_auto_play(vss.config)"
+                                                            :interval="layout_rolling_interval(vss.config)"
+                                                            :show-dots="layout_rolling_is_nav_dot(vss.config)"
+                                                            :nav-dot-ent="layout_frontend_cfg(vss.config, 'nav_dot_ent', '')"
+                                                            :count="(vss.config.data_list || []).length">
+                                                            <view
+                                                                v-for="(item, index2twg) in vss.config.data_list"
+                                                                :key="index2twg"
+                                                                class="module-item layout-rolling-item"
+                                                                :style="layout_rolling_item_style(vss.config)"
+                                                                @tap="layout_url_event"
+                                                                :data-value="item.url || ''">
+                                                                <view v-if="(item.images || null) != null"
+                                                                :class="vss.config.frontend_config.media_fixed.media_container_ent"
+                                                                :style="vss.config.frontend_config.media_fixed.media_container_style">
+                                                                    <image :src="item.images" :mode="layout_media_image_mode(vss.config.frontend_config.media_fixed)" :class="layout_media_image_class(vss.config.frontend_config.media_fixed, 'image')" :style="layout_media_image_style(vss.config.frontend_config.media_fixed)" class="image"></image>
                                                                 </view>
-                                                            </scroll-view>
-                                                        </view>
+                                                                <view v-if="(item.title || null) != null" :style="((vss.config.frontend_config.item_field_style || null) != null && (vss.config.frontend_config.item_field_style[index2twg] || null) != null && (vss.config.frontend_config.item_field_style[index2twg]['title'] || null) != null) ? vss.config.frontend_config.item_field_style[index2twg]['title'] : ''">{{item.title}}</view>
+                                                                <view v-if="(item.desc || null) != null" :style="((vss.config.frontend_config.item_field_style || null) != null && (vss.config.frontend_config.item_field_style[index2twg] || null) != null && (vss.config.frontend_config.item_field_style[index2twg]['desc'] || null) != null) ? vss.config.frontend_config.item_field_style[index2twg]['desc'] : ''">{{item.desc}}</view>
+                                                            </view>
+                                                        </layout-rolling>
                                                     </block>
                                                     <block v-if="vss.config.view_list_show_style == 'leftright'">
                                                         <!-- 左图右文 -->
@@ -100,7 +117,7 @@
                                                                         <view
                                                                         :class="vss.config.frontend_config.media_fixed.media_container_ent"
                                                                         :style="vss.config.frontend_config.media_fixed.media_container_style">
-                                                                            <image :src="item.images" mode="widthFix" :class="vss.config.frontend_config.media_fixed.media_ent" :style="vss.config.frontend_config.media_fixed.media_container_style" class="image"></image>
+                                                                            <image :src="item.images" :mode="layout_media_image_mode(vss.config.frontend_config.media_fixed)" :class="layout_media_image_class(vss.config.frontend_config.media_fixed, 'image')" :style="layout_media_image_style(vss.config.frontend_config.media_fixed)" class="image"></image>
                                                                         </view>
                                                                     </view>
                                                                     <view class="fl" :style="vss.config.frontend_config.item_right_style">
@@ -119,7 +136,7 @@
                                                                     <view v-if="(item.images || null) != null"
                                                                     :class="vss.config.frontend_config.media_fixed.media_container_ent"
                                                                     :style="vss.config.frontend_config.media_fixed.media_container_style">
-                                                                        <image :src="item.images" mode="widthFix" :class="vss.config.frontend_config.media_fixed.media_ent" :style="vss.config.frontend_config.media_fixed.media_container_style" class="image"></image>
+                                                                        <image :src="item.images" :mode="layout_media_image_mode(vss.config.frontend_config.media_fixed)" :class="layout_media_image_class(vss.config.frontend_config.media_fixed, 'image')" :style="layout_media_image_style(vss.config.frontend_config.media_fixed)" class="image"></image>
                                                                     </view>
                                                                     <view v-if="(item.title || null) != null" :style="((vss.config.frontend_config.item_field_style || null) != null && (vss.config.frontend_config.item_field_style[index2twsx] || null) != null && (vss.config.frontend_config.item_field_style[index2twsx]['title'] || null) != null) ? vss.config.frontend_config.item_field_style[index2twsx]['title'] : ''">{{item.title}}</view>
                                                                     <view v-if="(item.desc || null) != null" :style="((vss.config.frontend_config.item_field_style || null) != null && (vss.config.frontend_config.item_field_style[index2twsx] || null) != null && (vss.config.frontend_config.item_field_style[index2twsx]['desc'] || null) != null) ? vss.config.frontend_config.item_field_style[index2twsx]['desc'] : ''">{{item.desc}}</view>
@@ -128,9 +145,19 @@
                                                         </view>
                                                     </block>
                                                 </block>
-                                                <!-- 图片魔方 -->
+                                                <!-- 图片魔方（新网格：density/gap/start-end + media_fixed） -->
                                                 <block v-else-if="vss.value == 'images-magic-cube'">
-                                                    <view :class="'oh layout-module-images-magic-cube layout-module-images-magic-cube-'+vss.config.view_list_show_style+' '+(vss.config.frontend_config.list_ent || '')">
+                                                    <view v-if="layout_magic_cube_is_grid(vss.config)" class="layout-module-images-magic-cube layout-module-images-magic-cube-grid" :class="'layout-module-images-magic-cube-' + (vss.config.view_list_show_style || '')" :style="layout_magic_cube_grid_style(vss.config)">
+                                                        <block v-for="(item, mci) in (vss.config.data_list || [])" :key="mci">
+                                                            <view v-if="item && item.images && item.start && item.end" class="item-module-magic-cube" :style="layout_magic_cube_item_style(item)">
+                                                                <view class="item-module-magic-cube-link" :class="layout_media_fixed_cfg(vss.config, 'media_container_ent', '')" :style="layout_media_fixed_cfg(vss.config, 'media_container_style', '')" :data-value="item.url || ''" @tap="layout_url_event">
+                                                                    <image :src="item.images" :mode="layout_magic_cube_image_mode(layout_media_fixed(vss.config))" :class="layout_magic_cube_image_class(layout_media_fixed(vss.config))" :style="layout_media_fixed_cfg(vss.config, 'media_container_style', '')" class="image"></image>
+                                                                </view>
+                                                            </view>
+                                                        </block>
+                                                    </view>
+                                                    <!-- 旧预设兜底（无 start/end 的历史数据） -->
+                                                    <view v-else :class="'oh layout-module-images-magic-cube layout-module-images-magic-cube-'+vss.config.view_list_show_style+' '+(vss.config.frontend_config.list_ent || '')">
                                                         <block v-if="vss.config.view_list_show_style == 'g1'">
                                                             <view class="item-module-magic-cube" :style="vss.config.frontend_config.item_style[0] || ''">
                                                                 <view :data-value="vss['config']['data_list'][0]['url'] || ''" @tap="layout_url_event" class="dis-block oh" :style="vss.config.frontend_config.images_style || ''">
@@ -460,11 +487,11 @@
                                                         </block>
                                                     </view>
                                                 </block>
-                                                <!-- 视频 -->
+                                                <!-- 视频（无盒高度时去掉 height:100%/铺满塌陷，与图片同逻辑） -->
                                                 <block v-else-if="vss.value == 'video'">
                                                     <view
-                                                    :class="'module-video-content ' + vss.config.frontend_config.media_fixed.media_container_ent"
-                                                    :style="vss.config.frontend_config.media_fixed.media_container_style">
+                                                    :class="'module-video-content ' + layout_media_fixed_cfg(vss.config, 'media_container_ent', '')"
+                                                    :style="layout_media_image_style(layout_media_fixed(vss.config))">
                                                         <video
                                                         class="video"
                                                         :src="vss.config.video"
@@ -475,9 +502,10 @@
                                                         :enable-progress-gesture="false"
                                                         :show-fullscreen-btn="true"
                                                         :show-mute-btn="true"
+                                                        :object-fit="layout_media_video_object_fit(layout_media_fixed(vss.config))"
                                                         :poster="(vss.config.content_images || null) != null ? vss.config.content_images : ''"
-                                                        :class="vss.config.frontend_config.media_fixed.media_ent"
-                                                        :style="vss.config.frontend_config.media_fixed.media_container_style">
+                                                        :class="layout_media_image_class(layout_media_fixed(vss.config), 'video')"
+                                                        :style="layout_media_video_style(layout_media_fixed(vss.config))">
                                                         </video>
                                                     </view>
                                                 </block>
@@ -485,27 +513,45 @@
                                                 <block v-else-if="vss.value == 'goods'">
                                                     <block v-if="(vss.config.data_list || null) != null && vss.config.data_list.length > 0">
                                                         <block v-if="vss.config.view_list_show_style == 'rolling'">
-                                                            <!-- 滚动 -->
-                                                            <view class="module-goods-content module-list-rolling">
-                                                                <scroll-view scroll-x>
-                                                                    <view v-for="(item, index2spg) in vss.config.data_list" :key="index2spg" class="item">
-                                                                        <view class="module-item" :style="'width:' + (((vss.config.view_list_show_style_value_arr || null) == null || (vss.config.view_list_show_style_value_arr.item_width || null) == null) ? 200 : vss.config.view_list_show_style_value_arr.item_width) + 'px;margin-left:' + (((vss.config.view_list_show_style_value_arr || null) == null || (vss.config.view_list_show_style_value_arr.item_margin || null) == null || index2spg == 0) ? 0 : vss.config.view_list_show_style_value_arr.item_margin) + 'px;' + vss.config.frontend_config.item_style+vss.config.frontend_config.item_style" @tap="layout_url_event" :data-value="item.goods_url || ''">
-                                                                            <view
-                                                                            :class="vss.config.frontend_config.media_fixed.media_container_ent"
-                                                                            :style="vss.config.frontend_config.media_fixed.media_container_style">
-                                                                                <image :src="item.images" mode="widthFix" :class="vss.config.frontend_config.media_fixed.media_ent" :style="vss.config.frontend_config.media_fixed.media_container_style" class="image"></image>
-                                                                            </view>
-                                                                            <view class="item-bottom">
-                                                                                <view class="module-title">
-                                                                                    {{item.title}}
+                                                            <view class="module-goods-content">
+                                                                <layout-rolling
+                                                                    :item-width="layout_rolling_item_width(vss.config)"
+                                                                    :item-margin="layout_rolling_item_margin(vss.config)"
+                                                                    :autoplay="layout_rolling_is_auto_play(vss.config)"
+                                                                    :interval="layout_rolling_interval(vss.config)"
+                                                                    :show-dots="layout_rolling_is_nav_dot(vss.config)"
+                                                                    :nav-dot-ent="layout_frontend_cfg(vss.config, 'nav_dot_ent', '')"
+                                                                    :count="(vss.config.data_list || []).length">
+                                                                    <view
+                                                                        v-for="(item, index2spg) in vss.config.data_list"
+                                                                        :key="index2spg"
+                                                                        class="module-item layout-rolling-item"
+                                                                        :style="layout_rolling_item_style(vss.config)"
+                                                                        @tap="layout_url_event"
+                                                                        :data-value="item.goods_url || ''">
+                                                                        <view
+                                                                        :class="vss.config.frontend_config.media_fixed.media_container_ent"
+                                                                        :style="vss.config.frontend_config.media_fixed.media_container_style">
+                                                                            <image :src="item.images" :mode="layout_media_image_mode(vss.config.frontend_config.media_fixed)" :class="layout_media_image_class(vss.config.frontend_config.media_fixed, 'image')" :style="layout_media_image_style(vss.config.frontend_config.media_fixed)" class="image"></image>
+                                                                        </view>
+                                                                        <view class="item-bottom">
+                                                                            <block v-if="layout_goods_is_price_top(vss.config)">
+                                                                                <view class="module-price-box" :style="layout_goods_price_align_style(vss.config)">
+                                                                                    <text class="module-price">{{currency_symbol}}{{item.price}}</text>
+                                                                                    <text v-if="layout_goods_show_original(vss.config, item)" class="module-price-original">{{currency_symbol}}{{item.original_price}}</text>
                                                                                 </view>
-                                                                                <view class="module-price">
-                                                                                    {{currency_symbol}}{{item.price}}
+                                                                                <view :class="'module-title ' + layout_goods_title_line_class(vss.config)">{{item.title}}</view>
+                                                                            </block>
+                                                                            <block v-else>
+                                                                                <view :class="'module-title ' + layout_goods_title_line_class(vss.config)">{{item.title}}</view>
+                                                                                <view class="module-price-box" :style="layout_goods_price_align_style(vss.config)">
+                                                                                    <text class="module-price">{{currency_symbol}}{{item.price}}</text>
+                                                                                    <text v-if="layout_goods_show_original(vss.config, item)" class="module-price-original">{{currency_symbol}}{{item.original_price}}</text>
                                                                                 </view>
-                                                                            </view>
+                                                                            </block>
                                                                         </view>
                                                                     </view>
-                                                                </scroll-view>
+                                                                </layout-rolling>
                                                             </view>
                                                         </block>
                                                         <block v-else-if="vss.config.view_list_show_style == 'leftright'">
@@ -517,16 +563,24 @@
                                                                             <view
                                                                             :class="vss.config.frontend_config.media_fixed.media_container_ent"
                                                                             :style="vss.config.frontend_config.media_fixed.media_container_style">
-                                                                                <image :src="item.images" mode="widthFix" :class="vss.config.frontend_config.media_fixed.media_ent" :style="vss.config.frontend_config.media_fixed.media_container_style" class="image"></image>
+                                                                                <image :src="item.images" :mode="layout_media_image_mode(vss.config.frontend_config.media_fixed)" :class="layout_media_image_class(vss.config.frontend_config.media_fixed, 'image')" :style="layout_media_image_style(vss.config.frontend_config.media_fixed)" class="image"></image>
                                                                             </view>
                                                                         </view>
                                                                         <view class="fl" :style="vss.config.frontend_config.item_right_style">
-                                                                            <view class="module-title">
-                                                                                {{item.title}}
-                                                                            </view>
-                                                                            <view class="module-price">
-                                                                                {{currency_symbol}}{{item.price}}
-                                                                            </view>
+                                                                            <block v-if="layout_goods_is_price_top(vss.config)">
+                                                                                <view class="module-price-box" :style="layout_goods_price_align_style(vss.config)">
+                                                                                    <text class="module-price">{{currency_symbol}}{{item.price}}</text>
+                                                                                    <text v-if="layout_goods_show_original(vss.config, item)" class="module-price-original">{{currency_symbol}}{{item.original_price}}</text>
+                                                                                </view>
+                                                                                <view :class="'module-title ' + layout_goods_title_line_class(vss.config)">{{item.title}}</view>
+                                                                            </block>
+                                                                            <block v-else>
+                                                                                <view :class="'module-title ' + layout_goods_title_line_class(vss.config)">{{item.title}}</view>
+                                                                                <view class="module-price-box" :style="layout_goods_price_align_style(vss.config)">
+                                                                                    <text class="module-price">{{currency_symbol}}{{item.price}}</text>
+                                                                                    <text v-if="layout_goods_show_original(vss.config, item)" class="module-price-original">{{currency_symbol}}{{item.original_price}}</text>
+                                                                                </view>
+                                                                            </block>
                                                                         </view>
                                                                     </view>
                                                                 </view>
@@ -541,13 +595,118 @@
                                                                         :class="vss.config.frontend_config.media_fixed.media_container_ent"
                                                                         :style="vss.config.frontend_config.media_fixed.media_container_style" @tap="layout_url_event"
                                                                         :data-value="item.goods_url || ''">
-                                                                            <image :src="item.images" mode="widthFix" :class="vss.config.frontend_config.media_fixed.media_ent" :style="vss.config.frontend_config.media_fixed.media_container_style" class="image"></image>
+                                                                            <image :src="item.images" :mode="layout_media_image_mode(vss.config.frontend_config.media_fixed)" :class="layout_media_image_class(vss.config.frontend_config.media_fixed, 'image')" :style="layout_media_image_style(vss.config.frontend_config.media_fixed)" class="image"></image>
                                                                             <view class="item-bottom">
-                                                                                <view class="module-title">
-                                                                                    {{item.title}}
+                                                                                <block v-if="layout_goods_is_price_top(vss.config)">
+                                                                                    <view class="module-price-box" :style="layout_goods_price_align_style(vss.config)">
+                                                                                        <text class="module-price">{{currency_symbol}}{{item.price}}</text>
+                                                                                        <text v-if="layout_goods_show_original(vss.config, item)" class="module-price-original">{{currency_symbol}}{{item.original_price}}</text>
+                                                                                    </view>
+                                                                                    <view :class="'module-title ' + layout_goods_title_line_class(vss.config)">{{item.title}}</view>
+                                                                                </block>
+                                                                                <block v-else>
+                                                                                    <view :class="'module-title ' + layout_goods_title_line_class(vss.config)">{{item.title}}</view>
+                                                                                    <view class="module-price-box" :style="layout_goods_price_align_style(vss.config)">
+                                                                                        <text class="module-price">{{currency_symbol}}{{item.price}}</text>
+                                                                                        <text v-if="layout_goods_show_original(vss.config, item)" class="module-price-original">{{currency_symbol}}{{item.original_price}}</text>
+                                                                                    </view>
+                                                                                </block>
+                                                                            </view>
+                                                                        </view>
+                                                                    </view>
+                                                                </view>
+                                                            </view>
+                                                        </block>
+                                                    </block>
+                                                </block>
+                                                <!-- 文章 -->
+                                                <block v-else-if="vss.value == 'article'">
+                                                    <block v-if="(vss.config.data_list || null) != null && vss.config.data_list.length > 0">
+                                                        <block v-if="vss.config.view_list_show_style == 'rolling'">
+                                                            <view class="module-article-content">
+                                                                <layout-rolling
+                                                                    :item-width="layout_rolling_item_width(vss.config)"
+                                                                    :item-margin="layout_rolling_item_margin(vss.config)"
+                                                                    :autoplay="layout_rolling_is_auto_play(vss.config)"
+                                                                    :interval="layout_rolling_interval(vss.config)"
+                                                                    :show-dots="layout_rolling_is_nav_dot(vss.config)"
+                                                                    :nav-dot-ent="layout_frontend_cfg(vss.config, 'nav_dot_ent', '')"
+                                                                    :count="(vss.config.data_list || []).length">
+                                                                    <view
+                                                                        v-for="(item, index2spa) in vss.config.data_list"
+                                                                        :key="index2spa"
+                                                                        class="module-item layout-rolling-item"
+                                                                        :style="layout_rolling_item_style(vss.config)"
+                                                                        @tap="layout_url_event"
+                                                                        :data-value="item.article_url || item.url || ''">
+                                                                        <view v-if="(vss.config.article_is_show_cover || 0) == 1 && (item.images || item.cover)"
+                                                                        :class="((vss.config.frontend_config || null) == null || (vss.config.frontend_config.media_fixed || null) == null) ? '' : vss.config.frontend_config.media_fixed.media_container_ent"
+                                                                        :style="((vss.config.frontend_config || null) == null || (vss.config.frontend_config.media_fixed || null) == null) ? '' : vss.config.frontend_config.media_fixed.media_container_style">
+                                                                            <image :src="item.images || item.cover" :mode="layout_media_image_mode(layout_media_fixed(vss.config))" :class="layout_media_image_class(layout_media_fixed(vss.config), 'image')" :style="layout_media_image_style(layout_media_fixed(vss.config))"></image>
+                                                                        </view>
+                                                                        <view class="item-bottom">
+                                                                            <view :class="article_meta_class(vss.config)">
+                                                                                <view class="single-text module-article-title" :style="(item.title_color || null) == null ? '' : ('color:' + item.title_color)">{{item.title}}</view>
+                                                                                <view v-if="(vss.config.article_is_show_time || 0) == 1 || (vss.config.article_is_show_access || 0) == 1" class="module-article-meta-row">
+                                                                                    <view v-if="(vss.config.article_is_show_time || 0) == 1" class="module-article-time">{{item.add_time || ''}}</view>
+                                                                                    <view v-if="(vss.config.article_is_show_access || 0) == 1" class="module-article-access">
+                                                                                        <iconfont name="icon-eye" size="24rpx" color="#999" propContainerDisplay="inline-flex"></iconfont>
+                                                                                        <text>{{item.access_count || 0}}</text>
+                                                                                    </view>
                                                                                 </view>
-                                                                                <view class="module-price">
-                                                                                    {{currency_symbol}}{{item.price}}
+                                                                            </view>
+                                                                        </view>
+                                                                    </view>
+                                                                </layout-rolling>
+                                                            </view>
+                                                        </block>
+                                                        <block v-else-if="vss.config.view_list_show_style == 'leftright'">
+                                                            <!-- 左图右文 -->
+                                                            <view :class="'module-article-content module-list-content ' + (((vss.config.frontend_config || null) == null) ? '' : (vss.config.frontend_config.list_ent || ''))">
+                                                                <view v-for="(item, index2stal) in vss.config.data_list" :key="index2stal" class="item">
+                                                                    <view class="module-item" :style="((vss.config.frontend_config || null) == null) ? '' : (vss.config.frontend_config.item_style || '')" @tap="layout_url_event" :data-value="item.article_url || item.url || ''">
+                                                                        <view v-if="(vss.config.article_is_show_cover || 0) == 1 && (item.images || item.cover)" class="fl">
+                                                                            <view
+                                                                            :class="((vss.config.frontend_config || null) == null || (vss.config.frontend_config.media_fixed || null) == null) ? '' : vss.config.frontend_config.media_fixed.media_container_ent"
+                                                                            :style="((vss.config.frontend_config || null) == null || (vss.config.frontend_config.media_fixed || null) == null) ? '' : vss.config.frontend_config.media_fixed.media_container_style">
+                                                                                <image :src="item.images || item.cover" :mode="layout_media_image_mode(layout_media_fixed(vss.config))" :class="layout_media_image_class(layout_media_fixed(vss.config), 'image')" :style="layout_media_image_style(layout_media_fixed(vss.config))"></image>
+                                                                            </view>
+                                                                        </view>
+                                                                        <view :class="((vss.config.article_is_show_cover || 0) == 1 && (item.images || item.cover)) ? 'fl' : ''" :style="((vss.config.frontend_config || null) == null) ? '' : (vss.config.frontend_config.item_right_style || '')">
+                                                                            <view :class="article_meta_class(vss.config)">
+                                                                                <view class="single-text module-article-title" :style="(item.title_color || null) == null ? '' : ('color:' + item.title_color)">{{item.title}}</view>
+                                                                                <view v-if="(vss.config.article_is_show_time || 0) == 1 || (vss.config.article_is_show_access || 0) == 1" class="module-article-meta-row">
+                                                                                    <view v-if="(vss.config.article_is_show_time || 0) == 1" class="module-article-time">{{item.add_time || ''}}</view>
+                                                                                    <view v-if="(vss.config.article_is_show_access || 0) == 1" class="module-article-access">
+                                                                                        <iconfont name="icon-eye" size="24rpx" color="#999" propContainerDisplay="inline-flex"></iconfont>
+                                                                                        <text>{{item.access_count || 0}}</text>
+                                                                                    </view>
+                                                                                </view>
+                                                                            </view>
+                                                                        </view>
+                                                                    </view>
+                                                                </view>
+                                                            </view>
+                                                        </block>
+                                                        <block v-else>
+                                                            <!-- 默认列表 -->
+                                                            <view :class="'module-article-content module-list-content ' + (((vss.config.frontend_config || null) == null) ? '' : (vss.config.frontend_config.list_ent || ''))">
+                                                                <view v-for="(item, index2sam) in vss.config.data_list" :key="index2sam" class="item">
+                                                                    <view class="module-item" :style="((vss.config.frontend_config || null) == null) ? '' : (vss.config.frontend_config.item_style || '')" @tap="layout_url_event" :data-value="item.article_url || item.url || ''">
+                                                                        <view v-if="(vss.config.article_is_show_cover || 0) == 1 && (item.images || item.cover)"
+                                                                        :class="((vss.config.frontend_config || null) == null || (vss.config.frontend_config.media_fixed || null) == null) ? '' : vss.config.frontend_config.media_fixed.media_container_ent"
+                                                                        :style="((vss.config.frontend_config || null) == null || (vss.config.frontend_config.media_fixed || null) == null) ? '' : vss.config.frontend_config.media_fixed.media_container_style">
+                                                                            <image :src="item.images || item.cover" :mode="layout_media_image_mode(layout_media_fixed(vss.config))" :class="layout_media_image_class(layout_media_fixed(vss.config), 'image')" :style="layout_media_image_style(layout_media_fixed(vss.config))"></image>
+                                                                        </view>
+                                                                        <view class="item-bottom">
+                                                                            <view :class="article_meta_class(vss.config)">
+                                                                                <view class="single-text module-article-title" :style="(item.title_color || null) == null ? '' : ('color:' + item.title_color)">{{item.title}}</view>
+                                                                                <view v-if="(vss.config.article_is_show_time || 0) == 1 || (vss.config.article_is_show_access || 0) == 1" class="module-article-meta-row">
+                                                                                    <view v-if="(vss.config.article_is_show_time || 0) == 1" class="module-article-time">{{item.add_time || ''}}</view>
+                                                                                    <view v-if="(vss.config.article_is_show_access || 0) == 1" class="module-article-access">
+                                                                                        <iconfont name="icon-eye" size="24rpx" color="#999" propContainerDisplay="inline-flex"></iconfont>
+                                                                                        <text>{{item.access_count || 0}}</text>
+                                                                                    </view>
                                                                                 </view>
                                                                             </view>
                                                                         </view>
@@ -594,6 +753,7 @@
 </template>
 <script>
     const app = getApp();
+    import layoutRolling from '@/pages/design/components/layout/layout-rolling.vue';
     export default {
         data() {
             return {
@@ -601,14 +761,16 @@
                 // 基础配置
                 is_first: 1,
                 currency_symbol: app.globalData.currency_symbol(),
-                // 轮播基础配置
+                // 轮播基础配置（激活点用主题主色）
                 indicator_color: 'rgba(0, 0, 0, .2)',
-                indicator_active_color: '#666',
+                indicator_active_color: app.globalData.get_theme_color() || '#1677ff',
                 circular: true
             };
         },
 
-        components: {},
+        components: {
+            'layout-rolling': layoutRolling
+        },
         props: {
             propData: Array
         },
@@ -634,7 +796,8 @@
             init_config(status) {
                 if ((status || false) == true) {
                     this.setData({
-                        currency_symbol: app.globalData.get_config('currency_symbol') || app.globalData.data.currency_symbol
+                        currency_symbol: app.globalData.get_config('currency_symbol') || app.globalData.data.currency_symbol,
+                        indicator_active_color: app.globalData.get_theme_color() || '#1677ff'
                     });
                 } else {
                     app.globalData.is_config(this, 'init_config');
@@ -644,6 +807,341 @@
             // 链接地址事件
             layout_url_event(e) {
                 app.globalData.url_event(e);
+            },
+
+            // 解析媒体开关：宽100% / 高100% / 居中 / 铺满
+            layout_media_flags(media_fixed) {
+                var ent = String(((media_fixed || {}).media_ent) || '');
+                var style = String(((media_fixed || {}).media_container_style) || '');
+                return {
+                    is_width: ent.indexOf('module-fixed-doc-ent-width') >= 0,
+                    is_height: ent.indexOf('module-fixed-doc-ent-height') >= 0,
+                    is_auto: ent.indexOf('module-fixed-doc-ent-auto') >= 0,
+                    is_cover: ent.indexOf('module-fixed-doc-ent-cover') >= 0,
+                    // 只有写了 height/max-height 数值才算有盒高度；单纯 height:100% 不算
+                    has_box: /(?:^|;)\s*(max-)?height\s*:\s*[0-9.]+(px|rpx|rem|em|vh)/.test(style)
+                };
+            },
+
+            // 媒体图片 mode
+            // 铺满/高度100% 只有在容器有明确高度时才能用 aspectFill；否则用 widthFix，避免 height:100% 塌成 0
+            layout_media_image_mode(media_fixed) {
+                var f = this.layout_media_flags(media_fixed);
+                if ((f.is_cover || f.is_height) && f.has_box) {
+                    return 'aspectFill';
+                }
+                return 'widthFix';
+            },
+
+            // 媒体图片样式
+            layout_media_image_style(media_fixed) {
+                media_fixed = media_fixed || {};
+                var style = String(media_fixed.media_container_style || '');
+                var f = this.layout_media_flags(media_fixed);
+
+                // 无盒高度时：绝不写 height:100%，只保证能看见
+                if (!f.has_box) {
+                    if ((f.is_width || f.is_cover || f.is_height) && style.indexOf('width:') === -1) {
+                        style += 'width:100%;';
+                    }
+                    // 去掉样式里可能残留的百分比高度，防止塌陷
+                    style = style.replace(/(?:^|;)\s*height\s*:\s*100%\s*;?/g, ';').replace(/;;+/g, ';');
+                    return style;
+                }
+
+                // 有盒高度：铺满/高度100% 时宽高拉满，配合 aspectFill
+                if (f.is_cover || f.is_height) {
+                    if (style.indexOf('width:') === -1) {
+                        style += 'width:100%;';
+                    }
+                    if (!/(?:^|;)\s*height\s*:/.test(style)) {
+                        style += 'height:100%;';
+                    }
+                } else if (f.is_width && style.indexOf('width:') === -1) {
+                    style += 'width:100%;';
+                }
+                return style;
+            },
+
+            // 媒体图片 class：无盒高度时去掉会强制 height:100% 的 cover/height class
+            layout_media_image_class(media_fixed, extra) {
+                media_fixed = media_fixed || {};
+                var ent = String(media_fixed.media_ent || '');
+                var f = this.layout_media_flags(media_fixed);
+                if (!f.has_box) {
+                    ent = ent
+                        .replace(/module-fixed-doc-ent-cover/g, '')
+                        .replace(/module-fixed-doc-ent-height/g, '')
+                        .replace(/\s+/g, ' ')
+                        .trim();
+                }
+                return (ent + ' ' + (extra || '')).replace(/\s+/g, ' ').trim();
+            },
+
+            // 视频样式：无明确高度时不能 height:100%/auto（小程序原生 video 会塌成 0）
+            layout_media_video_style(media_fixed) {
+                media_fixed = media_fixed || {};
+                var style = this.layout_media_image_style(media_fixed);
+                var f = this.layout_media_flags(media_fixed);
+                if (style.indexOf('width:') === -1) {
+                    style += 'width:100%;';
+                }
+                if (f.has_box) {
+                    if ((f.is_cover || f.is_height) && !/(?:^|;)\s*height\s*:/.test(style)) {
+                        style += 'height:100%;';
+                    }
+                    return style;
+                }
+                // 无盒：给 16:9 默认高度，保证看得见；铺满/高100% 在此高度内生效
+                if (!/(?:^|;)\s*height\s*:/.test(style) && !/(?:^|;)\s*max-height\s*:/.test(style)) {
+                    style += 'height:422rpx;';
+                }
+                return style;
+            },
+
+            layout_media_video_object_fit(media_fixed) {
+                var f = this.layout_media_flags(media_fixed);
+                if (f.is_cover) {
+                    return 'cover';
+                }
+                return 'contain';
+            },
+
+            // frontend_config 字段（小程序模板不能写 || {}，统一走方法）
+            layout_frontend_cfg(config, key, def) {
+                config = config || {};
+                var fc = config.frontend_config;
+                if (fc == null || typeof fc !== 'object') {
+                    return def;
+                }
+                var v = fc[key];
+                if (v === undefined || v === null || v === '') {
+                    return def;
+                }
+                return v;
+            },
+            layout_media_fixed(config) {
+                var mf = this.layout_frontend_cfg(config, 'media_fixed', null);
+                return (mf != null && typeof mf === 'object') ? mf : {};
+            },
+            layout_media_fixed_cfg(config, key, def) {
+                var mf = this.layout_media_fixed(config);
+                var v = mf[key];
+                if (v === undefined || v === null || v === '') {
+                    return def;
+                }
+                return v;
+            },
+            // 商品配置取值（兼容 config / frontend_config）
+            layout_goods_cfg(config, key, def) {
+                config = config || {};
+                var v = config[key];
+                if (v === undefined || v === null || v === '') {
+                    var fc = config.frontend_config;
+                    if (fc != null && typeof fc === 'object') {
+                        v = fc[key];
+                    }
+                }
+                if (v === undefined || v === null || v === '') {
+                    return def;
+                }
+                return v;
+            },
+            layout_goods_flag(config, key) {
+                var v = this.layout_goods_cfg(config, key, 0);
+                return v === true || v === 1 || v === '1';
+            },
+            // 商品标题行数 class（默认 2 行）
+            layout_goods_title_line_class(config) {
+                var n = parseInt(this.layout_goods_cfg(config, 'goods_title_line', 2), 10);
+                return (n === 1) ? 'module-title-line-1' : 'module-title-line-2';
+            },
+            // 价格在标题上方
+            layout_goods_is_price_top(config) {
+                return this.layout_goods_flag(config, 'goods_is_price_top');
+            },
+            // 价格对齐
+            layout_goods_price_align_style(config) {
+                var align = this.layout_goods_cfg(config, 'goods_price_align', 'left');
+                if (['left', 'center', 'right'].indexOf(align) < 0) {
+                    align = 'left';
+                }
+                return 'text-align:' + align + ';';
+            },
+            // 显示原价（有有效原价才展示）
+            layout_goods_show_original(config, item) {
+                if (!this.layout_goods_flag(config, 'goods_is_show_original_price')) {
+                    return false;
+                }
+                var orig = (item || {}).original_price;
+                return orig != null && orig !== '' && parseFloat(orig) > 0;
+            },
+
+            // 滚动模式配置（对齐 PC is_auto_play / is_nav_dot / item_width）
+            layout_rolling_value(config) {
+                return ((config || {}).view_list_show_style_value_arr) || {};
+            },
+            layout_rolling_flag(val) {
+                return val === true || val === 1 || val === '1';
+            },
+            layout_rolling_is_auto_play(config) {
+                return this.layout_rolling_flag(this.layout_rolling_value(config).is_auto_play);
+            },
+            // 自动播放间隔（毫秒），配置为秒，默认 3，最大 30
+            layout_rolling_interval(config) {
+                var n = parseInt(this.layout_rolling_value(config).auto_play_interval || 3, 10);
+                if (isNaN(n) || n < 1) {
+                    n = 3;
+                }
+                if (n > 30) {
+                    n = 30;
+                }
+                return n * 1000;
+            },
+            layout_rolling_is_nav_dot(config) {
+                var fc = (config || {}).frontend_config || {};
+                if (String(fc.nav_dot_ent || '').indexOf('slides-rolling-not-dot') >= 0) {
+                    return false;
+                }
+                return this.layout_rolling_flag(this.layout_rolling_value(config).is_nav_dot);
+            },
+            layout_rolling_item_width(config) {
+                return parseInt(this.layout_rolling_value(config).item_width || 200, 10) || 200;
+            },
+            layout_rolling_item_margin(config) {
+                var m = this.layout_rolling_value(config).item_margin;
+                if (m === undefined || m === null || m === '') {
+                    return 20;
+                }
+                var n = parseInt(m, 10);
+                return isNaN(n) ? 20 : n;
+            },
+            // 与 PC 一致：配置宽/间距 + frontend_config.item_style（内边距/外边距/边线等）
+            layout_rolling_item_style(config) {
+                var w = this.layout_rolling_item_width(config);
+                var m = this.layout_rolling_item_margin(config);
+                var item_style = (((config || {}).frontend_config || {}).item_style) || '';
+                if (item_style && typeof item_style !== 'string') {
+                    item_style = '';
+                }
+                return 'width:' + w + 'px;margin-right:' + m + 'px;flex-shrink:0;box-sizing:border-box;' + item_style;
+            },
+
+            // 图片魔方：是否新网格（is_grid / density / start-end）
+            layout_magic_cube_is_grid(config) {
+                config = config || {};
+                var fc = config.frontend_config || {};
+                if (parseInt(fc.is_grid || 0, 10) === 1) {
+                    return true;
+                }
+                if (config.magic_cube_density || fc.magic_cube_density) {
+                    return true;
+                }
+                var list = config.data_list || [];
+                for (var i = 0; i < list.length; i++) {
+                    if (list[i] && list[i].start && list[i].end) {
+                        return true;
+                    }
+                }
+                return false;
+            },
+
+            layout_magic_cube_density(config) {
+                config = config || {};
+                var fc = config.frontend_config || {};
+                var d = parseInt(config.magic_cube_density || fc.magic_cube_density || 4, 10);
+                if ([4, 6, 8].indexOf(d) < 0) {
+                    d = 4;
+                }
+                return d;
+            },
+
+            layout_magic_cube_gap(config) {
+                config = config || {};
+                var fc = config.frontend_config || {};
+                var gap = 0;
+                if (config.magic_cube_gap !== undefined && config.magic_cube_gap !== null && config.magic_cube_gap !== '') {
+                    gap = parseInt(config.magic_cube_gap, 10) || 0;
+                } else if (config.style_margin !== undefined && config.style_margin !== '' && config.style_margin_top === undefined) {
+                    gap = parseInt(config.style_margin, 10) || 0;
+                } else {
+                    var m = String(fc.list_ent || '').match(/module-list-content-avg-(\d+)/);
+                    if (m) {
+                        gap = parseInt(m[1], 10) || 0;
+                    }
+                }
+                return gap;
+            },
+
+            layout_magic_cube_grid_style(config) {
+                var d = this.layout_magic_cube_density(config);
+                var gap = this.layout_magic_cube_gap(config);
+                return 'display:grid;grid-template-columns:repeat(' + d + ',minmax(0,1fr));grid-template-rows:repeat(' + d + ',minmax(0,1fr));gap:' + gap + 'px;';
+            },
+
+            layout_magic_cube_item_style(item) {
+                item = item || {};
+                var start = item.start || {};
+                var end = item.end || {};
+                var sx = parseInt(start.x || 1, 10);
+                var sy = parseInt(start.y || 1, 10);
+                var ex = parseInt(end.x || sx, 10) + 1;
+                var ey = parseInt(end.y || sy, 10) + 1;
+                return 'grid-column:' + sx + ' / ' + ex + ';grid-row:' + sy + ' / ' + ey + ';';
+            },
+
+            // 魔方格子本身有尺寸：铺满→aspectFill，否则 aspectFit（对齐 Web object-fit）
+            layout_magic_cube_image_mode(media_fixed) {
+                var f = this.layout_media_flags(media_fixed);
+                if (f.is_cover) {
+                    return 'aspectFill';
+                }
+                return 'aspectFit';
+            },
+
+            layout_magic_cube_image_class(media_fixed) {
+                media_fixed = media_fixed || {};
+                return (String(media_fixed.media_ent || '') + ' image').replace(/\s+/g, ' ').trim();
+            },
+
+            // 布局：手机模式不独行（勾选=保持多列比例；默认=独行）
+            layout_is_mobile_no_stack(config) {
+                config = config || {};
+                if (config.is_mobile_no_stack !== undefined && config.is_mobile_no_stack !== null && config.is_mobile_no_stack !== '') {
+                    return parseInt(config.is_mobile_no_stack, 10) === 1;
+                }
+                // 兼容旧字段：is_mobile_stack=0 表示不独行
+                if (config.is_mobile_stack !== undefined && config.is_mobile_stack !== null && config.is_mobile_stack !== '') {
+                    return parseInt(config.is_mobile_stack, 10) === 0;
+                }
+                return false;
+            },
+
+            // 多列列宽：不独行时按 value_arr 十二栅格比例并排
+            layout_column_style(v, index) {
+                if ((v || null) == null || (v.value_arr || null) == null || v.value_arr.length <= 1) {
+                    return '';
+                }
+                if (!this.layout_is_mobile_no_stack(v.config)) {
+                    return 'width:100%;';
+                }
+                var n = parseInt(v.value_arr[index] || 0, 10);
+                if (n <= 0) {
+                    n = 12;
+                }
+                return 'width:' + ((n / 12) * 100) + '%;float:left;box-sizing:border-box;';
+            },
+
+            // 文章标题行 class（开关开=与标题同行靠右，关=独立一行）
+            article_meta_class(config) {
+                config = config || {};
+                var show_time = parseInt(config.article_is_show_time || 0, 10) === 1;
+                var show_access = parseInt(config.article_is_show_access || 0, 10) === 1;
+                if (!show_time && !show_access) {
+                    return 'module-article-meta';
+                }
+                var show_info = parseInt(config.article_is_show_info || 0, 10) === 1;
+                return 'module-article-meta ' + (show_info ? 'module-article-meta-with-info' : 'module-article-meta-info-alone');
             }
         }
     };
@@ -706,10 +1204,31 @@
      */
     .module-goods-content .module-item{background:#fff}
     .module-goods-content .module-item .item-bottom{margin-top:5px}
-    .module-goods-content .module-item .module-title{margin-bottom:5px;max-width:100%;overflow:hidden;text-overflow:ellipsis;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;min-height:40px;line-height:20px;font-size:12px;white-space:initial}
-    .module-goods-content .module-item .module-price{color:#f40;font-weight:bold;word-wrap:normal;text-overflow:ellipsis;white-space:nowrap;font-size:14px;}
-     
-     
+    .module-goods-content .module-item .module-title{margin-bottom:5px;max-width:100%;overflow:hidden;text-overflow:ellipsis;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;min-height:40px;height:40px;line-height:20px;font-size:12px;white-space:initial}
+    .module-goods-content .module-item .module-title.module-title-line-1{-webkit-line-clamp:1;min-height:20px;height:20px}
+    .module-goods-content .module-item .module-title.module-title-line-2{-webkit-line-clamp:2;min-height:40px;height:40px}
+    .module-goods-content .module-item .module-price-box{width:100%;line-height:22px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+    .module-goods-content .module-item .module-price-box + .module-title{margin-top:5px;margin-bottom:0}
+    .module-goods-content .module-item .module-price{color:var(--color-price, #E22C08);font-weight:bold;word-wrap:normal;text-overflow:ellipsis;white-space:nowrap;font-size:14px;}
+    .module-goods-content .module-item .module-price-original{margin-left:8px;color:#999;font-size:12px;font-weight:normal;text-decoration:line-through}
+
+    /**
+     * 文章列表
+     */
+    .module-article-content .module-item{background:#fff}
+    .module-article-content .module-item .item-bottom{margin-top:5px}
+    .module-article-content .module-article-meta{min-width:0}
+    .module-article-content .module-article-meta-with-info{display:flex;align-items:center}
+    .module-article-content .module-article-title{margin:0;line-height:20px;font-size:14px;color:#333}
+    .module-article-content .module-article-meta-with-info .module-article-title{flex:1 1 auto;min-width:0;margin-right:8px}
+    .module-article-content .module-article-meta-row{display:flex;align-items:center;white-space:nowrap;line-height:18px;font-size:12px;color:#999}
+    .module-article-content .module-article-meta-with-info .module-article-meta-row{flex:0 0 auto;justify-content:flex-end;margin-left:auto}
+    .module-article-content .module-article-meta-info-alone .module-article-meta-row{justify-content:space-between;margin-top:2px}
+    .module-article-content .module-article-time{margin:0;min-width:0}
+    .module-article-content .module-article-access{display:inline-flex;align-items:center;flex:0 0 auto;margin-left:8px}
+    .module-article-content .module-article-meta-info-alone .module-article-access{margin-left:0}
+    .module-article-content .module-article-access text{margin-left:2px}
+
     /**
      * 布局圆角
      */
@@ -1318,10 +1837,12 @@
     .module-video-container,
     .module-title-container,
     .module-goods-container,
+    .module-article-container,
     .module-list-content,
     .module-list-content .item .module-item,
     .module-list-content .item .module-item .module-title,
-    .module-list-content .item .module-item .module-price {overflow: hidden;}
+    .module-list-content .item .module-item .module-price,
+    .module-list-content .item .module-item .module-article-title {overflow: hidden;}
      
     /**
      * 模块类型样式 - 标题
@@ -1345,15 +1866,72 @@
     /**
      * 媒体文件固定大小
      */
-    .module-fixed-doc{display:block;overflow:hidden;}
+    .module-fixed-doc{display:block;overflow:hidden;position:relative;}
     .module-fixed-doc-ent-width{width:100% !important;}
-    .module-fixed-doc-ent-height{height:100% !important;}
+    .module-fixed-doc-ent-height{height:auto !important;}
     .module-fixed-doc-ent-auto{margin:0 auto !important;}
-    .module-fixed-doc-ent-cover{object-fit:cover !important;}
+    /* 铺满：只做裁剪语义，禁止无高度时写死 height:100%（小程序会变成 0） */
+    .module-fixed-doc-ent-cover{width:100% !important;height:auto !important;}
+    /* 容器有明确 px 高度时，高度100%/铺满才真正拉满 */
+    .module-fixed-doc[style*="height:"][style*="px"] .module-fixed-doc-ent-height,
+    .module-fixed-doc[style*="height:"][style*="px"] .module-fixed-doc-ent-cover,
+    .module-images-content[style*="height:"][style*="px"] .module-fixed-doc-ent-height,
+    .module-images-content[style*="height:"][style*="px"] .module-fixed-doc-ent-cover,
+    .module-video-content[style*="height:"][style*="px"] .module-fixed-doc-ent-height,
+    .module-video-content[style*="height:"][style*="px"] .module-fixed-doc-ent-cover,
+    swiper[style*="height:"][style*="px"] .module-fixed-doc-ent-height,
+    swiper[style*="height:"][style*="px"] .module-fixed-doc-ent-cover{
+        width:100% !important;
+        height:100% !important;
+    }
+    /* 视频：有默认/明确高度时，覆盖全局 height:auto，避免看不见 */
+    .module-video-content .video.module-fixed-doc-ent-height,
+    .module-video-content .video.module-fixed-doc-ent-cover{
+        width:100% !important;
+        height:100% !important;
+    }
+
+    /**
+     * 图片魔方（新网格，对齐 Web layout.css）
+     */
+    .layout-module-images-magic-cube-grid{
+        display:grid;
+        width:100%;
+        aspect-ratio:1 / 1;
+        min-height:320rpx;
+        box-sizing:border-box;
+    }
+    .layout-module-images-magic-cube-grid .item-module-magic-cube{
+        position:relative;
+        min-width:0;
+        min-height:0;
+        overflow:hidden;
+    }
+    .layout-module-images-magic-cube-grid .item-module-magic-cube-link{
+        position:absolute;
+        left:0;
+        top:0;
+        right:0;
+        bottom:0;
+        display:flex;
+        align-items:center;
+        justify-content:center;
+        overflow:hidden;
+    }
+    /* 格子有固定尺寸，图片拉满盒，由 mode 控制 contain/cover；覆盖全局 height:auto !important */
+    .layout-module-images-magic-cube-grid .item-module-magic-cube-link .image{
+        display:block;
+        width:100% !important;
+        height:100% !important;
+        max-width:100%;
+        max-height:100%;
+    }
+    .layout-module-images-magic-cube-grid .item-module-magic-cube-link .image.module-fixed-doc-ent-auto{
+        margin:0 auto !important;
+    }
     
     /**
      * 滚动列表
      */
-    .module-list-rolling{width:100%;white-space:nowrap;box-sizing:border-box}
-    .module-list-rolling .item{display:inline-block;position:relative}
+    .layout-rolling-item{overflow:hidden}
 </style>
