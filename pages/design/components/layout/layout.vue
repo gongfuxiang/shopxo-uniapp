@@ -651,7 +651,7 @@
                                                                                     <view v-if="(vss.config.article_is_show_time || 0) == 1" class="module-article-time">{{item.add_time || ''}}</view>
                                                                                     <view v-if="(vss.config.article_is_show_access || 0) == 1" class="module-article-access">
                                                                                         <iconfont name="icon-eye" size="24rpx" color="#999" propContainerDisplay="inline-flex"></iconfont>
-                                                                                        <text>{{item.access_count || 0}}</text>
+                                                                                        <text class="module-article-access-num">{{item.access_count || 0}}</text>
                                                                                     </view>
                                                                                 </view>
                                                                             </view>
@@ -679,7 +679,7 @@
                                                                                     <view v-if="(vss.config.article_is_show_time || 0) == 1" class="module-article-time">{{item.add_time || ''}}</view>
                                                                                     <view v-if="(vss.config.article_is_show_access || 0) == 1" class="module-article-access">
                                                                                         <iconfont name="icon-eye" size="24rpx" color="#999" propContainerDisplay="inline-flex"></iconfont>
-                                                                                        <text>{{item.access_count || 0}}</text>
+                                                                                        <text class="module-article-access-num">{{item.access_count || 0}}</text>
                                                                                     </view>
                                                                                 </view>
                                                                             </view>
@@ -705,7 +705,7 @@
                                                                                     <view v-if="(vss.config.article_is_show_time || 0) == 1" class="module-article-time">{{item.add_time || ''}}</view>
                                                                                     <view v-if="(vss.config.article_is_show_access || 0) == 1" class="module-article-access">
                                                                                         <iconfont name="icon-eye" size="24rpx" color="#999" propContainerDisplay="inline-flex"></iconfont>
-                                                                                        <text>{{item.access_count || 0}}</text>
+                                                                                        <text class="module-article-access-num">{{item.access_count || 0}}</text>
                                                                                     </view>
                                                                                 </view>
                                                                             </view>
@@ -767,7 +767,6 @@
                                                         <view v-else-if="(vss.config.title_type || 'text') == 'text' && (vss.config.title || null) != null && vss.config.title !== ''" class="notice-title" :style="((vss.config.frontend_config || null) != null && (vss.config.frontend_config.style_title || null) != null) ? vss.config.frontend_config.style_title : ''">{{vss.config.title}}</view>
                                                         <notice-marquee
                                                             v-if="(vss.config.style_type || '') == 'text' && parseInt(vss.config.text_is_scroll || 0) == 1"
-                                                            :key="'mq-' + (vss.config.scroll_speed || 3) + '-' + (((vss.config.frontend_config || null) != null && (vss.config.frontend_config.marquee_px_per_sec || null) != null) ? vss.config.frontend_config.marquee_px_per_sec : 40)"
                                                             :text="vss.config.content_text || ''"
                                                             :speed="vss.config.scroll_speed || 3"
                                                             :pxPerSec="((vss.config.frontend_config || null) != null && (vss.config.frontend_config.marquee_px_per_sec || null) != null) ? vss.config.frontend_config.marquee_px_per_sec : 0"
@@ -783,7 +782,7 @@
                                                             :duration="400"
                                                             :interval="(parseInt(vss.config.interval || 3) || 3) * 1000"
                                                             :vertical="(vss.config.direction || 'vertical') != 'horizontal'"
-                                                            :key="'notice-' + (vss.config.direction || 'vertical') + '-' + (vss.config.interval || 3)"
+                                                            :key="vss.config.direction"
                                                         >
                                                             <swiper-item v-for="(nt, nt_index) in (vss.config.data_list || [])" :key="nt_index">
                                                                 <view class="notice-item ht-auto flex-row align-c" :style="((vss.config.frontend_config || null) != null && (vss.config.frontend_config.style_news || null) != null) ? vss.config.frontend_config.style_news : ''" @tap="layout_url_event" :data-value="nt.url || ''">
@@ -820,6 +819,8 @@
     const app = getApp();
     import layoutRolling from '@/pages/design/components/layout/layout-rolling.vue';
     import noticeMarquee from '@/pages/design/components/layout/notice-marquee.vue';
+    // 显式注册：layout 常被其它分包异步引用，仅靠 easycom 时小程序偶发找不到 mp-html
+    import mpHtml from '@/uni_modules/mp-html/components/mp-html/mp-html.vue';
     export default {
         data() {
             return {
@@ -836,10 +837,20 @@
 
         components: {
             'layout-rolling': layoutRolling,
-            'notice-marquee': noticeMarquee
+            'notice-marquee': noticeMarquee,
+            'mp-html': mpHtml
         },
         props: {
             propData: Array
+        },
+        watch: {
+            // 有明确高度时补 class，替代小程序禁止的 [style*=...] 属性选择器
+            propData: {
+                immediate: true,
+                handler(list) {
+                    this.layout_enrich_media_fixed_height(list);
+                }
+            }
         },
         // 在组件实例进入页面节点树时执行
         beforeMount: function() {
@@ -874,6 +885,33 @@
             // 链接地址事件
             layout_url_event(e) {
                 app.globalData.url_event(e);
+            },
+
+            // 媒体容器有数值高度时加 is-fixed-height，供 class 选择器使用（避开小程序属性选择器限制）
+            layout_enrich_media_fixed_height(list) {
+                if (!list || !list.length) {
+                    return;
+                }
+                for (var i = 0; i < list.length; i++) {
+                    var children = (list[i] && list[i].children) || [];
+                    for (var j = 0; j < children.length; j++) {
+                        var modules = (children[j] && children[j].children) || [];
+                        for (var k = 0; k < modules.length; k++) {
+                            var cfg = modules[k] && modules[k].config;
+                            var mf = cfg && cfg.frontend_config && cfg.frontend_config.media_fixed;
+                            if (!mf || typeof mf !== 'object') {
+                                continue;
+                            }
+                            if (!this.layout_media_flags(mf).has_box) {
+                                continue;
+                            }
+                            var ent = String(mf.media_container_ent || '');
+                            if (ent.indexOf('is-fixed-height') < 0) {
+                                mf.media_container_ent = (ent + ' is-fixed-height').replace(/\s+/g, ' ').trim();
+                            }
+                        }
+                    }
+                }
             },
 
             // 解析媒体开关：宽100% / 高100% / 居中 / 铺满
@@ -1294,7 +1332,7 @@
     .module-article-content .module-article-time{margin:0;min-width:0}
     .module-article-content .module-article-access{display:inline-flex;align-items:center;flex:0 0 auto;margin-left:8px}
     .module-article-content .module-article-meta-info-alone .module-article-access{margin-left:0}
-    .module-article-content .module-article-access text{margin-left:2px}
+    .module-article-content .module-article-access-num{margin-left:2px}
 
     /**
      * 布局圆角
@@ -1926,8 +1964,8 @@
      */
     .module-hot-zone-container{position:relative}
     .module-hot-zone-media{position:relative;width:100%;overflow:hidden;line-height:0}
-    .module-hot-zone-media > image,
-    .module-hot-zone-media > .wh-auto{display:block;width:100%}
+    .module-hot-zone-media > .wh-auto,
+    .module-hot-zone-media > .image{display:block;width:100%}
     .module-hot-zone-media .module-hot-zone-item{position:absolute;box-sizing:border-box}
     .module-notice-content{display:flex;align-items:center;gap:16rpx;min-height:72rpx;padding:0 16rpx;box-sizing:border-box}
     .module-notice-content.notice-style-text{align-items:flex-start;padding-top:16rpx;padding-bottom:16rpx}
@@ -1960,15 +1998,15 @@
     .module-fixed-doc-ent-auto{margin:0 auto !important;}
     /* 铺满：只做裁剪语义，禁止无高度时写死 height:100%（小程序会变成 0） */
     .module-fixed-doc-ent-cover{width:100% !important;height:auto !important;}
-    /* 容器有明确 px 高度时，高度100%/铺满才真正拉满 */
-    .module-fixed-doc[style*="height:"][style*="px"] .module-fixed-doc-ent-height,
-    .module-fixed-doc[style*="height:"][style*="px"] .module-fixed-doc-ent-cover,
-    .module-images-content[style*="height:"][style*="px"] .module-fixed-doc-ent-height,
-    .module-images-content[style*="height:"][style*="px"] .module-fixed-doc-ent-cover,
-    .module-video-content[style*="height:"][style*="px"] .module-fixed-doc-ent-height,
-    .module-video-content[style*="height:"][style*="px"] .module-fixed-doc-ent-cover,
-    swiper[style*="height:"][style*="px"] .module-fixed-doc-ent-height,
-    swiper[style*="height:"][style*="px"] .module-fixed-doc-ent-cover{
+    /* 有明确高度时用 class is-fixed-height（小程序禁止 [style*=] 属性选择器） */
+    .module-fixed-doc.is-fixed-height .module-fixed-doc-ent-height,
+    .module-fixed-doc.is-fixed-height .module-fixed-doc-ent-cover,
+    .module-images-content.is-fixed-height .module-fixed-doc-ent-height,
+    .module-images-content.is-fixed-height .module-fixed-doc-ent-cover,
+    .module-video-content.is-fixed-height .module-fixed-doc-ent-height,
+    .module-video-content.is-fixed-height .module-fixed-doc-ent-cover,
+    .is-fixed-height .module-fixed-doc-ent-height,
+    .is-fixed-height .module-fixed-doc-ent-cover{
         width:100% !important;
         height:100% !important;
     }

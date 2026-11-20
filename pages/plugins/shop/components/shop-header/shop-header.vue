@@ -9,15 +9,15 @@
                 <view class="search flex-row jc-sb align-c round border-color-main bg-white">
                     <view class="flex-row align-c flex-1 wh-auto padding-left-main">
                         <iconfont name="icon-search-max" size="28rpx" color="#ccc"></iconfont>
-                        <input class="text-size-xs flex-1 wh-auto padding-left-sm" type="done" :placeholder="$t('detail.product_keywords')" :value="search_keywords_value || ''" placeholder-class="cr-grey-c" @input="search_keywords_event" />
+                        <input class="search-input text-size-xs flex-1 wh-auto padding-left-sm" type="done" :placeholder="$t('detail.product_keywords')" :value="search_keywords_value || ''" placeholder-class="cr-grey-c" @input="search_keywords_event" />
                     </view>
-                    <button class="bg-main br-main cr-white round text-size-xs" type="default" size="mini" hover-class="none" @tap="search_button_event" :data-value="'/pages/plugins/shop/search/search?shop_id=' + propShop.id + '&'">
+                    <button class="search-submit-btn bg-main br-main cr-white round text-size-xs" type="default" size="mini" hover-class="none" @tap="search_button_event" :data-value="'/pages/plugins/shop/search/search?shop_id=' + propShop.id + '&'">
                         {{ is_shop_search_all_search_button == 1 ? $t('design.search') : $t('common.search') }}
                     </button>
                 </view>
             </view>
             <view v-if="is_shop_search_all_search_button == 1" class="search-btn padding-left-sm flex-row align-c">
-                <button class="bg-main-pair br-main-pair cr-white round text-size-xs" type="default" size="mini" hover-class="none" @tap="search_button_event" data-value="/pages/goods-search/goods-search?">{{$t('design.search_all')}}</button>
+                <button class="search-all-btn bg-main-pair br-main-pair cr-white round text-size-xs" type="default" size="mini" hover-class="none" @tap="search_button_event" data-value="/pages/goods-search/goods-search?">{{$t('design.search_all')}}</button>
             </view>
         </view>
         <view class="search-content-seat" :style="'margin-top:' + (status_bar_height > 0 ? status_bar_height + 5 : 0)+'px;'"></view>
@@ -38,12 +38,12 @@
                 <view class="base-bottom oh margin-top-sm text-size-xs">
                     <!-- 在线客服 -->
                     <view v-if="(propBase.is_service_info || 0) == 1" class="fl margin-right-xxl cp" @tap="popup_service_event">
-                        <image class="va-m margin-right-sm" :src="common_static_url + 'customer-service-icon.png'" mode="scaleToFill"></image>
+                        <image class="base-bottom-icon va-m margin-right-sm" :src="common_static_url + 'customer-service-icon.png'" mode="scaleToFill"></image>
                         <text class="va-m cr-base">{{$t('design.online_service')}}</text>
                     </view>
                     <!-- 收藏 -->
                     <view class="fl single-text cp" @tap="shop_favor_event">
-                        <image class="va-m margin-right-sm" :src="common_static_url + 'favor' + (shop_favor_info.status == 1 ? '-active' : '') + '-icon.png'" mode="scaleToFill"></image>
+                        <image class="base-bottom-icon va-m margin-right-sm" :src="common_static_url + 'favor' + (shop_favor_info.status == 1 ? '-active' : '') + '-icon.png'" mode="scaleToFill"></image>
                         <text :class="'va-m ' + (shop_favor_info.status == 1 ? 'cr-main' : '')">{{ shop_favor_info.text }}({{ shop_favor_info.count }})</text>
                     </view>
                     <!-- 评分 -->
@@ -90,7 +90,7 @@
                             </block>
                         </view>
                         <block v-else>
-                            <component-no-data propStatus="0" :propMsg="$t('common.no_data')"></component-no-data>
+                            <component-no-data propStatus="0" :propMsg="$t('common.no_data') || ''"></component-no-data>
                         </block>
                     </scroll-view>
                 </view>
@@ -121,7 +121,7 @@
                             </block>
                         </view>
                         <block v-else>
-                            <component-no-data propStatus="0" :propMsg="$t('common.no_data')"></component-no-data>
+                            <component-no-data propStatus="0" :propMsg="$t('common.no_data') || ''"></component-no-data>
                         </block>
                     </scroll-view>
                 </view>
@@ -404,14 +404,14 @@
         padding: 2rpx;
     }
     
-    .search button {
+    .search .search-submit-btn {
         width: 124rpx;
         height: 52rpx;
         line-height: 52rpx;
         padding: 0;
     }
     
-    .search input {
+    .search .search-input {
         height: 50rpx;
         line-height: 50rpx;
     }
@@ -420,7 +420,7 @@
         width: 124rpx;
     }
     
-    .search-btn button {
+    .search-btn .search-all-btn {
         width: 100%;
         padding: 0;
         height: 60rpx;
@@ -466,7 +466,7 @@
         width: 90rpx;
     }
     
-    .base-bottom image {
+    .base-bottom-icon {
         width: 28rpx;
         height: 28rpx;
     }

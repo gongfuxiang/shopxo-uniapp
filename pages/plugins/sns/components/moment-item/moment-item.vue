@@ -17,7 +17,7 @@
                 <view v-if="(item.topic_list || []).length > 0" class="margin-top-xs" @tap.stop="">
                     <text
                         v-for="(topic, ti) in item.topic_list"
-                        :key="topic.id || ti"
+                        :key="topic.id"
                         class="cr-main margin-right-sm text-size-sm"
                         :data-id="topic.id"
                         @tap.stop="topic_event"

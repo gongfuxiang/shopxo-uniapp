@@ -123,8 +123,9 @@
 .card { width: 100%; box-sizing: border-box; }
 .main { display: flex; flex-direction: row; align-items: center; width: 100%; min-width: 0; gap: 16rpx; }
 .tiers { flex: 1; width: 0; min-width: 0; white-space: nowrap; scrollbar-width: none; }
-.tiers::-webkit-scrollbar,
-.tiers ::-webkit-scrollbar { display: none; width: 0; height: 0; }
+/* #ifndef MP */
+.tiers::-webkit-scrollbar { display: none; width: 0; height: 0; }
+/* #endif */
 .tier-track { display: inline-flex; flex-direction: row; align-items: flex-start; min-width: 100%; }
 .tier { flex: 1 0 auto; display: flex; flex-direction: column; align-items: center; padding: 0 8rpx; box-sizing: border-box; }
 .value { font-weight: 700; line-height: 1.15; white-space: nowrap; }

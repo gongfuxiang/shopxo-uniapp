@@ -103,7 +103,7 @@
                 </view>
                 <scroll-view scroll-y class="at-list flex-1" @scrolltolower="at_scroll_lower_event">
                     <block v-if="(at_user_list || []).length > 0">
-                        <view v-for="(user, index) in at_user_list" :key="user.id || index" class="at-user-item flex-row align-c padding-main" :data-id="user.id" :data-name="user.user_name_view" @tap="at_user_choice_event">
+                        <view v-for="(user, index) in at_user_list" :key="user.id" class="at-user-item flex-row align-c padding-main" :data-id="user.id" :data-name="user.user_name_view" @tap="at_user_choice_event">
                             <image class="at-avatar circle margin-right-main" :src="user.avatar" mode="aspectFill"></image>
                             <text class="flex-1">{{ user.user_name_view }}</text>
                         </view>
@@ -138,7 +138,7 @@
                 </view>
                 <scroll-view scroll-y class="at-list flex-1" @scrolltolower="goods_more_event">
                     <block v-if="goods_list.length > 0">
-                        <view v-for="(row, gi) in goods_list" :key="row.id || gi" class="flex-row align-c padding-main" :data-index="gi" @tap="goods_choice_event">
+                        <view v-for="(row, gi) in goods_list" :key="row.id" class="flex-row align-c padding-main" :data-index="gi" @tap="goods_choice_event">
                             <image v-if="row.images" class="goods-cover radius margin-right-sm" :src="row.images" mode="aspectFill"></image>
                             <view class="flex-1 flex-width">
                                 <view class="text-size-sm text-line-1">{{ row.title }}</view>

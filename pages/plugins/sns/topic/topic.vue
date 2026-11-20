@@ -42,7 +42,7 @@
                 <block v-if="data_list.length > 0">
                     <component-moment-item
                         v-for="(item, index) in data_list"
-                        :key="item.id || index"
+                        :key="item.id"
                         :propItem="item"
                         :propEnableDetail="config.is_enable_moment_detail == 1"
                         :propShowLike="config.is_enable_like == 1"

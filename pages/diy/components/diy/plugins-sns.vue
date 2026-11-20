@@ -3,7 +3,7 @@
         <view :style="style_img_container">
             <view :class="outer_class" :style="outer_style">
                 <template v-if="theme != '2'">
-                    <view v-for="(item, index) in list" :key="'feed-' + index" class="oh sns-feed-card" :style="layout_style">
+                    <view v-for="(item, index) in list" :key="index" class="oh sns-feed-card" :style="layout_style">
                         <view class="oh wh-auto flex-col gap-10" :style="layout_img_style">
                             <view v-if="is_show('user')" class="flex-row align-c gap-10" :data-value="item.user_home_url || ''" @tap.stop="url_event">
                                 <image class="sns-feed-avatar" :style="avatar_style" :src="user_avatar(item)" mode="aspectFill"></image>

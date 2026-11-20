@@ -283,7 +283,7 @@
             },
             propGoodsService: {
                 type: Array,
-                default: null,
+                default: () => [],
             },
             propIntellectstools: {
                 type: Object,

@@ -1,6 +1,6 @@
 <template>
     <view :class="theme_view">
-        <view :class="'search-content pr round '+propSize+(propRightIcon ? ' has-right-icon' : '')+(propIsBtn ? ' has-search-btn' : '')" :style="'background:' + propBgColor + ';' + ((propBrColor || null) != null ? 'border:1px solid ' + propBrColor + ';' : '')">
+        <view :class="'search-content pr round '+propSize+(propRightIcon ? ' has-right-icon' : '')+(propIsBtn ? ' has-search-btn' : '')" :style="'background:' + propBgColor + ';' + ((propBrColor || null) != null && propBrColor !== '' ? 'border:2rpx solid ' + propBrColor + ';' : '')">
             <slot name="left"></slot>
             <view v-if="propIsIcon" class="search-icon dis-inline-block pa" :style="'padding:' + propPadding" @tap="search_icon_event">
                 <iconfont :name="propIcon" :color="propIconColor" size="24rpx"></iconfont>
@@ -347,6 +347,9 @@
 
     .search-content.sm .search-icon {
         padding-top: 18rpx;
+    }
+    .search-content.sm {
+        min-height: 60rpx;
     }
     .search-content.sm .input {
         height: 60rpx;

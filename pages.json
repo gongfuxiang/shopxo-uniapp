@@ -655,13 +655,7 @@
                     "path": "design",
                     "style": {
                         "enablePullDownRefresh": true,
-                        "navigationBarTitleText": "",
-                        "usingComponents": {
-                            "component-layout": "/pages/design/components/layout/layout"
-                        },
-                        "componentPlaceholder": {
-                            "component-layout": "view"
-                        }
+                        "navigationBarTitleText": ""
                     }
                 }
             ]
@@ -1726,6 +1720,7 @@
                         "titlePenetrate": "YES",
                         // #endif
                         "enablePullDownRefresh": true,
+                        // 仅跨分包 layout 需要异步占位；同包 shop-header / 主包 common 等走普通 import
                         "usingComponents": {
                             "component-layout": "/pages/design/components/layout/layout"
                         },

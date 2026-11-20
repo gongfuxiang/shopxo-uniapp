@@ -23,7 +23,7 @@
         </view>
 
         <view v-if="comment_list.length > 0" :class="!propPopupMode ? 'margin-top-xxxl' : ''">
-            <view v-for="(row, index) in comment_list" :key="row.id || index" class="comment-row padding-vertical-main flex-row">
+            <view v-for="(row, index) in comment_list" :key="row.id" class="comment-row padding-vertical-main flex-row">
                 <image class="avatar circle" :src="row.avatar" mode="aspectFill" :data-value="row.user_home_url" @tap="url_event"></image>
                 <view class="flex-1 flex-width padding-left-main">
                     <view class="flex-row align-c flex-wrap">

@@ -39,7 +39,7 @@
             },
             propGoodsService: {
                 type: Array,
-                default: null,
+                default: () => [],
             },
         },
         data() {

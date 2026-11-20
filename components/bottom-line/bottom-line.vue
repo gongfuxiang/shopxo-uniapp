@@ -1,6 +1,6 @@
 <template>
     <view :class="theme_view">
-        <view v-if="(propStatus || false)" class="data-bottom-line">
+        <view v-if="status_is_show" class="data-bottom-line">
             <view class="bottom-exclude flex-row align-c jc-c" :style="'width:' + new_width">
                 <view class="line-item left line-item-left"></view>
                 <text class="line-item msg line-item-msg" :style="'width:' + split_width">{{propMsg || $t('bottom-line.bottom_line')}}</text>
@@ -21,11 +21,21 @@
         },
         components: {},
         props: {
-            propStatus: Boolean,
+            // 小程序 Boolean 传参易丢，兼容 true/1/'1'
+            propStatus: {
+                type: [Boolean, Number, String],
+                default: false
+            },
             propMsg: String,
             propWidth: {
                 type: Number,
                 default: 0
+            }
+        },
+        computed: {
+            status_is_show() {
+                var v = this.propStatus;
+                return v === true || v === 1 || v === '1' || v === 'true';
             }
         },
         mounted() {
@@ -52,8 +62,10 @@
     }
     .data-bottom-line .line-item.left,
     .data-bottom-line .line-item.right {
-        // margin-top: 16rpx;
-        border-bottom: 2rpx solid #e1e1e1;
+        /* 小程序 flex 空节点无高度时 border 常不绘制，改用实线背景 */
+        height: 2rpx;
+        background-color: #e1e1e1;
+        border: 0;
     }
     .data-bottom-line .line-item.msg {
         color: #999;

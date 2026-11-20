@@ -135,8 +135,9 @@
                 type: [Number, String],
                 default: 0,
             },
+            // 允许 null：小程序 String 收到 null 会告警；$t 未就绪时可能传 null
             propMsg: {
-                type: String,
+                type: null,
                 default: '',
             },
             propUrl: {

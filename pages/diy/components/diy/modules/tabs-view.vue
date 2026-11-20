@@ -648,14 +648,5 @@
         }
     }
     /* #endif */
-    /* #ifdef MP-WEIXIN | APP-PLUS */
-    .interior-scroll-view {
-        ::v-deep ::-webkit-scrollbar
-        {
-            width: 0rpx!important;
-            height: 0rpx!important;
-            background-color: transparent;
-        }
-    }
-    /* #endif */
+    /* 小程序 scroll-view 已用 show-scrollbar=false；组件样式禁止 ::-webkit-scrollbar 写法，不再单独写 */
 </style>

@@ -20,7 +20,7 @@
                                     <text class="text-line-1" :style="plugins_live_seller_name">{{ field_show.includes('1') ? live_seller_name(item) : '' }}</text>
                                     <view v-show="field_show.includes('2')" class="flex-row align-c gap-3 live-page-view" :style="plugins_live_page_view">
                                         <iconfont name="icon-eye" propContainerDisplay="flex" :size="plugins_live_page_view_icon_size"></iconfont>
-                                        <text>{{ live_viewer_count(item) }}</text>
+                                        <text class="live-page-view-num">{{ live_viewer_count(item) }}</text>
                                     </view>
                                 </view>
                             </view>
@@ -48,7 +48,7 @@
                                     <text class="text-line-1" :style="plugins_live_seller_name">{{ field_show.includes('1') ? live_seller_name(item) : '' }}</text>
                                     <view v-show="field_show.includes('2')" class="flex-row align-c gap-3 live-page-view" :style="plugins_live_page_view">
                                         <iconfont name="icon-eye" propContainerDisplay="flex" :size="plugins_live_page_view_icon_size"></iconfont>
-                                        <text>{{ live_viewer_count(item) }}</text>
+                                        <text class="live-page-view-num">{{ live_viewer_count(item) }}</text>
                                     </view>
                                 </view>
                             </view>
@@ -85,7 +85,7 @@
                                                     <text :style="plugins_live_seller_name">{{ field_show.includes('1') ? live_seller_name(item) : '' }}</text>
                                                     <view v-show="field_show.includes('2')" class="flex-row align-c gap-3 live-page-view" :style="plugins_live_page_view">
                                                         <iconfont name="icon-eye" propContainerDisplay="flex" :size="plugins_live_page_view_icon_size"></iconfont>
-                                                        <text>{{ live_viewer_count(item) }}</text>
+                                                        <text class="live-page-view-num">{{ live_viewer_count(item) }}</text>
                                                     </view>
                                                 </view>
                                             </view>
@@ -453,7 +453,7 @@
             align-items: center;
             line-height: 1;
         }
-        text {
+        .live-page-view-num {
             line-height: 1;
         }
     }

@@ -42,7 +42,7 @@
                             </swiper>
                             <!-- #endif -->
                             <!-- #ifdef H5 || MP-BAIDU || APP -->
-                            <next-notice-bar :key="propKey + '-' + index" :propKey="propKey + '-' + index" :y="false" initPosition="right" :row="1" :speed="(interval_time / 100) + (10 * index)" :propList="item.split_list">
+                            <next-notice-bar :key="index" :propKey="propKey + '-' + index" :y="false" initPosition="right" :row="1" :speed="(interval_time / 100) + (10 * index)" :propList="item.split_list">
                                 <template #default="{ row }">
                                     <view :style="swiper_horizontal_container">
                                         <view class="flex-row align-c" :style="swiper_horizontal_img_container">
@@ -257,7 +257,10 @@
 </script>
 
 <style scoped lang="scss">
-.swiper-horizontal-free-mode :deep .swiper-slide {
+/* 小程序组件样式禁止非 class 选择器；该规则仅 H5/App 轮播自由宽度需要 */
+/* #ifdef H5 || APP || MP-BAIDU */
+.swiper-horizontal-free-mode ::v-deep .swiper-slide {
     width: auto !important;
 }
+/* #endif */
 </style>

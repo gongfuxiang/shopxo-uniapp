@@ -1,9 +1,8 @@
 <template>
     <view :class="theme_view">
         <view v-if="(data || null) != null">
-            <!-- 搜索 -->
-            <block v-if="(data.is_header || 0) == 1">
-                <!-- 搜索框 -->
+            <!-- 搜索（白底页用浅灰底+2rpx边框，避免小程序行内1px边框几乎看不见） -->
+            <block v-if="parseInt(data.is_header || 0) == 1">
                 <view class="padding-main bg-white">
                     <component-search
                         :propIsEnterSearchStart="true"
@@ -12,7 +11,7 @@
                         :propPlaceholder="$t('common.enter_product_name_search')"
                         propPlaceholderClass="cr-grey-c"
                         propIconColor="#999"
-                        propBgColor="#fff"
+                        propBgColor="#f5f5f5"
                         propBrColor="#eee"
                     ></component-search>
                 </view>
@@ -22,9 +21,8 @@
             <mp-html :content="data.html_content" />
 
             <!-- 结尾 -->
-            <block v-if="(data.is_footer || 0) == 1">
-                <!-- 结尾 -->
-                <component-bottom-line :propStatus="data_bottom_line_status"></component-bottom-line>
+            <block v-if="parseInt(data.is_footer || 0) == 1">
+                <component-bottom-line :propStatus="data_bottom_line_status ? 1 : 0"></component-bottom-line>
             </block>
         </view>
         <view v-else>

@@ -144,7 +144,7 @@
                     <block v-if="content_type == 'moment'">
                         <component-moment-item
                             v-for="(item, index) in data_list"
-                            :key="item.id || index"
+                            :key="item.id"
                             :propItem="item"
                             :propShowUser="false"
                             :propShowOwner="home.is_self == 1"
@@ -159,7 +159,7 @@
                         ></component-moment-item>
                     </block>
                     <block v-else>
-                        <view v-for="(item, index) in data_list" :key="item.id || index" class="bg-white border-radius-main padding-main spacing-mb">
+                        <view v-for="(item, index) in data_list" :key="item.id" class="bg-white border-radius-main padding-main spacing-mb">
                             <block v-if="content_type == 'blog'">
                                 <view class="flex-row cp" :data-value="item.url" @tap="url_event">
                                     <image v-if="item.cover" class="blog-cover radius margin-right-sm" :src="item.cover" mode="aspectFill"></image>

@@ -16,7 +16,7 @@
         </view>
         <block v-else>
             <!-- 提示信息 -->
-            <component-no-data :propStatus="data_list_loding_status" :propMsg="data_list_loding_msg"></component-no-data>
+            <component-no-data :propStatus="data_list_loding_status" :propMsg="data_list_loding_msg || ''"></component-no-data>
         </block>
 
         <!-- 公共 -->
@@ -133,7 +133,7 @@
                             this.setData({
                                 data_bottom_line_status: false,
                                 data_list_loding_status: 2,
-                                data_list_loding_msg: res.data.msg
+                                data_list_loding_msg: res.data.msg || ''
                             });
                         }
 
@@ -145,7 +145,7 @@
                         this.setData({
                             data_bottom_line_status: false,
                             data_list_loding_status: 2,
-                            data_list_loding_msg: this.$t('common.internet_error_tips')
+                            data_list_loding_msg: this.$t('common.internet_error_tips') || ''
                         });
                     }
                 });

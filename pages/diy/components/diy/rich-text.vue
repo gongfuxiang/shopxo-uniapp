@@ -57,17 +57,18 @@
 </script>
 
 <style>
+    /* 小程序组件样式禁止标签/属性/* 选择器；富文本约束仅 H5 生效，小程序由 mp-html 自身处理 */
+    /* #ifdef H5 */
     .diy-rich-text {
         * {
             max-width: 100%;
         }
-        /* #ifdef H5 */
         [id^=v] {
             width: 100%;
         }
-        /* #endif */
     }
     .diy-rich-text video {
         width: 100%;
     }
+    /* #endif */
 </style>
