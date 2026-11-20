@@ -155,7 +155,7 @@
                                         desc: this.data.seo_desc,
                                         path: '/pages/design/design',
                                         query: 'id='+this.data.id,
-                                        img: this.data.logo
+                                        img: this.data.share_images || this.data.logo
                                     }
                                 });
 
