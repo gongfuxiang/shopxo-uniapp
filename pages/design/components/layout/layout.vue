@@ -719,7 +719,13 @@
                                                 <!-- 标题 -->
                                                 <block v-else-if="vss.value == 'title'">
                                                     <view class="module-title-content">
-                                                        <text class="title-main" :style="vss.config.frontend_config.style_title_main">
+                                                        <view v-if="(vss.config.title_type || 'text') == 'image' && (vss.config.title_images || null) != null" class="title-main title-main-image">
+                                                            <image :src="vss.config.title_images" mode="heightFix" class="title-main-img"></image>
+                                                        </view>
+                                                        <view v-else-if="(vss.config.title_type || 'text') == 'icon' && (vss.config.title_icon || null) != null" class="title-main title-main-icon" :style="((vss.config.frontend_config || null) != null && (vss.config.frontend_config.style_title_main || null) != null) ? vss.config.frontend_config.style_title_main : ''">
+                                                            <iconfont :name="'icon-' + vss.config.title_icon" size="32rpx" :color="vss.config.title_color || (((vss.config.frontend_config || null) != null && (vss.config.frontend_config.title_color || null) != null) ? vss.config.frontend_config.title_color : '')" propContainerDisplay="inline-flex"></iconfont>
+                                                        </view>
+                                                        <text v-else class="title-main" :style="((vss.config.frontend_config || null) != null && (vss.config.frontend_config.style_title_main || null) != null) ? vss.config.frontend_config.style_title_main : ''">
                                                             {{vss.config.title}}
                                                         </text>
                                                         <text v-if="(vss.config.title_vice || null) != null" class="title-vice"
@@ -734,6 +740,65 @@
                                                             </view>
                                                         </view>
                                                     </view>
+                                                </block>
+                                                <!-- 热区：坐标相对图片层，随图等比缩放 -->
+                                                <block v-else-if="vss.value == 'hot-zone' && (vss.config.images || null) != null">
+                                                    <view class="module-hot-zone-media">
+                                                        <image :src="vss.config.images" mode="widthFix" class="wh-auto dis-block" :style="((vss.config.frontend_config || null) != null && (vss.config.frontend_config.images_style || null) != null) ? vss.config.frontend_config.images_style : ''"></image>
+                                                        <view
+                                                            v-for="(hz, hz_index) in (vss.config.data_list || [])"
+                                                            :key="hz_index"
+                                                            class="module-hot-zone-item"
+                                                            :style="'left:' + (hz.left || 0) + '%;top:' + (hz.top || 0) + '%;width:' + (hz.width || 0) + '%;height:' + (hz.height || 0) + '%;'"
+                                                            @tap="layout_url_event"
+                                                            :data-value="hz.url || ''"
+                                                        ></view>
+                                                    </view>
+                                                </block>
+                                                <!-- 公告 -->
+                                                <block v-else-if="vss.value == 'notice'">
+                                                    <view class="module-notice-content" :class="((vss.config.style_type || '') == 'text' && parseInt(vss.config.text_is_scroll || 0) != 1) ? 'notice-style-text' : ''">
+                                                        <view v-if="(vss.config.title_type || 'text') == 'image' && (vss.config.title_images || null) != null" class="notice-title notice-title-image">
+                                                            <image :src="vss.config.title_images" mode="heightFix" class="notice-title-img"></image>
+                                                        </view>
+                                                        <view v-else-if="(vss.config.title_type || 'text') == 'icon' && (vss.config.title_icon || null) != null" class="notice-title notice-title-icon" :style="((vss.config.frontend_config || null) != null && (vss.config.frontend_config.style_title || null) != null) ? vss.config.frontend_config.style_title : ''">
+                                                            <iconfont :name="'icon-' + vss.config.title_icon" size="36rpx" :color="vss.config.title_color || (((vss.config.frontend_config || null) != null && (vss.config.frontend_config.title_color || null) != null) ? vss.config.frontend_config.title_color : '')" propContainerDisplay="inline-flex"></iconfont>
+                                                        </view>
+                                                        <view v-else-if="(vss.config.title_type || 'text') == 'text' && (vss.config.title || null) != null && vss.config.title !== ''" class="notice-title" :style="((vss.config.frontend_config || null) != null && (vss.config.frontend_config.style_title || null) != null) ? vss.config.frontend_config.style_title : ''">{{vss.config.title}}</view>
+                                                        <notice-marquee
+                                                            v-if="(vss.config.style_type || '') == 'text' && parseInt(vss.config.text_is_scroll || 0) == 1"
+                                                            :key="'mq-' + (vss.config.scroll_speed || 3) + '-' + (((vss.config.frontend_config || null) != null && (vss.config.frontend_config.marquee_px_per_sec || null) != null) ? vss.config.frontend_config.marquee_px_per_sec : 40)"
+                                                            :text="vss.config.content_text || ''"
+                                                            :speed="vss.config.scroll_speed || 3"
+                                                            :pxPerSec="((vss.config.frontend_config || null) != null && (vss.config.frontend_config.marquee_px_per_sec || null) != null) ? vss.config.frontend_config.marquee_px_per_sec : 0"
+                                                            :colorStyle="((vss.config.frontend_config || null) != null && (vss.config.frontend_config.style_news || null) != null) ? vss.config.frontend_config.style_news : ''"
+                                                        />
+                                                        <view v-else-if="(vss.config.style_type || '') == 'text'" class="notice-text flex-1" :style="((vss.config.frontend_config || null) != null && (vss.config.frontend_config.style_news || null) != null) ? vss.config.frontend_config.style_news : ''">{{vss.config.content_text || ''}}</view>
+                                                        <swiper
+                                                            v-else
+                                                            class="notice-swiper flex-1"
+                                                            circular
+                                                            :indicator-dots="false"
+                                                            :autoplay="true"
+                                                            :duration="400"
+                                                            :interval="(parseInt(vss.config.interval || 3) || 3) * 1000"
+                                                            :vertical="(vss.config.direction || 'vertical') != 'horizontal'"
+                                                            :key="'notice-' + (vss.config.direction || 'vertical') + '-' + (vss.config.interval || 3)"
+                                                        >
+                                                            <swiper-item v-for="(nt, nt_index) in (vss.config.data_list || [])" :key="nt_index">
+                                                                <view class="notice-item ht-auto flex-row align-c" :style="((vss.config.frontend_config || null) != null && (vss.config.frontend_config.style_news || null) != null) ? vss.config.frontend_config.style_news : ''" @tap="layout_url_event" :data-value="nt.url || ''">
+                                                                    <view class="text-line-1">{{nt.title || ''}}</view>
+                                                                </view>
+                                                            </swiper-item>
+                                                        </swiper>
+                                                        <view v-if="(vss.config.more || null) != null" class="notice-more" :style="((vss.config.frontend_config || null) != null && (vss.config.frontend_config.style_more || null) != null) ? vss.config.frontend_config.style_more : ''" @tap="layout_url_event" :data-value="vss.config.more_url || ''">
+                                                            {{vss.config.more}} >
+                                                        </view>
+                                                    </view>
+                                                </block>
+                                                <!-- 富文本 -->
+                                                <block v-else-if="vss.value == 'rich-text' && (vss.config.html || null) != null">
+                                                    <mp-html :content="vss.config.html" />
                                                 </block>
                                                 <!-- 自定义html -->
                                                 <block v-else-if="vss.value == 'custom' && (vss.config.custom || null) != null">
@@ -754,6 +819,7 @@
 <script>
     const app = getApp();
     import layoutRolling from '@/pages/design/components/layout/layout-rolling.vue';
+    import noticeMarquee from '@/pages/design/components/layout/notice-marquee.vue';
     export default {
         data() {
             return {
@@ -769,7 +835,8 @@
         },
 
         components: {
-            'layout-rolling': layoutRolling
+            'layout-rolling': layoutRolling,
+            'notice-marquee': noticeMarquee
         },
         props: {
             propData: Array
@@ -1848,9 +1915,30 @@
      * 模块类型样式 - 标题
      */
     .module-title-container .module-title-content{position:relative}
-    .module-title-container .title-main{font-size:16px;font-weight:600;color:#666}
+    .module-title-container .title-main{font-size:16px;font-weight:600;color:#666;display:inline-flex;align-items:center}
+    .module-title-container .title-main-image .title-main-img{height:32rpx;width:auto;display:block}
+    .module-title-container .title-main-icon{font-size:32rpx;line-height:1}
     .module-title-container .title-vice{color:#999;font-size:12px;margin-left:10px}
     .module-title-container .more-content{position:absolute;top:calc(50% - 8px);right:0;font-size:12px;}
+
+    /**
+     * 热区 / 公告 / 富文本
+     */
+    .module-hot-zone-container{position:relative}
+    .module-hot-zone-media{position:relative;width:100%;overflow:hidden;line-height:0}
+    .module-hot-zone-media > image,
+    .module-hot-zone-media > .wh-auto{display:block;width:100%}
+    .module-hot-zone-media .module-hot-zone-item{position:absolute;box-sizing:border-box}
+    .module-notice-content{display:flex;align-items:center;gap:16rpx;min-height:72rpx;padding:0 16rpx;box-sizing:border-box}
+    .module-notice-content.notice-style-text{align-items:flex-start;padding-top:16rpx;padding-bottom:16rpx}
+    .module-notice-content .notice-title{flex-shrink:0;font-weight:600;display:inline-flex;align-items:center}
+    .module-notice-content .notice-title-image .notice-title-img{height:36rpx;width:auto;display:block}
+    .module-notice-content .notice-title-icon{font-size:36rpx;line-height:1}
+    .module-notice-content .notice-swiper{flex:1;min-width:0;height:56rpx}
+    .module-notice-content .notice-item{height:56rpx;line-height:56rpx}
+    .module-notice-content .notice-text{flex:1;min-width:0;line-height:1.6;white-space:pre-wrap;word-break:break-word}
+    .module-notice-content .notice-more{flex-shrink:0;font-size:24rpx;color:#999}
+    .module-rich-text-container{overflow:hidden}
      
     /**
      * 模块内容基础样式
