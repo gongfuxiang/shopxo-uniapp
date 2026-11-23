@@ -1939,6 +1939,20 @@
                     } else if (value.substr(0, 7) == 'scan://') {
                         // 扫码协议
                         this.scan_handle();
+                    } else if (value.substr(0, 12) == 'quick-nav://') {
+                        // 快捷导航协议：小程序/H5/App 通用，打开当前页已挂载的快捷导航弹层（同悬浮窗）
+                        // 注意：'quick-nav://' 长度为 12（不是 11）
+                        if (!this.page_tree_call('quick_open_event')) {
+                            this.showToast('当前页面暂不支持快捷导航');
+                        }
+                        return false;
+                    } else if (value.substr(0, 7) == 'lang://') {
+                        // 多语言协议：小程序/H5/App 通用，打开当前页语言切换弹层（同悬浮窗）
+                        // 注意：'lang://' 长度为 7
+                        if (!this.page_lang_open()) {
+                            this.showToast('当前页面暂不支持多语言');
+                        }
+                        return false;
                     } else if (value.substr(0, 15) == 'goods-detail://') {
                         // 商品详情操作：收藏 / 客服 / 分享，仅详情页有效
                         // 小程序页面实例的方法在 $vm 上，直接读 page 上的方法是空的
@@ -2036,6 +2050,9 @@
                                     });
                                 }
                             }
+                        } else if (String(value).indexOf('://') >= 0) {
+                            // 未识别的自定义协议，不要当搜索词跳转
+                            this.showToast(i18n.t('run.event_value_format_error') || '链接协议不支持');
                         } else {
                             this.url_open('/pages/goods-search/goods-search?keywords='+value);
                         }
@@ -3690,6 +3707,102 @@
                     }
                 } catch (e) {}
                 return null;
+            },
+
+            /**
+             * 取当前页 Vue 实例
+             * 适配小程序 / H5 / App：getCurrentPages 三端都有；小程序页面方法在 page.$vm 上
+             */
+            current_page_vm() {
+                try {
+                    var pages = getCurrentPages();
+                    var page = pages.length > 0 ? pages[pages.length - 1] : null;
+                    return page ? (page.$vm || page) : null;
+                } catch (e) {
+                    return null;
+                }
+            },
+
+            /**
+             * 在当前页组件树中查找「带指定方法」的组件实例
+             * - 先看自身 methods，再递归 $refs，再兜底 $children（Vue2；Vue3 无 $children 时主要靠 $refs）
+             * - 限深，避免异常环引用
+             * - 用于 quick-nav://、lang://：不依赖端差异，只要页面已挂载对应组件即可
+             * @param {Object} vm 页面或子组件实例
+             * @param {string} method 方法名，如 quick_open_event / lang_open_event
+             * @param {number} depth 当前深度
+             * @returns {Object|null} 找到的组件实例
+             */
+            page_tree_find(vm, method, depth) {
+                if ((vm || null) == null || (method || null) == null || method === '') {
+                    return null;
+                }
+                depth = parseInt(depth || 0);
+                if (depth > 6) {
+                    return null;
+                }
+                try {
+                    if (typeof vm[method] === 'function') {
+                        return vm;
+                    }
+                    var refs = vm.$refs || {};
+                    var keys = Object.keys(refs);
+                    for (var i = 0; i < keys.length; i++) {
+                        var ref = refs[keys[i]];
+                        var list = Array.isArray(ref) ? ref : (ref ? [ref] : []);
+                        for (var j = 0; j < list.length; j++) {
+                            var found = this.page_tree_find(list[j], method, depth + 1);
+                            if (found != null) {
+                                return found;
+                            }
+                        }
+                    }
+                    // Vue2 补充：无 ref 的子组件（如首页快捷导航）；Vue3 无 $children 时跳过即可
+                    var children = vm.$children || [];
+                    for (var k = 0; k < children.length; k++) {
+                        var child_found = this.page_tree_find(children[k], method, depth + 1);
+                        if (child_found != null) {
+                            return child_found;
+                        }
+                    }
+                } catch (e) {}
+                return null;
+            },
+
+            /**
+             * 在当前页组件树中调用方法（小程序 / H5 / App 通用）
+             * @param {string} method 方法名
+             * @returns {boolean} 是否调用成功
+             */
+            page_tree_call(method) {
+                var vm = this.current_page_vm();
+                var target = this.page_tree_find(vm, method, 0);
+                if (target != null && typeof target[method] === 'function') {
+                    try {
+                        target[method]();
+                        return true;
+                    } catch (e) {}
+                }
+                return false;
+            },
+
+            /**
+             * 打开多语言弹层（小程序 / H5 / App 通用）
+             * 优先级：页面 diy_lang_open_event → refs.lang_switch → 组件树找 lang_open_event
+             * 当前页未引入语言组件时返回 false
+             */
+            page_lang_open() {
+                var vm = this.current_page_vm();
+                if (vm != null && typeof vm.diy_lang_open_event === 'function') {
+                    try {
+                        vm.diy_lang_open_event();
+                        return true;
+                    } catch (e) {}
+                }
+                if (this.page_ref_call(vm, 'lang_switch', 'lang_open_event', [])) {
+                    return true;
+                }
+                return this.page_tree_call('lang_open_event');
             },
 
             /**
