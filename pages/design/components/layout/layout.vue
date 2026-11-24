@@ -3,17 +3,21 @@
         <block v-if="(propData || null) != null && propData.length > 0">
             <block v-for="(v, index) in propData" :key="index">
                 <view v-if="(v.value || null) != null && (v.children || null) != null && v.children.length > 0 && (v.value_arr || null) != null && v.value_arr.length > 0 && v.children.length == v.value_arr.length && (v.status || 0) == 1"
-                class="layout-view">
+                :class="'layout-view ' + layout_outer_ent_class(v.config)"
+                :style="layout_bg_color_style(v.config) + layout_outer_style(v.config)">
+                    <view class="layout-bg-image-layer" :style="layout_bg_image_style(v.config)"></view>
                     <view
-                    :class="'layout-content-children ' + (((v.config || null) != null && (v.config.frontend_config || null) != null && (v.config.frontend_config.ent || null) != null) ? v.config.frontend_config.ent : '')"
-                    :style="(((v.config || null) != null && (v.config.frontend_config || null) != null && (v.config.frontend_config.style || null) != null) ? v.config.frontend_config.style : '')+(((v.config || null) != null && (v.config.style_background_images || null) != null) ? 'background-image:url('+v.config.style_background_images+');' : '')">
+                    :class="'layout-content-children ' + layout_inner_ent_class(v.config)"
+                    :style="layout_inner_style(v.config)">
                         <block v-for="(vs, indexchn) in v.children" :key="indexchn">
-                            <view :class="'layout-content-container ' + (((vs.config || null) != null && (vs.config.frontend_config || null) != null && (vs.config.frontend_config.ent || null) != null) ? vs.config.frontend_config.ent : '')"
-                            :style="layout_column_style(v, indexchn) + (((vs.config || null) != null && (vs.config.frontend_config || null) != null && (vs.config.frontend_config.style || null) != null) ? vs.config.frontend_config.style : '')+(((vs.config || null) != null && (vs.config.style_background_images || null) != null) ? 'background-image:url('+vs.config.style_background_images+');' : '')">
+                            <view :class="'layout-content-container ' + layout_ent_class(vs.config)"
+                            :style="layout_column_style(v, indexchn) + layout_content_style(vs.config) + layout_bg_color_style(vs.config)">
+                                <view class="layout-bg-image-layer" :style="layout_bg_image_style(vs.config)"></view>
                                 <block v-if="(vs.children || null) != null && vs.children.length > 0">
                                     <view v-for="(vss, indexlay) in vs.children" :key="indexlay" class="layout-content">
                                         <view v-if="(vss.config || null) != null && vss.config.length !== 0" class="module-content">
-                                            <view :class="'module-' + vss.value + '-container'" :style="((vss.config.frontend_config || null) != null && (vss.config.frontend_config.style || null) != null) ? vss.config.frontend_config.style : ''">
+                                            <view :class="'module-' + vss.value + '-container'" :style="layout_module_box_style(vss.config)">
+                                                <view class="layout-bg-image-layer" :style="layout_module_bg_image_style(vss.config)"></view>
                                                 <!-- 单图 -->
                                                 <block v-if="vss.value == 'images'">
                                                     <view
@@ -1223,18 +1227,85 @@
             },
 
             // 多列列宽：不独行时按 value_arr 十二栅格比例并排
+            // 独行/单列用 width:auto，让左右外边距正常内缩，不会 100%+margin 撑出屏幕
             layout_column_style(v, index) {
                 if ((v || null) == null || (v.value_arr || null) == null || v.value_arr.length <= 1) {
-                    return '';
+                    return 'width:auto;max-width:100%;box-sizing:border-box;';
                 }
                 if (!this.layout_is_mobile_no_stack(v.config)) {
-                    return 'width:100%;';
+                    return 'width:auto;max-width:100%;box-sizing:border-box;';
                 }
                 var n = parseInt(v.value_arr[index] || 0, 10);
                 if (n <= 0) {
                     n = 12;
                 }
-                return 'width:' + ((n / 12) * 100) + '%;float:left;box-sizing:border-box;';
+                return 'width:' + ((n / 12) * 100) + '%;float:left;box-sizing:border-box;max-width:100%;';
+            },
+
+            // 以下样式一律直出设计页已保存的 frontend_config，不做解析/重算
+            layout_fc(config) {
+                if ((config || null) == null || (config.frontend_config || null) == null) {
+                    return {};
+                }
+                return config.frontend_config;
+            },
+            layout_fc_str(config, key) {
+                var v = this.layout_fc(config)[key];
+                return (v === undefined || v === null) ? '' : String(v);
+            },
+
+            // 容积/模块：完整 ent
+            layout_ent_class(config) {
+                return this.layout_fc_str(config, 'ent').replace(/\s+/g, ' ').trim();
+            },
+
+            // 布局外层 class（边距/边线/圆角）
+            layout_outer_ent_class(config) {
+                return this.layout_fc_str(config, 'outer_ent').replace(/\s+/g, ' ').trim();
+            },
+
+            // 布局内层 class（限宽居中）
+            layout_inner_ent_class(config) {
+                return this.layout_fc_str(config, 'ent').replace(/\s+/g, ' ').trim();
+            },
+
+            // 布局外层 style（圆角/边线色）
+            layout_outer_style(config) {
+                return this.layout_fc_str(config, 'outer_style');
+            },
+
+            // 布局内层 style
+            layout_inner_style(config) {
+                return this.layout_fc_str(config, 'style');
+            },
+
+            // 容积内容样式
+            layout_content_style(config) {
+                return this.layout_fc_str(config, 'style');
+            },
+
+            // 背景色/渐变层
+            layout_bg_color_style(config) {
+                var fc = this.layout_fc(config);
+                if ((fc.bg_color_style || null) != null && fc.bg_color_style !== '') {
+                    return String(fc.bg_color_style);
+                }
+                return (fc.bg_style || null) != null ? String(fc.bg_style) : '';
+            },
+
+            // 背景图层
+            layout_bg_image_style(config) {
+                return this.layout_fc_str(config, 'bg_image_style');
+            },
+
+            // 模块外层：内容样式 + 色层
+            layout_module_box_style(config) {
+                return this.layout_content_style(config) + this.layout_bg_color_style(config);
+            },
+
+            // 模块图层
+            layout_module_bg_image_style(config) {
+                return this.layout_bg_image_style(config);
             },
 
             // 文章标题行 class（开关开=与标题同行靠右，关=独立一行）
@@ -1253,9 +1324,46 @@
 </script>
 <style>
     /**
-     * 布局基础
+     * 布局基础：外层色/渐变 + 绝对定位空图层（与 PC / DIY 一致）
+     * border-box：内边距计入宽度
+     * width:auto：外边距在块级下自动挤占宽度，避免 width:100% + margin 往右侧溢出
      */
-    .layout-content-children,.layout-content-container{overflow:hidden;width:100%;}
+    .layout-view,
+    .layout-content-children,
+    .layout-content-container,
+    .layout-content,
+    .module-content,
+    .module-content > [class*="module-"][class*="-container"]{
+        position:relative;
+        z-index:0;
+        box-sizing:border-box;
+        max-width:100%;
+    }
+    .layout-view,
+    .layout-content-children,
+    .layout-content-container{
+        display:block;
+        width:auto;
+        overflow:hidden;
+    }
+    /* 布局内容层保持居中；有 am-container 时用限宽，勿被 max-width:100% 盖掉 */
+    .layout-view > .layout-content-children{
+        width:100%;
+        margin-left:auto;
+        margin-right:auto;
+        box-sizing:border-box;
+    }
+    .layout-view > .layout-content-children:not(.am-container){
+        max-width:100%;
+    }
+    .layout-view > .layout-content-children.am-container{
+        max-width:1000px;
+    }
+    .layout-bg-image-layer{
+        position:absolute;left:0;right:0;top:0;bottom:0;width:100%;height:100%;
+        box-sizing:border-box;background-color:transparent;pointer-events:none;z-index:-1;
+        border-radius:inherit;
+    }
     
     /**
      * 模块类型样式 - 数据列表
