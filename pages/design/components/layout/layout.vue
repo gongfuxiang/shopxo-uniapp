@@ -16,7 +16,7 @@
                                 <block v-if="(vs.children || null) != null && vs.children.length > 0">
                                     <view v-for="(vss, indexlay) in vs.children" :key="indexlay" class="layout-content">
                                         <view v-if="(vss.config || null) != null && vss.config.length !== 0" class="module-content">
-                                            <view :class="'module-' + vss.value + '-container'" :style="layout_module_box_style(vss.config)">
+                                            <view :class="'module-box module-' + vss.value + '-container'" :style="layout_module_box_style(vss.config)">
                                                 <view class="layout-bg-image-layer" :style="layout_module_bg_image_style(vss.config)"></view>
                                                 <!-- 单图 -->
                                                 <block v-if="vss.value == 'images'">
@@ -1265,8 +1265,14 @@
             },
 
             // 布局内层 class（限宽居中）
+            // WXSS 不支持 :not()（普通渲染引擎），用独立的 limit 类做正选，不靠反选
             layout_inner_ent_class(config) {
-                return this.layout_fc_str(config, 'ent').replace(/\s+/g, ' ').trim();
+                var ent = this.layout_fc_str(config, 'ent').replace(/\s+/g, ' ').trim();
+                // 系统标准限宽（am-container）走限宽样式，其余走 100% 铺满
+                if (ent.indexOf('am-container') >= 0) {
+                    ent += ' layout-content-children-limit';
+                }
+                return ent;
             },
 
             // 布局外层 style（圆角/边线色）
@@ -1286,11 +1292,7 @@
 
             // 背景色/渐变层
             layout_bg_color_style(config) {
-                var fc = this.layout_fc(config);
-                if ((fc.bg_color_style || null) != null && fc.bg_color_style !== '') {
-                    return String(fc.bg_color_style);
-                }
-                return (fc.bg_style || null) != null ? String(fc.bg_style) : '';
+                return this.layout_fc_str(config, 'bg_color_style');
             },
 
             // 背景图层
@@ -1333,7 +1335,7 @@
     .layout-content-container,
     .layout-content,
     .module-content,
-    .module-content > [class*="module-"][class*="-container"]{
+    .module-box{
         position:relative;
         z-index:0;
         box-sizing:border-box;
@@ -1351,12 +1353,11 @@
         width:100%;
         margin-left:auto;
         margin-right:auto;
+        max-width:100%;
         box-sizing:border-box;
     }
-    .layout-view > .layout-content-children:not(.am-container){
-        max-width:100%;
-    }
-    .layout-view > .layout-content-children.am-container{
+    /* WXSS 不支持 :not()，限宽用独立的 limit 类正选 */
+    .layout-view > .layout-content-children.layout-content-children-limit{
         max-width:1000px;
     }
     .layout-bg-image-layer{
