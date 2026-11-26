@@ -66,7 +66,7 @@
                                         <component-diy-activity v-else-if="item.key == 'activity'" :ref="'diy_goods_buy' + index" :propDiyIndex="index" :propIndex="get_prop_index(item)" :propKey="item.id + index" :propValue="item.com_data" @goods_buy_event="goods_buy_event"></component-diy-activity>
                                         <component-diy-salerecords v-else-if="item.key == 'salerecords'" :propIndex="get_prop_index(item)" :propKey="item.id + index" :propValue="item.com_data"></component-diy-salerecords>
                                         <component-diy-plugins-goods-detail-goodsservice v-else-if="item.key == 'plugins-goods-detail-goodsservice'" :propIndex="get_prop_index(item)" :propKey="item.id + index" :propValue="item.com_data" :propGoodsService="propGoodsService"></component-diy-plugins-goods-detail-goodsservice>
-                                        <component-diy-goods-detail-panel-tips v-else-if="item.key == 'goods-detail-panel-tips'" :propIndex="get_prop_index(item)" :propKey="item.id + index" :propValue="item.com_data" :propGoods="propGoods"></component-diy-goods-detail-panel-tips>
+                                        <component-diy-goods-detail-panel-tips v-else-if="item.key == 'goods-detail-panel-tips'" :propIndex="get_prop_index(item)" :propKey="item.id + index" :propValue="item.com_data" :propGoods="propGoods" :propGoodsForm="propGoodsForm"></component-diy-goods-detail-panel-tips>
                                         <component-diy-plugins-goods-detail-intellectstools-base v-else-if="item.key == 'plugins-goods-detail-intellectstools-base'" :propIndex="get_prop_index(item)" :propKey="item.id + index" :propValue="item.com_data" :propIntellectstools="propIntellectstools"></component-diy-plugins-goods-detail-intellectstools-base>
                                         <component-diy-plugins-goods-detail-intellectstools-bottom v-else-if="item.key == 'plugins-goods-detail-intellectstools-bottom'" :propIndex="get_prop_index(item)" :propKey="item.id + index" :propValue="item.com_data" :propIntellectstools="propIntellectstools"></component-diy-plugins-goods-detail-intellectstools-bottom>
                                         <component-diy-plugins-goods-detail-vip-tips v-else-if="item.key == 'plugins-goods-detail-vip-tips'" :propIndex="get_prop_index(item)" :propKey="item.id + index" :propValue="item.com_data" :propVipTips="propVipTips"></component-diy-plugins-goods-detail-vip-tips>
@@ -266,6 +266,10 @@
                 default: true,
             },
             propGoods: {
+                type: Object,
+                default: null,
+            },
+            propGoodsForm: {
                 type: Object,
                 default: null,
             },

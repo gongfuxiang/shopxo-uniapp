@@ -18,7 +18,8 @@ var zh = {
         "copy_value_empty": "复制值为空",
         "store_data_incorrect": "门店数据有误",
         "event_not_processed": "事件未处理(",
-        "already_favor": "已收藏"
+        "already_favor": "已收藏",
+        "form_popup_title": "表单信息"
     },
     "goods-comments": {
         "administrator_reply": "管理员回复：",
@@ -44,7 +45,8 @@ var en = {
         "copy_value_empty": "Copy value is empty",
         "store_data_incorrect": "Store data is incorrect",
         "event_not_processed": "Event not processed（",
-        "already_favor": "Favorited"
+        "already_favor": "Favorited",
+        "form_popup_title": "Form Information"
     },
     "goods-comments": {
         "administrator_reply": "Administrator's reply:",

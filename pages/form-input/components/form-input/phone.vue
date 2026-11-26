@@ -21,7 +21,7 @@
                 </view>
                 <view class="form-content margin-top-xxxl padding-top-xxl">
                     <view class="verify pr margin-vertical-main">
-                        <input type="text" :placeholder="$t('common.verification_code')" name="verify" maxlength="4" :value="form_input_image_verify_value" @input="form_input_image_verify_event" />
+                        <input class="verify-input" type="text" :placeholder="$t('common.verification_code')" name="verify" maxlength="4" :value="form_input_image_verify_value" @input="form_input_image_verify_event" />
                         <image v-if="(verify_image_url || null) != null" :src="verify_image_url" class="verify-image pa" mode="aspectFit" @tap.stop="image_verify_event"></image>
                     </view>
                     <view class="margin-top-xxxl margin-bottom-xxxl">
@@ -309,7 +309,7 @@ import { get_format_checks, isEmpty } from '@/common/js/common/common.js';
 .verify_disabled {
     opacity: 0.6;
 }
-.form-content .verify input {
+.form-content .verify .verify-input {
     width: 63%;
     height: 50px;
     line-height: 50px;

@@ -8,7 +8,7 @@
 						<!-- <view class="uni-page-head-title" v-if="titleShow">{{timeTitle}}</view> -->
 						<view><text class="text-size-sm cr-blue" @tap="submit_event">{{ $t('common.ok_text') }}</text></view>
 					</view>
-					<picker-view :indicator-style="indicatorStyle" :value="value" @change="bindChange">
+					<picker-view class="datetime-picker-view" :indicator-style="indicatorStyle" :value="value" @change="bindChange">
 						<picker-view-column v-for="(arr, n) in dateTimeArr" :key="n">
 							<view class="item flex-row align-c jc-c" v-for="(obj, index) in arr" :key="index">{{obj}}{{ dataType == 'date' ? dateUnitArr[n] || '' : timeUnitArr[n] || '' }}</view>
 						</picker-view-column>
@@ -239,7 +239,7 @@ import i18n from '@/locale/index.js';
 		display: flex;
 		justify-content: space-between;
 	}
-	picker-view {
+	.datetime-picker-view {
 		width: 100%;
 		height: 600rpx;
 		margin-top:20rpx;

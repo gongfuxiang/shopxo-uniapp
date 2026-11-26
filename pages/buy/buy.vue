@@ -134,7 +134,7 @@
                                 </view>
                                 <!-- 订单商品表单 -->
                                 <view v-if="(item.plugins_ordergoodsform_data || null) != null" class="goods-item-ordergoodsform">
-                                    <component-form-input-base ref="form_input_base" :propConfig="item.plugins_ordergoodsform_data.config" :propBackData="item.goods_id" :propFormInputId="item.plugins_ordergoodsform_data.id"></component-form-input-base>
+                                    <component-form-input-base ref="form_input_base" :propConfig="item.plugins_ordergoodsform_data.config" :propBackData="item.goods_id" :propSpec="item.spec || ''" :propFormInputId="item.plugins_ordergoodsform_data.id"></component-form-input-base>
                                 </view>
                             </view>
                         </view>
@@ -1181,6 +1181,7 @@
                     data: {
                         goods_id: e.back_data,
                         form_id: e.forminput_id,
+                        spec: e.spec || '',
                         data: e.submit_data
                     },
                     dataType: 'json'

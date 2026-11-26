@@ -2,7 +2,7 @@
     <view :class="theme_view">
         <!-- 后台指定了商品详情DIY时，按首页同样的方式渲染装修页 -->
         <block v-if="data_mode == 3 && (diy_data || null) != null && (diy_data.config || null) != null">
-            <component-diy :propValue="diy_data.config" :propDataId="diy_data.id" :propKey="random_value" :propGoods="goods" :propAskData="plugins_ask_data" :propVipTips="plugins_vip_goods_detail_open_tips_data" :propDistributionTips="plugins_distribution_goods_detail_profit_tips_data" :propGoodsService="plugins_goodsservice_data || []" :propIntellectstools="plugins_intellectstools_data" :propBinding="plugins_binding_data" :propSeckill="plugins_seckill_data" :propPresale="plugins_presale_data" @onLangOpen="diy_lang_open_event" @onShareOpen="diy_share_open_event">
+            <component-diy :propValue="diy_data.config" :propDataId="diy_data.id" :propKey="random_value" :propGoods="goods" :propGoodsForm="plugins_ordergoodsform_data" :propAskData="plugins_ask_data" :propVipTips="plugins_vip_goods_detail_open_tips_data" :propDistributionTips="plugins_distribution_goods_detail_profit_tips_data" :propGoodsService="plugins_goodsservice_data || []" :propIntellectstools="plugins_intellectstools_data" :propBinding="plugins_binding_data" :propSeckill="plugins_seckill_data" :propPresale="plugins_presale_data" @onLangOpen="diy_lang_open_event" @onShareOpen="diy_share_open_event">
                 <!-- 由于diy组件异步加载、默认先加载骨架屏展示 -->
                 <component-no-data propStatus="1" :propLoadingUseSkeleton="true" propPage="goods"></component-no-data>
                 <template slot="diy-bottom-content">
@@ -13,6 +13,21 @@
                     <component-common ref="common_footer" :propIsModalBusiness="false"></component-common>
                 </template>
             </component-diy>
+            <!-- 订单商品表单插件：DIY 模式下由「商品面板提示」组件静态展示、点击打开本弹窗填写；
+                 表单组件在独立分包，只能页面级引用（自动生成 componentPlaceholder），弹窗插槽常驻挂载不影响校验取 ref -->
+            <component-popup v-if="data_mode == 3 && (plugins_ordergoodsform_data || null) != null" :propShow="form_input_popup_status" propPosition="bottom" @onclose="form_input_popup_close_event">
+                <view class="padding-main bg-white pr">
+                    <view class="close oh pa top-0 right-0 z-i-deep">
+                        <view class="fr padding-top padding-right padding-left-sm padding-bottom-sm" @tap.stop="form_input_popup_close_event">
+                            <iconfont name="icon-close-line" size="28rpx" color="#999"></iconfont>
+                        </view>
+                    </view>
+                    <view class="text-size-md text-weight-b margin-bottom">{{ plugins_ordergoodsform_data.name || $t('goods-detail.form_popup_title') }}</view>
+                    <view class="goods-form-popup-content" style="max-height: 65vh; overflow-y: auto;">
+                        <component-form-input-base ref="form_input_base" :propConfig="plugins_ordergoodsform_data.config" :propBackData="goods.id" :propFormInputId="plugins_ordergoodsform_data.id"></component-form-input-base>
+                    </view>
+                </view>
+            </component-popup>
             <component-lang-switch ref="lang_switch" @popup_sub_language_event="diy_popup_sub_language_event"></component-lang-switch>
         </block>
         <!-- 顶部导航 -->
@@ -1132,8 +1147,10 @@
                 plugins_wholesale_data: null,
                 // 品类限制插件
                 plugins_categorylimit_data: null,
-                // 订单商品表单插件
+                // 订单商品表单插件（商品页仅存无规格模板，规格区分在订单确认页填写）
                 plugins_ordergoodsform_data: null,
+                // DIY 模式表单填写弹窗
+                form_input_popup_status: false,
                 // 超级会员开通提示
                 plugins_vip_goods_detail_open_tips_data: null,
                 // 分销推广返佣提示
@@ -1683,6 +1700,10 @@
                 var form_input_check_arr = ['spec-show', 'buy', 'cart', 'plugins-batchbuy-button-buy', 'plugins-batchbuy-button-cart'];
                 if (form_input_check_arr.indexOf(type) != -1) {
                     var form_input_base = app.globalData.page_ref(this, 'form_input_base');
+                    if (form_input_base == null) {
+                        // 兜底：页面级 $refs 未就绪或被插槽包裹时，按唯一方法名在组件树中查找表单组件
+                        form_input_base = app.globalData.page_tree_find(this, 'goods_form_validate_event');
+                    }
                     if (form_input_base != null) {
                         var res = form_input_base.on_submit_event();
                         if(res.status == 'error') {
@@ -2298,6 +2319,19 @@
                 params = uni.getStorageSync(app.globalData.data.cache_plugins_realstore_cart_keys.refresh_loading_event) || {};
                 this.setData({params: {...this.params, ...params}});
                 this.init();
+            },
+
+            // DIY 模式：商品面板提示点击，打开表单填写弹窗
+            diy_goods_form_input_event(e) {
+                if ((this.plugins_ordergoodsform_data || null) == null) {
+                    return false;
+                }
+                this.setData({form_input_popup_status: true});
+            },
+
+            // DIY 模式：关闭表单填写弹窗
+            form_input_popup_close_event(e) {
+                this.setData({form_input_popup_status: false});
             },
 
             // 表单改变事件

@@ -216,6 +216,11 @@ export default {
         propBackData: {
             type: [String, Number, Object, Array],
             default: '',
+        },
+        // 商品规格（订单商品表单插件按 商品+规格 保存草稿）
+        propSpec: {
+            type: [String, Array, Object],
+            default: '',
         }
     },
     data() {
@@ -644,6 +649,12 @@ export default {
             this.on_item_event(e, 'detailed')
         },
         /*
+        * 表单提交（唯一方法名，供页面在组件树中定位本组件：DIY 模式下页面 $refs 取不到嵌套实例）
+        */
+        goods_form_validate_event() {
+            return this.on_submit_event();
+        },
+        /*
         * 表单提交
         */
         on_submit_event() {
@@ -672,12 +683,12 @@ export default {
                         return { ...item, ...match };
                     });
                     this.setData({ data_list: data_list });
-                    return { forminput_id: this.propFormInputId, back_data: this.propBackData, status: 'error', submit_data: {}, message: message };
+                    return { forminput_id: this.propFormInputId, back_data: this.propBackData, spec: this.propSpec, status: 'error', submit_data: {}, message: message };
                 } else {
                     return this.submit_data_parameter_handle();
                 }
             } catch (error) {
-                return { forminput_id: this.propFormInputId, back_data: this.propBackData, status: 'error', submit_data: {}, message: this.$t('common.data_error')};
+                return { forminput_id: this.propFormInputId, back_data: this.propBackData, spec: this.propSpec, status: 'error', submit_data: {}, message: this.$t('common.data_error')};
             }
         },
         /*
@@ -686,6 +697,7 @@ export default {
         submit_data_parameter_handle() {
             let forminput_id = this.propFormInputId;
             let back_data = this.propBackData;
+            let spec = this.propSpec;
             try {
                 const submit_data = {};
                 // 规整字段信息
@@ -735,9 +747,9 @@ export default {
                         }
                     }
                 });
-                return { forminput_id: forminput_id, back_data: back_data, status: 'success', submit_data: submit_data, message: ''};
+                return { forminput_id: forminput_id, back_data: back_data, spec: spec, status: 'success', submit_data: submit_data, message: ''};
             } catch (error) {
-                return { forminput_id: forminput_id, back_data: back_data, status: 'error', submit_data: {}, message: this.$t('common.data_error')};
+                return { forminput_id: forminput_id, back_data: back_data, spec: spec, status: 'error', submit_data: {}, message: this.$t('common.data_error')};
             }
         },
         /*
@@ -1009,7 +1021,7 @@ export default {
                 }
 
                 // 元素数据改变
-                let item_data = { forminput_id: this.propFormInputId, back_data: this.propBackData, status: e.is_error == '1' ? 'error' : 'success', message: e.error_text, value: form_value, form_name: data.form_name, form_title: data.com_data.title, key: data.key, type: data.com_data?.type || '' };
+                let item_data = { forminput_id: this.propFormInputId, back_data: this.propBackData, spec: this.propSpec, status: e.is_error == '1' ? 'error' : 'success', message: e.error_text, value: form_value, form_name: data.form_name, form_title: data.com_data.title, key: data.key, type: data.com_data?.type || '' };
                 this.$emit('onItemEvent', item_data);
                 uni.$emit('onItemEvent', item_data);
 
