@@ -302,3 +302,14 @@
 .plugins-intellectstools-data-note-fast .note-fast-data-list {
     width: calc(100% - 112rpx);
 }
+/**
+ * 失效商品置灰（确认页）
+ */
+.buy-goods-invalid .goods-item-content {
+    opacity: 0.55;
+    filter: grayscale(0.9);
+}
+.buy-goods-invalid .goods-title {
+    color: #999;
+    text-decoration: line-through;
+}
