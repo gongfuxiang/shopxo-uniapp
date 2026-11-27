@@ -952,13 +952,28 @@
                 // 虚拟币
                 data['plugins_coin_payment_id'] = this.plugins_coin_payment_id;
 
-                // 门店员工预定：当前类型不需预约则不传（本地 params 仍保留便于切回）
+                // 门店员工预定：当前类型不需预约或无有效数据则不传（本地 params 仍保留便于切回）
                 if(!this.is_staff_booking_required_type(data.buy_use_type_data_index)) {
                     if(data.staff_booking_data != undefined) {
                         delete data.staff_booking_data;
                     }
-                } else if((data.staff_booking_data || null) != null && typeof data.staff_booking_data == 'object') {
-                    data.staff_booking_data = JSON.stringify(data.staff_booking_data);
+                } else {
+                    // 空数据([]等)不传，避免后端非强制场景误判为已选择
+                    var booking_submit = data.staff_booking_data || null;
+                    if(typeof booking_submit == 'string') {
+                        try {
+                            booking_submit = JSON.parse(booking_submit);
+                        } catch(e) {
+                            booking_submit = null;
+                        }
+                    }
+                    if((booking_submit || null) == null || !Array.isArray(booking_submit) || booking_submit.length <= 0) {
+                        if(data.staff_booking_data != undefined) {
+                            delete data.staff_booking_data;
+                        }
+                    } else if(typeof data.staff_booking_data == 'object') {
+                        data.staff_booking_data = JSON.stringify(data.staff_booking_data);
+                    }
                 }
 
                 // 发票
