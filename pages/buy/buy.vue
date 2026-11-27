@@ -107,7 +107,7 @@
                                 </view>
                                 <!-- 失效商品提示（商品主体下方红色展示） -->
                                 <view v-if="(item.is_invalid || 0) == 1" class="cr-red text-size-xs margin-top-xs">
-                                    <text>{{ item.invalid_reason || $t('buy.goods_invalid_tips') }}</text>
+                                    <text>{{ item.invalid_reason }}</text>
                                 </view>
                                 <!-- 预约人员时段（当前下单类型需预约时才展示，本地数据切换类型时保留） -->
                                 <view v-if="is_staff_booking_required_type() && (item.plugins_realstore_staff_booking_data || null) != null && item.plugins_realstore_staff_booking_data.length > 0" class="goods-item-staff-booking margin-top-sm padding-top-sm br-t-dashed pr">
@@ -470,6 +470,7 @@
                 data_list_loding_status: 1,
                 buy_submit_disabled_status: false,
                 exist_invalid_goods: 0,
+                invalid_goods_submit_tips: '',
                 data_list_loding_msg: '',
                 bottom_fixed_style: '',
                 params: null,
@@ -811,6 +812,7 @@
                                     goods_list: goods_list,
                                     total_price: data.base.actual_price,
                                     exist_invalid_goods: data.base.exist_invalid_goods || 0,
+                                    invalid_goods_submit_tips: data.base.invalid_goods_submit_tips || '',
                                     data_list_loding_status: 3,
                                     common_site_type: data.common_site_type || 0,
                                     buy_site_model_value: data.base.site_model || 0,
@@ -1196,9 +1198,9 @@
 
             // 提交订单
             buy_submit_event(e) {
-                // 存在失效商品（下架/删除/规格失效）禁止提交
+                // 存在失效商品（下架/删除/规格失效）禁止提交，文案由后端下发
                 if ((this.exist_invalid_goods || 0) == 1) {
-                    app.globalData.showToast(this.$t('buy.goods_invalid_submit_tips'));
+                    app.globalData.showToast(this.invalid_goods_submit_tips);
                     return false;
                 }
 
